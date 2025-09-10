@@ -25,7 +25,6 @@
   <title>TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
-  <div class="hidden h-10 w-[440px] bg-red-500 absolute top-1/2 z-20"></div>
   <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white">
     <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
       <button onclick="showPage('home')" class="flex items-center gap-2 cursor-pointer">
@@ -598,10 +597,164 @@
         </div>
       </section>
     </main>
+
+    <main id="cadastro" class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="https://i.ibb.co/Jwk02r4j/Fundo.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <div class="absolute flex items-center gap-2">
+        <img src="https://i.ibb.co/DfmHcLSd/Logo-5.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </div>
+      
+      <section class="my-auto border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h2 class="text-white text-3xl font-bold text-center leading-none">Cadastro</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex flex-col gap-4">
+          <div class="space-y-2">
+            <label for="inicio" class="block font-medium text-gray leading-none">Nome completo</label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
+              <input
+                id="name"
+                type="text"
+                placeholder="Seu nome completo"
+                class="focus:outline-none text-white w-full"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="phone" class="block font-medium text-gray leading-none">Telefone</label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
+              <input
+                id="phone"
+                type="tel"
+                placeholder="(XX) XXXXX-XXXX"
+                class="focus:outline-none text-white w-full"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="inicio" class="block font-medium text-gray leading-none">E-mail</label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
+              <input
+                id="email"
+                type="email"
+                placeholder="exemplo@email.com"
+                class="focus:outline-none text-white w-full"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="inicio" class="block font-medium text-gray leading-none">Senha</label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
+              <input
+                id="password-cadastro"
+                type="password"
+                placeholder="4hYdneU"
+                class="focus:outline-none text-white w-full"
+              >
+              <button onclick="toggleCadastroPasswordVisibility()" class="size-6 cursor-pointer">
+                <svg id="eye-closed-cadastro" class="size-full fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M20.53 4.53a.75.75 0 0 0-1.06-1.06l-16 16a.75.75 0 1 0 1.06 1.06l2.847-2.847c1.367.644 2.94 1.067 4.623 1.067c2.684 0 5.09-1.077 6.82-2.405c.867-.665 1.583-1.407 2.089-2.136c.492-.709.841-1.486.841-2.209s-.35-1.5-.841-2.209c-.506-.729-1.222-1.47-2.088-2.136q-.394-.303-.832-.583zM16.9 8.161l-1.771 1.771a3.75 3.75 0 0 1-5.197 5.197l-1.417 1.416A9.3 9.3 0 0 0 12 17.25c2.287 0 4.38-.923 5.907-2.095c.762-.585 1.364-1.218 1.77-1.801c.419-.604.573-1.077.573-1.354s-.154-.75-.573-1.354c-.406-.583-1.008-1.216-1.77-1.801q-.47-.361-1.008-.684m-5.87 5.87a2.25 2.25 0 0 0 3-3z" clip-rule="evenodd"/>
+                  <path d="M12 5.25c1.032 0 2.024.16 2.951.431a.243.243 0 0 1 .1.407l-.824.825a.25.25 0 0 1-.237.067A9 9 0 0 0 12 6.75c-2.287 0-4.38.923-5.907 2.095c-.762.585-1.364 1.218-1.77 1.801c-.419.604-.573 1.077-.573 1.354s.154.75.573 1.354c.354.51.858 1.057 1.488 1.577c.116.095.127.27.02.377l-.708.709a.246.246 0 0 1-.333.016a9.5 9.5 0 0 1-1.699-1.824C2.6 13.5 2.25 12.723 2.25 12s.35-1.5.841-2.209c.506-.729 1.222-1.47 2.088-2.136C6.91 6.327 9.316 5.25 12 5.25"/>
+                  <path d="M12 8.25q.178 0 .351.016c.197.019.268.254.129.394l-1.213 1.212a2.26 2.26 0 0 0-1.395 1.395L8.66 12.48c-.14.14-.375.068-.394-.129A3.75 3.75 0 0 1 12 8.25"/>
+                </svg>
+
+                <svg id="eye-open-cadastro" class="hidden size-full fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <g fill-rule="evenodd" clip-rule="evenodd">
+                    <path d="M8.25 12a3.75 3.75 0 1 1 7.5 0a3.75 3.75 0 0 1-7.5 0M12 9.75a2.25 2.25 0 1 0 0 4.5a2.25 2.25 0 0 0 0-4.5"/>
+                    <path d="M4.323 10.646c-.419.604-.573 1.077-.573 1.354s.154.75.573 1.354c.406.583 1.008 1.216 1.77 1.801C7.62 16.327 9.713 17.25 12 17.25s4.38-.923 5.907-2.095c.762-.585 1.364-1.218 1.77-1.801c.419-.604.573-1.077.573-1.354s-.154-.75-.573-1.354c-.406-.583-1.008-1.216-1.77-1.801C16.38 7.673 14.287 6.75 12 6.75s-4.38.923-5.907 2.095c-.762.585-1.364 1.218-1.77 1.801m.856-2.991C6.91 6.327 9.316 5.25 12 5.25s5.09 1.077 6.82 2.405c.867.665 1.583 1.407 2.089 2.136c.492.709.841 1.486.841 2.209s-.35 1.5-.841 2.209c-.506.729-1.222 1.47-2.088 2.136c-1.73 1.328-4.137 2.405-6.821 2.405s-5.09-1.077-6.82-2.405c-.867-.665-1.583-1.407-2.089-2.136C2.6 13.5 2.25 12.723 2.25 12s.35-1.5.841-2.209c.506-.729 1.222-1.47 2.088-2.136"/>
+                  </g>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3 mt-auto">
+          <button onclick="showPage('home')" class="w-full py-4 px-9 mt-auto text-white text-2xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+            Cadastrar
+          </button>
+
+          <p class="text-white text-center">Já possui uma conta? <span onclick="showPage('login')" class="underline font-bold cursor-pointer">Entrar</span></p>
+        </div>
+      </section>
+    </main>
+
+    <main id="login" class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0 hidden">
+      <div class="absolute inset-0 -z-1">
+        <img src="https://i.ibb.co/Jwk02r4j/Fundo.png" class="w-full h-full object-cover object-[60%_center]">
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <div class="absolute flex items-center gap-2">
+        <img src="https://i.ibb.co/DfmHcLSd/Logo-5.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </div>
+      
+      <section class="my-auto border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h2 class="text-white text-3xl font-bold text-center leading-none">Login</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex flex-col gap-4">
+          <div class="space-y-2">
+            <label for="inicio" class="block font-medium text-gray leading-none">E-mail</label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
+              <input id="email" type="email" placeholder="Insira seu e-mail" class="focus:outline-none text-white w-full">
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="inicio" class="block font-medium text-gray leading-none">Senha</label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
+              <input
+                id="password-login"
+                type="password"
+                placeholder="Insira sua senha"
+                class="focus:outline-none text-white w-full"
+              >
+              <button onclick="toggleLoginPasswordVisibility()" class="size-6 cursor-pointer">
+                <svg id="eye-closed-login" class="size-full fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <path fill-rule="evenodd" d="M20.53 4.53a.75.75 0 0 0-1.06-1.06l-16 16a.75.75 0 1 0 1.06 1.06l2.847-2.847c1.367.644 2.94 1.067 4.623 1.067c2.684 0 5.09-1.077 6.82-2.405c.867-.665 1.583-1.407 2.089-2.136c.492-.709.841-1.486.841-2.209s-.35-1.5-.841-2.209c-.506-.729-1.222-1.47-2.088-2.136q-.394-.303-.832-.583zM16.9 8.161l-1.771 1.771a3.75 3.75 0 0 1-5.197 5.197l-1.417 1.416A9.3 9.3 0 0 0 12 17.25c2.287 0 4.38-.923 5.907-2.095c.762-.585 1.364-1.218 1.77-1.801c.419-.604.573-1.077.573-1.354s-.154-.75-.573-1.354c-.406-.583-1.008-1.216-1.77-1.801q-.47-.361-1.008-.684m-5.87 5.87a2.25 2.25 0 0 0 3-3z" clip-rule="evenodd"/>
+                  <path d="M12 5.25c1.032 0 2.024.16 2.951.431a.243.243 0 0 1 .1.407l-.824.825a.25.25 0 0 1-.237.067A9 9 0 0 0 12 6.75c-2.287 0-4.38.923-5.907 2.095c-.762.585-1.364 1.218-1.77 1.801c-.419.604-.573 1.077-.573 1.354s.154.75.573 1.354c.354.51.858 1.057 1.488 1.577c.116.095.127.27.02.377l-.708.709a.246.246 0 0 1-.333.016a9.5 9.5 0 0 1-1.699-1.824C2.6 13.5 2.25 12.723 2.25 12s.35-1.5.841-2.209c.506-.729 1.222-1.47 2.088-2.136C6.91 6.327 9.316 5.25 12 5.25"/>
+                  <path d="M12 8.25q.178 0 .351.016c.197.019.268.254.129.394l-1.213 1.212a2.26 2.26 0 0 0-1.395 1.395L8.66 12.48c-.14.14-.375.068-.394-.129A3.75 3.75 0 0 1 12 8.25"/>
+                </svg>
+
+                <svg id="eye-open-login" class="hidden size-full fill-white" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+                  <g fill-rule="evenodd" clip-rule="evenodd">
+                    <path d="M8.25 12a3.75 3.75 0 1 1 7.5 0a3.75 3.75 0 0 1-7.5 0M12 9.75a2.25 2.25 0 1 0 0 4.5a2.25 2.25 0 0 0 0-4.5"/>
+                    <path d="M4.323 10.646c-.419.604-.573 1.077-.573 1.354s.154.75.573 1.354c.406.583 1.008 1.216 1.77 1.801C7.62 16.327 9.713 17.25 12 17.25s4.38-.923 5.907-2.095c.762-.585 1.364-1.218 1.77-1.801c.419-.604.573-1.077.573-1.354s-.154-.75-.573-1.354c-.406-.583-1.008-1.216-1.77-1.801C16.38 7.673 14.287 6.75 12 6.75s-4.38.923-5.907 2.095c-.762.585-1.364 1.218-1.77 1.801m.856-2.991C6.91 6.327 9.316 5.25 12 5.25s5.09 1.077 6.82 2.405c.867.665 1.583 1.407 2.089 2.136c.492.709.841 1.486.841 2.209s-.35 1.5-.841 2.209c-.506.729-1.222 1.47-2.088 2.136c-1.73 1.328-4.137 2.405-6.821 2.405s-5.09-1.077-6.82-2.405c-.867-.665-1.583-1.407-2.089-2.136C2.6 13.5 2.25 12.723 2.25 12s.35-1.5.841-2.209c.506-.729 1.222-1.47 2.088-2.136"/>
+                  </g>
+                </svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3 mt-auto">
+          <button onclick="showPage('home')" class="w-full py-4 px-9 mt-auto text-white text-2xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+            Entrar
+          </button>
+
+          <p class="text-white text-center">Não possui uma conta? <span onclick="showPage('cadastro')" class="underline font-bold cursor-pointer">Cadastrar</span></p>
+        </div>
+      </section>
+    </main>
   </div>
 
   <script>
-    const defaultPage = 'home'
+    const defaultPage = 'login'
 
     function showPage(page) {
       document.getElementById('home').classList.add('hidden')
@@ -610,12 +763,44 @@
       document.getElementById('confirm-gamer-duplo').classList.add('hidden')
       document.getElementById('pagamento-pix').classList.add('hidden')
       document.getElementById('reserva-confirmada').classList.add('hidden')
-      document.getElementById('minhas-reservas').classList.add('hidden');
+      document.getElementById('minhas-reservas').classList.add('hidden')
       document.getElementById('info-reserva').classList.add('hidden')
+      document.getElementById('cadastro').classList.add('hidden')
+      document.getElementById('login').classList.add('hidden')
       document.getElementById(page).classList.remove('hidden')
+
+      if (page == 'cadastro' || page == 'login') {
+        document.querySelector("header").classList.add('hidden')
+      } else {
+        document.querySelector("header").classList.remove('hidden')
+      }
     }
 
     showPage(defaultPage)
+
+    function toggleCadastroPasswordVisibility() {
+      if (document.getElementById('password-cadastro').type == 'password') {
+        document.getElementById('password-cadastro').type = 'text'
+        document.getElementById('eye-closed-cadastro').classList.add('hidden')
+        document.getElementById('eye-open-cadastro').classList.remove('hidden')
+      } else {
+        document.getElementById('password-cadastro').type = 'password'
+        document.getElementById('eye-closed-cadastro').classList.remove('hidden')
+        document.getElementById('eye-open-cadastro').classList.add('hidden')
+      }
+    }
+
+    function toggleLoginPasswordVisibility() {
+      if (document.getElementById('password-login').type == 'password') {
+        document.getElementById('password-login').type = 'text'
+        document.getElementById('eye-closed-login').classList.add('hidden')
+        document.getElementById('eye-open-login').classList.remove('hidden')
+      } else {
+        document.getElementById('password-login').type = 'password'
+        document.getElementById('eye-closed-login').classList.remove('hidden')
+        document.getElementById('eye-open-login').classList.add('hidden')
+      }
+    }
   </script>
 </body>
 </html>
