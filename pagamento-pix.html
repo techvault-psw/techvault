@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button class="cursor-pointer size-5">
+        <svg class="size-full" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="8" rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="16" rx="2" class="w-5 h-1 fill-blue"/>
+        </svg>
+      </button>
+    </header>
+
+    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h2 class="text-white text-3xl font-bold">Finalizar Pagamento</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex items-center gap-3">
+          <div class="aspect-[1.6] h-22 rounded-lg overflow-hidden border border-gray-2/50">
+            <img src="./assets/setup-1.png" alt="Setup Gamer" class="size-full object-cover">
+          </div>
+          <span class="text-white font-medium text-lg">Setup Gamer Duplo</span>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between text-white text-lg">
+            <span class="font-medium">Valor do Pacote:</span>
+            <span>R$ 100,00</span>
+          </div>
+
+          <div class="flex items-center justify-between text-white text-lg">
+            <span class="font-medium">Taxa de Transporte:</span>
+            <span>R$ 10,00</span>
+          </div>
+
+          <hr class="border-t-1 border-gray-2/50">
+
+          <div class="flex items-center justify-between text-white text-lg">
+            <span class="font-medium">Total:</span>
+            <span class="font-semibold">R$ 110,00</span>
+          </div>
+        </div>
+
+        <div class="mt-2 space-y-4">
+          <h3 class="text-lg font-semibold text-white text-center">
+            Pague com <span class="text-blue">PIX</span>!
+          </h3>
+
+          <img src="./assets/qrcode.png" alt="qrcode-tech-recortado" class="size-75 mx-auto">
+        </div>
+
+        <button onclick="navigateTo('reserva-confirmada.html')" class="w-full py-4 px-9 mt-auto text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+          Copiar Código PIX
+        </button>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

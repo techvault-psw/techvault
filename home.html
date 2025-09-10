@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button class="cursor-pointer size-5">
+        <svg class="size-full" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="8" rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="16" rx="2" class="w-5 h-1 fill-blue"/>
+        </svg>
+      </button>
+    </header>
+
+    <main class="flex-1 bg-[url('./assets/background.png')] bg-cover bg-[60%_center] py-7 px-2 flex flex-col items-center justify-between">
+      <h2 class="text-3xl font-bold text-white text-center leading-[150%] text-shadow-primary">
+        SETUPS PROFISSIONAIS<br>
+        EM <span class="bg-linear-(--gradient-primary-b)">&nbsp;QUALQUER LUGAR&nbsp;</span><br> 
+        E A QUALQUER HORA
+      </h2>
+
+      <button onclick="navigateTo('pacotes.html')" class="mb-24 py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+        Buscar pacotes
+      </button>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pagamento | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button class="cursor-pointer size-5">
+        <svg class="size-full" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="8" rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="16" rx="2" class="w-5 h-1 fill-blue"/>
+        </svg>
+      </button>
+    </header>
+    
+    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h2 class="text-white text-3xl font-bold">Reserva confirmada</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="w-full p-4 bg-gray-2/10 rounded-lg">
+          <h3 class="font-bold text-white text-center leading-none text-2xl">Pagamento aprovado!</h3>
+        </div>
+
+        <p class="text-gray-2 font-medium text-lg text-center">Nossa equipe levará o pacote até você na hora combinada.</p>
+
+        <div class="flex-1 flex flex-col gap-4 justify-center">
+          <p class="text-white text-center text-light">Mostre este código para o técnico da TechVault no momento da entrega:</p>
+
+          <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
+            4HYDNEU
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div class="space-y-2">
+            <label for="inicio" class="block font-medium text-gray leading-none">Data e Hora de Início:</label>
+            <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="inicio"
+                type="datetime-local"
+                value="2025-09-02 18:10"
+                class="focus:outline-none text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="termino" class="block font-medium text-gray leading-none">Data e Hora de Término:</label>
+            <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="termino"
+                type="datetime-local"
+                value="2025-09-03 21:30"
+                class="focus:outline-none text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2">
+            <label for="endereco" class="block font-medium text-gray">Endereço de Entrega/Montagem:</label>
+            <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none">
+              <option class="text-black">Endereço 1</option>
+              <option class="text-black">Endereço 2</option>
+              <option class="text-black">Endereço 3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <button onclick="navigateTo('minhas-reservas.html')" class="w-full py-3 px-9 text-white text-xl font-semibold bg-gray-2/10 rounded-lg leading-none cursor-pointer border border-white">
+            Ver minhas reservas
+          </button>
+
+          <button class="w-full py-3 px-9 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+           Visualizar NF-e
+          </button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
