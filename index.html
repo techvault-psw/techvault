@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style type="text/tailwindcss">
+    @theme {
+      --color-blue: #00BFFF;
+      --color-white: #f8fafc; /* slate-50 */
+      --color-gray: #C6C6C6;
+      --color-black: #020617; /* slate-950 */
+      --color-background: #121826;
+      --light-blue: #18AEFF;
+      --dark-blue: #2777F0;
+      --gradient-primary-r: to right, var(--light-blue), var(--dark-blue);
+      --gradient-primary-b: to bottom, var(--light-blue), var(--dark-blue);
+      --font-poppins: 'Poppins', sans-serif;
+      --text-shadow-primary: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    }
+  </style>
+  <title>TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="hidden h-10 w-[440px] bg-red-500 absolute top-1/2 z-20"></div>
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="showPage('home')" class="flex items-center gap-2 cursor-pointer">
+        <img src="https://i.ibb.co/DfmHcLSd/Logo-5.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button class="cursor-pointer size-5">
+        <svg class="size-full" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="8" rx="2" class="w-5 h-1 fill-blue"/>
+          <rect y="16" rx="2" class="w-5 h-1 fill-blue"/>
+        </svg>
+      </button>
+    </header>
+    <main id="home" class="flex-1 bg-[url('https://i.ibb.co/Jwk02r4j/Fundo.png')] bg-cover bg-[60%_center] py-7 px-2 flex flex-col items-center justify-between">
+      <h2 class="text-3xl font-bold text-white text-center leading-[150%] text-shadow-primary">
+        SETUPS PROFISSIONAIS<br>
+        EM <span class="bg-linear-(--gradient-primary-b)">&nbsp;QUALQUER LUGAR&nbsp;</span><br> 
+        E A QUALQUER HORA
+      </h2>
+
+      <button onclick="showPage('pacotes')" class="mb-24 py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-[100%] cursor-pointer">
+        Buscar pacotes
+      </button>
+    </main>
+    <main id="pacotes" class="hidden flex-1 pt-5 px-2 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="https://i.ibb.co/Jwk02r4j/Fundo.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
+        Pacotes disponíveis
+      </h2>
+
+      <div class="flex items-center gap-4 flex-shrink-0">
+        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <svg class="size-4.5" viewBox="0 0 16 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M14.6667 2.5H1.33337L6.66671 8.80667V13.1667L9.33337 14.5V8.80667L14.6667 2.5Z" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="stroke-black"/>
+          </svg>
+
+          Filtros
+        </button>
+
+        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <svg class="size-4.5" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <g clip-path="url(#clip0_66_632)">
+              <path d="M3.16663 14.5V9.83333M3.16663 7.16667V2.5M8.49996 14.5V8.5M8.49996 5.83333V2.5M13.8333 14.5V11.1667M13.8333 8.5V2.5M1.16663 9.83333H5.16663M6.49996 5.83333H10.5M11.8333 11.1667H15.8333" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" class="stroke-black"/>
+            </g>
+            <defs>
+              <clipPath id="clip0_66_632">
+                <rect width="16" height="16" fill="white" transform="translate(0.5 0.5)"/>
+              </clipPath>
+            </defs>
+          </svg>
+
+          Ordenar por
+        </button>
+      </div>
+
+      <section class="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] min-h-0 pb-4">
+        <div class="w-80 px-3.5 py-4 flex flex-col gap-3 border border-zinc-300/50 bg-white/5 rounded-xl flex-shrink-0 backdrop-blur-md">
+          <div class="w-full h-48 rounded-xl overflow-hidden border border-zinc-300/20">
+            <img src="https://i.ibb.co/0pnWThrj/6a4c1db7-d66b-41c5-95ac-f522e4b7abb0.png" class="size-full object-cover" border="0">
+          </div>
+
+          <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+            Setup Gamer Duplo
+          </h3>
+
+          <p class="font-light text-gray leading-[140%]">
+            2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+          </p>
+        </div>
+        
+        <div class="w-80 px-3.5 py-4 flex flex-col gap-3 border border-zinc-300/50 bg-white/5 rounded-xl flex-shrink-0 backdrop-blur-md">
+          <div class="w-full h-48 rounded-xl overflow-hidden border border-zinc-300/20">
+            <img src="https://i.ibb.co/rfwBQKBy/69718f3b-4f5a-4f19-81c1-eea1970d7fbc.png" class="size-full object-cover" border="0">
+          </div>
+
+          <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+            Setup de Trabalho Profissional
+          </h3>
+
+          <p class="font-light text-gray leading-[140%]">
+            Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    function showPage(page) {
+      document.getElementById('home').classList.add('hidden')
+      document.getElementById('pacotes').classList.add('hidden')
+      document.getElementById(page).classList.remove('hidden')
+    }
+  </script>
+</body>
+</html>
