@@ -10,7 +10,7 @@
       --color-blue: #00BFFF;
       --color-white: #f8fafc; /* slate-50 */
       --color-gray: #C6C6C6;
-      --color-gray-2: oklch(87.58% 0.002 247.84);
+      --color-gray-2: oklch(87.58% 0.002 247.84); /* #D9D9D9 */
       --color-black: #020617; /* slate-950 */
       --color-background: #121826;
       --light-blue: #18AEFF;
@@ -40,6 +40,7 @@
         </svg>
       </button>
     </header>
+
     <main id="home" class="flex-1 bg-[url('https://i.ibb.co/Jwk02r4j/Fundo.png')] bg-cover bg-[60%_center] py-7 px-2 flex flex-col items-center justify-between">
       <h2 class="text-3xl font-bold text-white text-center leading-[150%] text-shadow-primary">
         SETUPS PROFISSIONAIS<br>
@@ -51,6 +52,7 @@
         Buscar pacotes
       </button>
     </main>
+
     <main id="pacotes" class="flex-1 pt-5 px-2 flex flex-col items-center gap-4 relative min-h-0">
       <div class="absolute inset-0 -z-1">
         <img 
@@ -90,7 +92,7 @@
       </div>
 
       <section class="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] min-h-0 pb-4">
-        <div onclick="showPage('confirm-gamer-duplo')" class="w-80 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer">
+        <div onclick="showPage('info-gamer-duplo')" class="w-80 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer">
           <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
             <img src="https://i.ibb.co/0pnWThrj/6a4c1db7-d66b-41c5-95ac-f522e4b7abb0.png" class="size-full object-cover" border="0">
           </div>
@@ -101,6 +103,10 @@
 
           <p class="font-light text-gray leading-[140%]">
             2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+          </p>
+          
+          <p class="font-semibold text-gray-2">
+            Valor (hora): <span class="text-lg">R$30,00</span>
           </p>
         </div>
         
@@ -116,9 +122,59 @@
           <p class="font-light text-gray leading-[140%]">
             Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
           </p>
+          
+          <p class="font-semibold text-gray-2">
+            Valor (hora): <span class="text-lg">R$15,00</span>
+          </p>
         </div>
       </section>
     </main>
+    
+    <main id="info-gamer-duplo" class="hidden flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="https://i.ibb.co/Jwk02r4j/Fundo.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
+          <img src="https://i.ibb.co/0pnWThrj/6a4c1db7-d66b-41c5-95ac-f522e4b7abb0.png" class="size-full object-cover" border="0">
+        </div>
+        <h1 class="text-white text-center text-3xl font-bold leading-none">Setup Gamer Duplo</h1>
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="text-white text-sm">
+          <span class="font-bold text-xl">Descrição</span><br/>
+            Pacote com 2 PCs de última geração com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. <br/>
+            Ideal para jogatinas com amigos.
+        </p>
+        
+        <span class="font-bold text-white text-xl">Componentes do PC</span>
+        <ul class="list-disc text-sm text-white ml-5 -mt-5">
+          <li>Ryzen 5 5600;</li>
+          <li>RTX 3060 12GB;</li>
+          <li>16 GB RAM DDR4;</li>
+          <li>SSD NVMe 1 TB;</li>
+          <li>Placa-mãe compatível.</li>
+        </ul>
+
+        <p class="text-xs text-white text-center">
+          OBS: Todos os pacotes acompanham no-break para proteção contra falhas na rede
+          elétrica.
+        </p>
+        <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl mt-auto">
+          Valor (hora): R$30,00
+        </div>
+
+        <button onclick="showPage('confirm-gamer-duplo')" class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+          Solicitar Reserva
+        </button>
+      </section>
+    </main>
+
     <main id="confirm-gamer-duplo" class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
       <div class="absolute inset-0 -z-1">
         <img 
@@ -146,7 +202,7 @@
           <h4 class="font-semibold text-white text-lg leading-none mb-2">Informações da reserva</h4>
 
           <div class="space-y-1.5">
-            <label for="inicio" class="block font-medium text-white">Data de início:</label>
+            <label for="inicio" class="block font-medium text-gray">Data e Hora de Início:</label>
             <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
               <input
                 id="inicio"
@@ -158,7 +214,7 @@
           </div>
 
           <div class="space-y-1.5">
-            <label for="termino" class="block font-medium text-white">Data de término:</label>
+            <label for="termino" class="block font-medium text-gray">Data e Hora de Término:</label>
             <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
               <input
                 id="termino"
@@ -170,7 +226,7 @@
           </div>
 
           <div class="space-y-1.5">
-            <label for="endereco" class="block font-medium text-white">Endereço de Entrega/Montagem:</label>
+            <label for="endereco" class="block font-medium text-gray">Endereço de Entrega/Montagem:</label>
             <select id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white">
               <option class="text-black">Endereço 1</option>
               <option class="text-black">Endereço 2</option>
@@ -179,7 +235,7 @@
           </div>
 
           <div class="space-y-1.5">
-            <label for="pagamento" class="block font-medium text-white">Forma de Pagamento</label>
+            <label for="pagamento" class="block font-medium text-gray">Forma de Pagamento</label>
             <select id="pagamento" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white">
               <option class="text-black">Cartão de Crédito</option>
               <option class="text-black">Cartão de Débito</option>
@@ -189,12 +245,8 @@
         </div>
 
         <div class="flex flex-col gap-3 mt-auto">
-          <p class="text-white text-xs text-center">
-            Obtenha 50% de desconto com o <span class="underline font-semibold">Plano Premium!</span>
-          </p>
-
           <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
-            Valor: R$ 58,00
+            Valor: R$ 100,00
           </div>
 
           <button onclick="showPage('pagamento-pix')" class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
@@ -203,6 +255,7 @@
         </div>
       </section>
     </main>
+
     <main id="pagamento-pix" class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
       <div class="absolute inset-0 -z-1">
         <img 
@@ -228,12 +281,12 @@
 
         <div class="flex flex-col gap-1">
           <div class="flex items-center justify-between text-white text-lg">
-            <span class="font-medium">Valor Setup:</span>
-            <span>R$ 58,00</span>
+            <span class="font-medium">Valor do Pacote:</span>
+            <span>R$ 100,00</span>
           </div>
 
           <div class="flex items-center justify-between text-white text-lg">
-            <span class="font-medium">Taxa de deslocamento:</span>
+            <span class="font-medium">Taxa de Transporte:</span>
             <span>R$ 10,00</span>
           </div>
 
@@ -241,7 +294,7 @@
 
           <div class="flex items-center justify-between text-white text-lg">
             <span class="font-medium">Total:</span>
-            <span class="font-semibold">R$ 68,00</span>
+            <span class="font-semibold">R$ 110,00</span>
           </div>
         </div>
 
@@ -253,9 +306,86 @@
           <img src="https://i.ibb.co/V074wNMM/qrcode-tech-recortado.png" alt="qrcode-tech-recortado" class="size-75 mx-auto">
         </div>
 
-        <button class="w-full py-4 px-9 mt-auto text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+        <button onclick="showPage('reserva-confirmada')" class="w-full py-4 px-9 mt-auto text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
           Copiar Código PIX
         </button>
+      </section>
+    </main>
+
+    <main id="reserva-confirmada" class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="https://i.ibb.co/Jwk02r4j/Fundo.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h1 class="text-white text-3xl font-bold">Reserva confirmada</h1>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="w-full p-4 bg-gray-2/10 rounded-lg">
+          <h2 class="font-bold text-white text-center leading-none text-2xl">Pagamento aprovado!</h2>
+        </div>
+
+        <p class="text-gray-2 font-medium text-lg text-center">Nossa equipe levará o pacote até você na hora combinada.</p>
+
+        <div class="flex-1 flex flex-col gap-4 justify-center">
+          <p class="text-white text-center text-light">Mostre este código para o técnico da TechVault no momento da entrega:</p>
+
+          <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
+            4HYDNEU
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-4">
+          <div class="space-y-1.5">
+            <label for="inicio" class="block font-medium text-gray">Data e Hora de Início:</label>
+            <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="inicio"
+                type="datetime-local"
+                value="2025-09-02 18:10"
+                class="focus:outline-none text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="termino" class="block font-medium text-gray">Data e Hora de Término:</label>
+            <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="termino"
+                type="datetime-local"
+                value="2025-09-03 21:30"
+                class="focus:outline-none text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-1.5">
+            <label for="endereco" class="block font-medium text-gray">Endereço de Entrega/Montagem:</label>
+            <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none">
+              <option class="text-black">Endereço 1</option>
+              <option class="text-black">Endereço 2</option>
+              <option class="text-black">Endereço 3</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <button class="w-full py-3 px-9 text-white text-xl font-semibold bg-gray-2/10 rounded-lg leading-none cursor-pointer border border-white">
+            Ver minhas reservas
+          </button>
+
+          <button class="w-full py-3 px-9 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+           Visualizar NF-e
+          </button>
+        </div>
       </section>
     </main>
   </div>
@@ -266,8 +396,10 @@
     function showPage(page) {
       document.getElementById('home').classList.add('hidden')
       document.getElementById('pacotes').classList.add('hidden')
+      document.getElementById('info-gamer-duplo').classList.add('hidden')
       document.getElementById('confirm-gamer-duplo').classList.add('hidden')
       document.getElementById('pagamento-pix').classList.add('hidden')
+      document.getElementById('reserva-confirmada').classList.add('hidden')
       document.getElementById(page).classList.remove('hidden')
     }
 
