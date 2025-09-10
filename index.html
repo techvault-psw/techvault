@@ -197,13 +197,67 @@
             Valor: R$ 58,00
           </div>
 
-          <button class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+          <button onclick="showPage('pagamento-pix')" class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
             Reservar Agora
           </button>
         </div>
       </section>
-  </main>
+    </main>
+    <main id="pagamento-pix" class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="https://i.ibb.co/Jwk02r4j/Fundo.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h1 class="text-white text-3xl font-bold">Finalizar Pagamento</h1>
 
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex items-center gap-3">
+          <div class="aspect-[1.6] h-22 rounded-lg overflow-hidden border border-gray-2/50">
+            <img src="https://i.ibb.co/0pnWThrj/6a4c1db7-d66b-41c5-95ac-f522e4b7abb0.png" alt="Setup Gamer" class="size-full object-cover">
+          </div>
+          <span class="text-white font-medium text-lg">Setup Gamer Duplo</span>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex flex-col gap-1">
+          <div class="flex items-center justify-between text-white text-lg">
+            <span class="font-medium">Valor Setup:</span>
+            <span>R$ 58,00</span>
+          </div>
+
+          <div class="flex items-center justify-between text-white text-lg">
+            <span class="font-medium">Taxa de deslocamento:</span>
+            <span>R$ 10,00</span>
+          </div>
+
+          <hr class="border-t-1 border-gray-2/50">
+
+          <div class="flex items-center justify-between text-white text-lg">
+            <span class="font-medium">Total:</span>
+            <span class="font-semibold">R$ 68,00</span>
+          </div>
+        </div>
+
+        <div class="mt-2 space-y-4">
+          <h4 class="text-lg font-semibold text-white text-center">
+            Pague com <span class="text-blue">PIX</span>!
+          </h4>
+
+          <img src="https://i.ibb.co/V074wNMM/qrcode-tech-recortado.png" alt="qrcode-tech-recortado" class="size-75 mx-auto">
+        </div>
+
+        <button class="w-full py-4 px-9 mt-auto text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+          Copiar Código PIX
+        </button>
+      </section>
+    </main>
   </div>
 
   <script>
@@ -213,6 +267,7 @@
       document.getElementById('home').classList.add('hidden')
       document.getElementById('pacotes').classList.add('hidden')
       document.getElementById('confirm-gamer-duplo').classList.add('hidden')
+      document.getElementById('pagamento-pix').classList.add('hidden')
       document.getElementById(page).classList.remove('hidden')
     }
 
