@@ -42,12 +42,18 @@ function addTailwind() {
       --color-black: #020617;
       --color-red: oklch(0.6381 0.2217 26.19); /* #F53B3B */
       --color-background: #121826;
+      --color-overlay: #000000;
       --light-blue: #18AEFF;  
       --dark-blue: #2777F0;
       --gradient-primary-r: to right, var(--light-blue), var(--dark-blue);
       --gradient-primary-b: to bottom, var(--light-blue), var(--dark-blue);
       --font-poppins: 'Poppins', sans-serif;
       --text-shadow-primary: 0px 4px 4px rgba(0,0,0,0.25);
+    }
+
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
     }
   `;
   document.head.appendChild(style);
@@ -132,6 +138,13 @@ function realizarLogin(inputId) {
   }
 
   navigateTo('home.html')
+
+  // Dashboard ainda não está pronto
+  // if (valor === "gerente" || valor === "suporte") {
+  //   navigateTo('dashboard.html')
+  // } else {
+  //   navigateTo('home.html')
+  // }
 }
 
 function filtrarPorCargo() {
@@ -150,3 +163,17 @@ function filtrarPorCargo() {
 }
 
 filtrarPorCargo();
+
+function enableInputs(inputIds) {
+  inputIds.forEach((inputId) => {
+    const input = document.getElementById(inputId);
+    if (input) input.disabled = false;
+  })
+}
+
+function disableInputs(inputIds) {
+  inputIds.forEach((inputId) => {
+    const input = document.getElementById(inputId);
+    if (input) input.disabled = true;
+  })
+}

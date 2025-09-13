@@ -24,21 +24,21 @@
         <hr class="border-t-1 border-gray-2/50">
 
         <div class="flex flex-col gap-4">
-          <div class="space-y-2">
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
             <label for="email" class="block font-medium text-gray leading-none">E-mail</label>
             <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
-              <input id="email" type="email" placeholder="Insira seu e-mail" class="focus:outline-none text-white w-full">
+              <input id="email" type="email" placeholder="Insira seu e-mail" class="focus:outline-none disabled:cursor-not-allowed text-white w-full">
             </div>
           </div>
 
-          <div class="space-y-2">
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
             <label for="password" class="block font-medium text-gray leading-none">Senha</label>
             <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
               <input
                 id="password"
                 type="password"
                 placeholder="Insira sua senha"
-                class="focus:outline-none text-white w-full"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
               >
               <button onclick="togglePasswordVisibility()" class="size-6 cursor-pointer">
                 <img id="eye-closed" src="assets/eye-closed.svg" class="size-full invert">

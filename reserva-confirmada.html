@@ -47,7 +47,7 @@
         </div>
 
         <div class="flex flex-col gap-4">
-          <div class="space-y-2">
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
             <label for="inicio" class="block font-medium text-gray leading-none">Data e Hora de Início:</label>
             <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
               <input
@@ -55,12 +55,12 @@
                 id="inicio"
                 type="datetime-local"
                 value="2025-09-02 18:10"
-                class="focus:outline-none text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+                class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
               >
             </div>
           </div>
 
-          <div class="space-y-2">
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
             <label for="termino" class="block font-medium text-gray leading-none">Data e Hora de Término:</label>
             <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
               <input
@@ -68,12 +68,12 @@
                 id="termino"
                 type="datetime-local"
                 value="2025-09-03 21:30"
-                class="focus:outline-none text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+                class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
               >
             </div>
           </div>
 
-          <div class="space-y-2">
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
             <label for="endereco" class="block font-medium text-gray">Endereço de Entrega/Montagem:</label>
             <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none">
               <option class="text-black">Endereço 1</option>
@@ -96,7 +96,7 @@
     </main>
 
     <div id="sidebar" class="absolute inset-0 z-10 hidden">
-      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0"></div>
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
         <div class="flex items-start justify-between">
@@ -115,7 +115,7 @@
             <p class="text-gray-2">jose.silva@email.com</p>
           </div>
 
-          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-200 rounded-lg cursor-pointer border border-red">
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
             <img class="size-4" src="./assets/log-out.svg" alt="Sair">
           </button>
         </div>
@@ -176,7 +176,7 @@
     </div>
 
     <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
-      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0"></div>
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
         <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
@@ -190,12 +190,12 @@
         <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
             <span class="text-red text-xl font-medium leading-none">Sair</span>
           </button>
 
-          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-200 rounded-lg cursor-pointer border-2 border-white">
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-xl font-medium leading-none">Voltar</span>
           </button>

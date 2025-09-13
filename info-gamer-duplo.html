@@ -64,7 +64,7 @@
     
 
     <div id="sidebar" class="absolute inset-0 z-10 hidden">
-      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0"></div>
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
         <div class="flex items-start justify-between">
@@ -83,7 +83,7 @@
             <p class="text-gray-2">jose.silva@email.com</p>
           </div>
 
-          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-200 rounded-lg cursor-pointer border border-red">
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
             <img class="size-4" src="./assets/log-out.svg" alt="Sair">
           </button>
         </div>
@@ -144,7 +144,7 @@
     </div>
 
     <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
-      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-black/40 backdrop-blur-sm opacity-0"></div>
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
         <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
@@ -158,12 +158,12 @@
         <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
             <span class="text-red text-xl font-medium leading-none">Sair</span>
           </button>
 
-          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-200 rounded-lg cursor-pointer border-2 border-white">
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-xl font-medium leading-none">Voltar</span>
           </button>
