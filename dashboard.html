@@ -34,30 +34,30 @@
 
         <h3 class="text-white text-xl font-semibold">Páginas Públicas</h3>
         <div class="flex flex-col gap-3 text-white">
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+            <div onclick="navigateTo('home.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Home</h4>
+                    <h4 class="font-medium text-lg leading-none">Home</h4>
                 </div>
 
-                <button onclick="navigateTo('home.html')" class="size-6 cursor-pointer">
+                <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+            <div onclick="navigateTo('pacotes-disponiveis.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Pacotes Disponíveis</h4>
+                    <h4 class="font-medium text-lg leading-none">Pacotes Disponíveis</h4>
                 </div>
 
-                <button onclick="navigateTo('pacotes-disponiveis.html')" class="size-6 cursor-pointer">
+                <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+            <div onclick="navigateTo('feedbacks.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Feedbacks</h4>
+                    <h4 class="font-medium text-lg leading-none">Feedbacks</h4>
                 </div>
 
-                <button onclick="navigateTo('feedbacks.html')" class="size-6 cursor-pointer">
+                <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
@@ -65,27 +65,27 @@
 
         <h3 class="text-white text-xl font-semibold">Painel de Controle</h3>
         <div class="flex flex-col gap-3 text-white">
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+            <div onclick="navigateTo('reservas.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Gerenciar Reservas</h4>
+                    <h4 class="font-medium text-lg leading-none">Gerenciar Reservas</h4>
                 </div>
 
                 <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
-            <div class="gerente w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+            <div onclick="navigateTo('pacotes.html')" class="gerente w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Gerenciar Pacotes</h4>
+                    <h4 class="font-medium text-lg leading-none">Gerenciar Pacotes</h4>
                 </div>
 
                 <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
-            <div class="gerente w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <div onclick="navigateTo('clientes.html')" class="gerente w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Gerenciar Clientes</h4>
+                    <h4 class="font-medium text-lg leading-none">Gerenciar Clientes</h4>
                 </div>
 
                 <button class="size-6 cursor-pointer">
@@ -97,21 +97,21 @@
         <div class="gerente">
             <h3 class="text-white text-xl font-semibold mb-5">Relatórios</h3>
             <div class="flex flex-col gap-3 text-white">
-                <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+                <div onclick="openPopup('popup-emitir-relatorio-reservas')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                     <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Emitir relatório de reservas</h4>
+                    <h4 class="font-medium text-lg leading-none">Emitir relatório de reservas</h4>
                 </div>
 
-                <button onclick="openPopup('popup-emitir-relatorio-reservas')" class="size-6 cursor-pointer">
+                <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+            <div onclick="openPopup('popup-emitir-relatorio-financeiro')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
                 <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Emitir relatório financeiro</h4>
+                    <h4 class="font-medium text-lg leading-none">Emitir relatório financeiro</h4>
                 </div>
 
-                <button onclick="openPopup('popup-emitir-relatorio-financeiro')" class="size-6 cursor-pointer">
+                <button class="size-6 cursor-pointer">
                     <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
             </div>
@@ -132,38 +132,43 @@
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">
-            Selecione o período desejado para gerar o relatório de reservas. <br><br>
+        <p class="leading-[120%] text-lg text-white text-justify">
+            Selecione o período desejado para gerar o relatório de reservas.
+        </p>
+
+        <p class="leading-[120%] text-lg text-white text-justify">
             Esse relatório mostra todas as reservas realizadas no intervalo escolhido.
         </p>
 
-        <div class="flex justify-between">
+        <div class="flex gap-2 items-center">
             <div class="space-y-2">
-                <label for="data-inicial" class="block font-medium text-gray leading-none">
+                <label for="data-inicial" class="block font-medium text-gray-2 leading-none">
                     Data inicial
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
                     <input
-                    id="data-inicial"
-                    type="date"
-                    class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                        id="data-inicial"
+                        type="date"
+                        value="2025-08-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
                     >
                 </div>
             </div>
             <div class="space-y-2">
-                <label for="data-final" class="block font-medium text-gray leading-none">
+                <label for="data-final" class="block font-medium text-gray-2 leading-none">
                     Data final
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
                     <input
-                    id="data-final"
-                    type="date"
-                    class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                        id="data-final"
+                        type="date"
+                        value="2025-09-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
                     >
                 </div>
             </div>
         </div>
-        <button onclick="openPopup('popup-relatorio-reservas')" class="w-full py-4 px-9 text-white text-xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+        <button onclick="openPopup('popup-relatorio-reservas')" class="w-full py-3 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
             Emitir relatório
         </button>
       </div>
@@ -181,45 +186,50 @@
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">
-            Selecione o período desejado para gerar o relatório financeiro. <br><br>
+        <p class="leading-[120%] text-lg text-white text-justify">
+            Selecione o período desejado para gerar o relatório financeiro.
+        </p>
+
+        <p class="leading-[120%] text-lg text-white text-justify">
             Esse relatório apresenta os valores recebidos dentro do intervalo selecionado.
         </p>
 
-        <div class="flex justify-between">
+        <div class="flex gap-2 items-center">
             <div class="space-y-2">
-                <label for="data-inicial" class="block font-medium text-gray leading-none">
+                <label for="data-inicial" class="block font-medium text-gray-2 leading-none">
                     Data inicial
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
                     <input
-                    id="data-inicial"
-                    type="date"
-                    class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                        id="data-inicial"
+                        type="date"
+                        value="2025-08-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
                     >
                 </div>
             </div>
             <div class="space-y-2">
-                <label for="data-final" class="block font-medium text-gray leading-none">
+                <label for="data-final" class="block font-medium text-gray-2 leading-none">
                     Data final
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
                     <input
-                    id="data-final"
-                    type="date"
-                    class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                        id="data-final"
+                        type="date"
+                        value="2025-09-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
                     >
                 </div>
             </div>
         </div>
-        <button onclick="openPopup('popup-relatorio-financeiro')" class="w-full py-4 px-9 text-white text-xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+        <button onclick="openPopup('popup-relatorio-financeiro')" class="w-full py-3 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
             Emitir relatório
         </button>
       </div>
     </div>
 
     <div id="popup-relatorio-reservas" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
-      <div onclick="closePopup('popup-emitir-relatorio-reservas')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+      <div onclick="closePopup('popup-relatorio-reservas')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-22 relative w-full max-w-sm max-h-150 p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
         <button onclick="closePopup('popup-relatorio-reservas')" class="absolute size-6 cursor-pointer right-3 top-3">
@@ -227,21 +237,21 @@
         </button>
 
         <h2 class="font-bold leading-none text-2xl text-white">Relatório de Reservas</h2>
-        <p class="font-regular leading-none text-sm text-gray -mt-2">Período: MM/DD/YYYY a MM/DD/YYYY</p>
+        <p class="font-regular leading-none text-sm text-gray-2 -mt-2">Período: 16/08/2025 a 16/09/2025</p>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <section>
-            <h3 class="font-semibold text-xl text-white mb-2">Resumo</h3>
-            <div class="flex justify-between text-gray">
+        <section class="flex flex-col gap-1.5">
+            <h3 class="font-semibold text-xl text-white mb-1.5">Resumo</h3>
+            <div class="flex justify-between text-gray-2 leading-none">
                 <p>Reservas confirmadas</p><p>103 (76%)</p>
             </div>
             <hr class="border-t-1 border-gray-2/50">
-            <div class="flex justify-between text-gray">
+            <div class="flex justify-between text-gray-2 leading-none">
                 <p>Reservas canceladas</p><p>25 (24%)</p>
             </div>
             <hr class="border-t-1 border-gray-2/50">
-            <div class="flex justify-between text-gray">
+            <div class="flex justify-between text-gray-2 leading-none">
                 <p>Reservas totais</p><p>128</p>
             </div>
         </section>
@@ -250,13 +260,13 @@
             <h3 class="font-semibold text-xl text-white mb-2">Detalhes</h3>
             <div class="flex flex-col gap-2 overflow-y-auto [&::-webkit-scrollbar]:hidden">
                 <div class="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-                    <div class="text-white text-sm">
-                        <p class="w-55 truncate"><span class="font-semibold">Pacote:</span> Setup Gamer Duplo</p>
-                        <p class="w-55 truncate"><span class="font-semibold">Cliente:</span> João Silva</p>
+                    <div class="text-white text-sm truncate">
+                        <p><span class="font-semibold">Pacote:</span> Setup Gamer Duplo</p>
+                        <p><span class="font-semibold">Cliente:</span> João Silva</p>
                         <p><span class="font-semibold">Data:</span> 25/08/2025</p>
                     </div>
                     <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold">
-                        <p class="bg-green-500 rounded-xl p-1">Confirmada</p>
+                        <p class="bg-green-600 rounded-xl py-1 px-3">Confirmada</p>
                         <p class="text-right">R$ 350,00</p>
                     </div>
                 </div>
@@ -267,29 +277,29 @@
                         <p><span class="font-semibold">Data:</span> 25/08/2025</p>
                     </div>
                     <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold flex-shrink-0">
-                        <p class="bg-green-500 rounded-xl p-1">Confirmada</p>
+                        <p class="bg-green-600 rounded-xl py-1 px-3">Confirmada</p>
                         <p class="text-right">R$ 350,00</p>
                     </div>
                 </div>
                 <div class="w-full p-2 flex justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-                    <div class="text-white text-sm">
-                        <p class="w-55 truncate"><span class="font-semibold">Pacote:</span> Setup Gamer de 4</p>
-                        <p class="w-55 truncate"><span class="font-semibold">Cliente:</span> João Silva</p>
+                    <div class="text-white text-sm truncate">
+                        <p><span class="font-semibold">Pacote:</span> Setup Gamer de 4</p>
+                        <p><span class="font-semibold">Cliente:</span> João Silva</p>
                         <p><span class="font-semibold">Data:</span> 25/08/2025</p>
                     </div>
                     <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold">
-                        <p class="bg-red-500 rounded-xl p-1">Cancelada</p>
+                        <p class="bg-red-500 rounded-xl py-1 px-3">Cancelada</p>
                         <p class="text-right">R$ 100,00</p>
                     </div>
                 </div>
                 <div class="w-full p-2 flex justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-                    <div class="text-white text-sm">
-                        <p class="w-55 truncate"><span class="font-semibold">Pacote:</span> Setup Gamer Duplo</p>
-                        <p class="w-55 truncate"><span class="font-semibold">Cliente:</span> João Silva</p>
+                    <div class="text-white text-sm truncate">
+                        <p><span class="font-semibold">Pacote:</span> Setup Gamer Duplo</p>
+                        <p><span class="font-semibold">Cliente:</span> João Silva</p>
                         <p><span class="font-semibold">Data:</span> 25/08/2025</p>
                     </div>
                     <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold">
-                        <p class="bg-red-500 rounded-xl p-1">Cancelada</p>
+                        <p class="bg-red-500 rounded-xl py-1 px-3">Cancelada</p>
                         <p class="text-right">R$ 100,00</p>
                     </div>
                 </div>
@@ -299,29 +309,29 @@
     </div>
 
     <div id="popup-relatorio-financeiro" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
-      <div onclick="closePopup('popup-emitir-relatorio-financeiro')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+      <div onclick="closePopup('popup-relatorio-financeiro')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
-      <div class="content z-22 relative w-full max-w-sm max-h-150 p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+      <div class="content z-22 relative w-full max-w-sm max-h-149 p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
         <button onclick="closePopup('popup-relatorio-financeiro')" class="absolute size-6 cursor-pointer right-3 top-3">
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
         <h2 class="font-bold leading-none text-2xl text-white">Relatório Financeiro</h2>
-        <p class="font-regular leading-none text-sm text-gray -mt-2">Período: MM/DD/YYYY a MM/DD/YYYY</p>
+        <p class="font-regular leading-none text-sm text-gray-2 -mt-2">Período: 16/08/2025 a 16/09/2025</p>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <section>
-            <h3 class="font-semibold text-xl text-white mb-2">Resumo</h3>
-            <div class="flex justify-between text-gray">
+        <section class="flex flex-col gap-1.5">
+            <h3 class="font-semibold text-xl text-white mb-1.5">Resumo</h3>
+            <div class="flex justify-between text-gray-2 leading-none">
                 <p>Faturamento total</p><p>R$ 54.320,00</p>
             </div>
             <hr class="border-t-1 border-gray-2/50">
-            <div class="flex justify-between text-gray">
+            <div class="flex justify-between text-gray-2 leading-none">
                 <p>Reservas confirmadas</p><p>103</p>
             </div>
             <hr class="border-t-1 border-gray-2/50">
-            <div class="flex justify-between text-gray">
+            <div class="flex justify-between text-gray-2 leading-none">
                 <p>Ticket médio por reserva</p><p>R$ 527,38</p>
             </div>
         </section>
@@ -329,8 +339,8 @@
         <section class="flex flex-col gap-2 overflow-y-hidden">
             <h3 class="font-semibold text-xl text-white mb-2">Distribuição por Dia</h3>
             <div class="h-full overflow-y-auto [&::-webkit-scrollbar]:hidden">
-                <table class="w-full text-gray text-sm">
-                    <tr class="text-sm border-b border-gray">
+                <table class="w-full text-gray-2 text-sm">
+                    <tr class="text-sm border-b border-gray text-white">
                         <td class="pb-1">
                             Data
                         </td>
@@ -342,169 +352,79 @@
                         </td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">16/08/2025</td>
+                        <td class="pt-1 text-center">8</td>
+                        <td class="pt-1 text-right">2.950,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">17/08/2025</td>
+                        <td class="pt-1 text-center">10</td>
+                        <td class="pt-1 text-right">3.600,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">18/08/2025</td>
+                        <td class="pt-1 text-center">7</td>
+                        <td class="pt-1 text-right">2.450,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">19/08/2025</td>
+                        <td class="pt-1 text-center">12</td>
+                        <td class="pt-1 text-right">4.200,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">20/08/2025</td>
+                        <td class="pt-1 text-center">9</td>
+                        <td class="pt-1 text-right">3.250,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">21/08/2025</td>
+                        <td class="pt-1 text-center">11</td>
+                        <td class="pt-1 text-right">3.900,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">22/08/2025</td>
+                        <td class="pt-1 text-center">13</td>
+                        <td class="pt-1 text-right">4.550,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">23/08/2025</td>
+                        <td class="pt-1 text-center">15</td>
+                        <td class="pt-1 text-right">5.100,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">24/08/2025</td>
+                        <td class="pt-1 text-center">9</td>
+                        <td class="pt-1 text-right">3.300,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">25/08/2025</td>
+                        <td class="pt-1 text-center">14</td>
+                        <td class="pt-1 text-right">4.800,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">26/08/2025</td>
+                        <td class="pt-1 text-center">10</td>
+                        <td class="pt-1 text-right">3.700,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">27/08/2025</td>
+                        <td class="pt-1 text-center">12</td>
+                        <td class="pt-1 text-right">4.350,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">28/08/2025</td>
+                        <td class="pt-1 text-center">8</td>
+                        <td class="pt-1 text-right">2.900,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">29/08/2025</td>
+                        <td class="pt-1 text-center">11</td>
+                        <td class="pt-1 text-right">3.950,00</td>
                     </tr>
                     <tr>
-                        <td class="pt-1">
-                            25/08/2025
-                        </td>
-                        <td class="pt-1 text-center">
-                            13
-                        </td>
-                        <td class="pt-1 text-right">
-                            4.150,00
-                        </td>
+                        <td class="pt-1">30/08/2025</td>
+                        <td class="pt-1 text-center">13</td>
+                        <td class="pt-1 text-right">4.600,00</td>
                     </tr>
                 </table>
             </div>
