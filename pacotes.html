@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Minhas Reservas | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button onclick="openSidebar()" class="cursor-pointer size-5">
+        <img src="assets/menu.svg" class="size-full">
+      </button>
+    </header>
+
+    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
+        Pacotes
+      </h2>
+
+      <div class="flex flex-col gap-4 items-center">
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+            <img src="./assets/filter.svg" class="size-4.5">
+
+            Filtros
+          </button>
+
+          <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+            <img src="./assets/sliders.svg" class="size-4.5">
+
+            Ordenar por
+          </button>
+        </div>
+
+        <button onclick="openPopup('popup-criar-pacote')" class="w-40 py-1 flex gap-1 items-center justify-center bg-linear-(--gradient-primary-b) text-white font-medium rounded-lg cursor-pointer">
+          <img src="./assets/plus.svg" class="size-4.5 invert">
+
+          Criar novo
+        </button>
+      </div>
+      
+      <div class="w-full max-w-sm flex flex-col gap-5 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+        <div onclick="openPopup('popup-info-pacote')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+          <div class="flex gap-2 items-center">
+            <div class="aspect-[1.6] h-20 rounded-lg overflow-hidden border border-gray-2 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Setup Gamer Duplo</h4>
+              <span class="leading-none text-gray-2 font-light">Valor (hora): R$ 30,00</span>
+            </div>
+          </div>
+
+          <button class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+          </button>
+        </div>
+
+        <div onclick="openPopup('popup-info-pacote')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+          <div class="flex gap-2 items-center">
+            <div class="aspect-[1.6] h-20 rounded-lg overflow-hidden border border-gray-2 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Setup de Trabalho Profissional</h4>
+              <span class="leading-none text-gray-2 font-light">Valor (hora): R$ 15,00</span>
+            </div>
+          </div>
+
+          <button class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+          </button>
+        </div>
+
+        <div onclick="openPopup('popup-info-pacote')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+          <div class="flex gap-2 items-center">
+            <div class="aspect-[1.6] h-20 rounded-lg overflow-hidden border border-gray-2 flex-shrink-0">
+              <img src="./assets/setup-3.png" class="size-full object-cover" border="0">
+            </div>
+
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Setup Gamer Squad</h4>
+              <span class="leading-none text-gray-2 font-light">Valor (hora): R$ 60,00</span>
+            </div>
+          </div>
+
+          <button class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <div id="sidebar" class="absolute inset-0 z-10 hidden">
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
+        <div class="flex items-start justify-between">
+          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+
+          <button onclick="closeSidebar()" class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex justify-between items-center gap-2 leading-none">
+          <div class="flex flex-col gap-2">
+            <h3 class="text-white font-semibold text-xl">José da Silva</h3>
+            <p class="text-gray-2">jose.silva@email.com</p>
+          </div>
+
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
+            <img class="size-4" src="./assets/log-out.svg" alt="Sair">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <nav class="flex flex-col gap-2">
+          <a onclick="navigateTo('perfil.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil">
+            <span>Perfil</span>
+          </a>
+          
+          <a onclick="navigateTo('home.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/home.svg" alt="Home">
+            <span>Home</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes-disponiveis.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis">
+            <span>Pacotes Disponíveis</span>
+          </a>
+
+          <a onclick="navigateTo('minhas-reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas Reservas">
+            <span>Minhas Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('feedbacks.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks">
+            <span>Feedbacks</span>
+          </a>
+        </nav>
+
+        <hr class="gerente suporte border-t-1 border-gray-2/50">
+
+        <nav class="gerente suporte flex flex-col gap-2">
+          <a onclick="navigateTo('dashboard.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard">
+            <span>Dashboard</span>
+          </a>
+
+          <a onclick="navigateTo('reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar Reservas">
+            <span>Gerenciar Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes">
+            <span>Gerenciar Pacotes</span>
+          </a>
+
+          <a onclick="navigateTo('clientes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar Clientes">
+            <span>Gerenciar Clientes</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/log-out.svg" alt="Sair">
+            <span class="text-red text-xl font-medium leading-none">Sair</span>
+          </button>
+
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
