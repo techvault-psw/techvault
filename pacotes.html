@@ -240,7 +240,7 @@
           <label for="picture-new" class="w-full aspect-[1.6] rounded-lg bg-black border border-gray-2/50 flex items-center justify-center cursor-pointer overflow-hidden">
             <img id="upload-icon" src="./assets/upload.svg" alt="Upload">
 
-            <img id="preview-img" class="hidden object-cover w-full h-full">
+            <img id="preview-img-new" class="hidden object-cover w-full h-full">
           </label>
         </div>
 
@@ -271,7 +271,7 @@
         </div>
 
         <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-          <label for="value" class="block font-medium text-gray leading-none">
+          <label for="value-new" class="block font-medium text-gray leading-none">
             Valor (hora):
           </label>
           <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
@@ -295,22 +295,148 @@
         </div>
       </div>
     </div>
+
+    <div id="popup-info-pacote" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-pacote')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-info-pacote')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Informações do Pacote</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75 [&:has(:disabled)]:pointer-events-none">
+          <label for="picture" class="block font-medium text-gray leading-none">
+            Foto
+          </label>
+          <input
+            id="picture"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            disabled
+          >
+          <label for="picture" class="w-full aspect-[1.6] rounded-lg bg-black border border-gray-2/50 flex items-center justify-center cursor-pointer overflow-hidden">
+            <img id="preview-img" src="./assets/setup-1.png" class="object-cover w-full h-full">
+          </label>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="name" class="block font-medium text-gray leading-none">
+            Nome
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="name"
+              type="text"
+              value="Novo Setup 1"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="description" class="block font-medium text-gray leading-none">
+            Descrição
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <textarea
+              disabled
+              id="description"
+              class="min-h-30 max-h-52 focus:outline-none disabled:cursor-not-allowed text-white w-full leading-[130%] [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+            >Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição.</textarea>
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="value" class="block font-medium text-gray leading-none">
+            Valor (hora):
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="value"
+              type="text"
+              value="R$ 50,00"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="w-full flex gap-3 items-center">
+            <button id="delete-pack-button" onclick="openPopup('popup-excluir-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+              <span class="text-red text-lg font-medium leading-none">Excluir</span>
+            </button>
+
+            <button id="edit-pack-button" onclick="toggleEditPackInfo()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+              <img class="size-5" src="./assets/pen.svg" alt="Editar">
+              <span class="text-white text-lg font-medium leading-none">Editar</span>
+            </button>
+
+            <button id="save-pack-button" onclick="toggleEditPackInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Salvar alterações</span>
+            </button>
+          </div>
+
+          <button onclick="closePopup('popup-info-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
   <script>
-    const input = document.getElementById("picture-new");
-    const previewImg = document.getElementById("preview-img");
+    const inputNew = document.getElementById("picture-new");
+    const previewImgNew = document.getElementById("preview-img-new");
     const uploadIcon = document.getElementById("upload-icon");
+
+    inputNew.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        uploadIcon.classList.add('hidden')
+        previewImgNew.classList.remove('hidden')
+        previewImgNew.src = URL.createObjectURL(file);
+      }
+    });
+
+    const input = document.getElementById("picture");
+    const previewImg = document.getElementById("preview-img");
 
     input.addEventListener("change", (event) => {
       const file = event.target.files[0];
       if (file) {
-        uploadIcon.classList.add('hidden')
         previewImg.classList.remove('hidden')
         previewImg.src = URL.createObjectURL(file);
       }
     });
+  </script>
+  <script>
+    let isEdittingPack = false
+
+    function toggleEditPackInfo() {
+      if (isEdittingPack) {
+        document.getElementById('edit-pack-button').classList.remove('hidden')
+        document.getElementById('delete-pack-button').classList.remove('hidden')
+        document.getElementById('save-pack-button').classList.add('hidden')
+        disableInputs(['name', 'description', 'value', 'picture'])
+        isEdittingPack = false
+      } else {
+        document.getElementById('edit-pack-button').classList.add('hidden')
+        document.getElementById('delete-pack-button').classList.add('hidden')
+        document.getElementById('save-pack-button').classList.remove('hidden')
+        enableInputs(['name', 'description', 'value', 'picture'])
+        isEdittingPack = true
+      }
+    }
   </script>
 </body>
 </html>
