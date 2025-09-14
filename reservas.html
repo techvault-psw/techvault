@@ -39,81 +39,89 @@
         </button>
       </div>
 
-      <div class="flex gap-2 items-center w-full">
-        <span class="font-semibold text-white text-xl">Hoje</span>
-        <div class="flex-1 bg-white h-px"></div>
-      </div>
-      <section class="flex flex-col gap-4 w-full min-h-0">
-        <div class="p-3 flex items-center justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-            <div class="w-full flex flex-col gap-2 text-white">
-                <div class="flex justify-between font-semibold text-lg leading-none">
-                    <h4>Setup Gamer Duplo</h4>
-                    <h4 class="leading-none text-sm bg-green-600 p-1 rounded-lg">Entrega</h4>
+      <section class="w-full flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+        <div class="w-full flex flex-col gap-3">
+          <div class="flex gap-2 items-center w-full">
+            <span class="font-semibold text-white text-xl">Hoje</span>
+            <div class="flex-1 bg-white h-px"></div>
+          </div>
+          <section class="flex flex-col gap-4 w-full min-h-0">
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-green-600 py-1 px-3 rounded-lg">Entrega</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 18:10</span>
                 </div>
-                <span class="leading-none text-gray-2 font-light">Endereço: Rua General Canabarro, 485</span>
-                <span class="leading-none text-gray-2 font-light">Horário: 18:10</span>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
             </div>
-            
-            <button onclick="openPopup('popup-info-reserva')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
-        </div>
-        <div class="p-3 flex items-center justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-            <div class="w-full flex flex-col gap-2 text-white">
-                <div class="flex justify-between font-semibold text-lg leading-none">
-                    <h4>Setup Gamer Duplo</h4>
-                    <h4 class="leading-none text-sm bg-purple-600 p-1 rounded-lg">Coleta</h4>
-                </div>
-                <span class="leading-none text-gray-2 font-light">Endereço: Rua General Canabarro, 485</span>
-                <span class="leading-none text-gray-2 font-light">Horário: 21:30</span>
-            </div>
-            
 
-            <button onclick="openPopup('popup-info-reserva')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
-        </div>
-      </section>
-
-      <div class="flex gap-2 items-center w-full">
-        <span class="font-semibold text-white text-xl">Amanhã</span>
-        <div class="flex-1 bg-white h-px"></div>
-      </div>
-      <section class="flex flex-col gap-4 w-full min-h-0 pb-4">
-        <div class="p-3 flex items-center justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-            <div class="w-full flex flex-col gap-2 text-white">
-                <div class="flex justify-between font-semibold text-lg leading-none">
-                    <h4>Setup de Trabalho Profissional</h4>
-                    <h4 class="leading-none text-sm bg-green-600 p-1 rounded-lg">Entrega</h4>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-purple-600 py-1 px-3 rounded-lg">Coleta</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 21:30</span>
                 </div>
-                <span class="leading-none text-gray-2 font-light">Endereço: Rua General Canabarro, 485</span>
-                <span class="leading-none text-gray-2 font-light">Horário: 18:10</span>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
             </div>
-            
-            <button onclick="openPopup('popup-info-reserva')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
+          </section>
         </div>
-      </section>
 
-      <div class="flex gap-2 items-center w-full">
-        <span class="font-semibold text-white text-xl">13 de Setembro</span>
-        <div class="flex-1 bg-white h-px"></div>
-      </div>
-      <section class="flex flex-col gap-4 w-full min-h-0">
-        <div class="p-3 flex items-center justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
-            <div class="w-full flex flex-col gap-2 text-white">
-                <div class="flex justify-between font-semibold text-lg leading-none">
-                    <h4>Setup Gamer Duplo</h4>
-                    <h4 class="leading-none text-sm bg-purple-600 p-1 rounded-lg">Coleta</h4>
+        <div class="w-full flex flex-col gap-3">
+          <div class="flex gap-2 items-center w-full">
+            <span class="font-semibold text-white text-xl">Amanhã</span>
+            <div class="flex-1 bg-white h-px"></div>
+          </div>
+          <section class="flex flex-col gap-4 w-full min-h-0">
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup de Trabalho Profissional</h4>
+                        <span class="text-sm leading-none bg-green-600 py-1 px-3 rounded-lg">Entrega</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 18:10</span>
                 </div>
-                <span class="leading-none text-gray-2 font-light">Endereço: Rua General Canabarro, 485</span>
-                <span class="leading-none text-gray-2 font-light">Horário: 21:30</span>
+                
+                <button class="size-6 cursor-pointer flex-shrink-0">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
             </div>
-            
-            <button onclick="openPopup('popup-info-reserva')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
+          </section>
+        </div>
+
+        <div class="w-full flex flex-col gap-3">
+          <div class="flex gap-2 items-center w-full">
+            <span class="font-semibold text-white text-xl">13 de Setembro</span>
+            <div class="flex-1 bg-white h-px"></div>
+          </div>
+          <section class="flex flex-col gap-4 w-full min-h-0">
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-purple-600 py-1 px-3 rounded-lg">Coleta</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+          </section>
         </div>
       </section>
     </main>
@@ -150,55 +158,15 @@
                     Preço Total Pago
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none text-white">
-                    R$ 
+                    R$&nbsp;
                     <input
-                    disabled
-                    id="name"
-                    type="text"
-                    value="110,00"
-                    class="focus:outline-none disabled:cursor-not-allowed w-full leading-none"
+                      disabled
+                      id="name"
+                      type="text"
+                      value="110,00"
+                      class="focus:outline-none disabled:cursor-not-allowed w-full leading-none"
                     >
                 </div>
-            </div>
-        </div>
-
-        
-        <div>
-            <label class="font-medium text-gray leading-nonefont-medium text-gray leading-none">Pacote</label>
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-                <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Setup Gamer Duplo</h4>
-                </div>
-
-                <button class="size-6 cursor-pointer">
-                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-                </button>
-            </div>
-        </div>
-
-        <div>
-            <label class="font-medium text-gray leading-nonefont-medium text-gray leading-none">Endereço</label>
-            <div class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-                <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Av. General Canabarro, 485</h4>
-                </div>
-
-                <button class="size-6 cursor-pointer">
-                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-                </button>
-            </div>
-        </div>
-
-        <div>
-            <label class="font-medium text-gray leading-nonefont-medium text-gray leading-none">Cliente</label>
-            <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-                <div class="flex flex-col gap-2 text-white">
-                    <h4 class="font-semibold text-lg leading-none">Erick Almeida Barretto</h4>
-                </div>
-
-                <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
-                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-                </button>
             </div>
         </div>
 
@@ -228,22 +196,62 @@
             </div>
         </div>
 
+        <div class="space-y-2">
+            <label class="block font-medium text-gray leading-nonefont-medium text-gray leading-none">Pacote</label>
+            <div onclick="openPopup('popup-info-pacote')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                    <span class="font-medium text-lg leading-none">Setup Gamer Duplo</span>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block font-medium text-gray leading-nonefont-medium text-gray leading-none">Endereço</label>
+            <div onclick="openPopup('popup-info-endereco')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                    <span class="font-medium text-lg leading-none">Av. General Canabarro, 485</span>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block font-medium text-gray leading-nonefont-medium text-gray leading-none">Cliente</label>
+            <div onclick="openPopup('popup-info-cliente')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                    <span class="font-medium text-lg leading-none">Erick Almeida Barretto</span>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
         <div class="flex flex-col gap-3">
           <div class="w-full flex gap-3 items-center">
-            <button onclick="openPopup('popup-confirmar-entrega')"class="suporte h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+            <button onclick="openPopup('popup-confirmar-entrega')" class="suporte h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
               <span class="text-white text-lg font-medium leading-none">Confirmar Entrega</span>
             </button>
-            <button id="delete-pack-button" onclick="openPopup('popup-excluir-pacote')" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
-              <img class="size-5" src="./assets/trash.svg" alt="Excluir">
-              <span class="text-red text-lg font-medium leading-none">Excluir</span>
+
+            <button id="cancel-reserve-button" onclick="openPopup('popup-cancelar-reserva')" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/red-x.svg" alt="Cancelar">
+              <span class="text-red text-lg font-medium leading-none">Cancelar</span>
             </button>
 
-            <button id="edit-pack-button" onclick="toggleEditPackInfo()" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <button id="edit-reserve-button" onclick="toggleEditPackInfo()" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
               <img class="size-5" src="./assets/pen.svg" alt="Editar">
               <span class="text-white text-lg font-medium leading-none">Editar</span>
             </button>
 
-            <button id="save-pack-button" onclick="toggleEditPackInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+            <button id="save-reserve-button" onclick="toggleEditPackInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
               <span class="text-white text-lg font-medium leading-none">Salvar alterações</span>
             </button>
           </div>
@@ -269,7 +277,7 @@
         <hr class="border-t-1 border-gray-2/50">
 
         <div class="space-y-2">
-            <label for="tipo" class="font-medium text-gray leading-none">
+            <label for="codigo" class="block font-medium text-gray leading-none">
                 Código
             </label>
             <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
@@ -287,7 +295,7 @@
             <button onclick="closePopup('popup-confirmar-entrega')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
                 <span class="text-white text-lg font-medium leading-none">Cancelar</span>
             </button>
-            <button onclick="openPopup('popup-entrega-confirmada')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+            <button onclick="openEntregaConfirmada()" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
               <span class="text-white text-lg font-medium leading-none">Confirmar</span>
             </button>
           </div>
@@ -303,7 +311,7 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-2xl text-white">Insira o Código</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Entrega confirmada!</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
@@ -426,18 +434,24 @@
 
     function toggleEditPackInfo() {
       if (isEdittingPack) {
-        document.getElementById('edit-pack-button').classList.remove('hidden')
-        document.getElementById('delete-pack-button').classList.remove('hidden')
-        document.getElementById('save-pack-button').classList.add('hidden')
+        document.getElementById('edit-reserve-button').classList.remove('hidden')
+        document.getElementById('cancel-reserve-button').classList.remove('hidden')
+        document.getElementById('save-reserve-button').classList.add('hidden')
         disableInputs(['name', 'value', 'inicio', 'termino'])
         isEdittingPack = false
       } else {
-        document.getElementById('edit-pack-button').classList.add('hidden')
-        document.getElementById('delete-pack-button').classList.add('hidden')
-        document.getElementById('save-pack-button').classList.remove('hidden')
+        document.getElementById('edit-reserve-button').classList.add('hidden')
+        document.getElementById('cancel-reserve-button').classList.add('hidden')
+        document.getElementById('save-reserve-button').classList.remove('hidden')
         enableInputs(['name', 'value', 'inicio', 'termino'])
         isEdittingPack = true
       }
+    }
+  </script>
+  <script>
+    function openEntregaConfirmada() {
+      closePopup('popup-confirmar-entrega')
+      openPopup('popup-entrega-confirmada')
     }
   </script>
 </body>

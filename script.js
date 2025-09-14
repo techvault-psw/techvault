@@ -110,12 +110,6 @@ function openPopup(popupName) {
     content.classList.remove('scale-90', 'opacity-0');
     content.classList.add('scale-100', 'opacity-100');
   }, 1);
-
-  if(popupName === 'popup-confirmar-entrega') {
-    closePopup('popup-info-reserva');
-  } else if(popupName === 'popup-entrega-confirmada') {
-    closePopup('popup-confirmar-entrega');
-  }
 }
 
 function closePopup(popupName) {
