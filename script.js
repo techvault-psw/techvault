@@ -110,6 +110,11 @@ function openPopup(popupName) {
     content.classList.remove('scale-90', 'opacity-0');
     content.classList.add('scale-100', 'opacity-100');
   }, 1);
+
+  if(popupName === 'popup-relatorio-reservas' || popupName === 'popup-relatorio-financeiro') {
+    closePopup('popup-emitir-relatorio-reservas');
+    closePopup('popup-emitir-relatorio-financeiro');
+  } 
 }
 
 function closePopup(popupName) {
@@ -137,14 +142,11 @@ function realizarLogin(inputId) {
     localStorage.removeItem("cargo");
   }
 
-  navigateTo('home.html')
-
-  // Dashboard ainda não está pronto
-  // if (valor === "gerente" || valor === "suporte") {
-  //   navigateTo('dashboard.html')
-  // } else {
-  //   navigateTo('home.html')
-  // }
+  if (valor === "gerente" || valor === "suporte") {
+    navigateTo('dashboard.html')
+  } else {
+    navigateTo('home.html')
+  }
 }
 
 function filtrarPorCargo() {
