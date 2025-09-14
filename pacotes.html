@@ -214,8 +214,103 @@
         </div>
       </div>
     </div>
+
+    <div id="popup-criar-pacote" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-criar-pacote')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-criar-pacote')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Criar novo pacote</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75 [&:has(:disabled)]:cursor-not-allowed">
+          <label for="picture-new" class="block font-medium text-gray leading-none">
+            Foto
+          </label>
+          <input
+            id="picture-new"
+            type="file"
+            accept="image/*"
+            class="hidden"
+          >
+          <label for="picture-new" class="w-full aspect-[1.6] rounded-lg bg-black border border-gray-2/50 flex items-center justify-center cursor-pointer overflow-hidden">
+            <img id="upload-icon" src="./assets/upload.svg" alt="Upload">
+
+            <img id="preview-img" class="hidden object-cover w-full h-full">
+          </label>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="name-new" class="block font-medium text-gray leading-none">
+            Nome
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              id="name-new"
+              type="text"
+              value="Novo Setup 1"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="description-new" class="block font-medium text-gray leading-none">
+            Descrição
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <textarea
+              id="description-new"
+              class="min-h-30 max-h-52 focus:outline-none disabled:cursor-not-allowed text-white w-full leading-[130%] [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+            >Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição.</textarea>
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="value" class="block font-medium text-gray leading-none">
+            Valor (hora):
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              id="value-new"
+              type="text"
+              value="R$ 50,00"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="closePopup('popup-criar-pacote')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-xl font-medium leading-none">
+            Cancelar
+          </button>
+
+          <button onclick="closePopup('popup-criar-pacote')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-xl font-medium leading-none">
+            Criar
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 
   <script src="script.js"></script>
+  <script>
+    const input = document.getElementById("picture-new");
+    const previewImg = document.getElementById("preview-img");
+    const uploadIcon = document.getElementById("upload-icon");
+
+    input.addEventListener("change", (event) => {
+      const file = event.target.files[0];
+      if (file) {
+        uploadIcon.classList.add('hidden')
+        previewImg.classList.remove('hidden')
+        previewImg.src = URL.createObjectURL(file);
+      }
+    });
+  </script>
 </body>
 </html>
