@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reservas | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button onclick="openSidebar()" class="cursor-pointer size-5">
+        <img src="assets/menu.svg" class="size-full">
+      </button>
+    </header>
+
+    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
+        Reservas de Dijão
+      </h2>
+
+      <div class="flex items-center gap-4 flex-shrink-0">
+        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <img src="./assets/filter.svg" class="size-4.5">
+
+          Filtros
+        </button>
+
+         <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <img src="./assets/sliders.svg" class="size-4.5">
+
+          Ordenar por
+        </button>
+      </div>
+
+      <section class="w-full flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+        <div class="w-full flex flex-col gap-3">
+          <div class="flex gap-2 items-center w-full">
+            <span class="font-semibold text-white text-xl">Atuais</span>
+            <div class="flex-1 bg-white h-px"></div>
+          </div>
+          <section class="flex flex-col gap-4 w-full min-h-0">
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30 </span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+          </section>
+        </div>
+
+        <div class="w-full flex flex-col gap-3">
+          <div class="flex gap-2 items-center w-full">
+            <span class="font-semibold text-white text-xl">Concluídas</span>
+            <div class="flex-1 bg-white h-px"></div>
+          </div>
+          <section class="flex flex-col gap-4 w-full min-h-0">
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup de Trabalho Profissional</h4>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer flex-shrink-0">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+          </section>
+        </div>
+
+        <div class="w-full flex flex-col gap-3">
+          <div class="flex gap-2 items-center w-full">
+            <span class="font-semibold text-white text-xl">Canceladas</span>
+            <div class="flex-1 bg-white h-px"></div>
+          </div>
+          <section class="flex flex-col gap-4 w-full min-h-0">
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+          </section>
+        </div>
+      </section>
+        <button onclick="history.back()" class=" w-full mt-auto py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-semibold leading-none">Voltar</span>
+        </button>
+    </main>
+
+    <div id="popup-info-reserva" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-reserva')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-info-reserva')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Informações da Reserva</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex gap-3 justify-between">
+            <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                <label for="tipo" class="block font-medium text-gray leading-none">
+                    Tipo
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                    disabled
+                    id="tipo"
+                    type="text"
+                    value="Entrega"
+                    class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+                    >
+                </div>
+            </div>
+            <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                <label for="name" class="block font-medium text-gray leading-none">
+                    Preço Total Pago
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none text-white">
+                    R$&nbsp;
+                    <input
+                      disabled
+                      id="name"
+                      type="text"
+                      value="110,00"
+                      class="focus:outline-none disabled:cursor-not-allowed w-full leading-none"
+                    >
+                </div>
+            </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="inicio" class="block font-medium text-gray leading-none">Data e Hora de Início:</label>
+            <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="inicio"
+                type="datetime-local"
+                value="2025-09-02 18:10"
+                class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="termino" class="block font-medium text-gray leading-none">Data e Hora de Término:</label>
+            <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="termino"
+                type="datetime-local"
+                value="2025-09-03 21:30"
+                class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block font-medium text-gray leading-nonefont-medium text-gray leading-none">Pacote</label>
+            <div onclick="openPopup('popup-info-pacote')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                    <span class="font-medium text-lg leading-none">Setup Gamer Duplo</span>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block font-medium text-gray leading-nonefont-medium text-gray leading-none">Endereço</label>
+            <div onclick="openPopup('popup-info-endereco')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                    <span class="font-medium text-lg leading-none">Av. General Canabarro, 485</span>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <div class="space-y-2">
+            <label class="block font-medium text-gray leading-nonefont-medium text-gray leading-none">Cliente</label>
+            <div onclick="openPopup('popup-info-cliente')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                    <span class="font-medium text-lg leading-none">Erick Almeida Barretto</span>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="w-full flex gap-3 items-center">
+            <button onclick="openPopup('popup-confirmar-entrega')" class="suporte h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Confirmar Entrega</span>
+            </button>
+
+            <button id="cancel-reserve-button" onclick="openPopup('popup-cancelar-reserva')" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/red-x.svg" alt="Cancelar">
+              <span class="text-red text-lg font-medium leading-none">Cancelar</span>
+            </button>
+
+            <button id="edit-reserve-button" onclick="toggleEditPackInfo()" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+              <img class="size-5" src="./assets/pen.svg" alt="Editar">
+              <span class="text-white text-lg font-medium leading-none">Editar</span>
+            </button>
+
+            <button id="save-reserve-button" onclick="toggleEditPackInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Salvar alterações</span>
+            </button>
+          </div>
+
+          <button onclick="closePopup('popup-info-reserva')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-confirmar-entrega" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-confirmar-entrega')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-confirmar-entrega')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Insira o Código</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="space-y-2">
+            <label for="codigo" class="block font-medium text-gray leading-none">
+                Código
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                <input
+                id="codigo"
+                type="text"
+                placeholder="ABC123"
+                class="focus:outline-none text-white w-full leading-none"
+                >
+            </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="w-full flex gap-3 items-center">
+            <button onclick="closePopup('popup-confirmar-entrega')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+                <span class="text-white text-lg font-medium leading-none">Cancelar</span>
+            </button>
+            <button onclick="openEntregaConfirmada()" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Confirmar</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-entrega-confirmada" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-entrega-confirmada')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-entrega-confirmada')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Entrega confirmada!</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="text-gray">A entrega do pacote "Setup Gamer Duplo" foi confirmada com sucesso!</p>
+      </div>
+    </div>
+
+    <div id="popup-cancelar-reserva" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-cancelar-reserva')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-cancelar-reserva')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Cancelar Reserva</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white text-justify">Tem certeza que deseja cancelar a sua reserva do “Setup Gamer Duplo”?</p>
+
+        <p class="leading-[120%] text-lg text-white text-justify">Essa ação não pode ser desfeita.</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="cancelReserve()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/red-x.svg" alt="Cancelar">
+            <span class="text-red text-xl font-medium leading-none">Cancelar</span>
+          </button>
+
+          <button onclick="closePopup('popup-cancelar-reserva')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="sidebar" class="absolute inset-0 z-10 hidden">
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
+        <div class="flex items-start justify-between">
+          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+
+          <button onclick="closeSidebar()" class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex justify-between items-center gap-2 leading-none">
+          <div class="flex flex-col gap-2">
+            <h3 class="text-white font-semibold text-xl">José da Silva</h3>
+            <p class="text-gray-2">jose.silva@email.com</p>
+          </div>
+
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
+            <img class="size-4" src="./assets/log-out.svg" alt="Sair">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <nav class="flex flex-col gap-2">
+          <a onclick="navigateTo('perfil.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil">
+            <span>Perfil</span>
+          </a>
+          
+          <a onclick="navigateTo('home.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/home.svg" alt="Home">
+            <span>Home</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes-disponiveis.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis">
+            <span>Pacotes Disponíveis</span>
+          </a>
+
+          <a onclick="navigateTo('minhas-reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas Reservas">
+            <span>Minhas Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('feedbacks.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks">
+            <span>Feedbacks</span>
+          </a>
+        </nav>
+
+        <hr class="gerente suporte border-t-1 border-gray-2/50">
+
+        <nav class="gerente suporte flex flex-col gap-2">
+          <a onclick="navigateTo('dashboard.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard">
+            <span>Dashboard</span>
+          </a>
+
+          <a onclick="navigateTo('reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar Reservas">
+            <span>Gerenciar Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes">
+            <span>Gerenciar Pacotes</span>
+          </a>
+
+          <a onclick="navigateTo('clientes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar Clientes">
+            <span>Gerenciar Clientes</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/log-out.svg" alt="Sair">
+            <span class="text-red text-xl font-medium leading-none">Sair</span>
+          </button>
+
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <script src="script.js"></script>
+  <script>
+    let isEdittingPack = false
+
+    function toggleEditPackInfo() {
+      if (isEdittingPack) {
+        document.getElementById('edit-reserve-button').classList.remove('hidden')
+        document.getElementById('cancel-reserve-button').classList.remove('hidden')
+        document.getElementById('save-reserve-button').classList.add('hidden')
+        disableInputs(['name', 'value', 'inicio', 'termino'])
+        isEdittingPack = false
+      } else {
+        document.getElementById('edit-reserve-button').classList.add('hidden')
+        document.getElementById('cancel-reserve-button').classList.add('hidden')
+        document.getElementById('save-reserve-button').classList.remove('hidden')
+        enableInputs(['name', 'value', 'inicio', 'termino'])
+        isEdittingPack = true
+      }
+    }
+  </script>
+  <script>
+    function openEntregaConfirmada() {
+      closePopup('popup-confirmar-entrega')
+      openPopup('popup-entrega-confirmada')
+    }
+
+    function cancelReserve() {
+      closePopup('popup-cancelar-reserva')
+      closePopup('popup-info-reserva')
+    }
+  </script>
+</body>
+</html>
