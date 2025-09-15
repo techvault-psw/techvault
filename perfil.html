@@ -149,7 +149,7 @@
 
       <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
         <div class="flex items-start justify-between">
-          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+          <h2 class="font-bold leading-none text-2xl text-white">Menu</h2>
 
           <button onclick="closeSidebar()" class="size-6 cursor-pointer">
             <img class="size-full" src="./assets/x.svg" alt="Fechar">
@@ -232,23 +232,22 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Sair</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
-            <span class="text-red text-xl font-medium leading-none">Sair</span>
+            <span class="text-red text-lg font-medium leading-none">Sair</span>
           </button>
-
           <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
-        </div>
+        </div>  
       </div>
     </div>
 
@@ -260,23 +259,23 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Excluir Conta</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Conta</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja excluir permanentemente a sua conta?</p>
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente a sua conta?</p>
 
-        <p class="leading-[120%] text-lg text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
+        <p class="leading-[120%] text-base text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="navigateTo('cadastro.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
-            <span class="text-red text-xl font-medium leading-none">Excluir</span>
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
           </button>
 
           <button onclick="closePopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
         </div>
       </div>
@@ -290,7 +289,7 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Criar novo endereço</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Criar novo endereço</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
@@ -365,11 +364,11 @@
         </div>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="closePopup('popup-criar-endereco')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-xl font-medium leading-none">
+          <button onclick="closePopup('popup-criar-endereco')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
             Cancelar
           </button>
 
-          <button onclick="closePopup('popup-criar-endereco')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-xl font-medium leading-none">
+          <button onclick="closePopup('popup-criar-endereco')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
             Criar
           </button>
         </div>
@@ -384,7 +383,7 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Dados do Endereço</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Dados do Endereço</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
@@ -488,21 +487,21 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Excluir Endereço</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Endereço</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja excluir permanentemente o endereço “Faculdade?”</p>
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o endereço “Faculdade?”</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="deleteAddress()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
-            <span class="text-red text-xl font-medium leading-none">Excluir</span>
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
           </button>
 
           <button onclick="closePopup('popup-excluir-endereco')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
         </div>
       </div>
