@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reservas | TechVault</title>
+  <title>Reservas de João Silva | TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
   <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
@@ -28,7 +28,7 @@
       </div>
 
       <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
-        Reservas
+        Reservas de João Silva
       </h2>
 
       <div class="flex items-center gap-4 flex-shrink-0">
@@ -37,12 +37,18 @@
 
           Filtros
         </button>
+
+         <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <img src="./assets/sliders.svg" class="size-4.5">
+
+          Ordenar por
+        </button>
       </div>
 
       <section class="w-full flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         <div class="w-full flex flex-col gap-3">
           <div class="flex gap-2 items-center w-full">
-            <span class="font-medium text-white text-xl">Hoje</span>
+            <span class="font-medium text-white text-xl">Atuais</span>
             <div class="flex-1 bg-white h-px"></div>
           </div>
           <section class="flex flex-col gap-4 w-full min-h-0">
@@ -50,10 +56,9 @@
                 <div class="w-full flex flex-col gap-2 text-white truncate">
                     <div class="flex items-center justify-between gap-1 font-semibold">
                         <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
-                        <span class="leading-none text-sm bg-green-600 py-1 px-3 rounded-lg">Entrega</span>
                     </div>
                     <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
-                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 18:10</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30 </span>
                 </div>
                 
                 <button class="size-6 cursor-pointer">
@@ -65,10 +70,9 @@
                 <div class="w-full flex flex-col gap-2 text-white truncate">
                     <div class="flex items-center justify-between gap-1 font-semibold">
                         <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
-                        <span class="leading-none text-sm bg-purple-600 py-1 px-3 rounded-lg">Coleta</span>
                     </div>
                     <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
-                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 21:30</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
                 </div>
                 
                 <button class="size-6 cursor-pointer">
@@ -80,7 +84,7 @@
 
         <div class="w-full flex flex-col gap-3">
           <div class="flex gap-2 items-center w-full">
-            <span class="font-medium text-white text-xl">Amanhã</span>
+            <span class="font-medium text-white text-xl">Concluídas</span>
             <div class="flex-1 bg-white h-px"></div>
           </div>
           <section class="flex flex-col gap-4 w-full min-h-0">
@@ -88,10 +92,9 @@
                 <div class="flex flex-col gap-2 text-white truncate">
                     <div class="flex items-center justify-between gap-1 font-semibold">
                         <h4 class="text-lg leading-none truncate">Setup de Trabalho Profissional</h4>
-                        <span class="text-sm leading-none bg-green-600 py-1 px-3 rounded-lg">Entrega</span>
                     </div>
                     <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
-                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 18:10</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
                 </div>
                 
                 <button class="size-6 cursor-pointer flex-shrink-0">
@@ -103,7 +106,7 @@
 
         <div class="w-full flex flex-col gap-3">
           <div class="flex gap-2 items-center w-full">
-            <span class="font-medium text-white text-xl">13 de Setembro</span>
+            <span class="font-medium text-white text-xl">Canceladas</span>
             <div class="flex-1 bg-white h-px"></div>
           </div>
           <section class="flex flex-col gap-4 w-full min-h-0">
@@ -111,10 +114,52 @@
                 <div class="w-full flex flex-col gap-2 text-white truncate">
                     <div class="flex items-center justify-between gap-1 font-semibold">
                         <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
-                        <span class="leading-none text-sm bg-purple-600 py-1 px-3 rounded-lg">Coleta</span>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
                     </div>
                     <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
-                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Horário:</span> 21:30</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
+                </div>
+                
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-info-reserva')" class="p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="w-full flex flex-col gap-2 text-white truncate">
+                    <div class="flex items-center justify-between gap-1 font-semibold">
+                        <h4 class="text-lg leading-none truncate">Setup Gamer Duplo</h4>
+                        <span class="leading-none text-sm bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>
+                    </div>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Endereço:</span> Rua General Canabarro, 485</span>
+                    <span class="leading-none text-gray-2 font-light truncate"><span class="font-medium">Data:</span> 02/09/2025 18:10 - 03/09/2025 21:30</span>
                 </div>
                 
                 <button class="size-6 cursor-pointer">
@@ -124,6 +169,11 @@
           </section>
         </div>
       </section>
+
+      <button onclick="history.back()" class=" w-full mt-auto py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+        <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+        <span class="text-white text-lg font-semibold leading-none">Voltar</span>
+      </button>
     </main>
 
     <div id="popup-info-reserva" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
@@ -145,11 +195,11 @@
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
                     <input
-                    disabled
-                    id="tipo"
-                    type="text"
-                    value="Entrega"
-                    class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+                      disabled
+                      id="tipo"
+                      type="text"
+                      value="Entrega"
+                      class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
                     >
                 </div>
             </div>
@@ -457,6 +507,10 @@
       </div>
     </div>
   </div>
+
+
+
+
 
   <script src="script.js"></script>
   <script>
