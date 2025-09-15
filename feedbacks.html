@@ -320,141 +320,121 @@
       </div>
     </div>
 
-    <div id="popup-info-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
-      <div onclick="closePopup('popup-info-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+    <div id="popup-dar-feedback" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-dar-feedback')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
-          <button onclick="closePopup('popup-info-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
-            <img class="size-full" src="./assets/x.svg" alt="Fechar">
-          </button>
+        <button onclick="closePopup('popup-dar-feedback')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
 
-          <h2 class="font-bold leading-none text-3xl text-white">Dados do Cliente</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Dar feedback</h2>
 
-          <hr class="border-t-1 border-gray-2/50">
+        <hr class="border-t-1 border-gray-2/50">
 
-          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-            <label for="name-info" class="block font-medium text-gray leading-none">
-              Nome
-            </label>
-            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-              <input
-                disabled
-                id="name-info"
-                type="text"
-                value="José da Silva"
-                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
-              >
-            </div>
+        <div class="space-y-2 [&:has(select:disabled)]:opacity-5">
+          <label for="pack" class="block font-medium text-gray leading-none">Pacote</label>
+          <select id="pack" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white">
+            <option value="" disabled selected>Escolher pacote</option>
+            <option class="text-black">Setup Gamer Duplo</option>
+            <option class="text-black">Setup de Trabalho Profissional</option>
+            <option class="text-black">Setup Gamer Squad</option>
+          </select>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label class="block font-medium text-gray leading-none">
+            Estrelas
+          </label>
+          <div id="stars-new" class="flex items-center gap-3">
+            <img src="./assets/hollow-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/hollow-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/hollow-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/hollow-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/hollow-star.svg" alt="Estrela" class="size-6 cursor-pointer">
           </div>
+        </div>
 
-          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-            <label for="email-info" class="block font-medium text-gray leading-none">
-              E-mail
-            </label>
-            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-              <input
-                disabled
-                id="email-info"
-                type="text"
-                value = "jose.silva@email.com"
-                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
-              >
-            </div>
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="comment-new" class="block font-medium text-gray leading-none">
+            Comentário
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <textarea
+              id="comment-new"
+              class="min-h-28 max-h-52 focus:outline-none disabled:cursor-not-allowed text-white w-full leading-[130%] [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis nulla possimus ullam quis ipsum non eveniet animi ipsam qui magni aliquid nemo dolorem necessitatibus.</textarea>
           </div>
+        </div>
 
-          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-            <label for="phone-info" class="block font-medium text-gray leading-none">
-              Telefone
-            </label>
-            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-              <input
-                disabled
-                id="phone-info"
-                type="text"
-                value="(00) 12345-6789"
-                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
-              >
-            </div>
-          </div>
-
-          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-            <label for="date-info" class="block font-medium text-gray leading-none">
-              Data de Cadastro
-            </label>
-            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-              <input
-                disabled
-                id="date-info"
-                type="date"
-                value="1970-01-01"
-                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none [&::-webkit-calendar-picker-indicator]:invert"
-              >
-            </div>
-          </div>
-
-          <div class="w-full flex flex-col gap-3 items-center">
-            <button id="edit-client-button" onclick="toggleEditClientInfo()" class="h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
-              Editar informações
+        <div class="flex flex-col gap-3">
+          <div class="w-full flex gap-3 items-center">
+            <button onclick="closePopup('popup-dar-feedback')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+                <span class="text-white text-lg font-medium leading-none">Cancelar</span>
             </button>
-
-            <button id="save-client-button" onclick="toggleEditClientInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
-              Salvar alterações
-            </button>
-            
-            <div onclick="navigateTo('reservas-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-              <div class="flex flex-col gap-2 text-white">
-                <h4 class="font-medium text-lg leading-none">Ver Reservas</h4>
-              </div>
-
-              <button onclick="navigateTo('reservas-cliente.html')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-              </button>
-            </div>
-
-            <div onclick="navigateTo('enderecos-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-              <div class="flex flex-col gap-2 text-white">
-                <h4 class="font-medium text-lg leading-none">Ver Endereços</h4>
-              </div>
-
-              <button onclick="navigateTo('enderecos-cliente.html')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-              </button>
-            </div>
-
-            <button onclick="openPopup('popup-excluir-cliente')" class="w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
-              <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
-              <span class="block text-red text-lg font-semibold leading-none">Excluir</span>
+            <button onclick="closePopup('popup-dar-feedback')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Confirmar</span>
             </button>
           </div>
         </div>
       </div>
     </div>
-    <div id="popup-excluir-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
-      <div onclick="closePopup('popup-excluir-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+    <div id="popup-editar-feedback" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-editar-feedback')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
       <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
-        <button onclick="closePopup('popup-excluir-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
+        <button onclick="closePopup('popup-editar-feedback')" class="absolute size-6 cursor-pointer right-3 top-3">
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Excluir Cliente</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Editar feedback</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja excluir permanentemente o cliente "José da Silva"?</p>
+        <div class="space-y-2 [&:has(select:disabled)]:opacity-75">
+          <label for="pack" class="block font-medium text-gray leading-none">Pacote</label>
+          <select disabled id="pack" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white cursor-not-allowed">
+            <option class="text-black">Setup Gamer Duplo</option>
+            <option class="text-black">Setup de Trabalho Profissional</option>
+            <option class="text-black">Setup Gamer Squad</option>
+          </select>
+        </div>
 
-        <p class="leading-[120%] text-lg text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label class="block font-medium text-gray leading-none">
+            Estrelas
+          </label>
+          <div id="stars" class="flex items-center gap-3">
+            <img src="./assets/full-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/full-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/full-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/full-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+            <img src="./assets/hollow-star.svg" alt="Estrela" class="size-6 cursor-pointer">
+          </div>
+        </div>
 
-        <div class="w-full flex gap-3 items-center">
-          <button onclick="deleteCustomer()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
-            <img class="size-5" src="./assets/trash.svg" alt="Excluir">
-            <span class="text-red text-xl font-medium leading-none">Excluir</span>
-          </button>
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="comment-new" class="block font-medium text-gray leading-none">
+            Comentário
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <textarea
+              id="comment-new"
+              class="min-h-28 max-h-52 focus:outline-none disabled:cursor-not-allowed text-white w-full leading-[130%] [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+            >Lorem ipsum dolor sit amet, consectetur adipisicing elit. Facilis nulla possimus ullam quis ipsum non eveniet animi ipsam qui magni aliquid nemo dolorem necessitatibus.</textarea>
+          </div>
+        </div>
 
-          <button onclick="closePopup('popup-excluir-cliente')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
-            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
-          </button>
+        <div class="flex flex-col gap-3">
+          <div class="w-full flex gap-3 items-center">
+            <button onclick="closePopup('popup-editar-feedback')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+                <span class="text-white text-lg font-medium leading-none">Cancelar</span>
+            </button>
+            <button onclick="closePopup('popup-editar-feedback')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Salvar</span>
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -462,28 +442,26 @@
 
   <script src="script.js"></script>
   <script>
-    let isEdittingClient = false
+    const starsNew = document.querySelectorAll('#stars-new img')
 
-    function toggleEditClientInfo() {
-      if (isEdittingClient) {
-        document.getElementById('edit-client-button').classList.remove('hidden')
-        document.getElementById('save-client-button').classList.add('hidden')
-        disableInputs(['name-info', 'email-info', 'phone-info', 'date-info'])
-        isEdittingClient = false
-      } else {
-        document.getElementById('edit-client-button').classList.add('hidden')
-        document.getElementById('save-client-button').classList.remove('hidden')
-        enableInputs(['name-info', 'email-info', 'phone-info', 'date-info'])
-        isEdittingClient = true
-      }
-    }
+    starsNew.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        starsNew.forEach((s, i) => {
+          s.src = i <= index ? './assets/full-star.svg' : './assets/hollow-star.svg'
+        })
+      })
+    })
   </script>
-
   <script>
-    function deleteCustomer() {
-      closePopup('popup-excluir-cliente')
-      closePopup('popup-info-cliente')
-    }
+    const stars = document.querySelectorAll('#stars img')
+
+    stars.forEach((star, index) => {
+      star.addEventListener('click', () => {
+        stars.forEach((s, i) => {
+          s.src = i <= index ? './assets/full-star.svg' : './assets/hollow-star.svg'
+        })
+      })
+    })
   </script>
 </body>
 </html>
