@@ -28,7 +28,7 @@
       </div>
     </header>
 
-    <main class="flex-1 pt-5 px-2 flex flex-col items-center gap-4 relative min-h-0">
+    <main class="flex-1 overflow-y-hidden">
       <div class="absolute inset-0 -z-1">
         <img 
           src="./assets/background.png" 
@@ -37,61 +37,243 @@
         <div class="absolute inset-0 bg-black/60"></div>
       </div>
 
-      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
-        Pacotes disponíveis
-      </h2>
+      <div class="w-full h-full max-w-7xl mx-auto pt-5 px-2 flex flex-col items-center gap-4 relative sm:px-16 2xl:px-0 md:items-start">
+        <h2 class="text-3xl font-bold text-white text-center flex-shrink-0 md:text-4xl">
+          Pacotes disponíveis
+        </h2>
 
-      <div class="flex items-center gap-4 flex-shrink-0">
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
-          <img src="./assets/filter.svg" class="size-4.5">
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <button class="w-40 md:w-52 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
+            <img src="./assets/filter.svg" class="size-4.5">
 
-          Filtros
-        </button>
+            Filtros
+          </button>
 
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
-          <img src="./assets/sliders.svg" class="size-4.5">
+          <button class="w-40 md:w-52 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
+            <img src="./assets/sliders.svg" class="size-4.5">
 
-          Ordenar por
-        </button>
+            Ordenar por
+          </button>
+        </div>
+
+        <section class="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] min-h-0 pb-4 md:flex-row md:flex-wrap">
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup Gamer Duplo
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$30,00</span>
+            </p>
+          </div>
+          
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup de Trabalho Profissional
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$15,00</span>
+            </p>
+          </div>
+
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup Gamer Duplo
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$30,00</span>
+            </p>
+          </div>
+          
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup de Trabalho Profissional
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$15,00</span>
+            </p>
+          </div>
+          
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup de Trabalho Profissional
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$15,00</span>
+            </p>
+          </div>
+
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup Gamer Duplo
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$30,00</span>
+            </p>
+          </div>
+          
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup de Trabalho Profissional
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$15,00</span>
+            </p>
+          </div>
+
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup Gamer Duplo
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$30,00</span>
+            </p>
+          </div>
+
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup Gamer Duplo
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$30,00</span>
+            </p>
+          </div>
+          
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup de Trabalho Profissional
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$15,00</span>
+            </p>
+          </div>
+
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup Gamer Duplo
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$30,00</span>
+            </p>
+          </div>
+          
+          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 md:w-76 max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20 flex-shrink-0">
+              <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
+            </div>
+
+            <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
+              Setup de Trabalho Profissional
+            </h3>
+
+            <p class="font-light text-gray leading-[140%]">
+              Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
+            </p>
+            
+            <p class="font-semibold text-gray-2 mt-auto">
+              Valor (hora): <span class="text-lg">R$15,00</span>
+            </p>
+          </div>
+        </section>
       </div>
-
-      <section class="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] min-h-0 pb-4">
-        <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
-          <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
-            <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
-          </div>
-
-          <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
-            Setup Gamer Duplo
-          </h3>
-
-          <p class="font-light text-gray leading-[140%]">
-            2 PCs com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos.
-          </p>
-          
-          <p class="font-semibold text-gray-2">
-            Valor (hora): <span class="text-lg">R$30,00</span>
-          </p>
-        </div>
-        
-        <div onclick="navigateTo('info-gamer-duplo.html')" class="w-80 px-3.5 py-4 flex flex-col gap-3 border border-gray-2/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
-          <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
-            <img src="./assets/setup-2.png" class="size-full object-cover" border="0">
-          </div>
-
-          <h3 class="text-2xl font-semibold text-white leading-[120%] underline decoration-dotted decoration-[4%] underline-offset-4 decoration-skip-ink-auto decoration-inherit">
-            Setup de Trabalho Profissional
-          </h3>
-
-          <p class="font-light text-gray leading-[140%]">
-            Notebook + monitor extra, cadeira ergonômica e iluminação para home office ou reuniões.
-          </p>
-          
-          <p class="font-semibold text-gray-2">
-            Valor (hora): <span class="text-lg">R$15,00</span>
-          </p>
-        </div>
-      </section>
     </main>
 
     <div id="sidebar" class="absolute inset-0 z-10 hidden">
