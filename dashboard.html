@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button onclick="openSidebar()" class="cursor-pointer size-5">
+        <img src="assets/menu.svg" class="size-full">
+      </button>
+    </header>
+
+    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+      
+      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+        <h2 class="text-white text-3xl font-bold">Dashboard</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <h3 class="text-white text-xl font-semibold">Páginas Públicas</h3>
+        <div class="flex flex-col gap-3 text-white">
+            <div onclick="navigateTo('home.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Home</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="navigateTo('pacotes-disponiveis.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Pacotes Disponíveis</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="navigateTo('feedbacks.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Feedbacks</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <h3 class="text-white text-xl font-semibold">Painel de Controle</h3>
+        <div class="flex flex-col gap-3 text-white">
+            <div onclick="navigateTo('reservas.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Gerenciar Reservas</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="navigateTo('pacotes.html')" class="gerente w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Gerenciar Pacotes</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="navigateTo('clientes.html')" class="gerente w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Gerenciar Clientes</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+        </div>
+
+        <div class="gerente">
+            <h3 class="text-white text-xl font-semibold mb-5">Relatórios</h3>
+            <div class="flex flex-col gap-3 text-white">
+                <div onclick="openPopup('popup-emitir-relatorio-reservas')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                    <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Emitir relatório de reservas</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            <div onclick="openPopup('popup-emitir-relatorio-financeiro')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200 cursor-pointer">
+                <div class="flex flex-col gap-2 text-white">
+                    <h4 class="font-medium text-lg leading-none">Emitir relatório financeiro</h4>
+                </div>
+
+                <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+            </div>
+            </div>
+        </div>
+      </section>
+    </main>
+
+    <div id="popup-emitir-relatorio-reservas" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-emitir-relatorio-reservas')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-emitir-relatorio-reservas')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Relatório de Reservas</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white text-justify">
+            Selecione o período desejado para gerar o relatório de reservas.
+        </p>
+
+        <p class="leading-[120%] text-lg text-white text-justify">
+            Esse relatório mostra todas as reservas realizadas no intervalo escolhido.
+        </p>
+
+        <div class="flex gap-2 items-center">
+            <div class="space-y-2">
+                <label for="data-inicial" class="block font-medium text-gray-2 leading-none">
+                    Data inicial
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                        id="data-inicial"
+                        type="date"
+                        value="2025-08-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                    >
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label for="data-final" class="block font-medium text-gray-2 leading-none">
+                    Data final
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                        id="data-final"
+                        type="date"
+                        value="2025-09-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                    >
+                </div>
+            </div>
+        </div>
+        <button onclick="openPopup('popup-relatorio-reservas')" class="w-full py-3 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+            Emitir relatório
+        </button>
+      </div>
+    </div>
+
+    <div id="popup-emitir-relatorio-financeiro" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-emitir-relatorio-financeiro')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-emitir-relatorio-financeiro')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Relatório Financeiro</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white text-justify">
+            Selecione o período desejado para gerar o relatório financeiro.
+        </p>
+
+        <p class="leading-[120%] text-lg text-white text-justify">
+            Esse relatório apresenta os valores recebidos dentro do intervalo selecionado.
+        </p>
+
+        <div class="flex gap-2 items-center">
+            <div class="space-y-2">
+                <label for="data-inicial" class="block font-medium text-gray-2 leading-none">
+                    Data inicial
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                        id="data-inicial"
+                        type="date"
+                        value="2025-08-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                    >
+                </div>
+            </div>
+            <div class="space-y-2">
+                <label for="data-final" class="block font-medium text-gray-2 leading-none">
+                    Data final
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                        id="data-final"
+                        type="date"
+                        value="2025-09-16"
+                        class="focus:outline-none text-white w-35 [&::-webkit-calendar-picker-indicator]:invert"
+                    >
+                </div>
+            </div>
+        </div>
+        <button onclick="openPopup('popup-relatorio-financeiro')" class="w-full py-3 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+            Emitir relatório
+        </button>
+      </div>
+    </div>
+
+    <div id="popup-relatorio-reservas" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-relatorio-reservas')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm max-h-150 p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-relatorio-reservas')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Relatório de Reservas</h2>
+        <p class="font-regular leading-none text-sm text-gray-2 -mt-2">Período: 16/08/2025 a 16/09/2025</p>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <section class="flex flex-col gap-1.5">
+            <h3 class="font-semibold text-xl text-white mb-1.5">Resumo</h3>
+            <div class="flex justify-between text-gray-2 leading-none">
+                <p>Reservas confirmadas</p><p>103 (76%)</p>
+            </div>
+            <hr class="border-t-1 border-gray-2/50">
+            <div class="flex justify-between text-gray-2 leading-none">
+                <p>Reservas canceladas</p><p>25 (24%)</p>
+            </div>
+            <hr class="border-t-1 border-gray-2/50">
+            <div class="flex justify-between text-gray-2 leading-none">
+                <p>Reservas totais</p><p>128</p>
+            </div>
+        </section>
+
+        <section class="flex flex-col gap-2 overflow-y-hidden">
+            <h3 class="font-semibold text-xl text-white mb-2">Detalhes</h3>
+            <div class="flex flex-col gap-2 overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                <div class="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+                    <div class="text-white text-sm truncate">
+                        <p><span class="font-semibold">Pacote:</span> Setup Gamer Duplo</p>
+                        <p><span class="font-semibold">Cliente:</span> João Silva</p>
+                        <p><span class="font-semibold">Data:</span> 25/08/2025</p>
+                    </div>
+                    <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold">
+                        <p class="bg-green-600 rounded-xl py-1 px-3">Confirmada</p>
+                        <p class="text-right">R$ 350,00</p>
+                    </div>
+                </div>
+                <div class="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+                    <div class="text-white text-sm truncate">
+                        <p class="truncate"><span class="font-semibold">Pacote:</span> Setup de Trabalho Profissional</p>
+                        <p class="truncate"><span class="font-semibold">Cliente:</span> João Silva</p>
+                        <p><span class="font-semibold">Data:</span> 25/08/2025</p>
+                    </div>
+                    <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold flex-shrink-0">
+                        <p class="bg-green-600 rounded-xl py-1 px-3">Confirmada</p>
+                        <p class="text-right">R$ 350,00</p>
+                    </div>
+                </div>
+                <div class="w-full p-2 flex justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+                    <div class="text-white text-sm truncate">
+                        <p><span class="font-semibold">Pacote:</span> Setup Gamer de 4</p>
+                        <p><span class="font-semibold">Cliente:</span> João Silva</p>
+                        <p><span class="font-semibold">Data:</span> 25/08/2025</p>
+                    </div>
+                    <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold">
+                        <p class="bg-red-500 rounded-xl py-1 px-3">Cancelada</p>
+                        <p class="text-right">R$ 100,00</p>
+                    </div>
+                </div>
+                <div class="w-full p-2 flex justify-between bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors transition-200">
+                    <div class="text-white text-sm truncate">
+                        <p><span class="font-semibold">Pacote:</span> Setup Gamer Duplo</p>
+                        <p><span class="font-semibold">Cliente:</span> João Silva</p>
+                        <p><span class="font-semibold">Data:</span> 25/08/2025</p>
+                    </div>
+                    <div class="flex flex-col justify-between leading-none text-white text-sm font-semibold">
+                        <p class="bg-red-500 rounded-xl py-1 px-3">Cancelada</p>
+                        <p class="text-right">R$ 100,00</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="popup-relatorio-financeiro" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-relatorio-financeiro')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm max-h-149 p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-relatorio-financeiro')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Relatório Financeiro</h2>
+        <p class="font-regular leading-none text-sm text-gray-2 -mt-2">Período: 16/08/2025 a 16/09/2025</p>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <section class="flex flex-col gap-1.5">
+            <h3 class="font-semibold text-xl text-white mb-1.5">Resumo</h3>
+            <div class="flex justify-between text-gray-2 leading-none">
+                <p>Faturamento total</p><p>R$ 54.320,00</p>
+            </div>
+            <hr class="border-t-1 border-gray-2/50">
+            <div class="flex justify-between text-gray-2 leading-none">
+                <p>Reservas confirmadas</p><p>103</p>
+            </div>
+            <hr class="border-t-1 border-gray-2/50">
+            <div class="flex justify-between text-gray-2 leading-none">
+                <p>Ticket médio por reserva</p><p>R$ 527,38</p>
+            </div>
+        </section>
+
+        <section class="flex flex-col gap-2 overflow-y-hidden">
+            <h3 class="font-semibold text-xl text-white mb-2">Distribuição por Dia</h3>
+            <div class="h-full overflow-y-auto [&::-webkit-scrollbar]:hidden">
+                <table class="w-full text-gray-2 text-sm">
+                    <tr class="text-sm border-b border-gray text-white">
+                        <td class="pb-1">
+                            Data
+                        </td>
+                        <td class="pb-1 text-center">
+                            Qtd Reservas
+                        </td>
+                        <td class="pb-1 text-right">
+                            Faturamento <span>(R$)</span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">16/08/2025</td>
+                        <td class="pt-1 text-center">8</td>
+                        <td class="pt-1 text-right">2.950,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">17/08/2025</td>
+                        <td class="pt-1 text-center">10</td>
+                        <td class="pt-1 text-right">3.600,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">18/08/2025</td>
+                        <td class="pt-1 text-center">7</td>
+                        <td class="pt-1 text-right">2.450,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">19/08/2025</td>
+                        <td class="pt-1 text-center">12</td>
+                        <td class="pt-1 text-right">4.200,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">20/08/2025</td>
+                        <td class="pt-1 text-center">9</td>
+                        <td class="pt-1 text-right">3.250,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">21/08/2025</td>
+                        <td class="pt-1 text-center">11</td>
+                        <td class="pt-1 text-right">3.900,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">22/08/2025</td>
+                        <td class="pt-1 text-center">13</td>
+                        <td class="pt-1 text-right">4.550,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">23/08/2025</td>
+                        <td class="pt-1 text-center">15</td>
+                        <td class="pt-1 text-right">5.100,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">24/08/2025</td>
+                        <td class="pt-1 text-center">9</td>
+                        <td class="pt-1 text-right">3.300,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">25/08/2025</td>
+                        <td class="pt-1 text-center">14</td>
+                        <td class="pt-1 text-right">4.800,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">26/08/2025</td>
+                        <td class="pt-1 text-center">10</td>
+                        <td class="pt-1 text-right">3.700,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">27/08/2025</td>
+                        <td class="pt-1 text-center">12</td>
+                        <td class="pt-1 text-right">4.350,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">28/08/2025</td>
+                        <td class="pt-1 text-center">8</td>
+                        <td class="pt-1 text-right">2.900,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">29/08/2025</td>
+                        <td class="pt-1 text-center">11</td>
+                        <td class="pt-1 text-right">3.950,00</td>
+                    </tr>
+                    <tr>
+                        <td class="pt-1">30/08/2025</td>
+                        <td class="pt-1 text-center">13</td>
+                        <td class="pt-1 text-right">4.600,00</td>
+                    </tr>
+                </table>
+            </div>
+        </section>
+      </div>
+    </div>
+
+    <div id="sidebar" class="absolute inset-0 z-10 hidden">
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
+        <div class="flex items-start justify-between">
+          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+
+          <button onclick="closeSidebar()" class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex justify-between items-center gap-2 leading-none">
+          <div class="flex flex-col gap-2">
+            <h3 class="text-white font-semibold text-xl">José da Silva</h3>
+            <p class="text-gray-2">jose.silva@email.com</p>
+          </div>
+
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
+            <img class="size-4" src="./assets/log-out.svg" alt="Sair">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <nav class="flex flex-col gap-2">
+          <a onclick="navigateTo('perfil.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil">
+            <span>Perfil</span>
+          </a>
+          
+          <a onclick="navigateTo('home.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/home.svg" alt="Home">
+            <span>Home</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes-disponiveis.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis">
+            <span>Pacotes Disponíveis</span>
+          </a>
+
+          <a onclick="navigateTo('minhas-reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas Reservas">
+            <span>Minhas Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('feedbacks.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks">
+            <span>Feedbacks</span>
+          </a>
+        </nav>
+
+        <hr class="gerente suporte border-t-1 border-gray-2/50">
+
+        <nav class="gerente suporte flex flex-col gap-2">
+          <a onclick="navigateTo('dashboard.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard">
+            <span>Dashboard</span>
+          </a>
+
+          <a onclick="navigateTo('reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar Reservas">
+            <span>Gerenciar Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes">
+            <span>Gerenciar Pacotes</span>
+          </a>
+
+          <a onclick="navigateTo('clientes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar Clientes">
+            <span>Gerenciar Clientes</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/log-out.svg" alt="Sair">
+            <span class="text-red text-xl font-medium leading-none">Sair</span>
+          </button>
+
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
