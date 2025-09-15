@@ -32,13 +32,13 @@
       </h2>
 
       <div class="flex items-center gap-4 flex-shrink-0">
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
           <img src="./assets/filter.svg" class="size-4.5">
 
           Filtros
         </button>
 
-         <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+         <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
           <img src="./assets/sliders.svg" class="size-4.5">
 
           Ordenar por
@@ -296,12 +296,12 @@
               <span class="text-red text-lg font-medium leading-none">Cancelar</span>
             </button>
 
-            <button id="edit-reserve-button" onclick="toggleEditPackInfo()" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <button id="edit-reserve-button" onclick="toggleEditReserveInfo()" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
               <img class="size-5" src="./assets/pen.svg" alt="Editar">
               <span class="text-white text-lg font-medium leading-none">Editar</span>
             </button>
 
-            <button id="save-reserve-button" onclick="toggleEditPackInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+            <button id="save-reserve-button" onclick="toggleEditReserveInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
               <span class="text-white text-lg font-medium leading-none">Salvar alterações</span>
             </button>
           </div>
@@ -377,23 +377,421 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Cancelar Reserva</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Cancelar Reserva</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white text-justify">Tem certeza que deseja cancelar a sua reserva do “Setup Gamer Duplo”?</p>
+        <p class="leading-[120%] text-base text-white text-justify">Tem certeza que deseja cancelar a sua reserva do “Setup Gamer Duplo”?</p>
 
-        <p class="leading-[120%] text-lg text-white text-justify">Essa ação não pode ser desfeita.</p>
+        <p class="leading-[120%] text-base text-white text-justify">Essa ação não pode ser desfeita.</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="cancelReserve()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/red-x.svg" alt="Cancelar">
-            <span class="text-red text-xl font-medium leading-none">Cancelar</span>
+            <span class="text-red text-lg font-medium leading-none">Cancelar</span>
           </button>
 
           <button onclick="closePopup('popup-cancelar-reserva')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-info-pacote" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-pacote')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-info-pacote')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Informações do Pacote</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75 [&:has(:disabled)]:pointer-events-none">
+          <label for="picture-pack" class="block font-medium text-gray leading-none">
+            Foto
+          </label>
+          <input
+            id="picture-pack"
+            type="file"
+            accept="image/*"
+            class="hidden"
+            disabled
+          >
+          <label for="picture-pack" class="w-full aspect-[1.6] rounded-lg bg-black border border-gray-2/50 flex items-center justify-center cursor-pointer overflow-hidden">
+            <img id="preview-img" src="./assets/setup-1.png" class="object-cover w-full h-full">
+          </label>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="name-pack" class="block font-medium text-gray leading-none">
+            Nome
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="name-pack"
+              type="text"
+              value="Novo Setup 1"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="description-pack" class="block font-medium text-gray leading-none">
+            Descrição
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <textarea
+              disabled
+              id="description-pack"
+              class="min-h-30 max-h-52 focus:outline-none disabled:cursor-not-allowed text-white w-full leading-[130%] [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+            >Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição Descrição.</textarea>
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="value-pack" class="block font-medium text-gray leading-none">
+            Valor (hora):
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm text-white border-gray-2/50 flex items-center justify-between leading-none">
+            R$&nbsp;
+            <input
+              disabled
+              id="value-pack"
+              type="text"
+              value="50,00"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="flex flex-col gap-3">
+          <div class="gerente w-full flex gap-3 items-center">
+            <button id="delete-pack-button" onclick="openPopup('popup-excluir-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+              <span class="text-red text-lg font-medium leading-none">Excluir</span>
+            </button>
+
+            <button id="edit-pack-button" onclick="toggleEditPackInfo()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+              <img class="size-5" src="./assets/pen.svg" alt="Editar">
+              <span class="text-white text-lg font-medium leading-none">Editar</span>
+            </button>
+
+            <button id="save-pack-button" onclick="toggleEditPackInfo()" class="hidden h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) transition-colors transition-200 rounded-lg cursor-pointer">
+              <span class="text-white text-lg font-medium leading-none">Salvar alterações</span>
+            </button>
+          </div>
+
+          <button onclick="closePopup('popup-info-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-excluir-pacote" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-excluir-pacote')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-excluir-pacote')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Pacote</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o pacote “Setup Gamer Duplo”?</p>
+
+        <p class="leading-[120%] text-base text-white">Essa ação não poderá ser desfeita e todos as reservas dele serão canceladas de forma definitiva.</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="deletePack()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
+          </button>
+
+          <button onclick="closePopup('popup-excluir-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-info-endereco" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-endereco')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-criar-endereco')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Dados do Endereço</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="name" class="block font-medium text-gray leading-none">
+            Nome
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="name-address"
+              type="text"
+              value="Faculdade"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="cep" class="block font-medium text-gray leading-none">
+            CEP
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="cep-address"
+              type="text"
+              value="12345-678"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="state" class="block font-medium text-gray leading-none">
+            Estado
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="state-address"
+              type="text"
+              value="Rio de Janeiro"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="city" class="block font-medium text-gray leading-none">
+            Cidade
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="city-address"
+              type="text"
+              value="Rio de Janeiro"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="street" class="block font-medium text-gray leading-none">
+            Logradouro
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="street-address"
+              type="text"
+              value="Rua General Canabarro, 485"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="gerente w-full flex flex-col gap-3 items-center">
+          <button onclick="openPopup('popup-excluir-endereco')" class="w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
+            <span class="block text-red text-lg font-semibold leading-none">Excluir endereço</span>
+          </button>
+
+          <button id="edit-address-button" onclick="toggleEditAddressInfo()" class="h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+            Editar informações
+          </button>
+
+          <button id="save-address-button" onclick="toggleEditAddressInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
+            Salvar alterações
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-info-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+          <button onclick="closePopup('popup-info-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+
+          <h2 class="font-bold leading-none text-2xl text-white">Dados do Cliente</h2>
+
+          <hr class="border-t-1 border-gray-2/50">
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="name-client" class="block font-medium text-gray leading-none">
+              Nome
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="name-client"
+                type="text"
+                value="José da Silva"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="email-client" class="block font-medium text-gray leading-none">
+              E-mail
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="email-client"
+                type="text"
+                value = "jose.silva@email.com"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="phone-client" class="block font-medium text-gray leading-none">
+              Telefone
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="phone-client"
+                type="text"
+                value="(00) 12345-6789"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="date-client" class="block font-medium text-gray leading-none">
+              Data de Cadastro
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="date-client"
+                type="date"
+                value="1970-01-01"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+          </div>
+
+          <div class="w-full flex flex-col gap-3 items-center">
+            <button id="edit-client-button" onclick="toggleEditClientInfo()" class="gerente h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+              Editar informações
+            </button>
+
+            <button id="save-client-button" onclick="toggleEditClientInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
+              Salvar alterações
+            </button>
+            
+            <div onclick="navigateTo('reservas-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Ver Reservas</h4>
+              </div>
+
+              <button onclick="navigateTo('reservas-cliente.html')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+            </div>
+
+            <div onclick="navigateTo('enderecos-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Ver Endereços</h4>
+              </div>
+
+              <button onclick="navigateTo('enderecos-cliente.html')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+            </div>
+
+            <button onclick="openPopup('popup-excluir-cliente')" class="gerente w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
+              <span class="block text-red text-lg font-semibold leading-none">Excluir</span>
+            </button>
+          </div>
+        </div>
+    </div>
+    
+    <div id="popup-excluir-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-excluir-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-excluir-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Cliente</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o cliente "José da Silva"?</p>
+
+        <p class="leading-[120%] text-base text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="deleteClient()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
+          </button>
+
+          <button onclick="closePopup('popup-excluir-cliente')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-excluir-endereco" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-excluir-endereco')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-excluir-endereco')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Endereço</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o endereço “Faculdade?”</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="deleteAddress()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
+          </button>
+
+          <button onclick="closePopup('popup-excluir-endereco')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
         </div>
       </div>
@@ -404,7 +802,7 @@
 
       <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
         <div class="flex items-start justify-between">
-          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+          <h2 class="font-bold leading-none text-2xl text-white">Menu</h2>
 
           <button onclick="closeSidebar()" class="size-6 cursor-pointer">
             <img class="size-full" src="./assets/x.svg" alt="Fechar">
@@ -487,48 +885,96 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Sair</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
-            <span class="text-red text-xl font-medium leading-none">Sair</span>
+            <span class="text-red text-lg font-medium leading-none">Sair</span>
           </button>
-
           <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
-        </div>
+        </div>  
       </div>
     </div>
   </div>
 
-
-
-
-
   <script src="script.js"></script>
   <script>
-    let isEdittingPack = false
+    let isEdittingReserve = false
 
-    function toggleEditPackInfo() {
-      if (isEdittingPack) {
+    function toggleEditReserveInfo() {
+      if (isEdittingReserve) {
         document.getElementById('edit-reserve-button').classList.remove('hidden')
         document.getElementById('cancel-reserve-button').classList.remove('hidden')
         document.getElementById('save-reserve-button').classList.add('hidden')
         disableInputs(['name', 'value', 'inicio', 'termino'])
-        isEdittingPack = false
+        isEdittingReserve = false
       } else {
         document.getElementById('edit-reserve-button').classList.add('hidden')
         document.getElementById('cancel-reserve-button').classList.add('hidden')
         document.getElementById('save-reserve-button').classList.remove('hidden')
         enableInputs(['name', 'value', 'inicio', 'termino'])
+        isEdittingReserve = true
+      }
+    }
+  </script>
+  <script>
+    let isEdittingPack = false
+
+    function toggleEditPackInfo() {
+      if (isEdittingPack) {
+        document.getElementById('edit-pack-button').classList.remove('hidden')
+        document.getElementById('delete-pack-button').classList.remove('hidden')
+        document.getElementById('save-pack-button').classList.add('hidden')
+        disableInputs(['name-pack', 'description-pack', 'value-pack', 'picture-pack'])
+        isEdittingPack = false
+      } else {
+        document.getElementById('edit-pack-button').classList.add('hidden')
+        document.getElementById('delete-pack-button').classList.add('hidden')
+        document.getElementById('save-pack-button').classList.remove('hidden')
+        enableInputs(['name-pack', 'description-pack', 'value-pack', 'picture-pack'])
         isEdittingPack = true
+      }
+    }
+  </script>
+  <script>
+    let isEdittingAddress = false
+
+    function toggleEditAddressInfo() {
+      if (isEdittingAddress) {
+        document.getElementById('edit-address-button').classList.remove('hidden')
+        document.getElementById('save-address-button').classList.add('hidden')
+        disableInputs(['name-address', 'cep-address', 'state-address', 'city-address', 'street-address'])
+        isEdittingAddress = false
+      } else {
+        document.getElementById('edit-address-button').classList.add('hidden')
+        document.getElementById('save-address-button').classList.remove('hidden')
+        enableInputs(['name-address', 'cep-address', 'state-address', 'city-address', 'street-address'])
+        isEdittingAddress = true
+      }
+    }
+  </script>
+  <script>
+    let isEdittingClient = false
+
+    function toggleEditClientInfo() {
+      if (isEdittingClient) {
+        document.getElementById('edit-client-button').classList.remove('hidden')
+        document.getElementById('save-client-button').classList.add('hidden')
+        disableInputs(['name-client', 'email-client', 'phone-client', 'date-client'])
+        isEdittingClient = false
+      } else {
+        document.getElementById('edit-client-button').classList.add('hidden')
+        document.getElementById('save-client-button').classList.remove('hidden')
+        enableInputs(['name-client', 'email-client', 'phone-client', 'date-client'])
+        isEdittingClient = true
       }
     }
   </script>
@@ -541,6 +987,21 @@
     function cancelReserve() {
       closePopup('popup-cancelar-reserva')
       closePopup('popup-info-reserva')
+    }
+
+    function deletePack() {
+      closePopup('popup-excluir-pacote')
+      closePopup('popup-info-pacote')
+    }
+
+    function deleteAddress() {
+      closePopup('popup-excluir-endereco')
+      closePopup('popup-info-endereco')
+    }
+
+    function deleteClient() {
+      closePopup('popup-excluir-cliente')
+      closePopup('popup-info-cliente')
     }
   </script>
 </body>

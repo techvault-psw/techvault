@@ -33,13 +33,13 @@
 
       <div class="flex flex-col gap-4 items-center">
         <div class="flex items-center gap-4 flex-shrink-0">
-          <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
             <img src="./assets/filter.svg" class="size-4.5">
 
             Filtros
           </button>
 
-          <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
             <img src="./assets/sliders.svg" class="size-4.5">
 
             Ordenar por
@@ -112,7 +112,7 @@
 
       <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
         <div class="flex items-start justify-between">
-          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+          <h2 class="font-bold leading-none text-2xl text-white">Menu</h2>
 
           <button onclick="closeSidebar()" class="size-6 cursor-pointer">
             <img class="size-full" src="./assets/x.svg" alt="Fechar">
@@ -195,23 +195,22 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Sair</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
-            <span class="text-red text-xl font-medium leading-none">Sair</span>
+            <span class="text-red text-lg font-medium leading-none">Sair</span>
           </button>
-
           <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
-        </div>
+        </div>  
       </div>
     </div>
 
@@ -223,7 +222,7 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Criar novo pacote</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Criar novo pacote</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
@@ -274,22 +273,23 @@
           <label for="value-new" class="block font-medium text-gray leading-none">
             Valor (hora):
           </label>
-          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm text-white border border-gray-2/50 flex items-center justify-between leading-none">
+            R$&nbsp;
             <input
               id="value-new"
               type="text"
-              value="R$ 50,00"
+              value="50,00"
               class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
             >
           </div>
         </div>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="closePopup('popup-criar-pacote')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-xl font-medium leading-none">
+          <button onclick="closePopup('popup-criar-pacote')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
             Cancelar
           </button>
 
-          <button onclick="closePopup('popup-criar-pacote')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-xl font-medium leading-none">
+          <button onclick="closePopup('popup-criar-pacote')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
             Criar
           </button>
         </div>
@@ -356,19 +356,20 @@
           <label for="value" class="block font-medium text-gray leading-none">
             Valor (hora):
           </label>
-          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm text-white border border-gray-2/50 flex items-center justify-between leading-none">
+            R$&nbsp;
             <input
               disabled
               id="value"
               type="text"
-              value="R$ 50,00"
+              value="50,00"
               class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
             >
           </div>
         </div>
 
         <div class="flex flex-col gap-3">
-          <div class="w-full flex gap-3 items-center">
+          <div class="gerente w-full flex gap-3 items-center">
             <button id="delete-pack-button" onclick="openPopup('popup-excluir-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
               <img class="size-5" src="./assets/trash.svg" alt="Excluir">
               <span class="text-red text-lg font-medium leading-none">Excluir</span>
@@ -400,23 +401,23 @@
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
 
-        <h2 class="font-bold leading-none text-3xl text-white">Excluir Pacote</h2>
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Pacote</h2>
 
         <hr class="border-t-1 border-gray-2/50">
 
-        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja excluir permanentemente o pacote “Setup Gamer Duplo”?</p>
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o pacote “Setup Gamer Duplo”?</p>
 
-        <p class="leading-[120%] text-lg text-white">Essa ação não poderá ser desfeita e todos as reservas dele serão canceladas de forma definitiva.</p>
+        <p class="leading-[120%] text-base text-white">Essa ação não poderá ser desfeita e todos as reservas dele serão canceladas de forma definitiva.</p>
 
         <div class="w-full flex gap-3 items-center">
           <button onclick="deletePack()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
-            <span class="text-red text-xl font-medium leading-none">Excluir</span>
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
           </button>
 
           <button onclick="closePopup('popup-excluir-pacote')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
         </div>
       </div>
