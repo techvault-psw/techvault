@@ -309,8 +309,8 @@
             </button>
           </div>
         </div>
-      </div>
     </div>
+
     <div id="popup-excluir-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
       <div onclick="closePopup('popup-excluir-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
@@ -328,7 +328,7 @@
         <p class="leading-[120%] text-lg text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="deleteCustomer()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <button onclick="deleteClient()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
             <span class="text-red text-xl font-medium leading-none">Excluir</span>
           </button>
@@ -362,7 +362,7 @@
   </script>
 
   <script>
-    function deleteCustomer() {
+    function deleteClient() {
       closePopup('popup-excluir-cliente')
       closePopup('popup-info-cliente')
     }
