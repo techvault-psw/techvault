@@ -73,9 +73,9 @@
             </div>
           </div>
 
-          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <div class="space-y-2 [&:has(select:disabled)]:opacity-75">
             <label for="endereco" class="block font-medium text-gray">Endereço de Entrega/Montagem:</label>
-            <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none">
+            <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none disabled:cursor-not-allowed">
               <option class="text-black">Endereço 1</option>
               <option class="text-black">Endereço 2</option>
               <option class="text-black">Endereço 3</option>

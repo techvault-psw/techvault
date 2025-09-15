@@ -46,9 +46,16 @@
             <h3 class="font-semibold text-white text-lg leading-none">Informações:</h3>
 
             <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-              <label for="inicio" class="block font-medium text-gray leading-none">Valor total pago:</label>
-              <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm text-white border border-gray-2/50 flex items-center justify-between leading-none">
-                R$ 110,00
+              <label for="value" class="block font-medium text-gray leading-none">Valor total pago:</label>
+              <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm text-white border border-gray-2/50 flex items-center justify-between leading-none">
+                R$&nbsp;
+                <input
+                  disabled
+                  id="value"
+                  type="text"
+                  value="110,00"
+                  class="focus:outline-none disabled:cursor-not-allowed w-full leading-none"
+                >
               </div>
             </div>
 
@@ -78,9 +85,9 @@
               </div>
             </div>
 
-            <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <div class="space-y-2 [&:has(select:disabled)]:opacity-75">
               <label for="endereco" class="block font-medium text-gray leading-none">Endereço de Entrega/Montagem:</label>
-              <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none">
+              <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none disabled:cursor-not-allowed">
                 <option class="text-black">Endereço 1</option>
                 <option class="text-black">Endereço 2</option>
                 <option class="text-black">Endereço 3</option>
