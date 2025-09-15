@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reservas | TechVault</title>
+  <title>Reservas de João Silva | TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
   <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
@@ -28,7 +28,7 @@
       </div>
 
       <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
-        Reservas de Dijão
+        Reservas de João Silva
       </h2>
 
       <div class="flex items-center gap-4 flex-shrink-0">
@@ -48,7 +48,7 @@
       <section class="w-full flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
         <div class="w-full flex flex-col gap-3">
           <div class="flex gap-2 items-center w-full">
-            <span class="font-semibold text-white text-xl">Atuais</span>
+            <span class="font-medium text-white text-xl">Atuais</span>
             <div class="flex-1 bg-white h-px"></div>
           </div>
           <section class="flex flex-col gap-4 w-full min-h-0">
@@ -84,7 +84,7 @@
 
         <div class="w-full flex flex-col gap-3">
           <div class="flex gap-2 items-center w-full">
-            <span class="font-semibold text-white text-xl">Concluídas</span>
+            <span class="font-medium text-white text-xl">Concluídas</span>
             <div class="flex-1 bg-white h-px"></div>
           </div>
           <section class="flex flex-col gap-4 w-full min-h-0">
@@ -106,7 +106,7 @@
 
         <div class="w-full flex flex-col gap-3">
           <div class="flex gap-2 items-center w-full">
-            <span class="font-semibold text-white text-xl">Canceladas</span>
+            <span class="font-medium text-white text-xl">Canceladas</span>
             <div class="flex-1 bg-white h-px"></div>
           </div>
           <section class="flex flex-col gap-4 w-full min-h-0">
@@ -169,10 +169,11 @@
           </section>
         </div>
       </section>
-        <button onclick="history.back()" class=" w-full mt-auto py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
-            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
-            <span class="text-white text-lg font-semibold leading-none">Voltar</span>
-        </button>
+
+      <button onclick="history.back()" class=" w-full mt-auto py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+        <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+        <span class="text-white text-lg font-semibold leading-none">Voltar</span>
+      </button>
     </main>
 
     <div id="popup-info-reserva" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
@@ -194,11 +195,11 @@
                 </label>
                 <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
                     <input
-                    disabled
-                    id="tipo"
-                    type="text"
-                    value="Entrega"
-                    class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+                      disabled
+                      id="tipo"
+                      type="text"
+                      value="Entrega"
+                      class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
                     >
                 </div>
             </div>
