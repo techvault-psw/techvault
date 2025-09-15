@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listagem Clientes | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
+    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
+      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
+        <img src="./assets/logo.png" class="w-7">
+        <h1 class="text-2xl font-bold text-white">TechVault</h1>
+      </button>
+
+      <button onclick="openSidebar()" class="cursor-pointer size-5">
+        <img src="assets/menu.svg" class="size-full">
+      </button>
+    </header>
+
+    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
+        Lista de Clientes
+      </h2>
+
+      <div class="flex items-center gap-4 flex-shrink-0">
+        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <img src="./assets/filter.svg" class="size-4.5">
+
+          Filtros
+        </button>
+
+        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white text-black font-medium rounded-lg cursor-pointer">
+          <img src="./assets/sliders.svg" class="size-4.5">
+
+          Ordenar por
+        </button>
+      </div>
+
+        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 1</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo01@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (11) 11111-1111</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+        </div>
+
+        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 2</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo02@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (22) 22222-2222</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+        </div>
+          
+        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 3</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo03@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (33) 33333-3333</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+        </div>
+
+        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 4</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo04@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (44) 44444-4444</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+        </div>
+      </div>
+    </main>
+
+    <div id="sidebar" class="absolute inset-0 z-10 hidden">
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
+        <div class="flex items-start justify-between">
+          <h2 class="font-bold leading-none text-3xl text-white">Menu</h2>
+
+          <button onclick="closeSidebar()" class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex justify-between items-center gap-2 leading-none">
+          <div class="flex flex-col gap-2">
+            <h3 class="text-white font-semibold text-xl">José da Silva</h3>
+            <p class="text-gray-2">jose.silva@email.com</p>
+          </div>
+
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
+            <img class="size-4" src="./assets/log-out.svg" alt="Sair">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <nav class="flex flex-col gap-2">
+          <a onclick="navigateTo('perfil.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil">
+            <span>Perfil</span>
+          </a>
+          
+          <a onclick="navigateTo('home.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/home.svg" alt="Home">
+            <span>Home</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes-disponiveis.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis">
+            <span>Pacotes Disponíveis</span>
+          </a>
+
+          <a onclick="navigateTo('minhas-reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas Reservas">
+            <span>Minhas Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('feedbacks.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks">
+            <span>Feedbacks</span>
+          </a>
+        </nav>
+
+        <hr class="gerente suporte border-t-1 border-gray-2/50">
+
+        <nav class="gerente suporte flex flex-col gap-2">
+          <a onclick="navigateTo('dashboard.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard">
+            <span>Dashboard</span>
+          </a>
+
+          <a onclick="navigateTo('reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar Reservas">
+            <span>Gerenciar Reservas</span>
+          </a>
+
+          <a onclick="navigateTo('pacotes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes">
+            <span>Gerenciar Pacotes</span>
+          </a>
+
+          <a onclick="navigateTo('clientes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar Clientes">
+            <span>Gerenciar Clientes</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Sair</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/log-out.svg" alt="Sair">
+            <span class="text-red text-xl font-medium leading-none">Sair</span>
+          </button>
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+          </button>
+        </div>  
+      </div>
+    </div>
+
+    <div id="popup-info-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+          <button onclick="closePopup('popup-info-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+
+          <h2 class="font-bold leading-none text-3xl text-white">Dados do Cliente</h2>
+
+          <hr class="border-t-1 border-gray-2/50">
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="name-info" class="block font-medium text-gray leading-none">
+              Nome
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="name-info"
+                type="text"
+                value="José da Silva"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="email-info" class="block font-medium text-gray leading-none">
+              E-mail
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="email-info"
+                type="text"
+                value = "jose.silva@email.com"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="phone-info" class="block font-medium text-gray leading-none">
+              Telefone
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="phone-info"
+                type="text"
+                value="(00) 12345-6789"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+              >
+            </div>
+          </div>
+
+          <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+            <label for="date-info" class="block font-medium text-gray leading-none">
+              Data de Cadastro
+            </label>
+            <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+              <input
+                disabled
+                id="date-info"
+                type="date"
+                value="1970-01-01"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none [&::-webkit-calendar-picker-indicator]:invert"
+              >
+            </div>
+          </div>
+
+          <div class="w-full flex flex-col gap-3 items-center">
+            <button id="edit-client-button" onclick="toggleEditClientInfo()" class="h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+              Editar informações
+            </button>
+
+            <button id="save-client-button" onclick="toggleEditClientInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
+              Salvar alterações
+            </button>
+            
+            <div onclick="navigateTo('reservas-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Ver Reservas</h4>
+              </div>
+
+              <button onclick="navigateTo('reservas-cliente.html')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+            </div>
+
+            <div onclick="navigateTo('enderecos-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Ver Endereços</h4>
+              </div>
+
+              <button onclick="navigateTo('enderecos-cliente.html')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+            </div>
+
+            <button onclick="openPopup('popup-excluir-cliente')" class="w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
+              <span class="block text-red text-lg font-semibold leading-none">Excluir</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="popup-excluir-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-excluir-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-excluir-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-3xl text-white">Excluir Cliente</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-lg text-white">Tem certeza de que deseja excluir permanentemente o cliente "José da Silva"?</p>
+
+        <p class="leading-[120%] text-lg text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="deleteCustomer()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+            <span class="text-red text-xl font-medium leading-none">Excluir</span>
+          </button>
+
+          <button onclick="closePopup('popup-excluir-cliente')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-xl font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let isEdittingClient = false
+
+    function toggleEditClientInfo() {
+      if (isEdittingClient) {
+        document.getElementById('edit-client-button').classList.remove('hidden')
+        document.getElementById('save-client-button').classList.add('hidden')
+        disableInputs(['name-info', 'email-info', 'phone-info', 'date-info'])
+        isEdittingClient = false
+      } else {
+        document.getElementById('edit-client-button').classList.add('hidden')
+        document.getElementById('save-client-button').classList.remove('hidden')
+        enableInputs(['name-info', 'email-info', 'phone-info', 'date-info'])
+        isEdittingClient = true
+      }
+    }
+  </script>
+
+  <script>
+    function deleteCustomer() {
+      closePopup('popup-excluir-cliente')
+      closePopup('popup-info-cliente')
+    }
+  </script>
+</body>
+</html>
