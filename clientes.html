@@ -3,22 +3,33 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Listagem Clientes | TechVault</title>
+  <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+  <title>Lista de Clientes | TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
-  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
-    <header class="bg-background p-3 flex items-center justify-between flex-shrink-0">
-      <button onclick="navigateTo('home.html')" class="flex items-center gap-2 cursor-pointer">
-        <img src="./assets/logo.png" class="w-7">
-        <h1 class="text-2xl font-bold text-white">TechVault</h1>
-      </button>
+  <div class="h-full flex flex-col relative overflow-x-hidden">
+    <header class="bg-background flex-shrink-0">
+      <div class="w-full max-w-7xl mx-auto p-3 flex items-center justify-between sm:px-16 2xl:px-0 lg:py-3.5">
+        <a href="./home.html" class="flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <img src="./assets/logo.png" class="w-7">
+          <h1 class="text-2xl font-bold text-white">TechVault</h1>
+        </a>
 
-      <button onclick="openSidebar()" class="cursor-pointer size-5">
-        <img src="assets/menu.svg" class="size-full">
-      </button>
+        <nav class="gap-8 items-center leading-none text-white font-medium hidden lg:flex">
+          <a href="./pacotes-disponiveis.html" class="hover:underline">Pacotes</a>
+          <a href="./minhas-reservas.html" class="hover:underline">Reservas</a>
+          <a href="./feedbacks.html" class="hover:underline">Feedbacks</a>
+          <a href="./dashboard.html" class="gerente suporte hover:underline">Dashboard</a>
+          <a href="./perfil.html" class="hover:underline">Perfil </a>
+        </nav>
+
+        <button onclick="openSidebar()" class="cursor-pointer size-5 lg:hidden">
+          <img src="assets/menu.svg" class="size-full">
+        </button>
+      </div>
     </header>
 
-    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+    <main class="flex-1 overflow-y-hidden">
       <div class="absolute inset-0 -z-1">
         <img 
           src="./assets/background.png" 
@@ -27,70 +38,388 @@
         <div class="absolute inset-0 bg-black/60"></div>
       </div>
 
-      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
-        Lista de Clientes
-      </h2>
+      <div class="w-full h-full max-w-7xl mx-auto p-4 flex flex-col items-center gap-4 relative sm:px-16 2xl:px-0 md:items-start">
+        <h2 class="text-3xl font-bold text-white text-center flex-shrink-0 md:text-4xl">
+          Lista de Clientes
+        </h2>
 
-      <div class="flex items-center gap-4 flex-shrink-0">
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
-          <img src="./assets/filter.svg" class="size-4.5">
+        <div class="flex items-center gap-4 flex-shrink-0">
+          <button class="w-40 md:w-52 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
+            <img src="./assets/filter.svg" class="size-4.5">
 
-          Filtros
-        </button>
+            Filtros
+          </button>
 
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
-          <img src="./assets/sliders.svg" class="size-4.5">
+          <button class="w-40 md:w-52 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
+            <img src="./assets/sliders.svg" class="size-4.5">
 
-          Ordenar por
-        </button>
-      </div>
-
-        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-            <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-semibold text-lg leading-none">Cliente 1</h4>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo01@email.com</span>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (11) 11111-1111</span>
-            </div>
-
-            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
-              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
+            Ordenar por
+          </button>
         </div>
 
-        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+        <hr class="w-full border-t-1 border-gray-2/50">
+
+        <section class="w-full flex flex-col items-center gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-semibold text-lg leading-none">Cliente 1</h4>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo01@email.com</span>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (11) 11111-1111</span>
+              </div>
+
+              <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-semibold text-lg leading-none">Cliente 2</h4>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo02@email.com</span>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (22) 22222-2222</span>
+              </div>
+
+              <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+          </div>
+            
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-semibold text-lg leading-none">Cliente 3</h4>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo03@email.com</span>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (33) 33333-3333</span>
+              </div>
+
+              <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-semibold text-lg leading-none">Cliente 4</h4>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo04@email.com</span>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (44) 44444-4444</span>
+              </div>
+
+              <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-semibold text-lg leading-none">Cliente 5</h4>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo05@email.com</span>
+                <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (55) 55555-5555</span>
+              </div>
+
+              <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
             <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-semibold text-lg leading-none">Cliente 2</h4>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo02@email.com</span>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (22) 22222-2222</span>
+              <h4 class="font-semibold text-lg leading-none">Cliente 6</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo06@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (66) 66666-6666</span>
             </div>
 
             <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
               <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
             </button>
-        </div>
-          
-        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
             <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-semibold text-lg leading-none">Cliente 3</h4>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo03@email.com</span>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (33) 33333-3333</span>
+              <h4 class="font-semibold text-lg leading-none">Cliente 7</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo07@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (77) 77777-7777</span>
             </div>
 
             <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
               <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
             </button>
-        </div>
+          </div>
 
-        <div onclick="openPopup('popup-info-cliente')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
             <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-semibold text-lg leading-none">Cliente 4</h4>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo04@email.com</span>
-              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (44) 44444-4444</span>
+              <h4 class="font-semibold text-lg leading-none">Cliente 8</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo08@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (88) 88888-8888</span>
             </div>
 
             <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
               <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
             </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 9</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo09@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (99) 99999-9999</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 10</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo10@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (10) 10101-1010</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 11</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo11@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (11) 11112-1112</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 12</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo12@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (12) 12121-1212</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 13</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo13@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (13) 13131-1313</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 14</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo14@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (14) 14141-1414</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-cliente')" class="w-full max-w-120 lg:max-w-140 p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="flex flex-col gap-2 text-white">
+              <h4 class="font-semibold text-lg leading-none">Cliente 15</h4>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">E-mail:</span> exemplo15@email.com</span>
+              <span class="leading-none text-gray-2 font-light"><span class="font-medium">Telefone:</span> (15) 15151-1515</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-cliente')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+        </section>
+
+        <div class="hidden lg:block w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+          <table class="w-full">
+            <thead>
+              <tr class="border-b border-gray-2/50 bg-background/80">
+                <th class="text-left py-3 px-4 text-white font-semibold">Nome</th>
+                <th class="text-left py-3 px-4 text-white font-semibold">E-mail</th>
+                <th class="text-left py-3 px-4 text-white font-semibold">Telefone</th>
+                <th class="text-left py-3 px-4 text-white font-semibold">Data de cadastro</th>
+                <th class="w-16"></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 1</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo01@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(11) 11111-1111</td>
+                <td class="py-3 px-4 text-gray-2 font-light">01/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 2</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo02@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(22) 22222-2222</td>
+                <td class="py-3 px-4 text-gray-2 font-light">02/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 3</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo03@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(33) 33333-3333</td>
+                <td class="py-3 px-4 text-gray-2 font-light">03/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 4</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo04@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(44) 44444-4444</td>
+                <td class="py-3 px-4 text-gray-2 font-light">04/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 5</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo05@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(55) 55555-5555</td>
+                <td class="py-3 px-4 text-gray-2 font-light">05/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 6</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo06@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(66) 66666-6666</td>
+                <td class="py-3 px-4 text-gray-2 font-light">06/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 7</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo07@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(77) 77777-7777</td>
+                <td class="py-3 px-4 text-gray-2 font-light">07/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 8</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo08@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(88) 88888-8888</td>
+                <td class="py-3 px-4 text-gray-2 font-light">08/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 9</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo09@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(99) 99999-9999</td>
+                <td class="py-3 px-4 text-gray-2 font-light">09/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 10</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo10@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(10) 10101-1010</td>
+                <td class="py-3 px-4 text-gray-2 font-light">10/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 11</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo11@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(11) 11112-1112</td>
+                <td class="py-3 px-4 text-gray-2 font-light">11/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 12</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo12@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(12) 12121-1212</td>
+                <td class="py-3 px-4 text-gray-2 font-light">12/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 13</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo13@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(13) 13131-1313</td>
+                <td class="py-3 px-4 text-gray-2 font-light">13/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 14</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo14@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(14) 14141-1414</td>
+                <td class="py-3 px-4 text-gray-2 font-light">14/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+              <tr onclick="openPopup('popup-info-cliente')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                <td class="py-3 px-4 text-white font-medium">Cliente 15</td>
+                <td class="py-3 px-4 text-gray-2 font-light">exemplo15@email.com</td>
+                <td class="py-3 px-4 text-gray-2 font-light">(15) 15151-1515</td>
+                <td class="py-3 px-4 text-gray-2 font-light">16/09/2025</td>
+                <td class="py-3 px-4">
+                  <button class="size-6 cursor-pointer">
+                    <img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes">
+                  </button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </main>
@@ -115,7 +444,7 @@
             <p class="text-gray-2">jose.silva@email.com</p>
           </div>
 
-          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border border-red">
             <img class="size-4" src="./assets/log-out.svg" alt="Sair">
           </button>
         </div>
@@ -123,27 +452,27 @@
         <hr class="border-t-1 border-gray-2/50">
 
         <nav class="flex flex-col gap-2">
-          <a onclick="navigateTo('perfil.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./perfil.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil">
             <span>Perfil</span>
           </a>
           
-          <a onclick="navigateTo('home.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./home.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/home.svg" alt="Home">
             <span>Home</span>
           </a>
 
-          <a onclick="navigateTo('pacotes-disponiveis.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./pacotes-disponiveis.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis">
             <span>Pacotes Disponíveis</span>
           </a>
 
-          <a onclick="navigateTo('minhas-reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./minhas-reservas.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas Reservas">
             <span>Minhas Reservas</span>
           </a>
 
-          <a onclick="navigateTo('feedbacks.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./feedbacks.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks">
             <span>Feedbacks</span>
           </a>
@@ -152,22 +481,22 @@
         <hr class="gerente suporte border-t-1 border-gray-2/50">
 
         <nav class="gerente suporte flex flex-col gap-2">
-          <a onclick="navigateTo('dashboard.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./dashboard.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard">
             <span>Dashboard</span>
           </a>
 
-          <a onclick="navigateTo('reservas.html')" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./reservas.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar Reservas">
             <span>Gerenciar Reservas</span>
           </a>
 
-          <a onclick="navigateTo('pacotes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./pacotes.html" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes">
             <span>Gerenciar Pacotes</span>
           </a>
 
-          <a onclick="navigateTo('clientes.html')" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <a href="./clientes.html" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
             <img class="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar Clientes">
             <span>Gerenciar Clientes</span>
           </a>
@@ -178,7 +507,7 @@
     <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
       <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
-      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+      <div class="content z-22 relative w-full max-w-lg p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
         <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
@@ -190,11 +519,11 @@
         <p class="leading-[120%] text-base text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="navigateTo('login.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <a href="./login.html" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
             <span class="text-red text-lg font-medium leading-none">Sair</span>
-          </button>
-          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+          </a>
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
@@ -205,7 +534,7 @@
     <div id="popup-info-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
       <div onclick="closePopup('popup-info-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
-      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+      <div class="content z-22 relative w-full max-w-lg p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
           <button onclick="closePopup('popup-info-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
             <img class="size-full" src="./assets/x.svg" alt="Fechar">
           </button>
@@ -268,42 +597,42 @@
                 disabled
                 id="date-info"
                 type="date"
-                value="1970-01-01"
+                value="2025-09-04"
                 class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none [&::-webkit-calendar-picker-indicator]:invert"
               >
             </div>
           </div>
 
           <div class="w-full flex flex-col gap-3 items-center">
-            <button id="edit-client-button" onclick="toggleEditClientInfo()" class="gerente h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+            <button id="edit-client-button" onclick="toggleEditClientInfo()" class="gerente h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
               Editar informações
             </button>
 
-            <button id="save-client-button" onclick="toggleEditClientInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
+            <button id="save-client-button" onclick="toggleEditClientInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) hover:brightness-109 transition-[filter] duration-200 rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
               Salvar alterações
             </button>
             
-            <div onclick="navigateTo('reservas-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <a href="./reservas-cliente.html" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
               <div class="flex flex-col gap-2 text-white">
                 <h4 class="font-medium text-lg leading-none">Ver Reservas</h4>
               </div>
 
-              <button onclick="navigateTo('reservas-cliente.html')" class="size-6 cursor-pointer">
+              <div class="size-6 cursor-pointer">
                 <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-              </button>
-            </div>
+              </div>
+            </a>
 
-            <div onclick="navigateTo('enderecos-cliente.html')" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+            <a href="./enderecos-cliente.html" class="w-full px-3 py-2 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
               <div class="flex flex-col gap-2 text-white">
                 <h4 class="font-medium text-lg leading-none">Ver Endereços</h4>
               </div>
 
-              <button onclick="navigateTo('enderecos-cliente.html')" class="size-6 cursor-pointer">
+              <div class="size-6 cursor-pointer">
                 <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-              </button>
-            </div>
+              </div>
+            </a>
 
-            <button onclick="openPopup('popup-excluir-cliente')" class="gerente w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <button onclick="openPopup('popup-excluir-cliente')" class="gerente w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
               <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
               <span class="block text-red text-lg font-semibold leading-none">Excluir</span>
             </button>
@@ -314,7 +643,7 @@
     <div id="popup-excluir-cliente" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
       <div onclick="closePopup('popup-excluir-cliente')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
 
-      <div class="content z-22 relative w-full max-w-sm p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+      <div class="content z-22 relative w-full max-w-lg p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
         <button onclick="closePopup('popup-excluir-cliente')" class="absolute size-6 cursor-pointer right-3 top-3">
           <img class="size-full" src="./assets/x.svg" alt="Fechar">
         </button>
@@ -328,12 +657,12 @@
         <p class="leading-[120%] text-base text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="deleteClient()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <button onclick="deleteClient()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
             <span class="text-red text-lg font-medium leading-none">Excluir</span>
           </button>
 
-          <button onclick="closePopup('popup-excluir-cliente')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+          <button onclick="closePopup('popup-excluir-cliente')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>

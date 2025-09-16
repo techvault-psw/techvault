@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
   <title>Login | TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
-  <div class="h-full flex flex-col max-w-[440px] mx-auto border-x border-x-white relative overflow-x-hidden">
+  <div class="h-full flex flex-col relative overflow-x-hidden">
     <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
       <div class="absolute inset-0 -z-1">
         <img src="./assets/background.png" class="w-full h-full object-cover object-[60%_center]">
@@ -18,7 +19,7 @@
         <h1 class="text-2xl font-bold text-white">TechVault</h1>
       </div>
       
-      <section class="my-auto border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
+      <form onsubmit="realizarLogin('email'); return false;" class="my-auto border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
         <h2 class="text-white text-3xl font-bold text-center leading-none">Login</h2>
 
         <hr class="border-t-1 border-gray-2/50">
@@ -27,7 +28,13 @@
           <div class="space-y-2 [&:has(:disabled)]:opacity-75">
             <label for="email" class="block font-medium text-gray leading-none">E-mail</label>
             <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none focus-within:border-white">
-              <input id="email" type="email" placeholder="Insira seu e-mail" class="focus:outline-none disabled:cursor-not-allowed text-white w-full">
+              <!-- enquanto nosso permissionamento se baseia no e-mail, precisamos colocar "text" no input abaixo -->
+              <input
+                id="email"
+                type="text" 
+                placeholder="Insira seu e-mail"
+                class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
+              >
             </div>
           </div>
 
@@ -40,7 +47,7 @@
                 placeholder="Insira sua senha"
                 class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
               >
-              <button onclick="togglePasswordVisibility()" class="size-6 cursor-pointer">
+              <button type="button" onclick="togglePasswordVisibility()" class="size-6 cursor-pointer">
                 <img id="eye-closed" src="assets/eye-closed.svg" class="size-full invert">
                 
                 <img id="eye-open" src="assets/eye-open.svg" class="hidden size-full invert">
@@ -50,13 +57,13 @@
         </div>
 
         <div class="flex flex-col gap-3 mt-auto">
-          <button onclick="realizarLogin('email')" class="w-full py-3.5 px-9 mt-auto text-white text-2xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+          <button type="submit" class="w-full py-3.5 px-9 mt-auto text-white text-2xl font-semibold bg-linear-(--gradient-primary-b) hover:brightness-109 transition-[filter] duration-200 rounded-lg leading-none cursor-pointer">
             Entrar
           </button>
 
-          <p class="text-white text-center">Não possui uma conta? <span onclick="navigateTo('cadastro.html')" class="underline font-bold cursor-pointer">Cadastrar</span></p>
+          <p class="text-white text-center">Não possui uma conta? <a href="cadastro.html" class="underline font-bold cursor-pointer">Cadastrar</a></p>
         </div>
-      </section>
+      </form>
     </main>
   </div>
 
