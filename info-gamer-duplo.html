@@ -28,7 +28,7 @@
       </div>
     </header>
     
-    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+    <main class="flex-1 overflow-y-hidden">
       <div class="absolute inset-0 -z-1">
         <img 
           src="./assets/background.png" 
@@ -36,41 +36,44 @@
         >
         <div class="absolute inset-0 bg-black/60"></div>
       </div>
+      
+      <div class="w-full h-full max-w-7xl mx-auto p-4 relative sm:px-16 2xl:px-0">
+        <section class="w-full h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 flex flex-col gap-5">
+          <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
+            <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+          </div>
+          <h2 class="text-white text-center text-3xl font-bold leading-none md:text-4xl">Setup Gamer Duplo</h2>
+          <hr class="border-t-1 border-gray-2/50">
 
-      <section class="h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5">
-        <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
-          <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
-        </div>
-        <h2 class="text-white text-center text-3xl font-bold leading-none">Setup Gamer Duplo</h2>
-        <hr class="border-t-1 border-gray-2/50">
+          <p class="text-white text-sm">
+            <span class="font-bold text-xl">Descrição</span><br/>
+              Pacote com 2 PCs de última geração com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. <br/>
+              Ideal para jogatinas with amigos.
+          </p>
+          
+          <span class="font-bold text-white text-xl">Componentes do PC</span>
+          <ul class="list-disc text-sm text-white ml-5 -mt-5">
+            <li>Ryzen 5 5600;</li>
+            <li>RTX 3060 12GB;</li>
+            <li>16 GB RAM DDR4;</li>
+            <li>SSD NVMe 1 TB;</li>
+            <li>Placa-mãe compatível.</li>
+          </ul>
 
-        <p class="text-white text-sm">
-          <span class="font-bold text-xl">Descrição</span><br/>
-            Pacote com 2 PCs de última geração com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. <br/>
-            Ideal para jogatinas with amigos.
-        </p>
-        
-        <span class="font-bold text-white text-xl">Componentes do PC</span>
-        <ul class="list-disc text-sm text-white ml-5 -mt-5">
-          <li>Ryzen 5 5600;</li>
-          <li>RTX 3060 12GB;</li>
-          <li>16 GB RAM DDR4;</li>
-          <li>SSD NVMe 1 TB;</li>
-          <li>Placa-mãe compatível.</li>
-        </ul>
+          <p class="text-xs text-white text-center">
+            OBS: Todos os pacotes acompanham no-break para proteção contra falhas na rede
+            elétrica.
+          </p>
+          <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl mt-auto">
+            Valor (hora): R$30,00
+          </div>
 
-        <p class="text-xs text-white text-center">
-          OBS: Todos os pacotes acompanham no-break para proteção contra falhas na rede
-          elétrica.
-        </p>
-        <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl mt-auto">
-          Valor (hora): R$30,00
-        </div>
-
-        <button onclick="navigateTo('confirmar-reserva.html')" class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
-          Solicitar Reserva
-        </button>
-      </section>
+          <button onclick="navigateTo('confirmar-reserva.html')" class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+            Solicitar Reserva
+          </button>
+        </section>
+      </div>
+    </main>
     
 
     <div id="sidebar" class="absolute inset-0 z-10 hidden">
