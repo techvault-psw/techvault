@@ -5,6 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Informações da Reserva | TechVault</title>
 </head>
+<style>
+  .custom-scrollbar-hor,
+  .custom-scrollbar-ver {
+    overflow: auto;
+  }
+
+  .custom-scrollbar-hor::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .custom-scrollbar-ver::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar-hor::-webkit-scrollbar-track,
+  .custom-scrollbar-ver::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar-hor::-webkit-scrollbar-thumb,
+  .custom-scrollbar-ver::-webkit-scrollbar-thumb {
+    background: #d9d9d950;
+    border-radius: 9999px;
+  }
+</style>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
   <div class="h-full flex flex-col relative overflow-x-hidden">
     <header class="bg-background flex-shrink-0">
@@ -43,87 +68,99 @@
 
           <hr class="border-t-1 border-gray-2/50">
 
-          <div class="flex items-center gap-3">
-            <div class="aspect-[1.6] h-22 rounded-lg overflow-hidden border border-gray-2/50">
+          <div class="flex md:flex-col items-center gap-3">
+            <div class="aspect-[1.6] h-22 md:h-66 xl:h-77 rounded-lg md:rounded-xl overflow-hidden border border-gray-2/50">
               <img src="./assets/setup-1.png" alt="Setup Gamer" class="size-full object-cover">
             </div>
-            <span class="text-white font-medium text-lg">Setup Gamer Duplo</span>
+            <span class="text-white font-medium text-xl sm:text-2xl sm:font-semibold">Setup Gamer Duplo</span>
           </div>
 
           <hr class="border-t-1 border-gray-2/50">
 
-          <div class="flex flex-col gap-5 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+          <div class="flex flex-col gap-5 overflow-y-auto custom-scrollbar-ver">
             <div class="flex flex-col gap-4">
               <h3 class="font-semibold text-white text-lg leading-none">Informações:</h3>
 
-              <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-                <label for="value" class="block font-medium text-gray leading-none">Valor total pago:</label>
-                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm text-white border border-gray-2/50 flex items-center justify-between leading-none">
-                  R$&nbsp;
-                  <input
-                    disabled
-                    id="value"
-                    type="text"
-                    value="110,00"
-                    class="focus:outline-none disabled:cursor-not-allowed w-full leading-none"
-                  >
+              <div class="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                  <label for="value" class="block font-medium text-gray leading-none">Valor total pago:</label>
+                  <div class="h-11.5 rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm text-white border border-gray-2/50 flex items-center justify-between leading-none">
+                    R$&nbsp;
+                    <input
+                      disabled
+                      id="value"
+                      type="text"
+                      value="110,00"
+                      class="focus:outline-none disabled:cursor-not-allowed w-full leading-none"
+                    >
+                  </div>
                 </div>
-              </div>
 
-              <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-                <label for="inicio" class="block font-medium text-gray leading-none">Data e Hora de Início:</label>
-                <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-                  <input
-                    disabled
-                    id="inicio"
-                    type="datetime-local"
-                    value="2025-09-02 18:10"
-                    class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
-                  >
+                <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                  <label for="inicio" class="block font-medium text-gray leading-none">Data e Hora de Início:</label>
+                  <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                      disabled
+                      id="inicio"
+                      type="datetime-local"
+                      value="2025-09-02 18:10"
+                      class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+                    >
+                  </div>
                 </div>
-              </div>
 
-              <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-                <label for="termino" class="block font-medium text-gray leading-none">Data e Hora de Término:</label>
-                <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-                  <input
-                    disabled
-                    id="termino"
-                    type="datetime-local"
-                    value="2025-09-03 21:30"
-                    class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
-                  >
+                <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                  <label for="termino" class="block font-medium text-gray leading-none">Data e Hora de Término:</label>
+                  <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                    <input
+                      disabled
+                      id="termino"
+                      type="datetime-local"
+                      value="2025-09-03 21:30"
+                      class="focus:outline-none disabled:cursor-not-allowed text-white appearance-none w-full [&::-webkit-calendar-picker-indicator]:invert"
+                    >
+                  </div>
                 </div>
-              </div>
 
-              <div class="space-y-2 [&:has(select:disabled)]:opacity-75">
-                <label for="endereco" class="block font-medium text-gray leading-none">Endereço de Entrega/Montagem:</label>
-                <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none disabled:cursor-not-allowed">
-                  <option class="text-black">Endereço 1</option>
-                  <option class="text-black">Endereço 2</option>
-                  <option class="text-black">Endereço 3</option>
-                </select>
+                <div class="space-y-2 [&:has(select:disabled)]:opacity-75">
+                  <label for="endereco" class="block font-medium text-gray leading-none">Endereço de Entrega:</label>
+                  <select disabled id="endereco" class="w-full h-11 bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none disabled:cursor-not-allowed">
+                    <option class="text-black">Endereço 1</option>
+                    <option class="text-black">Endereço 2</option>
+                    <option class="text-black">Endereço 3</option>
+                  </select>
+                </div>
               </div>
             </div>
 
             <hr class="border-t-1 border-gray-2/50">
 
-            <div class="flex flex-col gap-4">
-              <h3 class="font-semibold text-white text-lg leading-none">Código para entrega:</h3>
-              
-              <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
-                4HYDNEU
+            <div class="flex flex-col gap-4 md:flex-row">
+              <div class="md:flex-1 flex flex-col gap-4">
+                <h3 class="font-semibold text-white text-lg leading-none">Código para entrega:</h3>
+                
+                <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
+                  4HYDNEU
+                </div>
+              </div>
+
+              <div class="md:flex-1 flex flex-col gap-4">
+                <h3 class="font-semibold text-white text-lg leading-none">Código para coleta:</h3>
+                
+                <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
+                  A413BCC
+                </div>
               </div>
             </div>
           </div>
 
-          <div class="flex gap-3 mt-auto">
-            <button onclick="openPopup('popup-cancelar-reserva')" class="gerente flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <div class="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
+            <button onclick="openPopup('popup-cancelar-reserva')" class="xl:col-start-2 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
               <img class="size-5" src="./assets/red-x.svg" alt="Cancelar">
               <span class="text-red text-lg font-medium leading-none">Cancelar</span>
             </button>
 
-            <button onclick="navigateTo('minhas-reservas.html')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <button onclick="navigateTo('minhas-reservas.html')" class="xl:col-start-3 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
               <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
               <span class="text-white text-lg font-medium leading-none">Voltar</span>
             </button>
