@@ -84,7 +84,7 @@ function addTailwind() {
   document.head.appendChild(style);
 }
 
-addTailwind()
+//addTailwind()
 
 function openSidebar() {
   const sidebar = document.getElementById('sidebar');

@@ -3,7 +3,57 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+  <style type="text/tailwindcss">
+    @theme {
+      --color-blue: #00BFFF;
+      --color-white: #f8fafc; /* slate-50 */
+      --color-gray: #C6C6C6;
+      --color-gray-2: oklch(87.58% 0.002 247.84); /* #D9D9D9 */
+      --color-black: #020617;
+      --color-red: oklch(0.6381 0.2217 26.19); /* #F53B3B */
+      --color-background: #121826;
+      --color-overlay: #000000;
+      --light-blue: #18AEFF;  
+      --dark-blue: #2777F0;
+      --gradient-primary-r: to right, var(--light-blue), var(--dark-blue);
+      --gradient-primary-b: to bottom, var(--light-blue), var(--dark-blue);
+      --font-poppins: 'Poppins', sans-serif;
+      --text-shadow-primary: 0px 4px 4px rgba(0,0,0,0.25);
+    }
+
+    * {
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+    }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar-hor,
+    .custom-scrollbar-ver {
+      overflow: auto;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .custom-scrollbar-ver::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar-track,
+    .custom-scrollbar-ver::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar-thumb,
+    .custom-scrollbar-ver::-webkit-scrollbar-thumb {
+      background: #d9d9d950;
+      border-radius: 9999px;
+    }
+  </style>
   <title>Minhas Reservas | TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
