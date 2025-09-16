@@ -39,20 +39,24 @@
       
       <div class="w-full h-full max-w-7xl mx-auto p-4 relative sm:px-16 2xl:px-0">
         <section class="w-full h-full border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 flex flex-col gap-5">
-          <div class="w-full h-48 rounded-xl overflow-hidden border border-gray-2/20">
-            <img src="./assets/setup-1.png" class="size-full object-cover" border="0">
+          <div class="w-full h-48 lg:h-135 rounded-xl overflow-hidden border border-gray-2/20">
+            <img src="./assets/setup-1.png" class="w-full h-full object-cover" alt="Setup Gamer">
           </div>
+
           <h2 class="text-white text-center text-3xl font-bold leading-none md:text-4xl">Setup Gamer Duplo</h2>
           <hr class="border-t-1 border-gray-2/50">
 
           <p class="text-white text-sm">
-            <span class="font-bold text-xl">Descrição</span><br/>
+            <span class="font-bold text-xl lg:text-2xl">Descrição</span><br/>
+            <p class="lg:text-xl text-white">
               Pacote com 2 PCs de última geração com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. <br/>
               Ideal para jogatinas with amigos.
+            </p>
           </p>
           
-          <span class="font-bold text-white text-xl">Componentes do PC</span>
-          <ul class="list-disc text-sm text-white ml-5 -mt-5">
+          <span class="font-bold text-white text-xl lg:text-2xl">Componentes do PC</span>
+          <br/>
+          <ul class="list-disc text-sm text-white ml-5 -mt-5 lg:text-lg">
             <li>Ryzen 5 5600;</li>
             <li>RTX 3060 12GB;</li>
             <li>16 GB RAM DDR4;</li>
@@ -60,17 +64,39 @@
             <li>Placa-mãe compatível.</li>
           </ul>
 
-          <p class="text-xs text-white text-center">
+          <p class="text-xs text-white lg:text-left sm:text-center lg:text-lg mt-auto">
             OBS: Todos os pacotes acompanham no-break para proteção contra falhas na rede
             elétrica.
           </p>
-          <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl mt-auto">
+          <!-- <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl mt-auto">
             Valor (hora): R$30,00
           </div>
 
           <button onclick="navigateTo('confirmar-reserva.html')" class="w-full py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
             Solicitar Reserva
+          </button> -->
+          <!-- <div class="flex flex-col md:flex-row gap-4 mt-4">
+            <div class="md:w-1/3 bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
+              Valor (hora): R$30,00
+            </div>
+
+            <button onclick="navigateTo('confirmar-reserva.html')" 
+              class="md:w-2/3 py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+              Solicitar Reserva
+            </button>
+          </div> -->
+          <div class="flex flex-col md:flex-row gap-4 mt-auto">
+          <div class="md:w-1/3 flex items-center justify-center bg-gray-2/10 border border-gray-2/10 rounded-lg text-white font-semibold text-xl">
+            Valor (hora): R$30,00
+          </div>
+
+          <button onclick="navigateTo('confirmar-reserva.html')" 
+            class="md:w-2/3 py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+            Solicitar Reserva
           </button>
+        </div>
+
+
         </section>
       </div>
     </main>
