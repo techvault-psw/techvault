@@ -92,7 +92,7 @@
               </div>
             </div>
 
-            <button id="edit-profile-button" onclick="toggleEditProfileInfo()" class="lg:m-auto lg:w-80 py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
+            <button id="edit-profile-button" onclick="toggleEditProfileInfo()" class="lg:m-auto lg:w-80 py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
               Editar informações
             </button>
 
@@ -113,7 +113,7 @@
             </div>
 
             <div class="lg:grid lg:grid-cols-3 flex flex-col gap-3">
-              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
                 <div class="flex flex-col gap-2 text-white">
                   <h4 class="font-semibold text-lg leading-none">Faculdade</h4>
                   <span class="leading-none text-gray-2 font-light">Rua General Canabarro, 485</span>
@@ -124,7 +124,7 @@
                 </button>
               </div>
 
-              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
                 <div class="flex flex-col gap-2 text-white">
                   <h4 class="font-semibold text-lg leading-none">Casa</h4>
                   <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
@@ -135,7 +135,7 @@
                 </button>
               </div>
 
-              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
                 <div class="flex flex-col gap-2 text-white">
                   <h4 class="font-semibold text-lg leading-none">Casa</h4>
                   <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
@@ -145,7 +145,7 @@
                   <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
               </div>
-              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
                 <div class="flex flex-col gap-2 text-white">
                   <h4 class="font-semibold text-lg leading-none">Casa</h4>
                   <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
@@ -155,7 +155,7 @@
                   <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
                 </button>
               </div>
-              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
                 <div class="flex flex-col gap-2 text-white">
                   <h4 class="font-semibold text-lg leading-none">Casa</h4>
                   <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
@@ -168,22 +168,22 @@
             </div>
           </div>
 
-          <button onclick="openPopup('popup-criar-endereco')" class="hidden lg:block lg:mx-auto lg:w-80 py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
+          <button onclick="openPopup('popup-criar-endereco')" class="hidden lg:block lg:mx-auto lg:w-80 py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
             Criar endereço
           </button>
 
           <div class="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
-            <button onclick="openPopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <button onclick="openPopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
               <img class="size-5" src="./assets/trash.svg" alt="Excluir">
               <span class="text-red text-lg font-semibold leading-none">Excluir</span>
             </button>
 
-            <button onclick="openPopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+            <button onclick="openPopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
               <img class="size-5" src="./assets/log-out.svg" alt="Sair">
               <span class="text-red text-lg font-semibold leading-none">Sair</span>
             </button>
 
-            <button onclick="history.back()" class="col-span-2 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <button onclick="history.back()" class="col-span-2 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
               <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
               <span class="text-white text-lg font-semibold leading-none">Voltar</span>
             </button>
@@ -212,7 +212,7 @@
             <p class="text-gray-2">jose.silva@email.com</p>
           </div>
 
-          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border border-red">
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border border-red">
             <img class="size-4" src="./assets/log-out.svg" alt="Sair">
           </button>
         </div>
@@ -287,11 +287,11 @@
         <p class="leading-[120%] text-base text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
 
         <div class="w-full flex gap-3 items-center">
-          <a href="./login.html" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <a href="./login.html" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/log-out.svg" alt="Sair">
             <span class="text-red text-lg font-medium leading-none">Sair</span>
           </a>
-          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
@@ -316,12 +316,12 @@
         <p class="leading-[120%] text-base text-white text-justify">Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.</p>
 
         <div class="w-full flex gap-3 items-center">
-          <a href="./cadastro.html" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <a href="./cadastro.html" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
             <span class="text-red text-lg font-medium leading-none">Excluir</span>
           </a>
 
-          <button onclick="closePopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+          <button onclick="closePopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
@@ -412,7 +412,7 @@
         </div>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="closePopup('popup-criar-endereco')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+          <button onclick="closePopup('popup-criar-endereco')" class="h-11 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
             Cancelar
           </button>
 
@@ -511,12 +511,12 @@
         </div>
 
         <div class="w-full flex flex-col gap-3 items-center">
-          <button onclick="openPopup('popup-excluir-endereco')" class="w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <button onclick="openPopup('popup-excluir-endereco')" class="w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
             <span class="block text-red text-lg font-semibold leading-none">Excluir endereço</span>
           </button>
 
-          <button id="edit-address-button" onclick="toggleEditAddressInfo()" class="h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+          <button id="edit-address-button" onclick="toggleEditAddressInfo()" class="h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
             Editar informações
           </button>
 
@@ -542,12 +542,12 @@
         <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o endereço “Faculdade?”</p>
 
         <div class="w-full flex gap-3 items-center">
-          <button onclick="deleteAddress()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+          <button onclick="deleteAddress()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
             <img class="size-5" src="./assets/trash.svg" alt="Excluir">
             <span class="text-red text-lg font-medium leading-none">Excluir</span>
           </button>
 
-          <button onclick="closePopup('popup-excluir-endereco')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+          <button onclick="closePopup('popup-excluir-endereco')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
             <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
             <span class="text-white text-lg font-medium leading-none">Voltar</span>
           </button>
