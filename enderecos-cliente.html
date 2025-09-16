@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+  <title>Endereços de João Silva | TechVault</title>
+</head>
+<body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
+  <div class="h-full flex flex-col relative overflow-x-hidden">
+    <header class="bg-background flex-shrink-0">
+      <div class="w-full max-w-7xl mx-auto p-3 flex items-center justify-between sm:px-16 2xl:px-0 lg:py-3.5">
+        <a href="./home.html" class="flex items-center gap-2 cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+          <img src="./assets/logo.png" class="w-7">
+          <h1 class="text-2xl font-bold text-white">TechVault</h1>
+        </a>
+
+        <nav class="gap-8 items-center leading-none text-white font-medium hidden lg:flex">
+          <a href="./pacotes-disponiveis.html" class="hover:underline">Pacotes</a>
+          <a href="./minhas-reservas.html" class="hover:underline">Reservas</a>
+          <a href="./feedbacks.html" class="hover:underline">Feedbacks</a>
+          <a href="./dashboard.html" class="gerente suporte hover:underline">Dashboard</a>
+          <a href="./perfil.html" class="hover:underline">Perfil </a>
+        </nav>
+
+        <button onclick="openSidebar()" class="cursor-pointer size-5 lg:hidden">
+          <img src="assets/menu.svg" class="size-full">
+        </button>
+      </div>
+    </header>
+
+    <main class="flex-1 overflow-y-hidden">
+      <div class="absolute inset-0 -z-1">
+        <img 
+          src="./assets/background.png" 
+          class="w-full h-full object-cover object-[60%_center]"
+        >
+        <div class="absolute inset-0 bg-black/60"></div>
+      </div>
+
+      <div class="w-full h-full max-w-7xl mx-auto p-4 flex flex-col items-center gap-4 relative sm:px-16 2xl:px-0 md:items-start">
+        <h2 class="text-3xl font-bold text-white text-center flex-shrink-0 md:text-4xl">
+          Endereços de João Silva
+        </h2>
+
+        <hr class="w-full border-t-1 border-gray-2/50">
+
+        <section class="w-full flex flex-col items-center gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 1</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua General Canabarro, 485 - Tijuca, Rio de Janeiro, RJ</span>
+            </div>
+
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 2</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida Paulista, 1578 - Bela Vista, São Paulo, SP</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 3</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua XV de Novembro, 920 - Centro, Curitiba, PR</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 4</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida das Américas, 4666 - Barra da Tijuca, Rio de Janeiro, RJ</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 5</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua da Consolação, 233 - Consolação, São Paulo, SP</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 6</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida Sete de Setembro, 3015 - Batel, Curitiba, PR</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 7</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua das Flores, 45 - Centro Histórico, Porto Alegre, RS</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 8</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida Boa Viagem, 2850 - Boa Viagem, Recife, PE</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 9</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua Chile, 123 - Cidade Alta, Natal, RN</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 10</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida Beira Mar, 1450 - Meireles, Fortaleza, CE</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 11</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua das Palmeiras, 76 - Copacabana, Rio de Janeiro, RJ</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 12</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida Getúlio Vargas, 900 - Funcionários, Belo Horizonte, MG</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 13</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua das Acácias, 210 - Centro, Florianópolis, SC</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 14</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Avenida Afonso Pena, 1500 - Centro, Campo Grande, MS</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+
+          <div onclick="openPopup('popup-info-endereco')" class="w-full h-full p-3 flex gap-1.5 items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors duration-200">
+            <div class="h-full flex flex-col gap-2 items-start text-white">
+              <h4 class="font-semibold text-lg leading-none">Endereço 15</h4>
+              <span class="leading-[120%] text-gray-2 font-light">Rua Dom Pedro II, 58 - Centro, Manaus, AM</span>
+            </div>
+            <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+            </button>
+          </div>
+        </section>
+
+        <div class="hidden lg:block w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+          <div class="hidden lg:block w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+            <table class="w-full">
+              <thead>
+                <tr class="border-b border-gray-2/50 bg-background/80">
+                  <th class="text-left py-3 px-4 text-white font-semibold">Nome</th>
+                  <th class="text-left py-3 px-4 text-white font-semibold">CEP</th>
+                  <th class="text-left py-3 px-4 text-white font-semibold">Estado</th>
+                  <th class="text-left py-3 px-4 text-white font-semibold">Cidade</th>
+                  <th class="text-left py-3 px-4 text-white font-semibold">Logradouro</th>
+                  <th class="w-16"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 1</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">20271-110</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">RJ</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rio de Janeiro</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua General Canabarro, 485 - Tijuca</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 2</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">01311-200</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">SP</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">São Paulo</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida Paulista, 1578 - Bela Vista</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 3</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">80020-310</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">PR</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Curitiba</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua XV de Novembro, 920 - Centro</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 4</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">22640-102</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">RJ</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rio de Janeiro</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida das Américas, 4666 - Barra da Tijuca</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 5</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">01301-000</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">SP</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">São Paulo</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua da Consolação, 233 - Consolação</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 6</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">80250-210</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">PR</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Curitiba</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida Sete de Setembro, 3015 - Batel</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 7</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">90020-122</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">RS</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Porto Alegre</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua das Flores, 45 - Centro Histórico</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 8</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">51021-000</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">PE</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Recife</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida Boa Viagem, 2850 - Boa Viagem</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 9</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">59025-000</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">RN</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Natal</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua Chile, 123 - Cidade Alta</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 10</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">60165-121</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">CE</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Fortaleza</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida Beira Mar, 1450 - Meireles</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 11</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">22061-020</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">RJ</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rio de Janeiro</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua das Palmeiras, 76 - Copacabana</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 12</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">30112-021</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">MG</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Belo Horizonte</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida Getúlio Vargas, 900 - Funcionários</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 13</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">88015-020</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">SC</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Florianópolis</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Rua das Acácias, 210 - Centro</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+                <tr onclick="openPopup('popup-info-endereco')" class="bg-slate-950/80 hover:brightness-100 hover:bg-slate-900 border-b border-gray-2/20 cursor-pointer transition-colors duration-200">
+                  <td class="py-3 px-4 text-white font-medium">Endereço 14</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">30130-002</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">MG</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Belo Horizonte</td>
+                  <td class="py-3 px-4 text-gray-2 font-light">Avenida Afonso Pena, 1500</td>
+                  <td class="py-3 px-4"><button class="size-6 cursor-pointer"><img class="size-full" src="./assets/arrow-right.svg" alt="Ver detalhes"></button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+        </div>
+
+        <button onclick="history.back()" class="w-full max-w-100 mx-auto mt-auto py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-semibold leading-none">Voltar</span>
+        </button>
+      </div>
+    </main>
+
+    <div id="sidebar" class="absolute inset-0 z-10 hidden">
+      <div onclick="closeSidebar()" class="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
+        <div class="flex items-start justify-between">
+          <h2 class="font-bold leading-none text-2xl text-white">Menu</h2>
+
+          <button onclick="closeSidebar()" class="size-6 cursor-pointer">
+            <img class="size-full" src="./assets/x.svg" alt="Fechar">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="flex justify-between items-center gap-2 leading-none">
+          <div class="flex flex-col gap-2">
+            <h3 class="text-white font-semibold text-xl">José da Silva</h3>
+            <p class="text-gray-2">jose.silva@email.com</p>
+          </div>
+
+          <button onclick="openPopup('popup-sair')" class="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border border-red">
+            <img class="size-4" src="./assets/log-out.svg" alt="Sair">
+          </button>
+        </div>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <nav class="flex flex-col gap-2">
+          <a href="./perfil.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil">
+            <span>Perfil</span>
+          </a>
+          
+          <a href="./home.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/home.svg" alt="Home">
+            <span>Home</span>
+          </a>
+
+          <a href="./pacotes-disponiveis.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis">
+            <span>Pacotes Disponíveis</span>
+          </a>
+
+          <a href="./minhas-endereços.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas endereços">
+            <span>Minhas endereços</span>
+          </a>
+
+          <a href="./feedbacks.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks">
+            <span>Feedbacks</span>
+          </a>
+        </nav>
+
+        <hr class="gerente suporte border-t-1 border-gray-2/50">
+
+        <nav class="gerente suporte flex flex-col gap-2">
+          <a href="./dashboard.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard">
+            <span>Dashboard</span>
+          </a>
+
+          <a href="./endereços.html" class="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar endereços">
+            <span>Gerenciar endereços</span>
+          </a>
+
+          <a href="./pacotes.html" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes">
+            <span>Gerenciar Pacotes</span>
+          </a>
+
+          <a href="./endereços.html" class="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
+            <img class="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar endereços">
+            <span>Gerenciar endereços</span>
+          </a>
+        </nav>
+      </div>
+    </div>
+
+    <div id="popup-sair" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-sair')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-lg p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-sair')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Sair</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja sair da sua sessão atual?</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <a href="./login.html" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/log-out.svg" alt="Sair">
+            <span class="text-red text-lg font-medium leading-none">Sair</span>
+          </a>
+          <button onclick="closePopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>  
+      </div>
+    </div>
+
+    <div id="popup-info-endereco" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-info-endereco')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-lg p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-criar-endereco')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Dados do Endereço</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="name" class="block font-medium text-gray leading-none">
+            Nome
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="name-info"
+              type="text"
+              value="Faculdade"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="cep" class="block font-medium text-gray leading-none">
+            CEP
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="cep-info"
+              type="text"
+              value="12345-678"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="state" class="block font-medium text-gray leading-none">
+            Estado
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="state-info"
+              type="text"
+              value="Rio de Janeiro"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="city" class="block font-medium text-gray leading-none">
+            Cidade
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="city-info"
+              type="text"
+              value="Rio de Janeiro"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+          <label for="street" class="block font-medium text-gray leading-none">
+            Logradouro
+          </label>
+          <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+            <input
+              disabled
+              id="street-info"
+              type="text"
+              value="Rua General Canabarro, 485"
+              class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+            >
+          </div>
+        </div>
+
+        <div class="gerente w-full flex flex-col gap-3 items-center">
+          <button onclick="openPopup('popup-excluir-endereco')" class="w-full py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir endereço">
+            <span class="block text-red text-lg font-semibold leading-none">Excluir endereço</span>
+          </button>
+
+          <button id="edit-address-button" onclick="toggleEditAddressInfo()" class="h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white text-white text-lg font-medium leading-none">
+            Editar informações
+          </button>
+
+          <button id="save-address-button" onclick="toggleEditAddressInfo()" class="hidden h-11 w-full py-3 px-3 flex gap-2 items-center justify-center bg-linear-(--gradient-primary-b) hover:brightness-109 transition-[filter] duration-200 rounded-lg cursor-pointer text-white text-lg font-medium leading-none">
+            Salvar alterações
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="popup-excluir-endereco" class="absolute inset-0 z-20 items-center justify-center p-4 hidden">
+      <div onclick="closePopup('popup-excluir-endereco')" class="overlay z-21 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"></div>
+
+      <div class="content z-22 relative w-full max-w-lg p-6 flex flex-col gap-5 bg-background border border-gray-2/80 rounded-xl shadow-lg transform scale-90 opacity-0">
+        <button onclick="closePopup('popup-excluir-endereco')" class="absolute size-6 cursor-pointer right-3 top-3">
+          <img class="size-full" src="./assets/x.svg" alt="Fechar">
+        </button>
+
+        <h2 class="font-bold leading-none text-2xl text-white">Excluir Endereço</h2>
+
+        <hr class="border-t-1 border-gray-2/50">
+
+        <p class="leading-[120%] text-base text-white">Tem certeza de que deseja excluir permanentemente o endereço “Faculdade?”</p>
+
+        <div class="w-full flex gap-3 items-center">
+          <button onclick="deleteAddress()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-red">
+            <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+            <span class="text-red text-lg font-medium leading-none">Excluir</span>
+          </button>
+
+          <button onclick="closePopup('popup-excluir-endereco')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors duration-200 rounded-lg cursor-pointer border-2 border-white">
+            <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
+            <span class="text-white text-lg font-medium leading-none">Voltar</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+  <script>
+    let isEdittingAddress = false
+
+    function toggleEditAddressInfo() {
+      if (isEdittingAddress) {
+        document.getElementById('edit-address-button').classList.remove('hidden')
+        document.getElementById('save-address-button').classList.add('hidden')
+        disableInputs(['name-info', 'cep-info', 'state-info', 'city-info', 'street-info'])
+        isEdittingAddress = false
+      } else {
+        document.getElementById('edit-address-button').classList.add('hidden')
+        document.getElementById('save-address-button').classList.remove('hidden')
+        enableInputs(['name-info', 'cep-info', 'state-info', 'city-info', 'street-info'])
+        isEdittingAddress = true
+      }
+    }
+  </script>
+  <script>
+    function deleteAddress() {
+      closePopup('popup-excluir-endereco')
+      closePopup('popup-info-endereco')
+    }
+  </script>
+</body>
+</html>

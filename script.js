@@ -55,6 +55,31 @@ function addTailwind() {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar-hor,
+    .custom-scrollbar-ver {
+      overflow: auto;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .custom-scrollbar-ver::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar-track,
+    .custom-scrollbar-ver::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar-thumb,
+    .custom-scrollbar-ver::-webkit-scrollbar-thumb {
+      background: #d9d9d950;
+      border-radius: 9999px;
+    }
   `;
   document.head.appendChild(style);
 }
@@ -110,6 +135,11 @@ function openPopup(popupName) {
     content.classList.remove('scale-90', 'opacity-0');
     content.classList.add('scale-100', 'opacity-100');
   }, 1);
+
+  if(popupName === 'popup-relatorio-reservas' || popupName === 'popup-relatorio-financeiro') {
+    closePopup('popup-emitir-relatorio-reservas');
+    closePopup('popup-emitir-relatorio-financeiro');
+  } 
 }
 
 function closePopup(popupName) {
@@ -137,14 +167,11 @@ function realizarLogin(inputId) {
     localStorage.removeItem("cargo");
   }
 
-  navigateTo('home.html')
-
-  // Dashboard ainda não está pronto
-  // if (valor === "gerente" || valor === "suporte") {
-  //   navigateTo('dashboard.html')
-  // } else {
-  //   navigateTo('home.html')
-  // }
+  if (valor === "gerente" || valor === "suporte") {
+    navigateTo('dashboard.html')
+  } else {
+    navigateTo('home.html')
+  }
 }
 
 function filtrarPorCargo() {
