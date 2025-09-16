@@ -5,6 +5,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Pagamento | TechVault</title>
 </head>
+<style>
+  .custom-scrollbar-hor,
+  .custom-scrollbar-ver {
+    overflow: auto;
+  }
+
+  .custom-scrollbar-hor::-webkit-scrollbar {
+    height: 8px;
+  }
+
+  .custom-scrollbar-ver::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .custom-scrollbar-hor::-webkit-scrollbar-track,
+  .custom-scrollbar-ver::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .custom-scrollbar-hor::-webkit-scrollbar-thumb,
+  .custom-scrollbar-ver::-webkit-scrollbar-thumb {
+    background: #d9d9d950;
+    border-radius: 9999px;
+  }
+</style>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
   <div class="h-full flex flex-col relative overflow-x-hidden">
     <header class="bg-background flex-shrink-0">
@@ -43,43 +68,44 @@
 
           <hr class="border-t-1 border-gray-2/50">
 
-          <div class="flex items-center gap-3">
-            <div class="aspect-[1.6] h-22 rounded-lg overflow-hidden border border-gray-2/50">
-              <img src="./assets/setup-1.png" alt="Setup Gamer" class="size-full object-cover">
-            </div>
-            <span class="text-white font-medium text-lg">Setup Gamer Duplo</span>
-          </div>
-
-          <hr class="border-t-1 border-gray-2/50">
-
-          <div class="flex flex-col gap-1">
-            <div class="flex items-center justify-between text-white text-lg">
-              <span class="font-medium">Valor do Pacote:</span>
-              <span>R$ 100,00</span>
-            </div>
-
-            <div class="flex items-center justify-between text-white text-lg">
-              <span class="font-medium">Taxa de Transporte:</span>
-              <span>R$ 10,00</span>
+          <div class="flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
+            <div class="flex md:flex-col items-center gap-3">
+              <div class="aspect-[1.6] h-22 md:h-44 rounded-lg overflow-hidden border border-gray-2/50">
+                <img src="./assets/setup-1.png" alt="Setup Gamer" class="size-full object-cover">
+              </div>
+              <span class="text-white font-medium text-lg md:text-xl font-semibold">Setup Gamer Duplo</span>
             </div>
 
             <hr class="border-t-1 border-gray-2/50">
 
-            <div class="flex items-center justify-between text-white text-lg">
-              <span class="font-medium">Total:</span>
-              <span class="font-semibold">R$ 110,00</span>
+            <div class="flex flex-col gap-1">
+              <div class="flex items-center justify-between text-white text-lg">
+                <span class="font-medium">Valor do Pacote:</span>
+                <span>R$ 100,00</span>
+              </div>
+
+              <div class="flex items-center justify-between text-white text-lg">
+                <span class="font-medium">Taxa de Transporte:</span>
+                <span>R$ 10,00</span>
+              </div>
+
+              <hr class="border-t-1 border-gray-2/50">
+
+              <div class="flex items-center justify-between text-white text-lg">
+                <span class="font-medium">Total:</span>
+                <span class="font-semibold">R$ 110,00</span>
+              </div>
+            </div>
+
+            <div class="mt-auto space-y-4">
+              <h3 class="text-lg font-semibold text-white text-center">
+                Pague com <span class="text-blue">PIX</span>!
+              </h3>
+
+              <img src="./assets/qrcode.png" alt="qrcode-tech-recortado" class="size-75 md:size-50 mx-auto">
             </div>
           </div>
-
-          <div class="mt-2 space-y-4">
-            <h3 class="text-lg font-semibold text-white text-center">
-              Pague com <span class="text-blue">PIX</span>!
-            </h3>
-
-            <img src="./assets/qrcode.png" alt="qrcode-tech-recortado" class="size-75 mx-auto">
-          </div>
-
-          <button onclick="navigateTo('reserva-confirmada.html')" class="w-full py-4 px-9 mt-auto text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+          <button onclick="navigateTo('reserva-confirmada.html')" class="w-full md:w-80 md:mx-auto mt-auto py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
             Copiar Código PIX
           </button>
         </section>

@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Confirmar Reserva | TechVault</title>
+  <title>Perfil | TechVault</title>
 </head>
 <body class="bg-zinc-950 h-dvh font-poppins overflow-y-hidden">
   <div class="h-full flex flex-col relative overflow-x-hidden">
@@ -45,57 +45,58 @@
 
           <div class="flex flex-col gap-4">
             <h3 class="font-semibold text-white text-lg leading-none">Dados Pessoais</h3>
+            <div class="grid lg:grid-cols-3 gap-3">
+              <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                <label for="name" class="block font-medium text-gray leading-none">
+                  Nome
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                  <input
+                    disabled
+                    id="name"
+                    type="text"
+                    value="José da Silva"
+                    class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
+                  >
+                </div>
+              </div>
 
-            <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-              <label for="name" class="block font-medium text-gray leading-none">
-                Nome
-              </label>
-              <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-                <input
-                  disabled
-                  id="name"
-                  type="text"
-                  value="José da Silva"
-                  class="focus:outline-none disabled:cursor-not-allowed text-white w-full leading-none"
-                >
+              <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                <label for="email" class="block font-medium text-gray leading-none">
+                  E-mail
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                  <input
+                    disabled
+                    id="email"
+                    type="email"
+                    value="jose.silva@email.com"
+                    class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
+                  >
+                </div>
+              </div>
+
+              <div class="space-y-2 [&:has(:disabled)]:opacity-75">
+                <label for="phone" class="block font-medium text-gray leading-none">
+                  Telefone
+                </label>
+                <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
+                  <input
+                    disabled
+                    id="phone"
+                    type="tel"
+                    value="(00) 12345-6789"
+                    class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
+                  >
+                </div>
               </div>
             </div>
 
-            <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-              <label for="email" class="block font-medium text-gray leading-none">
-                E-mail
-              </label>
-              <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-                <input
-                  disabled
-                  id="email"
-                  type="email"
-                  value="jose.silva@email.com"
-                  class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
-                >
-              </div>
-            </div>
-
-            <div class="space-y-2 [&:has(:disabled)]:opacity-75">
-              <label for="phone" class="block font-medium text-gray leading-none">
-                Telefone
-              </label>
-              <div class="rounded-lg px-3 py-2 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
-                <input
-                  disabled
-                  id="phone"
-                  type="tel"
-                  value="(00) 12345-6789"
-                  class="focus:outline-none disabled:cursor-not-allowed text-white w-full"
-                >
-              </div>
-            </div>
-
-            <button id="edit-profile-button" onclick="toggleEditProfileInfo()" class="py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
+            <button id="edit-profile-button" onclick="toggleEditProfileInfo()" class="lg:m-auto lg:w-80 py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
               Editar informações
             </button>
 
-            <button id="save-profile-button" onclick="toggleEditProfileInfo()" class="hidden py-3 px-3 bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-semibold leading-none">
+            <button id="save-profile-button" onclick="toggleEditProfileInfo()" class="lg:m-auto lg:w-80 hidden py-3 px-3 bg-linear-(--gradient-primary-b) rounded-lg cursor-pointer text-white text-lg font-semibold leading-none">
               Salvar informações
             </button>
           </div>
@@ -106,48 +107,83 @@
             <div class="w-full flex items-center justify-between">
               <h3 class="font-semibold text-white text-lg leading-none">Endereços</h3>
 
-              <button onclick="openPopup('popup-criar-endereco')" class="h-full p-0.5 aspect-square bg-white text-black rounded-full cursor-pointer">
+              <button onclick="openPopup('popup-criar-endereco')" class="lg:hidden h-full p-0.5 aspect-square bg-white text-black rounded-full cursor-pointer">
                 <img class="size-full" src="./assets/plus.svg" alt="Criar">
               </button>
             </div>
 
-            <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-              <div class="flex flex-col gap-2 text-white">
-                <h4 class="font-semibold text-lg leading-none">Faculdade</h4>
-                <span class="leading-none text-gray-2 font-light">Rua General Canabarro, 485</span>
+            <div class="lg:grid lg:grid-cols-3 flex flex-col gap-3">
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                  <h4 class="font-semibold text-lg leading-none">Faculdade</h4>
+                  <span class="leading-none text-gray-2 font-light">Rua General Canabarro, 485</span>
+                </div>
+
+                <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+                  <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
               </div>
 
-              <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-              </button>
-            </div>
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                  <h4 class="font-semibold text-lg leading-none">Casa</h4>
+                  <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
+                </div>
 
-            <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-              <div class="flex flex-col gap-2 text-white">
-                <h4 class="font-semibold text-lg leading-none">Casa</h4>
-                <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
+                <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+                  <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
               </div>
 
-              <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
-                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-              </button>
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                  <h4 class="font-semibold text-lg leading-none">Casa</h4>
+                  <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
+                </div>
+
+                <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+                  <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+              </div>
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                  <h4 class="font-semibold text-lg leading-none">Casa</h4>
+                  <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
+                </div>
+
+                <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+                  <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+              </div>
+              <div onclick="openPopup('popup-info-endereco')" class="w-full p-3 flex items-center justify-between bg-white/5 hover:bg-white/10 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+                <div class="flex flex-col gap-2 text-white">
+                  <h4 class="font-semibold text-lg leading-none">Casa</h4>
+                  <span class="leading-none text-gray-2 font-light">Rua dos Aparamentos, 123</span>
+                </div>
+
+                <button onclick="openPopup('popup-info-endereco')" class="size-6 cursor-pointer">
+                  <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+                </button>
+              </div>
             </div>
           </div>
 
-          <div class="flex flex-col gap-3 mt-auto">
-            <div class="flex items-center gap-3">
-              <button onclick="openPopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
-                <img class="size-5" src="./assets/trash.svg" alt="Excluir">
-                <span class="text-red text-lg font-semibold leading-none">Excluir</span>
-              </button>
+          <button onclick="openPopup('popup-criar-endereco')" class="hidden lg:block lg:mx-auto lg:w-80 py-3 px-3 bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer outline outline-white text-white text-lg font-semibold leading-none">
+            Criar endereço
+          </button>
 
-              <button onclick="openPopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
-                <img class="size-5" src="./assets/log-out.svg" alt="Sair">
-                <span class="text-red text-lg font-semibold leading-none">Sair</span>
-              </button>
-            </div>
+          <div class="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
+            <button onclick="openPopup('popup-excluir-conta')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/trash.svg" alt="Excluir">
+              <span class="text-red text-lg font-semibold leading-none">Excluir</span>
+            </button>
 
-            <button onclick="history.back()" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
+            <button onclick="openPopup('popup-sair')" class="flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-red/10 hover:bg-red/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-red">
+              <img class="size-5" src="./assets/log-out.svg" alt="Sair">
+              <span class="text-red text-lg font-semibold leading-none">Sair</span>
+            </button>
+
+            <button onclick="history.back()" class="col-span-2 flex-1 py-2.5 px-3 flex gap-2 items-center justify-center bg-gray-2/10 hover:bg-gray-2/15 transition-colors transition-200 rounded-lg cursor-pointer border-2 border-white">
               <img class="size-5" src="./assets/arrow-left.svg" alt="Voltar">
               <span class="text-white text-lg font-semibold leading-none">Voltar</span>
             </button>
