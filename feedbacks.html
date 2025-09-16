@@ -28,7 +28,7 @@
       </div>
     </header>
 
-    <main class="flex-1 p-4 flex flex-col items-center gap-4 relative min-h-0">
+    <main class="flex-1 overflow-y-hidden">
       <div class="absolute inset-0 -z-1">
         <img 
           src="./assets/background.png" 
@@ -37,67 +37,29 @@
         <div class="absolute inset-0 bg-black/60"></div>
       </div>
 
-      <h2 class="text-3xl font-bold text-white text-center flex-shrink-0">
-        Feedbacks
-      </h2>
+      <div class="w-full h-full max-w-7xl mx-auto p-4 flex flex-col items-center gap-4 relative sm:px-16 2xl:px-0 md:items-start">
+        <h2 class="text-3xl font-bold text-white text-center flex-shrink-0 md:text-4xl">
+          Feedbacks
+        </h2>
 
-      <div class="flex items-center gap-4 flex-shrink-0">
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
-          <img src="./assets/filter.svg" class="size-4.5">
+        <div class="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
+          <div class="flex items-center gap-4 flex-shrink-0">
+          <button class="w-40 md:w-52 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
+            <img src="./assets/filter.svg" class="size-4.5">
 
-          Filtros
-        </button>
+            Filtros
+          </button>
 
-        <button class="w-40 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
-          <img src="./assets/sliders.svg" class="size-4.5">
+          <button class="w-40 md:w-52 py-1 flex gap-1 items-center justify-center bg-white hover:bg-zinc-200 text-black font-medium rounded-lg cursor-pointer transition-colors duration-200">
+            <img src="./assets/sliders.svg" class="size-4.5">
 
-          Ordenar por
-        </button>
-      </div>
-
-      <div onclick="openPopup('popup-dar-feedback')" class="w-full px-3 py-2 flex items-center justify-between bg-black hover:bg-slate-900 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-        <div class="flex flex-col gap-2 text-white">
-          <h4 class="font-medium text-lg leading-none">Dar Feedback</h4>
-        </div>
-
-        <button class="size-6 cursor-pointer">
-          <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-        </button>
-      </div>
-
-      <hr class="w-full border-t-1 border-gray-2/50">
-
-      <section class="w-full flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden">
-        <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
-          <div class="flex gap-3 items-start justify-between">
-            <div class="flex flex-col gap-3 text-white">
-              <h4 class="font-semibold text-lg leading-none">João Silva</h4>
-
-              <div class="flex gap-2 items-center">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/hollow-star.svg" alt="Estrela">
-              </div>
-
-              <span class="leading-none text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
-            </div>
-
-            <div class="flex flex-col gap-3 flex-shrink-0">
-              <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/pen.svg" alt="Editar">
-              </button>
-
-              <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/trash.svg" alt="Excluir">
-              </button>
-            </div>
+            Ordenar por
+          </button>
           </div>
 
-          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+          <div onclick="openPopup('popup-dar-feedback')" class="w-full max-w-120 lg:w-88 px-3 py-2 flex items-center justify-between bg-black hover:bg-slate-900 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
             <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-medium text-lg leading-none">Setup Gamer Duplo</h4>
+              <h4 class="font-medium text-md leading-none">Dar Feedback</h4>
             </div>
 
             <button class="size-6 cursor-pointer">
@@ -105,120 +67,162 @@
             </button>
           </div>
         </div>
-        
-        <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
-          <div class="flex gap-3 items-start justify-between">
-            <div class="flex flex-col gap-3 text-white">
-              <h4 class="font-semibold text-lg leading-none">Maria Fernandes</h4>
 
-              <div class="flex gap-2 items-center">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/hollow-star.svg" alt="Estrela">
-                <img src="./assets/hollow-star.svg" alt="Estrela">
+        <hr class="w-full border-t-1 border-gray-2/50">
+
+        <section class="w-full flex flex-col items-center gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] md:grid lg:grid-cols-2 xl:grid-cols-3">
+          <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
+            <div class="flex gap-3 items-start justify-between">
+              <div class="flex flex-col gap-3 text-white">
+                <h4 class="font-semibold text-lg leading-none">João Silva</h4>
+
+                <div class="flex gap-2 items-center">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/hollow-star.svg" alt="Estrela">
+                </div>
+
+                <span class="leading-[130%] text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
               </div>
 
-              <span class="leading-none text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
+              <div class="flex flex-col gap-3 flex-shrink-0">
+                <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/pen.svg" alt="Editar">
+                </button>
+
+                <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/trash.svg" alt="Excluir">
+                </button>
+              </div>
             </div>
 
-            <div class="flex flex-col gap-3 flex-shrink-0 gerente">
-              <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/pen.svg" alt="Editar">
-              </button>
-
-              <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/trash.svg" alt="Excluir">
-              </button>
-            </div>
-          </div>
-
-          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-            <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-medium text-lg leading-none">Setup de Trabalho Profissional</h4>
-            </div>
-
-            <button class="size-6 cursor-pointer">
-              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
-          </div>
-        </div>
-        
-        <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
-          <div class="flex gap-3 items-start justify-between">
-            <div class="flex flex-col gap-3 text-white">
-              <h4 class="font-semibold text-lg leading-none">Diogo Mendonça</h4>
-
-              <div class="flex gap-2 items-center">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
+            <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Setup Gamer Duplo</h4>
               </div>
 
-              <span class="leading-none text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
-            </div>
-
-            <div class="flex flex-col gap-3 flex-shrink-0 gerente">
-              <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/pen.svg" alt="Editar">
-              </button>
-
-              <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/trash.svg" alt="Excluir">
+              <button class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
               </button>
             </div>
           </div>
+          
+          <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
+            <div class="flex gap-3 items-start justify-between">
+              <div class="flex flex-col gap-3 text-white">
+                <h4 class="font-semibold text-lg leading-none">Maria Fernandes</h4>
 
-          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-            <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-medium text-lg leading-none">Setup Gamer Squad</h4>
-            </div>
+                <div class="flex gap-2 items-center">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/hollow-star.svg" alt="Estrela">
+                  <img src="./assets/hollow-star.svg" alt="Estrela">
+                </div>
 
-            <button class="size-6 cursor-pointer">
-              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
-          </div>
-        </div>
-        
-        <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
-          <div class="flex gap-3 items-start justify-between">
-            <div class="flex flex-col gap-3 text-white">
-              <h4 class="font-semibold text-lg leading-none">Roberto Johnson</h4>
-
-              <div class="flex gap-2 items-center">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/full-star.svg" alt="Estrela">
-                <img src="./assets/hollow-star.svg" alt="Estrela">
+                <span class="leading-[130%] text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
               </div>
 
-              <span class="leading-none text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
+              <div class="flex flex-col gap-3 flex-shrink-0 gerente">
+                <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/pen.svg" alt="Editar">
+                </button>
+
+                <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/trash.svg" alt="Excluir">
+                </button>
+              </div>
             </div>
 
-            <div class="flex flex-col gap-3 flex-shrink-0 gerente">
-              <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/pen.svg" alt="Editar">
-              </button>
+            <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Setup de Trabalho Profissional</h4>
+              </div>
 
-              <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
-                <img class="size-full" src="./assets/trash.svg" alt="Excluir">
+              <button class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
               </button>
             </div>
           </div>
+          
+          <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
+            <div class="flex gap-3 items-start justify-between">
+              <div class="flex flex-col gap-3 text-white">
+                <h4 class="font-semibold text-lg leading-none">Diogo Mendonça</h4>
 
-          <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
-            <div class="flex flex-col gap-2 text-white">
-              <h4 class="font-medium text-lg leading-none">Setup de Trabalho Profissional</h4>
+                <div class="flex gap-2 items-center">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                </div>
+
+                <span class="leading-[130%] text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
+              </div>
+
+              <div class="flex flex-col gap-3 flex-shrink-0 gerente">
+                <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/pen.svg" alt="Editar">
+                </button>
+
+                <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/trash.svg" alt="Excluir">
+                </button>
+              </div>
             </div>
 
-            <button class="size-6 cursor-pointer">
-              <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
-            </button>
+            <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Setup Gamer Squad</h4>
+              </div>
+
+              <button class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+            </div>
           </div>
-        </div>
+          
+          <div class="w-full p-3 flex flex-col gap-3 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm">
+            <div class="flex gap-3 items-start justify-between">
+              <div class="flex flex-col gap-3 text-white">
+                <h4 class="font-semibold text-lg leading-none">Roberto Johnson</h4>
+
+                <div class="flex gap-2 items-center">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/full-star.svg" alt="Estrela">
+                  <img src="./assets/hollow-star.svg" alt="Estrela">
+                </div>
+
+                <span class="leading-[130%] text-gray-2 font-light text-justify">Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequatur atque, et repellendus eaque repudiandae accusamus aliquam libero tenetur!</span>
+              </div>
+
+              <div class="flex flex-col gap-3 flex-shrink-0 gerente">
+                <button onclick="openPopup('popup-editar-feedback')" class="size-8 cursor-pointer p-1.5 bg-white/5 hover:bg-white/10 border border-white rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/pen.svg" alt="Editar">
+                </button>
+
+                <button onclick="openPopup('popup-excluir-feedback')" class="size-8 cursor-pointer p-1.5 bg-red/5 hover:bg-red/10 border border-red rounded-full transition-colors duration-200">
+                  <img class="size-full" src="./assets/trash.svg" alt="Excluir">
+                </button>
+              </div>
+            </div>
+
+            <div onclick="navigateTo('info-gamer-duplo.html')" class="w-full px-3 py-2 flex items-center justify-between hover:bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm cursor-pointer transition-colors transition-200">
+              <div class="flex flex-col gap-2 text-white">
+                <h4 class="font-medium text-lg leading-none">Setup de Trabalho Profissional</h4>
+              </div>
+
+              <button class="size-6 cursor-pointer">
+                <img class="size-full" src="./assets/arrow-right.svg" alt="Criar">
+              </button>
+            </div>
+          </div>
+        </section>
       </section>
     </main>
 
