@@ -55,6 +55,31 @@ function addTailwind() {
       -webkit-font-smoothing: antialiased;
       -moz-osx-font-smoothing: grayscale;
     }
+
+    /* Custom Scrollbar */
+    .custom-scrollbar-hor,
+    .custom-scrollbar-ver {
+      overflow: auto;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar {
+      height: 8px;
+    }
+
+    .custom-scrollbar-ver::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar-track,
+    .custom-scrollbar-ver::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .custom-scrollbar-hor::-webkit-scrollbar-thumb,
+    .custom-scrollbar-ver::-webkit-scrollbar-thumb {
+      background: #d9d9d950;
+      border-radius: 9999px;
+    }
   `;
   document.head.appendChild(style);
 }
