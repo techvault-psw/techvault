@@ -43,21 +43,21 @@
 
           <hr class="border-t-1 border-gray-2/50">
 
-          <div class="w-full p-4 bg-gray-2/10 rounded-lg">
-            <h3 class="font-bold text-white text-center leading-none text-2xl">Pagamento aprovado!</h3>
+          <div class="w-full md:max-w-140 md:mx-auto p-4 bg-gray-2/10 rounded-lg">
+            <h3 class="font-bold text-white text-center leading-none text-2xl lg:text-3xl">Pagamento aprovado!</h3>
           </div>
 
           <p class="text-gray-2 font-medium text-lg text-center">Nossa equipe levará o pacote até você na hora combinada.</p>
 
-          <div class="flex-1 flex flex-col gap-4 justify-center">
-            <p class="text-white text-center text-light">Mostre este código para o técnico da TechVault no momento da entrega:</p>
+          <div class="flex-1 flex flex-col gap-4 justify-center min-[820px]:pb-20">
+            <p class="sm:max-w-7/10 md:max-w-1/2 lg:max-w-1/3 mx-auto text-white text-center text-light lg:text-lg">Mostre este código para o técnico da TechVault no momento da entrega:</p>
 
-            <div class="bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl">
+            <div class="w-full sm:w-min sm:px-24 sm:mx-auto bg-gray-2/10 border border-gray-2/10 text-center py-2 rounded-lg text-white font-semibold text-xl md:text-2xl lg:text-3xl">
               4HYDNEU
             </div>
           </div>
 
-          <div class="flex flex-col gap-4">
+          <div class="flex flex-col gap-4 min-[820px]:grid min-[820px]:grid-cols-3">
             <div class="space-y-2 [&:has(:disabled)]:opacity-75">
               <label for="inicio" class="block font-medium text-gray leading-none">Data e Hora de Início:</label>
               <div class="rounded-lg p-3 bg-gray-2/5 backdrop-blur-sm border border-gray-2/50 flex items-center justify-between leading-none">
@@ -85,8 +85,8 @@
             </div>
 
             <div class="space-y-2 [&:has(select:disabled)]:opacity-75">
-              <label for="endereco" class="block font-medium text-gray">Endereço de Entrega/Montagem:</label>
-              <select disabled id="endereco" class="w-full bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none disabled:cursor-not-allowed">
+              <label for="endereco" class="block font-medium text-gray leading-none">Endereço de Entrega:</label>
+              <select disabled id="endereco" class="w-full h-11.5 bg-gray-2/5 backdrop-blur-sm text-gray-200 p-3 rounded-lg border border-gray-2/50 focus:outline-none focus:ring-2 focus:ring-white appearance-none leading-none disabled:cursor-not-allowed">
                 <option class="text-black">Endereço 1</option>
                 <option class="text-black">Endereço 2</option>
                 <option class="text-black">Endereço 3</option>
@@ -94,13 +94,13 @@
             </div>
           </div>
 
-          <div class="flex flex-col gap-3">
-            <button onclick="navigateTo('minhas-reservas.html')" class="w-full py-3 px-9 text-white text-xl font-semibold bg-gray-2/10 hover:bg-gray-2/20 rounded-lg leading-none cursor-pointer border border-white transition-colors duration-200">
-              Ver minhas reservas
+          <div class="flex flex-col gap-3 md:flex-row">
+            <button class="w-full py-3 px-9 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
+              Visualizar NF-e
             </button>
 
-            <button class="w-full py-3 px-9 text-white text-xl font-semibold bg-linear-(--gradient-primary-b) rounded-lg leading-none cursor-pointer">
-            Visualizar NF-e
+            <button onclick="navigateTo('minhas-reservas.html')" class="w-full py-3 px-9 text-white text-xl font-semibold bg-gray-2/10 hover:bg-gray-2/20 rounded-lg leading-none cursor-pointer border border-white transition-colors duration-200">
+              Ver minhas reservas
             </button>
           </div>
         </section>
