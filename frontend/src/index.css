@@ -4,11 +4,6 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-  --color-background: var(--background);
   --color-foreground: var(--foreground);
   --color-card: var(--card);
   --color-card-foreground: var(--card-foreground);
@@ -128,5 +123,9 @@
 
   body {
     @apply bg-zinc-950 text-white h-dvh overflow-y-hidden font-poppins;
+  }
+
+  .scrollbar {
+    @apply overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none];
   }
 }
