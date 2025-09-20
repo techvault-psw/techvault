@@ -18,8 +18,6 @@ interface SidebarProps {
 }
 
 export const openSidebar = () => {
-    console.log('jasdjoasjodjosaojdas')
-
   const sidebar = document.getElementById('sidebar');
   const content = sidebar?.querySelector('.content');
   const overlay = sidebar?.querySelector('.overlay');
