@@ -1,7 +1,7 @@
 import * as React from "react"
 
 import { cn } from "@/lib/utils"
-import { ArrowRightIcon } from "../icons/arrow-right"
+import { ArrowRightIcon } from "../icons/arrow-right-icon"
 
 function CardContainer({ className, children, ...props }: React.ComponentProps<"div">) {
   return (

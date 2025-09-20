@@ -29,7 +29,7 @@ const buttonVariants = cva(
         default: "text-lg font-medium gap-2 px-3 py-2.5 has-[>svg]:px-3 leading-none",
         sm: "text-lg font-medium gap-1 px-2 py-1 has-[>svg]:px-2.5 leading-none",
         lg: "text-xl font-semibold gap-2 px-6 has-[>svg]:px-4 leading-none",
-        icon: "size-9",
+        icon: "p-2 flex-none border",
       },
     },
     defaultVariants: {

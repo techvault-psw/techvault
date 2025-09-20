@@ -1,9 +1,25 @@
-interface props {
-    shown: boolean,
+import { X } from "lucide-react";
+import { BoxIcon } from "../icons/box-icon";
+import { CalendarIcon } from "../icons/calendar-icon";
+import { CalendarsIcon } from "../icons/calendars-icon";
+import { CommentIcon } from "../icons/comment-icon";
+import { CubeIcon } from "../icons/cube-icon";
+import { DashboardIcon } from "../icons/dashboard-icon";
+import { HomeIcon } from "../icons/home-icon";
+import { LogOutIcon } from "../icons/log-out-icon";
+import { PeopleIcon } from "../icons/people-icon";
+import { PersonIcon } from "../icons/person-icon";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
+import { SidebarItem } from "./sidebar-item";
+
+interface SidebarProps {
     closeSidebar: () => void;
 }
 
 export const openSidebar = () => {
+    console.log('jasdjoasjodjosaojdas')
+
   const sidebar = document.getElementById('sidebar');
   const content = sidebar?.querySelector('.content');
   const overlay = sidebar?.querySelector('.overlay');
@@ -35,88 +51,52 @@ export const closeSidebar = () => {
   }, 300);
 };
 
-export const Sidebar: React.FC<props> = ({ shown, closeSidebar }) => {
-    return shown ? (
-        <>
-            <div id="sidebar" className="absolute inset-0 z-10 hidden">
-                <div onClick={() => closeSidebar()} className="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"/>
+export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
+    return (
+        <div id="sidebar" className="absolute inset-0 z-10 hidden">
+            <div onClick={() => closeSidebar()} className="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"/>
 
-                <div className="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray-2/80 shadow-lg transform translate-x-full">
-                    <div className="flex items-start justify-between">
+            <div className="content z-12 ml-auto w-4/5 max-w-sm h-full p-4 flex flex-col gap-5 bg-background border-l border-l-gray/50 shadow-lg transform translate-x-full">
+                <div className="flex items-start justify-between">
                     <h2 className="font-bold leading-none text-2xl text-white">Menu</h2>
 
                     <button onClick={() => closeSidebar()} className="size-6 cursor-pointer">
-                        <img className="size-full" src="./assets/x.svg" alt="Fechar"/>
+                        <X className="size-full" />
                     </button>
-                    </div>
+                </div>
 
-                    <hr className="border-t-1 border-gray-2/50"/>
+                <Separator />
 
-                    <div className="flex justify-between items-center gap-2 leading-none">
+                <div className="flex justify-between items-center gap-2">
                     <div className="flex flex-col gap-2">
                         <h3 className="text-white font-semibold text-xl">José da Silva</h3>
-                        <p className="text-gray-2">jose.silva@email.com</p>
+                        <p className="text-gray text-base leading-none">jose.silva@email.com</p>
                     </div>
 
-                    <button className="p-2 text-red bg-red/10 hover:bg-red/15 transition-colors duration-200 rounded-lg cursor-pointer border border-red">
-                        <img className="size-4" src="./assets/log-out.svg" alt="Sair"/>
-                    </button>
-                    </div>
-
-                    <hr className="border-t-1 border-gray-2/50"/>
-
-                    <nav className="flex flex-col gap-2">
-                        <a href="./perfil.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/person.svg" alt="Perfil"/>
-                            <span>Perfil</span>
-                        </a>
-                        
-                        <a href="./home.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/home.svg" alt="Home"/>
-                            <span>Home</span>
-                        </a>
-
-                        <a href="./pacotes-disponiveis.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/box.svg" alt="Pacotes Disponíveis"/>
-                            <span>Pacotes Disponíveis</span>
-                        </a>
-
-                        <a href="./minhas-reservas.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/calendar.svg" alt="Minhas Reservas"/>
-                            <span>Minhas Reservas</span>
-                        </a>
-
-                        <a href="./feedbacks.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/comment.svg" alt="Feedbacks"/>
-                            <span>Feedbacks</span>
-                        </a>
-                    </nav>
-
-                    <hr className="gerente suporte border-t-1 border-gray-2/50"/>
-
-                    <nav className="gerente suporte flex flex-col gap-2">
-                        <a href="./dashboard.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/dashboard.svg" alt="Dashboard"/>
-                            <span>Dashboard</span>
-                        </a>
-
-                        <a href="./reservas.html" className="py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/calendars.svg" alt="Gerenciar Reservas"/>
-                            <span>Gerenciar Reservas</span>
-                        </a>
-
-                        <a href="./pacotes.html" className="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/cube.svg" alt="Gerenciar Pacotes"/>
-                            <span>Gerenciar Pacotes</span>
-                        </a>
-
-                        <a href="./clientes.html" className="gerente py-1 pl-1.5 -ml-1.5 flex items-center gap-2 text-xl text-white leading-[120%] cursor-pointer hover:bg-white/10 transition-colors transition-300 rounded-lg">
-                            <img className="size-7" src="./assets/sidebar-icons/people.svg" alt="Gerenciar Clientes"/>
-                            <span>Gerenciar Clientes</span>
-                        </a>
-                    </nav>
+                    <Button variant="destructive" size="icon">
+                        <LogOutIcon className="size-4" />
+                    </Button>
                 </div>
+
+                <Separator />
+
+                <nav className="flex flex-col gap-2">
+                    <SidebarItem display="Perfil" icon={PersonIcon} to="/perfil" />
+                    <SidebarItem display="Home" icon={HomeIcon} to="/" />
+                    <SidebarItem display="Pacotes Disponíveis" icon={BoxIcon} to="/pacotes-disponiveis" />
+                    <SidebarItem display="Minhas Reservas" icon={CalendarIcon} to="/minhas-reservas" />
+                    <SidebarItem display="Feedbacks" icon={CommentIcon} to="/feedbacks" />
+                </nav>
+
+                <Separator className="gerente suporte" />
+
+                <nav className="gerente suporte flex flex-col gap-2">
+                    <SidebarItem display="Dashboard" icon={DashboardIcon} to="/dashboard" />
+                    <SidebarItem display="Gerenciar Reservas" icon={CalendarsIcon} to="/reservas" />
+                    <SidebarItem display="Gerenciar Pacotes" icon={CubeIcon} to="/pacotes" />
+                    <SidebarItem display="Gerenciar Clientes" icon={PeopleIcon} to="/clientes" />
+                </nav>
             </div>
-        </>
-    ) : null;
+        </div>
+    )
 };
