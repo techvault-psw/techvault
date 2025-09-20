@@ -9,16 +9,16 @@ const buttonVariants = cva(
     disabled:pointer-events-none disabled:opacity-50
     [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0
     outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]
-    aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive
+    aria-invalid:ring-red/20 dark:aria-invalid:ring-red/40 aria-invalid:border-red
   `,
   {
     variants: {
       variant: {
         default: "bg-linear-(--gradient-primary-b) text-white hover:brightness-109",
         destructive:
-          "bg-red/10 text-red hover:bg-red/15 focus-visible:ring-red/20 border-2 border-red",
+          "bg-red/10 text-red hover:bg-red/15 focus-visible:border-red focus-visible:ring-red/20 border-2 border-red",
         outline:
-          "bg-gray/10 text-white hover:bg-gray/15 border-2 border-white",
+          "bg-gray/10 text-white hover:bg-gray/15 focus-visible:border-white border-2 border-white",
         secondary:
           "bg-white hover:bg-zinc-200 text-black",
         ghost:
