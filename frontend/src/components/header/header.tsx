@@ -22,11 +22,11 @@ const Header: React.FC = () => {
                     <Logo />
 
                     <nav className="gap-8 items-center leading-none text-white font-medium hidden lg:flex">
-                        <HeaderItem to="pacotes-disponiveis">Pacotes</HeaderItem>
-                        <HeaderItem to="minhas-reservas.html">Reservas</HeaderItem>
-                        <HeaderItem to="feedbacks.html">Feedbacks</HeaderItem>
-                        <HeaderItem to="dashboard.html" className="gerente suporte">Dashboard</HeaderItem>
-                        <HeaderItem to="perfil.html">Perfil</HeaderItem>
+                        <HeaderItem to="/pacotes-disponiveis">Pacotes</HeaderItem>
+                        <HeaderItem to="/minhas-reservas">Reservas</HeaderItem>
+                        <HeaderItem to="/feedbacks">Feedbacks</HeaderItem>
+                        <HeaderItem to="/dashboard" className="gerente suporte">Dashboard</HeaderItem>
+                        <HeaderItem to="/perfil">Perfil</HeaderItem>
                     </nav>
 
                     <button onClick={() => setShowSidebar(true)} className="cursor-pointer size-5 lg:hidden">
