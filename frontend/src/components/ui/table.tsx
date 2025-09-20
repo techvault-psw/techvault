@@ -6,7 +6,7 @@ function TableContainer({ className, ...props }: React.ComponentProps<"table">) 
   return (
     <div
       data-slot="table-container"
-      className="w-full overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
+      className="w-full scrollbar"
     >
       <table
         data-slot="table"

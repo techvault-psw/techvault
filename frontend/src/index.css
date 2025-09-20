@@ -124,4 +124,8 @@
   body {
     @apply bg-zinc-950 text-white h-dvh overflow-y-hidden font-poppins;
   }
+
+  .scrollbar {
+    @apply overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none];
+  }
 }
