@@ -82,7 +82,7 @@ export default function LoginPage() {
         </form>
       </Form>
 
-      <p className="text-sm text-center">
+      <p className="text-base text-center">
         Não possui uma conta? <Link to="/cadastro" className="font-semibold underline">Cadastrar-se</Link>
       </p>
     </PageContainer.Auth>

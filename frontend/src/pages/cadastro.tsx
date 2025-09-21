@@ -114,7 +114,7 @@ export default function CadastroPage() {
         </form>
       </Form>
 
-      <p className="text-sm text-center">
+      <p className="text-base text-center">
         Já possui uma conta? <Link to="/login" className="font-semibold underline">Entrar</Link>
       </p>
     </PageContainer.Auth>
