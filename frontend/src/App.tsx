@@ -7,6 +7,7 @@ import LoginPage from "./pages/login";
 import DashboardPage from "./pages/dashboard";
 import CadastroPage from "./pages/cadastro";
 import PagamentoReservaPage from "./pages/pagamento-reserva";
+import ReservasClientePage from "./pages/reservas-cliente";
 
 export default function App() {
   return (
@@ -15,6 +16,8 @@ export default function App() {
 
       <Route element={<MainLayout />}>
         <Route path="/pacotes-disponiveis" element={<PacotesDisponiveisPage />} />
+
+        <Route path="/minhas-reservas" element={<ReservasClientePage/>}/>
         <Route path="/dashboard" element={<DashboardPage />} />
 
         <Route path="/pagamento" element={<PagamentoReservaPage/>}/>
