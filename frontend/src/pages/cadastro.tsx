@@ -1,4 +1,4 @@
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -27,6 +27,8 @@ const formSchema = z.object({
 })
 
 export default function CadastroPage() {
+  const navigate = useNavigate();
+
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,6 +41,7 @@ export default function CadastroPage() {
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values)
+    navigate("/")
   }
 
   return (
