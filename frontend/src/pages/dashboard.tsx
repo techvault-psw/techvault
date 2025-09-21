@@ -79,7 +79,7 @@ export default function DashboardPage() {
 
      <section className="flex flex-col gap-5 scrollbar">
       {Object.entries(dashboardCards).map(([section, cards]) => (
-        <div key={section}>
+        <div key={section} className="flex flex-col gap-5">
           <h3 className="text-white text-xl font-semibold">{section}</h3>
 
           <div className="flex flex-col lg:grid lg:grid-cols-3 gap-3 text-white">
