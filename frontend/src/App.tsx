@@ -5,6 +5,7 @@ import HomePage from "./pages/home";
 import PacotesDisponiveisPage from "./pages/pacotes-disponiveis";
 import LoginPage from "./pages/login";
 import DashboardPage from "./pages/dashboard";
+import CadastroPage from "./pages/cadastro";
 
 export default function App() {
   return (
@@ -18,6 +19,7 @@ export default function App() {
 
       <Route element={<AuthLayout />}>
         <Route path="/login" element={<LoginPage />} />
+        <Route path="/cadastro" element={<CadastroPage />} />
       </Route>
     </Routes>
   );
