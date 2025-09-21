@@ -39,7 +39,7 @@ export const pacotes: Pacote[] = [
     value: 100,
   },
   {
-    name: 'Setup de Trabalho Squad',
+    name: 'Setup Gamer Squad',
     image: 'setup-3.png',
     description: [
       'Pacote completo para equipes colaborarem juntas em um ambiente de trabalho moderno e produtivo. Inclui múltiplas estações de trabalho, ergonomia, periféricos e suporte para reuniões em grupo.'

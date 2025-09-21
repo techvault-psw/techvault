@@ -12,7 +12,7 @@ export const Logo = ({ className, ...props }: LogoProps) => {
       className={cn("flex items-center gap-2 cursor-pointer transition-colors transition-300 rounded-lg", className)}
       {...props}
     >
-      <img src="./logo.png" className="w-7"/>
+      <img src="/logo.png" className="w-7"/>
       <h1 className="text-2xl font-bold text-white">TechVault</h1>
     </Link>
   );
