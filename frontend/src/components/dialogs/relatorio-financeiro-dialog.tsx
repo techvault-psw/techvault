@@ -137,8 +137,8 @@ export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, .
           <h3 className="font-semibold text-xl text-white mb-1.5">Distribuição por Dia</h3>
 
           <div className="flex flex-col gap-2 scrollbar">
-            <table className="w-full text-gray-2 text-sm">
-              <tr className="text-sm border-b border-gray-2 text-white">
+            <table className="w-full text-gray text-sm">
+              <tr className="text-sm border-b border-gray text-white">
                 <td className="pb-1">
                   Data
                 </td>

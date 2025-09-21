@@ -92,7 +92,7 @@ export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...
 
           <div className="flex flex-col gap-2 scrollbar">
             {reservas.map((reserva) => (
-              <div className="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray-2/50 rounded-lg backdrop-blur-sm transition-colors duration-200">
+              <div className="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray/50 rounded-lg backdrop-blur-sm transition-colors duration-200">
                 <div className="text-white text-sm truncate">
                   <p><span className="font-semibold">Pacote:</span> {reserva.pacote}</p>
                   <p><span className="font-semibold">Cliente:</span> {reserva.cliente}</p>
