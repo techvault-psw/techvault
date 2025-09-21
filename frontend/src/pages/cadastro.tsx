@@ -108,7 +108,7 @@ export default function CadastroPage() {
           />
 
           <Button type="submit" size="lg" className="w-full">
-            Entrar
+            Cadastrar
           </Button>
         </form>
       </Form>
