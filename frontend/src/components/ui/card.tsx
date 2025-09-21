@@ -18,7 +18,7 @@ function CardContainer({ className, children, ...props }: React.ComponentProps<"
     >
       {children}
 
-      <button className="size-6 cursor-pointer">
+      <button className="size-6 cursor-pointer flex-shrink-0">
         <ArrowRightIcon className="size-full" />
       </button>
     </div>
