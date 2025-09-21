@@ -2,6 +2,7 @@ import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { format } from "date-fns";
+import { Badge } from "../ui/badge";
 
 interface RelatorioReservasDialogProps extends DialogProps {
   open: boolean;
@@ -99,9 +100,9 @@ export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...
                 </div>
                 <div className="flex flex-col justify-between leading-none text-white text-sm font-semibold">
                   {reserva.confirmada ? (
-                    <p className="bg-green-600 rounded-xl py-1 px-3">Confirmada</p>
+                    <Badge>Confirmada</Badge>
                   ) : (
-                    <p className="bg-red-500 rounded-xl py-1 px-3">Cancelada</p>
+                    <Badge variant="red">Cancelada</Badge>
                   )}
                   <p className="text-right">R$ {reserva.valor}</p>
                 </div>
