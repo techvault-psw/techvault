@@ -1,3 +1,4 @@
+import { EmitirRelatorioReservasDialog } from "@/components/dialogs/emitir-relatorio-reservas-dialog";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
@@ -52,7 +53,7 @@ const dashboardCards: Record<string, DashboardCard[]> = {
   ],
   "Relatórios ": [
     {
-      dialog: undefined, // por enquanto
+      dialog: EmitirRelatorioReservasDialog,
       title: 'Emitir relatório de reservas',
       description:
         'Emitir e visualizar um relatório com todas as reservas feitas em determinado período',
@@ -101,11 +102,8 @@ export default function DashboardPage() {
                   );
                 }
 
-                // Para cards com dialog (quando estiverem prontos)
-                // const Dialog = card.dialog;
-                // return Dialog ? <Dialog>{cardContent}</Dialog> : cardContent;
-
-                return cardContent;
+                const Dialog = card.dialog;
+                return Dialog ? <Dialog>{cardContent}</Dialog> : cardContent;
               })}
             </div>
           </>
