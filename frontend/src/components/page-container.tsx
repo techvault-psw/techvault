@@ -24,17 +24,17 @@ const PageContainerList = ({ children }: PageContainerProps) => {
   )
 }
 
-const PageContainerAuth = ({ className, children, ...props }: ComponentProps<'form'>) => {
+const PageContainerAuth = ({ className, children, ...props }: ComponentProps<'div'>) => {
   return (
     <>
       <Logo className="absolute" />
 
-      <form
-        className={cn("my-auto border border-gray-2/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5", className)}
+      <div
+        className={cn("my-auto border border-gray/50 bg-white/5 backdrop-blur-md rounded-2xl shadow-lg p-7 w-full max-w-md flex flex-col gap-5", className)}
         {...props}
       >
         {children}
-      </form>
+      </div>
     </>
   )
 }
