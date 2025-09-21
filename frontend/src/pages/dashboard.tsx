@@ -1,3 +1,4 @@
+import { EmitirRelatorioFinanceiroDialog } from "@/components/dialogs/emitir-relatorio-financeiro-dialog";
 import { EmitirRelatorioReservasDialog } from "@/components/dialogs/emitir-relatorio-reservas-dialog";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
@@ -60,7 +61,7 @@ const dashboardCards: Record<string, DashboardCard[]> = {
       role: 'gerente',
     },
     {
-      dialog: undefined, // por enquanto
+      dialog: EmitirRelatorioFinanceiroDialog,
       title: 'Emitir relatório financeiro',
       description:
         'Emitir e visualizar um relatório financeiro de um determinado período',
