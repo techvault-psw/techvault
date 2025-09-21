@@ -7,7 +7,7 @@ export const HighlightBox = ({ className, children, ...props }: HighlightBoxProp
   return (
     <div
       className={cn(`
-        w-full py-2 md:p-0 flex items-center justify-center 
+        w-full py-2 flex items-center justify-center 
         bg-gray/10 border border-gray/10 rounded-lg
         text-white font-semibold text-xl
       `, className)}
