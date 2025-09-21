@@ -118,7 +118,12 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
         </Dialog.Content>
       </Dialog.Container>
 
-      <RelatorioReservasDialog open={successDialogOpen} setOpen={setSuccessDialogOpen} />
+      <RelatorioReservasDialog
+        open={successDialogOpen}
+        setOpen={setSuccessDialogOpen}
+        startDate={dataInicial}
+        endDate={dataFinal}
+      />
     </>
   );
 };

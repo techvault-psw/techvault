@@ -1,10 +1,13 @@
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { format } from "date-fns";
 
 interface RelatorioReservasDialogProps extends DialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
+  startDate: Date;
+  endDate: Date;
 }
 
 const resumo = [
@@ -53,13 +56,18 @@ const reservas = [
   },
 ]
 
-export const RelatorioReservasDialog = ({ open, setOpen, ...props }: RelatorioReservasDialogProps) => {
+export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...props }: RelatorioReservasDialogProps) => {
+  if (!startDate || !endDate) return null
+
+  const formattedStartDate = format(startDate, "dd/MM/yyyy")
+  const formattedEndDate = format(endDate, "dd/MM/yyyy")
+
   return (
     <Dialog.Container open={open} onOpenChange={setOpen} {...props}>
       <Dialog.Content className="max-h-150">
         <Dialog.Title>Relatório de Reservas</Dialog.Title>
 
-        <Dialog.Description className="leading-none text-gray -mt-1">Período: 16/08/2025 a 16/09/2025</Dialog.Description>
+        <Dialog.Description className="leading-none text-gray -mt-1">Período: {formattedStartDate} a {formattedEndDate}</Dialog.Description>
 
         <Separator />
 

@@ -77,39 +77,44 @@ export default function DashboardPage() {
 
       <Separator />
 
-      <section className="flex flex-col gap-5 scrollbar">
-        {Object.entries(dashboardCards).map(([section, cards]) => (
-          <>
-            <h3 className="text-white text-xl font-semibold">{section}</h3>
+     <section className="flex flex-col gap-5 scrollbar">
+      {Object.entries(dashboardCards).map(([section, cards]) => (
+        <div key={section}>
+          <h3 className="text-white text-xl font-semibold">{section}</h3>
 
-            <div className="flex flex-col lg:grid lg:grid-cols-3 gap-3 text-white">
-              {cards.map((card) => {
-                const cardContent = (
-                  <Card.Container className="lg:!py-3 h-full">
-                    <Card.TextContainer className="lg:h-full">
-                      <Card.Title className="lg:font-semibold lg:text-xl">{card.title}</Card.Title>
-                      <Card.Description className="hidden lg:block font-normal tracking-tight">
-                        {card.description}
-                      </Card.Description>
-                    </Card.TextContainer>
-                  </Card.Container>
+          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-3 text-white">
+            {cards.map((card) => {
+              const cardContent = (
+                <Card.Container className="lg:!py-3 h-full">
+                  <Card.TextContainer className="lg:h-full">
+                    <Card.Title className="lg:font-semibold lg:text-xl">{card.title}</Card.Title>
+                    <Card.Description className="hidden lg:block font-normal tracking-tight">
+                      {card.description}
+                    </Card.Description>
+                  </Card.TextContainer>
+                </Card.Container>
+              );
+
+              if (card.url) {
+                return (
+                  <Link key={card.url} to={card.url} className="h-full">
+                    {cardContent}
+                  </Link>
                 );
+              }
 
-                if (card.url) {
-                  return (
-                    <Link to={card.url} className="h-full">
-                      {cardContent}
-                    </Link>
-                  );
-                }
+              const Dialog = card.dialog;
+              return Dialog ? (
+                <Dialog key={card.title}>{cardContent}</Dialog>
+              ) : (
+                <div key={card.title}>{cardContent}</div>
+              )
+            })}
+          </div>
+        </div>
+      ))}
+    </section>
 
-                const Dialog = card.dialog;
-                return Dialog ? <Dialog>{cardContent}</Dialog> : cardContent;
-              })}
-            </div>
-          </>
-        ))}
-      </section>
     </PageContainer.Card>
   );
 }

@@ -118,7 +118,12 @@ export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactN
         </Dialog.Content>
       </Dialog.Container>
 
-      <RelatorioFinanceiroDialog open={successDialogOpen} setOpen={setSuccessDialogOpen} />
+      <RelatorioFinanceiroDialog
+        open={successDialogOpen}
+        setOpen={setSuccessDialogOpen}
+        startDate={dataInicial}
+        endDate={dataFinal}
+      />
     </>
   );
 };
