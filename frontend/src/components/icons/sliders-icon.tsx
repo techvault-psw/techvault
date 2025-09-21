@@ -1,0 +1,18 @@
+import type { SVGProps } from "react";
+
+interface SlidersIconProps extends SVGProps<SVGSVGElement> {}
+
+export const SlidersIcon = (props: SlidersIconProps) => {
+  return (
+    <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" {...props}>
+      <g clip-path="url(#clip0_66_632)">
+        <path d="M3.16663 14.5V9.83333M3.16663 7.16667V2.5M8.49996 14.5V8.5M8.49996 5.83333V2.5M13.8333 14.5V11.1667M13.8333 8.5V2.5M1.16663 9.83333H5.16663M6.49996 5.83333H10.5M11.8333 11.1667H15.8333" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" stroke="black"/>
+      </g>
+      <defs>
+        <clipPath id="clip0_66_632">
+          <rect width="16" height="16" fill="white" transform="translate(0.5 0.5)"/>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
