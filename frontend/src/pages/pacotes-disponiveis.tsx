@@ -26,11 +26,11 @@ export default function PacotesDisponiveisPage() {
       </div>
 
       <section className="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Array(300).fill(pacotes).flat().map((pacote) => {
+        {Array(10).fill(pacotes).flat().map((pacote, i) => {
           const formattedValue = formatCurrency(pacote.value)
 
           return (
-            <Link key={pacote.name} to="/informacoes-pacote" className="w-80 md:w-full max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <Link key={pacote.name} to={`/informacoes-pacote/${i % pacotes.length}`} className="w-80 md:w-full max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
               <PacoteImage
                 pacote={pacote}
                 className="w-full"

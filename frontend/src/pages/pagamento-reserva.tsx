@@ -17,7 +17,7 @@ export default function PagamentoReservaPage() {
                 <div className="flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
                     <div className="flex md:flex-col items-center gap-3">
                         <div className="aspect-[1.6] h-22 md:h-44 rounded-lg overflow-hidden border border-gray/50">
-                            <img src="./setup-1.png" alt="Setup Gamer" className="size-full object-cover"/>
+                            <img src="/setup-1.png" alt="Setup Gamer" className="size-full object-cover"/>
                         </div>
                         <span className="text-white text-lg md:text-xl font-semibold">Setup Gamer Duplo</span>
                     </div>
@@ -48,7 +48,7 @@ export default function PagamentoReservaPage() {
                         Pague com <span className="text-blue">PIX</span>!
                         </h3>
 
-                        <img src="./qrcode.png" alt="qrcode" className="size-75 md:size-50 mx-auto"/>
+                        <img src="/qrcode.png" alt="qrcode" className="size-75 md:size-50 mx-auto"/>
                     </div>
                 </div>
                 
@@ -62,7 +62,7 @@ export default function PagamentoReservaPage() {
                 <div className="flex-1 flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
                     <div className="flex md:flex-col items-center gap-3">
                         <div className="aspect-[1.6] w-8/10 rounded-lg overflow-hidden border border-gray/50">
-                            <img src="./setup-1.png" alt="Setup Gamer" className="size-full object-cover"/>
+                            <img src="/setup-1.png" alt="Setup Gamer" className="size-full object-cover"/>
                         </div>
                         <span className="text-white text-2xl font-semibold">Setup Gamer Duplo</span>
                     </div>
@@ -96,7 +96,7 @@ export default function PagamentoReservaPage() {
                         Pague com <span className="text-blue">PIX</span>!
                     </h3>
 
-                    <img src="./qrcode.png" alt="qrcode" className="size-76 mx-auto"/>
+                    <img src="/qrcode.png" alt="qrcode" className="size-76 mx-auto"/>
 
                     {/* TODO: Usar props para definir método de pagamento nessa página */}
                     <Button asChild size="lg" className="flex-none font-bold">
