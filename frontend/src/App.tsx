@@ -21,8 +21,8 @@ export default function App() {
         <Route path="/minhas-reservas" element={<ReservasClientePage/>}/>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/informacoes-pacote/:id" element={<InformacoesPacotePage />} />
-        <Route path="/pagamento" element={<PagamentoReservaPage/>}/>
-        <Route path="/reserva-confirmada" element={<ReservaConfirmadaPage/>}/>
+        <Route path="/pagamento/:id" element={<PagamentoReservaPage/>}/>
+        <Route path="/reserva-confirmada/:id" element={<ReservaConfirmadaPage/>}/>
       </Route>
 
       <Route element={<AuthLayout />}>

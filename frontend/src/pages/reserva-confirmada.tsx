@@ -4,9 +4,24 @@ import { PageTitle } from "@/components/page-title";
 import { Separator } from "@/components/ui/separator";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link } from "react-router";
+import { Link, useParams } from "react-router";
+import { reservas } from "@/consts/reservas";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function ReservaConfirmadaPage() {
+    const { id } = useParams<{ id: string }>();
+
+    const numberId = Number(id)
+
+    if (isNaN(numberId) || numberId >= reservas.length) {
+        return
+    }
+
+    const reserva = reservas[numberId]
+    const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
+    const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
+
     return (
         <>
         <PageContainer.Card>
@@ -25,22 +40,22 @@ export default function ReservaConfirmadaPage() {
                 <p className="sm:max-w-7/10 md:max-w-1/2 lg:max-w-1/3 mx-auto text-white text-center text-light lg:text-lg">Mostre este código para o técnico da TechVault no momento da entrega:</p>
 
                 <HighlightBox className="sm:w-min sm:px-24 sm:mx-auto md:text-2xl lg:text-3xl">
-                    4HYDNEU
+                    {reserva.codigoEntrega}
                 </HighlightBox>
             </div>
 
             <div className="flex flex-col gap-4 min-[820px]:grid min-[820px]:grid-cols-3">
                 <div className="space-y-2 [&:has(:disabled)]:opacity-75">
                     <Label htmlFor="inicio">Data e Hora de Início</Label>
-                    <Input id="inicio" type="datetime-local" value="2025-09-02 18:10" disabled/>
+                    <Input id="inicio" type="text" value={formattedStartDate} disabled/>
                 </div>
                 <div className="space-y-2 [&:has(:disabled)]:opacity-75">
                     <Label htmlFor="termino">Data e Hora de Término</Label>
-                    <Input id="termino" type="datetime-local" value="2025-09-03 21:30" disabled/>
+                    <Input id="termino" type="text" value={formattedEndDate} disabled/>
                 </div>
                 <div className="space-y-2 [&:has(:disabled)]:opacity-75">
                     <Label htmlFor="endereco">Endereço de Entrega</Label>
-                    <Input id="endereco" type="text" value="Endereço 1" disabled/>
+                    <Input id="endereco" type="text" value="Faculdade" disabled/>
                 </div>
             </div>
 
