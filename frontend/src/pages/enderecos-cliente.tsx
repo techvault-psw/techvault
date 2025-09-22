@@ -124,6 +124,11 @@ export default function EnderecosClientePage() {
           </Table.Body>
         </Table.Container>
       </section>
+
+      <Button onClick={history.back} className="w-full max-w-100 mx-auto mt-auto" variant="outline">
+        <ArrowLeftIcon className="size-5" />
+        Voltar
+      </Button>
     </PageContainer.List>
   );
 }
