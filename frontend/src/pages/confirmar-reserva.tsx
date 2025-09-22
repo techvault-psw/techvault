@@ -115,6 +115,7 @@ export default function ConfirmarReservaPage() {
                                         <DateTimePicker
                                             value={field.value}
                                             onChange={field.onChange}
+                                            minuteStep={15}
                                             placeholder="Selecione uma data"
                                         />
                                     </FormControl>
@@ -133,6 +134,7 @@ export default function ConfirmarReservaPage() {
                                         <DateTimePicker
                                             value={field.value}
                                             onChange={field.onChange}
+                                            minuteStep={15}
                                             placeholder="Selecione uma data"
                                         />
                                     </FormControl>

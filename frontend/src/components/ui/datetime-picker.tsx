@@ -18,6 +18,7 @@ interface DateTimePickerProps {
   className?: string;
   disabled?: boolean;
   "aria-invalid"?: boolean;
+  minuteStep?: number; // Nova prop para controlar o intervalo dos minutos
 }
 
 export function DateTimePicker({
@@ -27,6 +28,7 @@ export function DateTimePicker({
   className,
   disabled = false,
   "aria-invalid": ariaInvalid,
+  minuteStep = 1, // Por padrão, todos os minutos (1 em 1)
 }: DateTimePickerProps) {
   function handleDateSelect(date: Date | undefined) {
     if (date) {
@@ -54,6 +56,12 @@ export function DateTimePicker({
 
     onChange(newDate);
   }
+
+  // Gera array de minutos baseado no minuteStep
+  const minutes = Array.from(
+    { length: Math.floor(60 / minuteStep) }, 
+    (_, i) => i * minuteStep
+  );
 
   return (
     <Popover>
@@ -129,27 +137,25 @@ export function DateTimePicker({
 
             <ScrollArea className="w-64 sm:w-auto">
               <div className="flex sm:flex-col p-2 pt-0">
-                {Array.from({ length: 12 }, (_, i) => i * 5).map(
-                  (minute) => (
-                    <Button
-                      key={minute}
-                      size="icon"
-                      variant={
-                        value &&
-                        value.getMinutes() === minute
-                          ? "secondary"
-                          : "ghost"
-                      }
-                      className="sm:w-full shrink-0 aspect-square border-0 leading-none"
-                      onClick={() =>
-                        handleTimeChange("minute", minute.toString())
-                      }
-                      disabled={disabled}
-                    >
-                      {minute.toString().padStart(2, "0")}
-                    </Button>
-                  )
-                )}
+                {minutes.map((minute) => (
+                  <Button
+                    key={minute}
+                    size="icon"
+                    variant={
+                      value &&
+                      value.getMinutes() === minute
+                        ? "secondary"
+                        : "ghost"
+                    }
+                    className="sm:w-full shrink-0 aspect-square border-0 leading-none"
+                    onClick={() =>
+                      handleTimeChange("minute", minute.toString())
+                    }
+                    disabled={disabled}
+                  >
+                    {minute.toString().padStart(2, "0")}
+                  </Button>
+                ))}
               </div>
               <ScrollBar
                 orientation="horizontal"
