@@ -4,9 +4,21 @@ import { PageTitle } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { pacotes } from "@/consts/pacotes"
-import { Link } from "react-router"
+import { reservas } from "@/consts/reservas"
+import { Link, useParams } from "react-router"
 
 export default function PagamentoReservaPage() {
+    const { id } = useParams<{ id: string }>();
+
+    const numberId = Number(id)
+
+    if (isNaN(numberId) || numberId >= reservas.length) {
+        return
+    }
+
+    const reserva = reservas[numberId]
+    const pacote = pacotes[reserva.pacoteIndex]
+
     return (
         <PageContainer.Card>
             <PageTitle>
@@ -19,10 +31,11 @@ export default function PagamentoReservaPage() {
                 <div className="flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
                     <div className="flex md:flex-col items-center gap-3">
                         <PacoteImage
-                            pacote={pacotes[0]}
+                            pacote={pacote}
                             className="h-22 md:h-44 rounded-lg"
                         />
-                        <span className="text-white text-lg md:text-xl font-semibold">Setup Gamer Duplo</span>
+
+                        <span className="text-white text-lg md:text-xl font-semibold">{pacote.name}</span>
                     </div>
 
                     <Separator/>
@@ -64,10 +77,12 @@ export default function PagamentoReservaPage() {
             <section className="flex-1 gap-5 overflow-y-hidden hidden lg:flex lg:gap-5">
                 <div className="flex-1 flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
                     <div className="flex md:flex-col items-center gap-3">
-                        <div className="aspect-[1.6] w-8/10 rounded-lg overflow-hidden border border-gray/50">
-                            <img src="/setup-1.png" alt="Setup Gamer" className="size-full object-cover"/>
-                        </div>
-                        <span className="text-white text-2xl font-semibold">Setup Gamer Duplo</span>
+                        <PacoteImage
+                            pacote={pacote}
+                            className="w-8/10"
+                        />
+
+                        <span className="text-white text-2xl font-semibold">{pacote.name}</span>
                     </div>
 
                     <Separator/>
@@ -103,7 +118,7 @@ export default function PagamentoReservaPage() {
 
                     {/* TODO: Usar props para definir método de pagamento nessa página */}
                     <Button asChild size="lg" className="flex-none font-bold">
-                        <Link to="/reserva-confirmada">Copiar Código Pix</Link>
+                        <Link to={`/reserva-confirmada/${numberId}`}>Copiar Código Pix</Link>
                     </Button>
                 </div>
             </section>
