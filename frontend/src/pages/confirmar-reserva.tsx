@@ -100,10 +100,10 @@ export default function ConfirmarReservaPage() {
             <Separator/>
 
             <Form {...form}>
-                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4">
+                <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4 overflow-y-hidden">
                     <h3 className="font-semibold text-white text-lg lg:text-xl leading-none mb-2">Informações da reserva</h3>
 
-                    <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
+                    <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3 scrollbar">
                         <FormField
                             control={form.control}
                             name="dataHoraInicial"
@@ -193,11 +193,11 @@ export default function ConfirmarReservaPage() {
                         />
                     </div>
                     <div className="flex flex-col mt-auto md:flex-row gap-4">
-                        <HighlightBox className="md:max-w-1/2 min-[820px]:max-w-1/3 min-[820px]:text-center">
+                        <HighlightBox className="md:max-w-1/2 min-[880px]:max-w-1/3 min-[880px]:text-center">
                             Valor (hora): {formatCurrency(pacotes[numberId].value)}
                         </HighlightBox>
 
-                        <Button type="submit" size="lg" className="flex-none md:max-w-1/2 min-[820px]:!max-w-2/3">
+                        <Button type="submit" size="lg" className="flex-none md:max-w-1/2 min-[880px]:!max-w-2/3">
                             Reservar Agora
                         </Button>
                     </div>
