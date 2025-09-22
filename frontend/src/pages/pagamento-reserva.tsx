@@ -1,7 +1,9 @@
+import { PacoteImage } from "@/components/pacote-image"
 import { PageContainer } from "@/components/page-container"
 import { PageTitle } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { pacotes } from "@/consts/pacotes"
 import { Link } from "react-router"
 
 export default function PagamentoReservaPage() {
@@ -16,9 +18,10 @@ export default function PagamentoReservaPage() {
             <section className="flex-1 flex flex-col justify-between gap-5 overflow-y-hidden lg:hidden">
                 <div className="flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
                     <div className="flex md:flex-col items-center gap-3">
-                        <div className="aspect-[1.6] h-22 md:h-44 rounded-lg overflow-hidden border border-gray/50">
-                            <img src="/setup-1.png" alt="Setup Gamer" className="size-full object-cover"/>
-                        </div>
+                        <PacoteImage
+                            pacote={pacotes[0]}
+                            className="h-22 md:h-44 rounded-lg"
+                        />
                         <span className="text-white text-lg md:text-xl font-semibold">Setup Gamer Duplo</span>
                     </div>
 
