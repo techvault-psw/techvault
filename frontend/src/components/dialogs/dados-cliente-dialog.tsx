@@ -18,6 +18,8 @@ import { Button } from "../ui/button";
 import { Card } from '../ui/card';
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { TrashIcon } from '../icons/trash-icon';
+import { ExcluirClienteDialog } from './excluir-cliente-dialog';
 
 interface DadosClienteDialogProps {
   cliente: Cliente;
@@ -33,6 +35,7 @@ const formSchema = z.object({
 })
 
 export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false)
   const [isEditting, setIsEditting] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -57,7 +60,7 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
   const registerWithMask = useHookFormMask(form.register)
 
   return (
-    <Dialog.Container>
+    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -160,6 +163,14 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
                   <Card.Title>Ver Endereços</Card.Title>
                 </Card.Container>
               </Link>
+
+              {/* TODO: Apenas o Gerente deve poder ver */}
+              <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={setIsOpen}>
+                <Button variant="destructive">
+                  <TrashIcon className="size-5" />
+                  Excluir
+                </Button>
+              </ExcluirClienteDialog>
             </div>
           </form>
         </Form>
