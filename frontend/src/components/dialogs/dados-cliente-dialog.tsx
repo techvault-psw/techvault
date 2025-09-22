@@ -1,0 +1,180 @@
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage
+} from '@/components/ui/form';
+import { Input, Label } from "@/components/ui/input";
+import type { Cliente } from "@/consts/clientes";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState, type MouseEvent, type ReactNode } from "react";
+import { useForm } from "react-hook-form";
+import { Link } from 'react-router';
+import { useHookFormMask } from 'use-mask-input';
+import * as z from "zod";
+import { Button } from "../ui/button";
+import { Card } from '../ui/card';
+import { Dialog } from "../ui/dialog";
+import { Separator } from "../ui/separator";
+import { TrashIcon } from '../icons/trash-icon';
+import { ExcluirClienteDialog } from './excluir-cliente-dialog';
+
+interface DadosClienteDialogProps {
+  cliente: Cliente;
+  children: ReactNode
+}
+
+const formSchema = z.object({
+  name: z.string().min(1, "O cliente deve possuir um nome"),
+  email: z.string().min(1, "O cliente deve possuir um e-mail").email("Digite um e-mail válido"),
+  phone: z.string()
+    .min(1, "O cliente deve possuir um telefone")
+    .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX")
+})
+
+export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProps) => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [isEditting, setIsEditting] = useState(false)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: cliente.name,
+      email: cliente.email,
+      phone: cliente.phone,
+    },
+  })
+
+  function handleEditClick(e: MouseEvent) {
+    e.preventDefault()
+    e.stopPropagation()
+    setIsEditting(true)
+  }
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsEditting(false)
+  }
+
+  const registerWithMask = useHookFormMask(form.register)
+
+  return (
+    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+
+      <Dialog.Content>
+        <Dialog.Title>Dados do Cliente</Dialog.Title>
+
+        <Separator />
+        
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Nome</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={!isEditting}
+                      placeholder="Nome do cliente"
+                      type="name"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>E-mail</FormLabel>
+                  <FormControl>
+                    <Input
+                      disabled={!isEditting}
+                      placeholder="E-mail do cliente"
+                      type="email"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="phone"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Telefone</FormLabel>
+                  <FormControl>
+                    <Input
+                      {...field}
+                      {...registerWithMask("phone", ['(99) 99999-9999'], {
+                        required: true
+                      })}
+                      disabled={!isEditting}
+                      placeholder="(__) _____-____"
+                      type="tel"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormItem>
+              <Label htmlFor="registration-date">Data de Cadastro</Label>
+              <Input
+                disabled
+                id="registration-date"
+                type="text"
+                value={cliente.registrationDate}
+              />
+            </FormItem>
+
+            <div className="flex flex-col gap-3">
+              {/* TODO: Apenas o Gerente deve poder ver */}
+              {isEditting ? (
+                <Button type="submit" className='min-h-[2.625rem]'>
+                  Salvar alterações
+                </Button>
+              ) : (
+                <Button type="button" onClick={handleEditClick} variant="outline">
+                  Editar informações
+                </Button>
+              )}
+
+              <Link to="/reservas-cliente">
+                <Card.Container>
+                  <Card.Title>Ver Reservas</Card.Title>
+                </Card.Container>
+              </Link>
+
+              <Link to="/enderecos-cliente">
+                <Card.Container>
+                  <Card.Title>Ver Endereços</Card.Title>
+                </Card.Container>
+              </Link>
+
+              {/* TODO: Apenas o Gerente deve poder ver */}
+              <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={setIsOpen}>
+                <Button variant="destructive">
+                  <TrashIcon className="size-5" />
+                  Excluir
+                </Button>
+              </ExcluirClienteDialog>
+            </div>
+          </form>
+        </Form>
+      </Dialog.Content>
+    </Dialog.Container>
+  );
+};

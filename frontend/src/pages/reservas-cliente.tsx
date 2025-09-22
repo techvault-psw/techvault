@@ -33,7 +33,7 @@ export default function ReservasClientePage() {
 
         
             <div className="w-full flex flex-col items-center gap-5 scrollbar md:grid lg:grid-cols-2 2xl:grid-cols-3">
-                {Array(200).fill(reservas).flat().map((reserva, index) => {
+                {Array(10).fill(reservas).flat().map((reserva, index) => {
                     const formattedValue = formatCurrency(reserva.valor);
 
                     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
