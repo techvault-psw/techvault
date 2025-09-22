@@ -4,8 +4,7 @@ import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { FullStarIcon } from "@/components/icons/full-star-icon";
-import {HollowStarIcon} from "@/components/icons/hollow-star-icon";
+import { StarRating } from "@/components/ui/star-rating";
 import { feedbacks } from "@/consts/feedbacks";
 import { pacotes } from "@/consts/pacotes";
 import { ArrowRightIcon } from '@/components/icons/arrow-right-icon';
@@ -40,13 +39,7 @@ export default function FeedbackPage() {
                                 <div className="flex-1 flex flex-col gap-2 justify-between text-white text-lg font-semibold">
                                     <h2 className="text-lg">{feedback.cliente}</h2>
                                     <div className="flex gap-2 items-center">
-                                        {Array.from({length: 5}).map((_,i) => 
-                                            i < feedback.nota ? (
-                                                <FullStarIcon key={i}/>
-                                            ) : (
-                                                <HollowStarIcon key={i}/>
-                                            )
-                                        )}
+                                        <StarRating.Stars rating={feedback.nota}/>
                                     </div>
 
                                 </div>
