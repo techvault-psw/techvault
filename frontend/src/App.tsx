@@ -26,7 +26,6 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/informacoes-pacote/:id" element={<InformacoesPacotePage />} />
         <Route path="/pagamento" element={<PagamentoReservaPage/>}/>
-        <Route path="/meus-enderecos" element={<EnderecosClientePage/>}/>
         <Route path="/reservas" element={<ReservasPage/>}/> 
         <Route path="/clientes" element={<ClientesPage/>}/>
         <Route path="/informacoes-reserva/:id" element={<InformacoesReservasPage />}/>
