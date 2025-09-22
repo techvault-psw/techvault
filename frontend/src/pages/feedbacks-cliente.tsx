@@ -8,7 +8,6 @@ import { FullStarIcon } from "@/components/icons/full-star-icon";
 import {HollowStarIcon} from "@/components/icons/hollow-star-icon";
 import { feedbacks } from "@/consts/feedbacks";
 import { pacotes } from "@/consts/pacotes";
-import { paginasPacotes } from "@/consts/paginasPacotes";
 import { ArrowRightIcon } from '@/components/icons/arrow-right-icon';
 
 import { Link } from "react-router";
