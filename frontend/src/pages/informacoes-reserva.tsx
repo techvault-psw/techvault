@@ -1,3 +1,4 @@
+import { CancelarReservaDialog } from "@/components/dialogs/cancelar-reserva-dialog"
 import { HighlightBox } from "@/components/highlight-box"
 import { ArrowLeftIcon } from "@/components/icons/arrow-left-icon"
 import { PacoteImage } from "@/components/pacote-image"
@@ -12,6 +13,8 @@ import { reservas } from "@/consts/reservas"
 import { formatCurrency } from "@/lib/format-currency"
 import { X } from "lucide-react"
 import { Link, useParams } from "react-router"
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
 
 export default function InformacoesReservasPage() {
   const { id } = useParams<{ id: string }>();
@@ -25,6 +28,8 @@ export default function InformacoesReservasPage() {
   const reserva = reservas[numberId]
   const pacote = pacotes[reserva.pacoteIndex]
   const formattedValue = formatCurrency(reserva.valor)
+  const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
+  const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
   return (
     <PageContainer.Card>
@@ -60,7 +65,7 @@ export default function InformacoesReservasPage() {
                 disabled
                 id="value"
                 type="text"
-                value="R$ 700,00"
+                value={formattedValue}
               />
             </FormItem>
 
@@ -73,7 +78,7 @@ export default function InformacoesReservasPage() {
                 disabled
                 id="inicio"
                 type="text"
-                value="02/09/2025 18:10"
+                value={formattedStartDate}
               />
             </FormItem>
 
@@ -86,7 +91,7 @@ export default function InformacoesReservasPage() {
                 disabled
                 id="termino"
                 type="text"
-                value="03/09/2025 21:30"
+                value={formattedEndDate}
               />
             </FormItem>
 
@@ -127,10 +132,12 @@ export default function InformacoesReservasPage() {
       </div>
 
       <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
-        <Button variant="destructive" className="md:order-2 xl:col-start-3">
-          <X className="size-5 text-red" />
-          <span className="text-red text-lg font-medium leading-none">Cancelar</span>
-        </Button>
+        <CancelarReservaDialog reserva={reserva}>
+          <Button variant="destructive" className="md:order-2 xl:col-start-3">
+            <X className="size-5 text-red" />
+            <span className="text-red text-lg font-medium leading-none">Cancelar</span>
+          </Button>
+        </CancelarReservaDialog>
 
         <Button variant="outline" className="md:order-1 xl:col-start-2" asChild>
           <Link to="/minhas-reservas">
