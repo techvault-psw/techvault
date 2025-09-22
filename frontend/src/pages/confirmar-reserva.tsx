@@ -16,6 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatCurrency } from "@/lib/format-currency";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { DateTimePicker } from "@/components/ui/datetime-picker";
 
 const metodosPagamento = [
     "Cartão de Crédito",
@@ -101,19 +102,17 @@ export default function ConfirmarReservaPage() {
                             control={form.control}
                             name="dataHoraInicial"
                             render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Data e Hora de Início</FormLabel>
-                                <FormControl>
-                                    <Input 
-                                        type="datetime-local" 
-                                        {...field} 
-                                        value={field.value ? new Date(field.value.getTime() - field.value.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''} 
-                                        onChange={(e) => field.onChange(e.target.value ? new Date(e.target.value) : undefined)}
-                                        lang="pt-BR"
-                                    />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                                <FormItem>
+                                    <FormLabel>Data e Hora de Início</FormLabel>
+                                    <FormControl>
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder="DD/MM/AAAA HH:mm"
+                                        />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
                             )}
                         />
 
@@ -124,12 +123,10 @@ export default function ConfirmarReservaPage() {
                                 <FormItem>
                                     <FormLabel>Data e Hora de Término</FormLabel>
                                     <FormControl>
-                                        <Input 
-                                            type="datetime-local" 
-                                            {...field} 
-                                            value={field.value ? new Date(field.value.getTime() - field.value.getTimezoneOffset() * 60000).toISOString().slice(0, 16) : ''} 
-                                            onChange={(e) => field.onChange(e.target.value ? new Date(e.target.value) : undefined)}
-                                            lang="pt-BR"
+                                        <DateTimePicker
+                                            value={field.value}
+                                            onChange={field.onChange}
+                                            placeholder="DD/MM/AAAA HH:mm"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -146,7 +143,7 @@ export default function ConfirmarReservaPage() {
                                     <FormControl>
                                         <select 
                                             {...field}
-                                            className="w-full bg-gray/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray/50 focus:outline-none focus:ring-2 focus:ring-white"
+                                            className="w-full bg-gray/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray/50 focus:border-white"
                                         >
                                             <option value="" disabled className="text-gray-400">Selecione um endereço</option>
                                             {enderecos.map((endereco, index) => {
@@ -170,9 +167,9 @@ export default function ConfirmarReservaPage() {
                                     <FormControl>
                                         <select 
                                             {...field}
-                                            className="w-full bg-gray/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray/50 focus:outline-none focus:ring-2 focus:ring-white"
+                                            className="w-full bg-gray/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray/50 focus:border-white"
                                         >
-                                            <option value="" disabled className="text-gray-400">Selecione um método de pagamento</option>
+                                            <option value="" disabled className="text-gray-400">Selecione um método</option>
                                             {metodosPagamento.map((metodo) => {
                                                 return (
                                                     <option key={metodo} value={metodo} className="text-black">{metodo}</option>
