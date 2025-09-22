@@ -1,17 +1,22 @@
-import { Dialog } from '@/components/ui/dialog';
-import { Separator } from '@/components/ui/separator';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect, useState, type ReactNode } from 'react';
-import { useForm } from 'react-hook-form';
-import { Form } from '@/components/ui/form';
-import { useHookFormMask } from 'use-mask-input';
-import z from 'zod';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
-import { Input } from '../ui/input';
-import { Button } from '../ui/button';
+import { enderecos, type Endereco } from "@/consts/enderecos";
+import { useEffect, useState, type ReactNode } from "react";
+import { Dialog } from "../ui/dialog";
+import z from "zod";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import { Input } from "../ui/input";
+import { Button } from "../ui/button";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useHookFormMask } from "use-mask-input";
+import { TrashIcon } from "../icons/trash-icon";
 
-interface DadosClienteDialogProps {
+import { type MouseEvent } from "react";
+import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
+import { useNavigate } from "react-router";
+
+interface DadosEnderecoDialogProps {
     children: ReactNode
+    endereco: Endereco
 }
 
 const formSchema = z
@@ -28,25 +33,25 @@ const formSchema = z
         state: z.string().min(1, { message: "O estado é obrigatório" })
     })
 
-export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
-    const [isOpen, setOpen] = useState(false);
-    const [disabled, setDisabled] = useState(true);
-
+export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogProps) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const [disabled, setDisabled] = useState(true)
+    
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: "",
-            cep: "",
-            street: "",
-            number: "",
-            neighborhood: "",
-            city: "",
-            state: ""
+            name: endereco.name || "",
+            cep: endereco.cep || "",
+            street: endereco.street || "",
+            number: endereco.number.toString() || "",
+            neighborhood: endereco.neighborhood || "",
+            city: endereco.city || "",
+            state: endereco.state || ""
         }
     })
 
     const onSubmit = (x: z.infer<typeof formSchema>) => {
-        setOpen(false);
+        setDisabled(true)
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -92,17 +97,24 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     useEffect(() => {
         if(!isOpen) {
             form.reset()
+            setDisabled(true)
         }
-    }, [isOpen])
+    }, [isOpen, disabled])
+
+    const toggleEditAddressInfo = (event: MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setDisabled(!disabled)
+    }
+
+    const navigate = useNavigate()
 
     return (
-        <Dialog.Container open={isOpen} onOpenChange={setOpen}>
+        <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
             <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
             <Dialog.Content>
-                <Dialog.Title>Criar novo endereço</Dialog.Title>
-
-                <Separator/>
+                <Dialog.Title>Dados do Endereço</Dialog.Title>
 
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
@@ -113,7 +125,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                                 <FormItem>
                                     <FormLabel>Nome</FormLabel>
                                     <FormControl>
-                                        <Input type="text" placeholder="Festa" {...field}/>
+                                        <Input disabled={disabled} type="text" placeholder="Festa" {...field}/>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -132,6 +144,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                                             {...registerWithMask("cep", ['99999-999'], {
                                                 required: true
                                             })}
+                                            disabled={disabled}
                                             placeholder="_____-___"
                                         />
                                     </FormControl>
@@ -209,19 +222,27 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                             />
                         </div>
 
-                        <Dialog.Footer className='grid grid-rows-2 md:flex md:flex-row-reverse'>
-                            <Button type="submit">
-                                Criar
-                            </Button>
-                            <Dialog.Close asChild>
-                                <Button variant="outline">
-                                    Cancelar
+                        <Dialog.Footer className="block text-center space-y-3 items-center">
+                            <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={() => setIsOpen(false)}>
+                                <Button type="button" variant="destructive" className="w-full">
+                                    <TrashIcon/>
+                                    Excluir endereço
                                 </Button>
-                            </Dialog.Close>
+                            </ExcluirEnderecoDialog>
+                            {disabled ? (
+                                <Button type="button" variant="outline" className="w-full" onClick={toggleEditAddressInfo}>
+                                    Editar informações
+                                </Button>
+                            ) : (
+                                <Button type="submit" className="w-full h-[2.625rem]">
+                                    Salvar alterações
+                                </Button>
+                            )}
+                            
                         </Dialog.Footer>
                     </form>
                 </Form>
             </Dialog.Content>
         </Dialog.Container>
-    )
+    );
 }

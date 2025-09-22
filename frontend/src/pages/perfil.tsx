@@ -28,6 +28,7 @@ import { PlusIcon } from '@/components/icons/plus-icon';
 import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog';
 import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
 import { SairDialog } from '@/components/dialogs/sair-dialog';
+import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
 
 let user = {
     name: "José da Silva",
@@ -155,12 +156,14 @@ export default function PerfilPage() {
                     <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3">
                         {enderecos.map((endereco) => {
                             return (
-                                <Card.Container>
-                                    <Card.TextContainer>
-                                        <Card.Title>{endereco.name}</Card.Title>
-                                        <Card.Description>{stringifyAddress(endereco)}</Card.Description>
-                                    </Card.TextContainer>
-                                </Card.Container>
+                                <DadosEnderecoDialog endereco={endereco}>
+                                    <Card.Container>
+                                        <Card.TextContainer>
+                                            <Card.Title>{endereco.name}</Card.Title>
+                                            <Card.Description>{stringifyAddress(endereco)}</Card.Description>
+                                        </Card.TextContainer>
+                                    </Card.Container>
+                                </DadosEnderecoDialog>
                             )
                         })}
                     </div>
