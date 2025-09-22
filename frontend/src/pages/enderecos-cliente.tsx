@@ -83,7 +83,7 @@ export default function EnderecosClientePage() {
       <PageTitle>Endereços de Cliente 1</PageTitle>
 
       {/* mobile */}
-      <section className="flex flex-1 flex-col gap-4 overflow-y-auto pb-4 md:hidden">
+      <section className="flex flex-1 flex-col gap-4 overflow-y-auto pb-4 lg:hidden">
         {enderecos.map((endereco, i) => (
           <Card.Container key={i} className="py-2 px-4">
             <Card.TextContainer className="gap-0.5">
@@ -96,18 +96,17 @@ export default function EnderecosClientePage() {
         ))}
       </section>
 
-      {/*telas medias = md */}
-      <section className="hidden flex-1 overflow-y-auto w-full md:block">
+      <section className="hidden flex-1 overflow-y-auto w-full lg:block">
         <Table.Container>
           <Table.Header>
-            <Table.Row className="hover:bg-transparent cursor-default">
+            <tr>
               <Table.Head>Nome</Table.Head>
               <Table.Head>CEP</Table.Head>
               <Table.Head>Estado</Table.Head>
               <Table.Head>Cidade</Table.Head>
               <Table.Head>Logradouro</Table.Head>
-              <Table.Head className="w-12"></Table.Head>
-            </Table.Row>
+              <Table.Head className="w-16"></Table.Head>
+            </tr>
           </Table.Header>
           <Table.Body>
             {enderecos.map((endereco, i) => (
@@ -118,8 +117,8 @@ export default function EnderecosClientePage() {
                 <Table.Cell>{endereco.cidade}</Table.Cell>
                 <Table.Cell>{endereco.logradouro}</Table.Cell>
                 <Table.Cell>
-                  <ArrowRightIcon className="size-5" />
-            </Table.Cell>
+                  <ArrowRightIcon className="size-6" />
+                </Table.Cell>
               </Table.Row>
             ))}
           </Table.Body>
