@@ -9,6 +9,7 @@ import CadastroPage from "./pages/cadastro";
 import PagamentoReservaPage from "./pages/pagamento-reserva";
 import ReservasClientePage from "./pages/reservas-cliente";
 import InformacoesPacotePage from "./pages/informacoes-pacote";
+import ConfirmarReservaPage from "./pages/confirmar-reserva";
 import ClientesPage from "./pages/clientes";
 import InformacoesReservasPage from "./pages/informacoes-reserva";
 import EnderecosClientePage from "./pages/enderecos-cliente";
@@ -25,6 +26,7 @@ export default function App() {
         <Route path="/minhas-reservas" element={<ReservasClientePage/>}/>
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/informacoes-pacote/:id" element={<InformacoesPacotePage />} />
+        <Route path="/confirmar-reserva/:id" element={<ConfirmarReservaPage/>}/>
         <Route path="/pagamento" element={<PagamentoReservaPage/>}/>
         <Route path="/reservas" element={<ReservasPage/>}/> 
         <Route path="/clientes" element={<ClientesPage/>}/>

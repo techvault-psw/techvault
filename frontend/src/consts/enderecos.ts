@@ -1,10 +1,10 @@
 export type Endereco = {
-    name: string,
-    cep: string,
-    street: string,
-    number: number,
-    neighborhood: string,
-    city: string,
+    name: string
+    cep: string
+    street: string
+    number: number
+    neighborhood: string
+    city: string
     state: string
 }
 
