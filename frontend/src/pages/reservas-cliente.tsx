@@ -75,8 +75,15 @@ export const ReservasClientePage = () => {
       <PageTitle>Reservas de João Silva</PageTitle>
 
       <div className="flex items-center gap-4">
-        <Button variant="secondary" className="w-40 md:w-52 py-1 flex gap-1 items-center justify-center font-medium"><FilterIcon className="size-4" /> Filtros</Button>
-        <Button variant="secondary" className="w-40 md:w-52 py-1 flex gap-1 items-center justify-center font-medium"><SlidersIcon className="size-4" /> Ordenar por</Button>
+        <Button variant="secondary" className="w-40 md:w-52" size="sm">
+          <FilterIcon className="size-4.5" />
+          Filtros
+        </Button>
+
+        <Button variant="secondary" className="w-40 md:w-52" size="sm">
+          <SlidersIcon className="size-4.5" />
+          Ordenar por
+        </Button>
       </div>
 
       <section className="w-full flex flex-col gap-4 scrollbar">
