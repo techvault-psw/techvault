@@ -79,20 +79,20 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
                 <Separator />
 
                 <nav className="flex flex-col gap-2">
-                    <SidebarItem display="Perfil" icon={PersonIcon} to="/perfil" />
-                    <SidebarItem display="Home" icon={HomeIcon} to="/" />
-                    <SidebarItem display="Pacotes Disponíveis" icon={BoxIcon} to="/pacotes-disponiveis" />
-                    <SidebarItem display="Minhas Reservas" icon={CalendarIcon} to="/minhas-reservas" />
-                    <SidebarItem display="Feedbacks" icon={CommentIcon} to="/feedbacks" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Perfil" icon={PersonIcon} to="/perfil" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Home" icon={HomeIcon} to="/" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Pacotes Disponíveis" icon={BoxIcon} to="/pacotes-disponiveis" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Minhas Reservas" icon={CalendarIcon} to="/minhas-reservas" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Feedbacks" icon={CommentIcon} to="/feedbacks" />
                 </nav>
 
                 <Separator className="gerente suporte" />
 
                 <nav className="gerente suporte flex flex-col gap-2">
-                    <SidebarItem display="Dashboard" icon={DashboardIcon} to="/dashboard" />
-                    <SidebarItem display="Gerenciar Reservas" icon={CalendarsIcon} to="/reservas" />
-                    <SidebarItem display="Gerenciar Pacotes" icon={CubeIcon} to="/pacotes" />
-                    <SidebarItem display="Gerenciar Clientes" icon={PeopleIcon} to="/clientes" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Dashboard" icon={DashboardIcon} to="/dashboard" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Reservas" icon={CalendarsIcon} to="/reservas" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Pacotes" icon={CubeIcon} to="/pacotes" />
+                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Clientes" icon={PeopleIcon} to="/clientes" />
                 </nav>
             </div>
         </div>
