@@ -14,14 +14,15 @@ import {
   FormControl,
   FormMessage
 } from '../components/ui/form';
-import { Input } from "@/components/ui/input";
+import { Input, Label } from "@/components/ui/input";
 import InputPassword from '@/components/ui/input-password';
 import { Button } from '../components/ui/button';
 import { Separator } from "@/components/ui/separator";
+import { useHookFormMask } from 'use-mask-input';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
-  phone: z.string().min(1, "O telefone é obrigatório"),
+  phone: z.string().min(1, "O telefone é obrigatório").regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX"),
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
   password: z.string().min(1, "A senha é obrigatória")
 })
@@ -43,6 +44,8 @@ export default function CadastroPage() {
     console.log(values)
     navigate("/")
   }
+
+  const registerWithMask = useHookFormMask(form2.register)
 
   return (
     <PageContainer.Auth>
@@ -87,7 +90,14 @@ export default function CadastroPage() {
               <FormItem>
                 <FormLabel>Telefone</FormLabel>
                 <FormControl>
-                  <Input placeholder="(XX) XXXXX-XXXX" type="tel" {...field} />
+                  <Input
+                    {...field}
+                    {...registerWithMask("phone", ['(99) 99999-9999'], {
+                      required: true
+                    })}
+                    placeholder="(__) _____-____"
+                    type="tel"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>

@@ -1,11 +1,11 @@
 export type Reserva = {
     pacoteIndex: number
     valor: number
-    status: "Confirmada" | "Cancelada" | "Concluída",
-    dataInicio: Date,
-    dataTermino: Date,
-    endereco: string,
-    codigoEntrega: string,
+    status: "Confirmada" | "Cancelada" | "Concluída"
+    dataInicio: Date
+    dataTermino: Date
+    endereco: string
+    codigoEntrega: string
     codigoColeta: string
 }
 
@@ -17,8 +17,8 @@ export const reservas: Reserva[] = [
     dataInicio: new Date("2025-10-01T10:00:00"),
     dataTermino: new Date("2025-10-05T10:00:00"),
     endereco: "Rua das Flores, 123, São Paulo, SP",
-    codigoEntrega: "ENT12345",
-    codigoColeta: "COL12345"
+    codigoEntrega: "A7F3K2Z",
+    codigoColeta: "9M2XQ8B"
   },
   {
     pacoteIndex: 1,
@@ -27,8 +27,8 @@ export const reservas: Reserva[] = [
     dataInicio: new Date("2025-10-10T12:00:00"),
     dataTermino: new Date("2025-10-12T12:00:00"),
     endereco: "Avenida Brasil, 456, Rio de Janeiro, RJ",
-    codigoEntrega: "ENT67890",
-    codigoColeta: "COL67890"
+    codigoEntrega: "L4P7R1T",
+    codigoColeta: "C6Z8V5Y"
   },
   {
     pacoteIndex: 2,
@@ -37,7 +37,7 @@ export const reservas: Reserva[] = [
     dataInicio: new Date("2025-09-20T08:00:00"),
     dataTermino: new Date("2025-09-25T08:00:00"),
     endereco: "Praça Central, 789, Belo Horizonte, MG",
-    codigoEntrega: "ENT11121",
-    codigoColeta: "COL11121"
+    codigoEntrega: "Q3N9W0K",
+    codigoColeta: "H2B7D6M"
   }
 ];

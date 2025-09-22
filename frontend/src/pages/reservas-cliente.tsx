@@ -57,7 +57,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   );
 };
 
-export const ReservasClientePage = () => {
+export default function ReservasClientePage() {
   const sortedReservas = useMemo(() => {
     return [...reservas].sort((a, b) => {
         const dateA = a.dataInicio.getTime();

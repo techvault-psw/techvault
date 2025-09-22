@@ -6,11 +6,11 @@ import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { pacotes } from "@/consts/pacotes";
 import type { Reserva } from "@/consts/reservas";
-import type { Cliente } from "@/data/clientes";
+import type { Cliente } from "@/consts/clientes";
 
 interface CancelarReservaDialogProps {
   reserva: Reserva
-  cliente: Cliente
+  cliente?: Cliente
   handleCancelClick: () => void
   children: ReactNode
 }
@@ -25,8 +25,18 @@ export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, chi
 
         <Separator />
 
+        {cliente ? (
+          <Dialog.Description>
+            Tem certeza que deseja cancelar a reserva do "{pacotes[reserva.pacoteIndex].name}" feita por “{cliente.name}”?
+          </Dialog.Description>
+        ) : (
+          <Dialog.Description>
+            Tem certeza que deseja cancelar sua a reserva do "{pacotes[reserva.pacoteIndex].name}"?
+          </Dialog.Description>
+        )}
+
         <Dialog.Description>
-          Tem certeza que deseja cancelar a reserva do "{pacotes[reserva.pacoteIndex].name}" feita por “{cliente.name}”?
+          Essa ação não pode ser desfeita.
         </Dialog.Description>
 
         <Dialog.Footer>
