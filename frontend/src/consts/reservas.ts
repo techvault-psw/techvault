@@ -1,6 +1,6 @@
 export type Reserva = {
-    pacoteIndex: Number
-    valor: Number
+    pacoteIndex: number
+    valor: number
     status: "Confirmada" | "Cancelada" | "Concluída",
     dataInicio: Date,
     dataTermino: Date,

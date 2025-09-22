@@ -1,79 +1,108 @@
-import { Button } from "@/components/ui/button"; 
+import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
-import { Separator } from "@/components/ui/separator"; 
+import { Separator } from "@/components/ui/separator";
+import type { Reserva } from "@/consts/reservas";
+import { formatCurrency } from "@/lib/format-currency";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 import { ArrowLeft, Pencil, X } from "lucide-react";
+import type { ReactNode } from "react";
+import { FormItem } from "../ui/form";
+import { Input, Label } from "../ui/input";
+import { Card } from "../ui/card";
+import { pacotes } from "@/consts/pacotes";
 
 interface DetalhesReservaDialogProps {
-  open: boolean;
-  setOpen: (open: boolean) => void;
-  reserva: Reserva | null;
-  clienteNome: string;
+  reserva: Reserva
+  tipo?: 'Entrega' | 'Coleta'
+  children: ReactNode
 }
-
-interface Reserva { 
-  id: number; 
-  clienteId: number; 
-  titulo: string; 
-  endereco: string; 
-  dataInicio: string; 
-  dataFim: string; 
-  status: "ativa" | "concluida" | "cancelada";
-  tipo: string;
-  precoTotal: string;
-}
-
 
 const InfoField = ({ label, value }: { label: string, value: string }) => (
-  <div className="flex flex-col">
-    <label className="text-sm font-medium text-gray-400 mb-1">{label}</label>
-    <div className="bg-slate-800/50 border border-slate-700 rounded-md px-3 py-2 text-white">
-      {value}
-    </div>
-  </div>
+  <FormItem>
+    <Label>{label}</Label>
+    <Input
+      type="text"
+      value={value}
+    />
+  </FormItem>
 );
 
-export const DetalhesReservaDialog = ({ open, setOpen, reserva, clienteNome }: DetalhesReservaDialogProps) => {
-  if (!reserva) {
-    return null;
-  }
+export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
+  const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy hh:MM")
+  const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy hh:MM")
 
   return (
-    <Dialog.Container open={open} onOpenChange={setOpen}>
-      <Dialog.Content className="p-0 bg-[#0f172a] border-slate-800 text-white [&>button]:hidden flex flex-col max-h-[90vh]">
+    <Dialog.Container>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
+
+      <Dialog.Content>
+        <Dialog.Title className="text-xl font-bold">Informações da Reserva</Dialog.Title>
         
-        <div className="p-5 px-5 pb-0 flex-shrink-0">
-          <Dialog.Title className="text-xl font-bold">Informações da Reserva</Dialog.Title>
-          <Separator className="bg-slate-700 mt-3" />
-        </div>
+        <Separator />
         
-        <div className="flex flex-col gap-3 px-4 flex-1 overflow-y-auto 
-                       [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-          <div className="grid grid-cols-2 gap-3">
-            <InfoField label="Tipo" value={reserva.tipo} />
-            <InfoField label="Preço Total Pago" value={reserva.precoTotal} />
+        <div className="flex gap-3 justify-between">
+          <div className={cn("w-full grid gap-3", tipo ? "grid-cols-2" : "grid-cols-1")}>
+            {tipo && (
+              <InfoField label="Tipo" value={tipo} />
+            )}
+            <InfoField label="Preço Total Pago" value={formatCurrency(reserva.valor)} />
           </div>
-
-          <InfoField label="Data de Início" value={reserva.dataInicio} />
-          <InfoField label="Data de Término" value={reserva.dataFim} />
-          <InfoField label="Pacote" value={reserva.titulo} />
-          <InfoField label="Endereço" value={reserva.endereco} />
-          <InfoField label="Cliente" value={clienteNome} />
         </div>
 
-        <div className="p-5 flex flex-col gap-2 border-t border-slate-800 bg-black/20 flex-shrink-0">
-          <div className="grid grid-cols-2 gap-2">
+        {/* TODO: Dialog de Pacote */}
+        <FormItem>
+          <Label>Pacote</Label>
+          <Card.Container>
+            <Card.Title>
+              {pacotes[reserva.pacoteIndex].name}
+            </Card.Title>
+          </Card.Container>
+        </FormItem>
+
+        {/* TODO: Dialog de Endereço */}
+        <FormItem>
+          <Label>Endereço</Label>
+          <Card.Container>
+            <Card.Title>
+              {reserva.endereco}
+            </Card.Title>
+          </Card.Container>
+        </FormItem>
+
+        {/* TODO: Dialog de Cliente */}
+        <FormItem>
+          <Label>Cliente</Label>
+          <Card.Container>
+            <Card.Title>
+              João Silva
+            </Card.Title>
+          </Card.Container>
+        </FormItem>
+
+        <InfoField label="Data de Início" value={formattedStartDate} />
+        <InfoField label="Data de Término" value={formattedEndDate} />
+
+        <Dialog.Footer className="flex-col">
+          <div className="w-full flex gap-3 items-center">
             <Button variant="destructive">
-              <X size={16} className="mr-2"/> Cancelar
+              <X className="size-4"/>
+              Cancelar
             </Button>
+
             <Button variant="outline">
-              <Pencil size={15} className="mr-2"/> Editar
+              <Pencil className="size-4"/>
+              Editar
             </Button>
           </div>
-          <Button variant="outline" className="w-full" onClick={() => setOpen(false)}>
-            <ArrowLeft size={16} className="mr-2"/> Voltar
-          </Button>
-        </div>
-        
+
+          <Dialog.Close asChild>
+            <Button variant="outline" className="w-full">
+              <ArrowLeft className="size-4"/>
+              Voltar
+            </Button>
+          </Dialog.Close>
+        </Dialog.Footer>
       </Dialog.Content>
     </Dialog.Container>
   );
