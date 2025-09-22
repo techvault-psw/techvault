@@ -1,73 +1,130 @@
-import { FilterIcon } from "@/components/icons/filter-icon";
-import { SlidersIcon } from "@/components/icons/sliders-icon";
-import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
+import { useState, useMemo } from "react"
+import { useNavigate } from "react-router-dom" // Removido Link, não precisamos mais dele aqui
+import { ArrowLeft } from "lucide-react"
+import { FilterIcon } from "@/components/icons/filter-icon"
+import { SlidersIcon } from "@/components/icons/sliders-icon"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+// 1. Importe o novo componente de diálogo
+import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog"
 
-import { formatCurrency } from "@/lib/format-currency";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+// --- Tipagens (mantidas) ---
+export interface Cliente { id: number; nome: string }
+export interface Reserva { 
+  id: number; 
+  clienteId: number; 
+  titulo: string; 
+  endereco: string; 
+  dataInicio: string; 
+  dataFim: string; 
+  status: "ativa" | "concluida" | "cancelada";
+  tipo: string;
+  precoTotal: string;
+}
 
-import { reservas } from "@/consts/reservas";
-import { pacotes } from "@/consts/pacotes";
-import { PacoteImage } from "@/components/pacote-image";
-import { Link } from "react-router";
+// --- Mock de Dados (mantidos) ---
+const todosOsClientes: Cliente[] = [{ id: 1, nome: "João Silva" }, { id: 2, nome: "Maria Oliveira" }];
+const todasAsReservas: Reserva[] = [
+  { id: 101, clienteId: 1, titulo: "Setup Gamer Duplo", endereco: "Rua General Canabarro, 485", dataInicio: "02/09/2025 18:10", dataFim: "03/09/2025 21:30", status: "ativa", tipo: "Entrega", precoTotal: "R$ 700,00"},
+  { id: 105, clienteId: 1, titulo: "Setup Gamer Duplo", endereco: "Rua General Canabarro, 485", dataInicio: "03/10/2025 18:10", dataFim: "04/10/2025 21:30", status: "ativa", tipo: "Entrega", precoTotal: "R$ 700,00" },
+  { id: 102, clienteId: 1, titulo: "Setup de Trabalho Profissional", endereco: "Rua General Canabarro, 485", dataInicio: "25/08/2025 10:00", dataFim: "25/08/2025 21:30", status: "concluida", tipo: "Entrega", precoTotal: "R$ 700,00" },
+  { id: 106, clienteId: 1, titulo: "Setup de Trabalho Profissional", endereco: "Rua General Canabarro, 485", dataInicio: "26/08/2025 10:00", dataFim: "26/08/2025 21:30", status: "concluida", tipo: "Entrega", precoTotal: "R$ 700,00"},
+  { id: 107, clienteId: 1, titulo: "Setup Gamer Duplo", endereco: "Rua General Canabarro, 485", dataInicio: "15/08/2025 10:00", dataFim: "15/08/2025 21:30", status: "concluida", tipo: "Entrega", precoTotal: "R$ 700,00"},
+  { id: 104, clienteId: 1, titulo: "Setup Gamer Duplo", endereco: "Rua General Canabarro, 485", dataInicio: "01/07/2025 18:10", dataFim: "02/07/2025 21:30", status: "cancelada", tipo: "Entrega", precoTotal: "R$ 700,00"},
+  { id: 201, clienteId: 2, titulo: "Notebook Básico", endereco: "Rua da Alfândega, 100", dataInicio: "05/09/2025 14:00", dataFim: "05/09/2025 16:00", status: "ativa", tipo: "Entrega", precoTotal: "R$ 700,00"},
+];
 
-export default function ReservasClientePage() {
-    return (
-        <PageContainer.List>
-            <PageTitle>Minhas Reservas</PageTitle>
+const ReservaSection = ({ titulo, reservas, onReservaClick }: { titulo: string; reservas: Reserva[]; onReservaClick: (reserva: Reserva) => void }) => {
+  if (reservas.length === 0) return null;
+  return (
+    <div className="w-full flex flex-col gap-3">
+      <div className="flex gap-2 items-center w-full">
+        <span className="font-medium text-white text-xl flex-shrink-0">{titulo}</span>
+        <div className="flex-1 bg-white/50 h-px" />
+      </div>
+      <section className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
+        {reservas.map((reserva) => (
+          // 3. Trocamos o <Link> por uma <div> com onClick
+          <div key={reserva.id} onClick={() => onReservaClick(reserva)} className="cursor-pointer h-full">
+            <Card.Container className="bg-white/5 hover:bg-white/10 border border-slate-500/50 backdrop-blur-sm transition-colors duration-200 h-full">
+              <Card.TextContainer className="text-white truncate">
+                <div className="flex items-center justify-between gap-2 font-semibold">
+                  <Card.Title className="truncate">{reserva.titulo}</Card.Title>
+                  {reserva.status === "cancelada" && <span className="flex-shrink-0 leading-none text-xs bg-red-800 py-1 px-3 rounded-lg">Cancelada</span>}
+                </div>
+                <Card.Description className="text-gray-300 font-light truncate"><span className="font-medium text-gray-200">Endereço:</span> {reserva.endereco}</Card.Description>
+                <Card.Description className="text-gray-300 font-light truncate"><span className="font-medium text-gray-200">Data:</span> {reserva.dataInicio} - {reserva.dataFim}</Card.Description>
+              </Card.TextContainer>
+            </Card.Container>
+          </div>
+        ))}
+      </section>
+    </div>
+  );
+};
 
-            <div className="flex items-center gap-4 flex-shrink-0">
-                <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                    <FilterIcon className="size-4.5" />
-                    Filtros
-                </Button>
+export const ReservasClientePage = () => {
+  const navigate = useNavigate();
+  // 2. Adicione um estado para controlar qual reserva está selecionada e se o diálogo está aberto
+  const [reservaSelecionada, setReservaSelecionada] = useState<Reserva | null>(null);
 
-                <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                    <SlidersIcon className="size-4.5" />
-                    Ordenar por
-                </Button>
+const handleOpenChange = (isOpen: boolean) => {
+    if (!isOpen) {
+      setReservaSelecionada(null);
+    }
+  };
+
+  // O resto da sua lógica de filtragem e ordenação permanece igual...
+  const clienteId = 1;
+  const clienteAtual = todosOsClientes.find((c) => c.id === clienteId);
+  const reservasDoCliente = todasAsReservas.filter((r) => r.clienteId === clienteId);
+  const sortedReservas = useMemo(() => {
+    const parseDate = (dateString: string) => {
+        const [datePart, timePart] = dateString.split(' ');
+        const [day, month, year] = datePart.split('/').map(Number);
+        const [hours, minutes] = timePart.split(':').map(Number);
+        return new Date(year, month - 1, day, hours, minutes).getTime();
+    };
+    return [...reservasDoCliente].sort((a, b) => {
+        const dateA = parseDate(a.dataInicio);
+        const dateB = parseDate(b.dataInicio);
+        return dateB - dateA;
+    });
+  }, [reservasDoCliente]);
+
+  const reservasAtuais = sortedReservas.filter((r) => r.status === "ativa");
+  const reservasConcluidas = sortedReservas.filter((r) => r.status === "concluida");
+  const reservasCanceladas = sortedReservas.filter((r) => r.status === "cancelada");
+
+  return (
+    <>
+      <div className="text-white h-dvh flex flex-col items-center bg-[url('/background.png')] bg-cover bg-center bg-fixed">
+        <div className="w-full max-w-7xl h-full p-4 flex flex-col items-center gap-4 md:items-start">
+          <div className="flex-shrink-0 w-full flex flex-col items-center md:items-start gap-4">
+            <h2 className="text-3xl font-bold text-white text-center md:text-4xl">Reservas de {clienteAtual?.nome}</h2>
+            <div className="flex items-center gap-4">
+              <Button variant="secondary" className="w-40 md:w-52 py-1 flex gap-1 items-center justify-center font-medium"><FilterIcon className="size-4" /> Filtros</Button>
+              <Button variant="secondary" className="w-40 md:w-52 py-1 flex gap-1 items-center justify-center font-medium"><SlidersIcon className="size-4" /> Ordenar por</Button>
             </div>
-
-        
-            <div className="w-full flex flex-col items-center gap-5 scrollbar md:grid lg:grid-cols-2 2xl:grid-cols-3">
-                {Array(200).fill(reservas).flat().map((reserva, index) => {
-                    const formattedValue = formatCurrency(reserva.valor);
-
-                    const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
-                    const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
-
-                    return (
-                        <Link to={`/informacoes-reserva/${index % reservas.length}`} key={index} className="w-full max-w-120 lg:max-w-140 border border-gray/50 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl shadow-lg flex flex-col gap-4 p-4 cursor-pointer transition-colors duration-200">
-                            <div className="flex gap-2">
-                                <PacoteImage
-                                    pacote={pacotes[reserva.pacoteIndex]}
-                                    className="h-22"
-                                />
-
-                                <div className="flex-1 flex flex-col gap-2 justify-between text-white text-lg font-semibold">
-                                    <h2 className="text-lg">{pacotes[reserva.pacoteIndex].name}</h2>
-                                    <p className="text-right text-gray font-medium">{formattedValue}</p>
-                                </div>
-                            </div>
-
-                            <Separator/>
-
-                            <div className="grid grid-cols-[1.8fr_1.2fr] grid-rows-3 gap-1 text-white">
-                                <p>Status:</p><p className="text-right">{reserva.status}</p>
-                                <p>Data e Hora de Início:</p><p className="text-right">{formattedStartDate}</p>
-                                <p>Data e Hora de Término:</p><p className="text-right">{formattedEndDate}</p>
-                            </div>
-
-                            <Separator className="lg:hidden"/>
-
-                            <p className="font-semibold text-white text-md text-center lg:hidden">Clique para mais informações</p>
-                        </Link>
-                    )
-                })}
-            </div>
-        </PageContainer.List>
-    )
+          </div>
+          <section className="w-full flex-1 flex flex-col gap-6 overflow-y-auto pr-2 [&::-webkit-scrollbar]:w-2 [&::-webkit-scrollbar-thumb]:bg-slate-600 [&::-webkit-scrollbar-track]:bg-slate-800/50 [&::-webkit-scrollbar-thumb]:rounded-full">
+            <ReservaSection titulo="Atuais" reservas={reservasAtuais} onReservaClick={setReservaSelecionada} />
+            <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} onReservaClick={setReservaSelecionada} />
+            <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} onReservaClick={setReservaSelecionada} />
+          </section>
+          <div className="flex-shrink-0 w-full flex justify-center md:justify-start">
+            <Button variant="outline" onClick={() => navigate(-1)} className="w-60 mt-2 bg-gray-200/10 hover:bg-gray-200/20 border-2 border-white"><ArrowLeft size={16} className="mr-2" /> Voltar</Button>
+          </div>
+        </div>
+      </div>
+      
+      {/* 4. Renderize o diálogo aqui, passando os estados e a função para fechar */}
+      <DetalhesReservaDialog
+        open={!!reservaSelecionada}
+        setOpen={handleOpenChange}
+        reserva={reservaSelecionada}
+        clienteNome={clienteAtual?.nome || ''}
+      />
+    </>
+  );
 };
