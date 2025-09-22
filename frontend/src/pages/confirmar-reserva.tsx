@@ -7,11 +7,11 @@ import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
-import { Input, Label } from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
 import { pacotes } from "@/consts/pacotes";
-import { enderecos, type Endereco } from "@/consts/enderecos";
+import { enderecos } from "@/consts/enderecos";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { formatCurrency } from "@/lib/format-currency";
@@ -60,14 +60,7 @@ export default function ConfirmarReservaPage() {
         mode: "onChange"
     });
 
-    const {
-        handleSubmit,
-        setValue,
-        watch,
-        formState: { errors },
-    } = form
-
-    const onSubmit = (x: FormData) => {
+    const onSubmit = () => {
         navigate(`/pagamento/${numberId}`)
     };
 
