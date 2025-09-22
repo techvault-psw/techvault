@@ -5,12 +5,16 @@ import type { Reserva } from "@/consts/reservas";
 import { formatCurrency } from "@/lib/format-currency";
 import { cn } from "@/lib/utils";
 import { format } from "date-fns";
-import { ArrowLeft, Pencil, X } from "lucide-react";
-import type { ReactNode } from "react";
-import { FormItem } from "../ui/form";
+import { ArrowLeft, Pen, Pencil, X } from "lucide-react";
+import { useState, type ReactNode } from "react";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input, Label } from "../ui/input";
 import { Card } from "../ui/card";
 import { pacotes } from "@/consts/pacotes";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { DateTimePicker } from "../ui/datetime-picker";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -18,19 +22,33 @@ interface DetalhesReservaDialogProps {
   children: ReactNode
 }
 
-const InfoField = ({ label, value }: { label: string, value: string }) => (
-  <FormItem>
-    <Label>{label}</Label>
-    <Input
-      type="text"
-      value={value}
-    />
-  </FormItem>
-);
+const formSchema = z
+    .object({
+        dataHoraInicial: z.date({message: "Por favor, preencha a data inicial"}),
+        dataHoraFinal: z.date({message: "Por favor, preencha a data final"}),
+    })
+    .refine((data) => data.dataHoraInicial <= data.dataHoraFinal, {
+        message: "Data final não pode ser antes que a data inicial",
+        path: ["dataHoraFinal"],
+    });
+
+type FormData = z.infer<typeof formSchema>;
 
 export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
-  const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy hh:MM")
-  const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy hh:MM")
+  const [isEditting, setIsEditting] = useState(false)
+  
+  const form = useForm<FormData>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      dataHoraInicial: reserva.dataInicio,
+      dataHoraFinal: reserva.dataTermino,
+    },
+    mode: "onChange"
+  })
+
+  const onSubmit = () => {
+    setIsEditting(false)
+  }
 
   return (
     <Dialog.Container>
@@ -44,9 +62,24 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
         <div className="flex gap-3 justify-between">
           <div className={cn("w-full grid gap-3", tipo ? "grid-cols-2" : "grid-cols-1")}>
             {tipo && (
-              <InfoField label="Tipo" value={tipo} />
+              <FormItem>
+                <Label>Tipo</Label>
+                <Input
+                  disabled
+                  type="text"
+                  value={tipo}
+                />
+              </FormItem>
             )}
-            <InfoField label="Preço Total Pago" value={formatCurrency(reserva.valor)} />
+
+            <FormItem>
+              <Label>Preço Total Pago</Label>
+              <Input
+                disabled
+                type="text"
+                value={formatCurrency(reserva.valor)}
+              />
+            </FormItem>
           </div>
         </div>
 
@@ -80,29 +113,76 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
           </Card.Container>
         </FormItem>
 
-        <InfoField label="Data de Início" value={formattedStartDate} />
-        <InfoField label="Data de Término" value={formattedEndDate} />
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+            <FormField
+              control={form.control}
+              name="dataHoraInicial"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data e Hora de Início</FormLabel>
+                  <FormControl>
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      minuteStep={1}
+                      disabled={!isEditting}
+                      placeholder="Selecione uma data"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Dialog.Footer className="flex-col">
-          <div className="w-full flex gap-3 items-center">
-            <Button variant="destructive">
-              <X className="size-4"/>
-              Cancelar
-            </Button>
+            <FormField
+              control={form.control}
+              name="dataHoraFinal"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Data e Hora de Término</FormLabel>
+                  <FormControl>
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={field.onChange}
+                      minuteStep={1}
+                      disabled={!isEditting}
+                      placeholder="Selecione uma data"
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-            <Button variant="outline">
-              <Pencil className="size-4"/>
-              Editar
-            </Button>
-          </div>
+            <Dialog.Footer className="block space-y-3">
+              {isEditting ? (
+                <Button type="submit" className="h-[2.625rem] w-full">
+                  Salvar alterações
+                </Button>
+              ) : (
+                <div className="w-full flex gap-3 items-center">
+                  <Button variant="destructive">
+                    <X className="size-4"/>
+                    Cancelar
+                  </Button>
 
-          <Dialog.Close asChild>
-            <Button variant="outline" className="w-full">
-              <ArrowLeft className="size-4"/>
-              Voltar
-            </Button>
-          </Dialog.Close>
-        </Dialog.Footer>
+                  <Button variant="outline" onClick={() => setIsEditting(true)}>
+                    <Pen className="size-4" />
+                    Editar
+                  </Button>
+                </div>
+              )}
+
+              <Dialog.Close asChild>
+                <Button variant="outline" className="w-full">
+                  <ArrowLeft className="size-4"/>
+                  Voltar
+                </Button>
+              </Dialog.Close>
+            </Dialog.Footer>
+          </form>
+        </Form>
       </Dialog.Content>
     </Dialog.Container>
   );
