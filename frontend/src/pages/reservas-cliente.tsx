@@ -1,19 +1,16 @@
-import { useState, useMemo } from "react"
-import { useNavigate } from "react-router"
-import { ArrowLeft } from "lucide-react"
+import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog"
 import { FilterIcon } from "@/components/icons/filter-icon"
 import { SlidersIcon } from "@/components/icons/sliders-icon"
-import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/card"
-import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog"
-import { Badge } from "@/components/ui/badge"
-import { reservas, type Reserva } from "@/consts/reservas"
-import { pacotes } from "@/consts/pacotes"
-import { format } from "date-fns"
 import { PageContainer } from "@/components/page-container"
 import { PageTitle } from "@/components/page-title"
-
-export interface Cliente { id: number; nome: string }
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
+import { pacotes } from "@/consts/pacotes"
+import { reservas, type Reserva } from "@/consts/reservas"
+import { format } from "date-fns"
+import { ArrowLeft } from "lucide-react"
+import { useMemo } from "react"
 
 interface ReservaSectionProps {
   titulo: string

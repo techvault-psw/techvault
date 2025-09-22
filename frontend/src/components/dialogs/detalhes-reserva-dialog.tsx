@@ -15,6 +15,8 @@ import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTimePicker } from "../ui/datetime-picker";
+import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
+import { clientes } from "@/data/clientes";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -36,6 +38,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
+  const [isOpen, setIsOpen] = useState(false)
   
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -51,7 +54,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
   }
 
   return (
-    <Dialog.Container>
+    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -162,10 +165,16 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                 </Button>
               ) : (
                 <div className="w-full flex gap-3 items-center">
-                  <Button variant="destructive">
-                    <X className="size-4"/>
-                    Cancelar
-                  </Button>
+                  <CancelarReservaDialog
+                    cliente={clientes[0]}
+                    handleCancelClick={() => setIsOpen(false)}
+                    reserva={reserva}
+                  >
+                    <Button variant="destructive">
+                      <X className="size-4"/>
+                      Cancelar
+                    </Button>
+                  </CancelarReservaDialog>
 
                   <Button variant="outline" onClick={() => setIsEditting(true)}>
                     <Pen className="size-4" />
