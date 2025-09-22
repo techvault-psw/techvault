@@ -22,7 +22,7 @@ export default function App() {
         <Route path="/dashboard" element={<DashboardPage />} />
         <Route path="/informacoes-pacote/:id" element={<InformacoesPacotePage />} />
         <Route path="/pagamento" element={<PagamentoReservaPage/>}/>
-        <Route path="/meus-enderecos" element={<EnderecosClientePage/>}/>
+        <Route path="/enderecos-cliente" element={<EnderecosClientePage/>}/>
       </Route>
 
       <Route element={<AuthLayout />}>
