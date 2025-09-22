@@ -7,16 +7,23 @@ import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 
-import { pacotes } from "@/consts/pacotes";
-import { enderecos } from "@/consts/enderecos";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { formatCurrency } from "@/lib/format-currency";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
+
 import { DateTimePicker } from "@/components/ui/datetime-picker";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import { enderecos } from "@/consts/enderecos";
+import { pacotes } from "@/consts/pacotes";
+import { formatCurrency } from "@/lib/format-currency";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 
 const metodosPagamento = [
     "Cartão de Crédito",
@@ -108,7 +115,7 @@ export default function ConfirmarReservaPage() {
                                         <DateTimePicker
                                             value={field.value}
                                             onChange={field.onChange}
-                                            placeholder="DD/MM/AAAA HH:mm"
+                                            placeholder="Selecione uma data"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -126,7 +133,7 @@ export default function ConfirmarReservaPage() {
                                         <DateTimePicker
                                             value={field.value}
                                             onChange={field.onChange}
-                                            placeholder="DD/MM/AAAA HH:mm"
+                                            placeholder="Selecione uma data"
                                         />
                                     </FormControl>
                                     <FormMessage />
@@ -137,23 +144,24 @@ export default function ConfirmarReservaPage() {
                         <FormField
                             control={form.control}
                             name="endereco"
-                            render={({ field }) => (
-                                <FormItem className="!opacity-100 [&:has(select:disabled)]:!opacity-60">
+                            render={({ field, fieldState }) => (
+                                <FormItem className="!opacity-100 [&:has([data-disabled])]:!opacity-60">
                                     <FormLabel>Endereço de Entrega</FormLabel>
                                     <FormControl>
-                                        <select 
-                                            {...field}
-                                            className="w-full bg-gray/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray/50 focus:border-white"
-                                        >
-                                            <option value="" disabled className="text-gray-400">Selecione um endereço</option>
-                                            {enderecos.map((endereco, index) => {
-                                                return (
-                                                    <option key={index} value={endereco.name} className="text-black">{endereco.name}</option>
-                                                )
-                                            })}
-                                        </select>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="w-full" aria-invalid={fieldState.invalid}>
+                                            <SelectValue placeholder="Selecione um endereço" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {enderecos.map((endereco, index) => (
+                                            <SelectItem key={index} value={endereco.name}>
+                                                {endereco.name}
+                                            </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                        </Select>
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
@@ -161,23 +169,24 @@ export default function ConfirmarReservaPage() {
                         <FormField
                             control={form.control}
                             name="metodoPagamento"
-                            render={({ field }) => (
-                                <FormItem className="!opacity-100 [&:has(select:disabled)]:!opacity-60">
+                            render={({ field, fieldState }) => (
+                                <FormItem className="!opacity-100 [&:has([data-disabled])]:!opacity-60">
                                     <FormLabel>Método de Pagamento</FormLabel>
                                     <FormControl>
-                                        <select 
-                                            {...field}
-                                            className="w-full bg-gray/5 backdrop-blur-sm text-gray-200 p-2 rounded-lg border border-gray/50 focus:border-white"
-                                        >
-                                            <option value="" disabled className="text-gray-400">Selecione um método</option>
-                                            {metodosPagamento.map((metodo) => {
-                                                return (
-                                                    <option key={metodo} value={metodo} className="text-black">{metodo}</option>
-                                                )
-                                            })}
-                                        </select>
+                                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="w-full" aria-invalid={fieldState.invalid}>
+                                            <SelectValue placeholder="Selecione um método" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {metodosPagamento.map((metodo) => (
+                                            <SelectItem key={metodo} value={metodo}>
+                                                {metodo}
+                                            </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                        </Select>
                                     </FormControl>
-                                    <FormMessage/>
+                                    <FormMessage />
                                 </FormItem>
                             )}
                         />
