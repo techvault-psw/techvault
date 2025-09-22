@@ -62,7 +62,7 @@ export default function InformacoesPacotePage() {
         </HighlightBox>
 
         <Button size="lg" className="md:w-2/3" asChild>
-          <Link to="/confirmar-reserva">
+          <Link to={`/confirmar-reserva/${numberId % pacotes.length}`}>
             Solicitar Reserva
           </Link>
         </Button>
