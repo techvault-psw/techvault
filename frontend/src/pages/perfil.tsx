@@ -1,6 +1,7 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router';
 
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
@@ -24,6 +25,9 @@ import { LogOutIcon } from '@/components/icons/log-out-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
 import { ArrowLeftIcon } from '@/components/icons/arrow-left-icon';
 import { PlusIcon } from '@/components/icons/plus-icon';
+import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog';
+import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
+import { SairDialog } from '@/components/dialogs/sair-dialog';
 
 let user = {
     name: "José da Silva",
@@ -53,9 +57,7 @@ export default function PerfilPage() {
     })
 
     const onSubmit = (x: z.infer<typeof formSchema>) => {
-        user.name = x.name;
-        user.email = x.email;
-        user.phone = x.phone;
+        user = x;
     }
 
     const toggleEditProfileInfo = () => {
@@ -63,6 +65,8 @@ export default function PerfilPage() {
     }
 
     const registerWithMask = useHookFormMask(form.register)
+
+    const navigate = useNavigate()
 
     return (
         <PageContainer.Card>
@@ -102,7 +106,7 @@ export default function PerfilPage() {
                                             type="tel" 
                                             {...registerWithMask("phone", ['(99) 99999-9999'], {
                                                 required: true
-                                                })}
+                                            })}
                                             placeholder="(__) _____-____"
                                         />
                                     </FormControl>
@@ -125,7 +129,7 @@ export default function PerfilPage() {
                         />
 
                         <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
-                            <Button variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
+                            <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
                                 Editar informações
                             </Button>
                             <Button className="h-[2.625rem]" type="submit" onClick={toggleEditProfileInfo} hidden={formDisabled}>
@@ -140,13 +144,15 @@ export default function PerfilPage() {
                 <div className="flex flex-col gap-4 scrollbar">
                     <div className="w-full flex flex-wrap gap-2 items-center justify-between">
                         <h3 className="font-semibold text-white text-lg leading-none">Endereços</h3>
-                        <Button size="sm" variant="secondary" className='flex-none px-3 lg:hidden'>
-                            <PlusIcon/>
-                            Criar endereço
-                        </Button>
+                        <CriarEnderecoDialog>
+                            <Button size="sm" variant="secondary" className='flex-none px-3 lg:hidden'>
+                                <PlusIcon/>
+                                Criar endereço
+                            </Button>
+                        </CriarEnderecoDialog>
                     </div>
 
-                    <div className="lg:grid lg:grid-cols-3 flex flex-col gap-3">
+                    <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3">
                         {enderecos.map((endereco) => {
                             return (
                                 <Card.Container>
@@ -159,20 +165,26 @@ export default function PerfilPage() {
                         })}
                     </div>
                 </div>
-                <Button variant="outline" className='hidden lg:flex lg:w-80 m-auto'>
-                    Criar endereço
-                </Button>
+                <CriarEnderecoDialog>
+                    <Button variant="outline" className='hidden lg:flex lg:w-80 m-auto'>
+                        Criar endereço
+                    </Button>
+                </CriarEnderecoDialog>
             </div>
 
             <div className="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
-                <Button variant="destructive">
-                    <TrashIcon/>
-                    Excluir
-                </Button>
-                <Button variant="destructive">
-                    <LogOutIcon/>
-                    Sair
-                </Button>
+                <ExcluirContaDialog handleDeleteClick={() => navigate("/cadastro")}>
+                    <Button variant="destructive">
+                        <TrashIcon/>
+                        Excluir
+                    </Button>
+                </ExcluirContaDialog>
+                <SairDialog handleCloseClick={() => navigate("/login")}>
+                    <Button variant="destructive">
+                        <LogOutIcon/>
+                        Sair
+                    </Button>
+                </SairDialog>
                 <Button variant="outline" className='col-span-2' onClick={() => history.back()}>
                     <ArrowLeftIcon/>
                     Voltar
