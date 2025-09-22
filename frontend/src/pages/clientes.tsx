@@ -1,3 +1,4 @@
+import { DadosClienteDialog } from '@/components/dialogs/dados-cliente-dialog';
 import { ArrowRightIcon } from '@/components/icons/arrow-right-icon';
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
@@ -30,17 +31,19 @@ export default function ClientesPage() {
 
         <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
           {clientes.map((cliente) => (
-            <Card.Container key={cliente.id}>
-              <Card.TextContainer>
-                <Card.Title>{cliente.name}</Card.Title>
-                <Card.Description className='truncate leading-[120%]'>
-                  <span className="font-medium">E-mail: </span>{cliente.email}
-                </Card.Description>
-                <Card.Description className='truncate leading-[120%]'>
-                  <span className="font-medium">Telefone: </span>{cliente.phone}
-                </Card.Description>
-              </Card.TextContainer>
-            </Card.Container>
+            <DadosClienteDialog cliente={cliente} key={cliente.id}>
+              <Card.Container>
+                <Card.TextContainer>
+                  <Card.Title>{cliente.name}</Card.Title>
+                  <Card.Description className='truncate leading-[120%]'>
+                    <span className="font-medium">E-mail: </span>{cliente.email}
+                  </Card.Description>
+                  <Card.Description className='truncate leading-[120%]'>
+                    <span className="font-medium">Telefone: </span>{cliente.phone}
+                  </Card.Description>
+                </Card.TextContainer>
+              </Card.Container>
+            </DadosClienteDialog>
           ))}
         </section>
 
@@ -57,15 +60,17 @@ export default function ClientesPage() {
             </Table.Header>
             <Table.Body>
               {clientes.map((cliente) => (
-                <Table.Row key={cliente.id}>
-                  <Table.Cell className="text-white font-medium">{cliente.name}</Table.Cell>
-                  <Table.Cell>{cliente.email}</Table.Cell>
-                  <Table.Cell>{cliente.phone}</Table.Cell>
-                  <Table.Cell>{cliente.registrationDate}</Table.Cell>
-                  <Table.Cell className="text-right">
-                    <ArrowRightIcon className="size-6" />
-                  </Table.Cell>
-                </Table.Row>
+                <DadosClienteDialog cliente={cliente} key={cliente.id}>
+                  <Table.Row>
+                    <Table.Cell className="text-white font-medium">{cliente.name}</Table.Cell>
+                    <Table.Cell>{cliente.email}</Table.Cell>
+                    <Table.Cell>{cliente.phone}</Table.Cell>
+                    <Table.Cell>{cliente.registrationDate}</Table.Cell>
+                    <Table.Cell className="text-right">
+                      <ArrowRightIcon className="size-6" />
+                    </Table.Cell>
+                  </Table.Row>
+                </DadosClienteDialog>
               ))}
             </Table.Body>
           </Table.Container>

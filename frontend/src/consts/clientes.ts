@@ -1,4 +1,4 @@
-interface Client {
+export interface Cliente {
   id: number;
   name: string;
   email: string;
@@ -6,7 +6,7 @@ interface Client {
   registrationDate: string;
 }
 
-export const clientes: Client[] = [
+export const clientes: Cliente[] = [
   { id: 1, name: 'Cliente 1', email: 'cliente01@example.com', phone: '(11) 98765-4321', registrationDate: '01/09/2025' },
   { id: 2, name: 'Cliente 2', email: 'cliente02@example.com', phone: '(21) 91234-5678', registrationDate: '01/09/2025' },
   { id: 3, name: 'Cliente 3', email: 'cliente03@example.com', phone: '(31) 98888-7777', registrationDate: '02/09/2025' },
