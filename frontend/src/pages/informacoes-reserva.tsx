@@ -11,10 +11,10 @@ import { Separator } from "@/components/ui/separator"
 import { pacotes } from "@/consts/pacotes"
 import { reservas } from "@/consts/reservas"
 import { formatCurrency } from "@/lib/format-currency"
+import { format } from "date-fns"
+import { ptBR } from "date-fns/locale"
 import { X } from "lucide-react"
-import { Link, useParams } from "react-router"
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
+import { Link, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
   const { id } = useParams<{ id: string }>();
@@ -30,6 +30,8 @@ export default function InformacoesReservasPage() {
   const formattedValue = formatCurrency(reserva.valor)
   const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
+
+  const navigate = useNavigate()
 
   return (
     <PageContainer.Card>
@@ -132,7 +134,7 @@ export default function InformacoesReservasPage() {
       </div>
 
       <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
-        <CancelarReservaDialog reserva={reserva}>
+        <CancelarReservaDialog reserva={reserva} handleCancelClick={() => navigate("/minhas-reservas")}>
           <Button variant="destructive" className="md:order-2 xl:col-start-3">
             <X className="size-5 text-red" />
             <span className="text-red text-lg font-medium leading-none">Cancelar</span>

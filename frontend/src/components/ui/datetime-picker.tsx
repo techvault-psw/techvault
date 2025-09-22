@@ -18,7 +18,7 @@ interface DateTimePickerProps {
   className?: string;
   disabled?: boolean;
   "aria-invalid"?: boolean;
-  minuteStep?: number; // Nova prop para controlar o intervalo dos minutos
+  minuteStep?: number;
 }
 
 export function DateTimePicker({
@@ -28,7 +28,7 @@ export function DateTimePicker({
   className,
   disabled = false,
   "aria-invalid": ariaInvalid,
-  minuteStep = 1, // Por padrão, todos os minutos (1 em 1)
+  minuteStep = 1,
 }: DateTimePickerProps) {
   function handleDateSelect(date: Date | undefined) {
     if (date) {
@@ -57,22 +57,22 @@ export function DateTimePicker({
     onChange(newDate);
   }
 
-  // Gera array de minutos baseado no minuteStep
   const minutes = Array.from(
     { length: Math.floor(60 / minuteStep) }, 
     (_, i) => i * minuteStep
   );
 
   return (
-    <Popover>
+    <Popover open={disabled ? false : undefined}>
       <PopoverTrigger asChild>
         <div
           className={cn(
             `file:text-white placeholder:text-gray/50 selection:bg-primary selection:text-primary-foreground
-              flex items-center justify-between leading-none w-full px-3 py-2 bg-gray/5 hover:bg-gray/10 backdrop-blur-sm
+              flex items-center justify-between leading-none w-full px-3 py-2 bg-gray/5 backdrop-blur-sm
               rounded-lg border border-gray/50 text-base shadow-xs transition-[color,box-shadow] outline-none
               cursor-pointer disabled:cursor-not-allowed focus-visible:border-white focus-visible:ring-white focus-visible:ring-[1px]
               aria-invalid:ring-red/40 aria-invalid:border-red`,
+            !disabled && "hover:bg-gray/10",
             !value && "text-gray/50",
             disabled && "opacity-50 cursor-not-allowed",
             className
