@@ -10,6 +10,7 @@ import PagamentoReservaPage from "./pages/pagamento-reserva";
 import ReservasClientePage from "./pages/reservas-cliente";
 import InformacoesPacotePage from "./pages/informacoes-pacote";
 import EnderecosClientePage from "./pages/enderecos-cliente";
+import ReservasPage from "./pages/reservas";
 
 export default function App() {
   return (
@@ -23,6 +24,7 @@ export default function App() {
         <Route path="/informacoes-pacote/:id" element={<InformacoesPacotePage />} />
         <Route path="/pagamento" element={<PagamentoReservaPage/>}/>
         <Route path="/meus-enderecos" element={<EnderecosClientePage/>}/>
+        <Route path="/reservas" element={<ReservasPage/>}/> 
       </Route>
 
       <Route element={<AuthLayout />}>
