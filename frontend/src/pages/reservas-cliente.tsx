@@ -1,14 +1,12 @@
 import { useState, useMemo } from "react"
-import { useNavigate } from "react-router-dom" // Removido Link, não precisamos mais dele aqui
+import { useNavigate } from "react-router-dom" 
 import { ArrowLeft } from "lucide-react"
 import { FilterIcon } from "@/components/icons/filter-icon"
 import { SlidersIcon } from "@/components/icons/sliders-icon"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-// 1. Importe o novo componente de diálogo
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog"
 
-// --- Tipagens (mantidas) ---
 export interface Cliente { id: number; nome: string }
 export interface Reserva { 
   id: number; 
@@ -22,7 +20,6 @@ export interface Reserva {
   precoTotal: string;
 }
 
-// --- Mock de Dados (mantidos) ---
 const todosOsClientes: Cliente[] = [{ id: 1, nome: "João Silva" }, { id: 2, nome: "Maria Oliveira" }];
 const todasAsReservas: Reserva[] = [
   { id: 101, clienteId: 1, titulo: "Setup Gamer Duplo", endereco: "Rua General Canabarro, 485", dataInicio: "02/09/2025 18:10", dataFim: "03/09/2025 21:30", status: "ativa", tipo: "Entrega", precoTotal: "R$ 700,00"},
@@ -44,7 +41,6 @@ const ReservaSection = ({ titulo, reservas, onReservaClick }: { titulo: string; 
       </div>
       <section className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
         {reservas.map((reserva) => (
-          // 3. Trocamos o <Link> por uma <div> com onClick
           <div key={reserva.id} onClick={() => onReservaClick(reserva)} className="cursor-pointer h-full">
             <Card.Container className="bg-white/5 hover:bg-white/10 border border-slate-500/50 backdrop-blur-sm transition-colors duration-200 h-full">
               <Card.TextContainer className="text-white truncate">
@@ -65,7 +61,6 @@ const ReservaSection = ({ titulo, reservas, onReservaClick }: { titulo: string; 
 
 export const ReservasClientePage = () => {
   const navigate = useNavigate();
-  // 2. Adicione um estado para controlar qual reserva está selecionada e se o diálogo está aberto
   const [reservaSelecionada, setReservaSelecionada] = useState<Reserva | null>(null);
 
 const handleOpenChange = (isOpen: boolean) => {
@@ -74,7 +69,6 @@ const handleOpenChange = (isOpen: boolean) => {
     }
   };
 
-  // O resto da sua lógica de filtragem e ordenação permanece igual...
   const clienteId = 1;
   const clienteAtual = todosOsClientes.find((c) => c.id === clienteId);
   const reservasDoCliente = todasAsReservas.filter((r) => r.clienteId === clienteId);
@@ -118,7 +112,6 @@ const handleOpenChange = (isOpen: boolean) => {
         </div>
       </div>
       
-      {/* 4. Renderize o diálogo aqui, passando os estados e a função para fechar */}
       <DetalhesReservaDialog
         open={!!reservaSelecionada}
         setOpen={handleOpenChange}

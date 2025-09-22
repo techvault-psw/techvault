@@ -16,7 +16,6 @@ export default function App() {
   return (
     <Routes>
       <Route path="/" element={<HomePage />} />
-Estoukkkk
       <Route element={<MainLayout />}>
         <Route path="/pacotes-disponiveis" element={<PacotesDisponiveisPage />} />
         <Route path="/minhas-reservas" element={<MinhasReservasPage/>}/>
