@@ -4,8 +4,7 @@ import { Separator } from "@/components/ui/separator";
 import type { Reserva } from "@/consts/reservas";
 import { formatCurrency } from "@/lib/format-currency";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
-import { ArrowLeft, Pen, Pencil, X } from "lucide-react";
+import { ArrowLeft, Pen, X } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input, Label } from "../ui/input";
@@ -18,6 +17,7 @@ import { DateTimePicker } from "../ui/datetime-picker";
 import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
 import { clientes } from "@/consts/clientes";
 import useCargo from "@/hooks/useCargo";
+import { ConfirmarOperacaoDialog } from "./confirmar-operacao-dialog";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -186,11 +186,12 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                 </div>
               )}
 
-              {/* TODO: Pop-up de confirmar entrega */}
               { isSuporte() &&
-                <Button className="w-full">
-                  Confirmar Entrega
-                </Button>
+                <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo}>
+                  <Button className="w-full h-[2.625rem]">
+                    Confirmar {tipo}
+                  </Button>
+                </ConfirmarOperacaoDialog>
               }
 
               <Dialog.Close asChild>
