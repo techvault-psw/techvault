@@ -20,6 +20,7 @@ import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
 import { ExcluirPacoteDialog } from './excluir-pacote-dialog';
+import useCargo from '@/hooks/useCargo';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -58,6 +59,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   const [isEditting, setIsEditting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(pacote.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const { isGerente } = useCargo()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -264,7 +266,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                 <Button type="submit" className="h-[2.625rem] w-full">
                   Salvar alterações
                 </Button>
-              ) : (
+              ) : isGerente() && (
                 <div className="w-full flex gap-3 items-center">
                   <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={() => setIsOpen(false)}>
                     <Button variant="destructive">
