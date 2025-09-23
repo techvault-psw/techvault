@@ -28,7 +28,12 @@ import { Textarea } from "../ui/textarea";
 const formSchema = z.object({
   pacoteName: z.string().min(1, "Selecione um pacote"),
   rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
-  comment: z.string().min(1, "O comentário é obrigatório").min(10, "O comentário deve ter pelo menos 10 caracteres")
+  comment: z.string()
+    .min(1, "O comentário é obrigatório")
+    .refine(
+      (value) => value.trim().length >= 10,
+      { message: "O comentário deve ter pelo menos 10 caracteres" }
+    )
 });
 
 interface DarFeedbackDialogProps {

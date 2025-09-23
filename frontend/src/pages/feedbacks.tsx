@@ -13,6 +13,7 @@ import { Pen, X } from "lucide-react";
 import { TrashIcon } from "@/components/icons/trash-icon";
 import { Separator } from "@/components/ui/separator";
 import { DarFeedbackDialog } from "@/components/dialogs/dar-feedback-dialog";
+import { EditarFeedbackDialog } from "@/components/dialogs/editar-feedback-dialog";
 
 
 export default function FeedbacksPage() {
@@ -57,9 +58,11 @@ export default function FeedbacksPage() {
                                 </div>
 
                                 <div className="flex-col gap-3 hidden md:flex">
-                                    <Button variant="outline" size="icon" className="rounded-full size-8 p-1.5">
-                                        <Pen className="size-full" />
-                                    </Button>
+                                    <EditarFeedbackDialog feedback={feedback}>
+                                        <Button variant="outline" size="icon" className="rounded-full size-8 p-1.5">
+                                            <Pen className="size-full" />
+                                        </Button>
+                                    </EditarFeedbackDialog>
 
                                     <Button variant="destructive" size="icon" className="rounded-full size-8 p-1.5">
                                         <TrashIcon className="size-full" />
@@ -73,10 +76,12 @@ export default function FeedbacksPage() {
                                     Excluir
                                 </Button>
 
-                                <Button variant="outline" size="sm" className="gap-2">
-                                    <Pen className="size-4" />
-                                    Editar
-                                </Button>
+                                <EditarFeedbackDialog feedback={feedback}>
+                                    <Button variant="outline" size="sm" className="gap-2">
+                                        <Pen className="size-4" />
+                                        Editar
+                                    </Button>
+                                </EditarFeedbackDialog>
                             </div>
 
                             <Card.Container>
