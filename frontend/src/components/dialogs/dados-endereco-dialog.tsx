@@ -12,7 +12,7 @@ import { TrashIcon } from "../icons/trash-icon";
 
 import { type MouseEvent } from "react";
 import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
 
 interface DadosEnderecoDialogProps {
@@ -38,6 +38,10 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     const [isOpen, setIsOpen] = useState(false);
     const [disabled, setDisabled] = useState(true)
     const { isGerente } = useCargo()
+
+    const location = useLocation();
+    const fullPath = location.pathname;
+    const isProfilePage = fullPath === "/perfil";
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -222,7 +226,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                             />
                         </div>
 
-                        {isGerente() && (
+                        {(isProfilePage || isGerente()) && (
                             <Dialog.Footer className="block text-center space-y-3 items-center">
                                 <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={() => setIsOpen(false)}>
                                     <Button type="button" variant="destructive" className="w-full">
