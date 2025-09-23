@@ -13,7 +13,7 @@ import ClientesPage from "./pages/clientes";
 import InformacoesReservasPage from "./pages/informacoes-reserva";
 import EnderecosClientePage from "./pages/enderecos-cliente";
 import ReservaConfirmadaPage from "./pages/reserva-confirmada";
-import FeedbackPage from "./pages/feedbacks-cliente";
+import FeedbacksPage from "./pages/feedbacks";
 
 export default function App() {
   return (
@@ -31,7 +31,7 @@ export default function App() {
         <Route path="/enderecos-cliente" element={<EnderecosClientePage/>}/>
         <Route path="/pagamento/:id" element={<PagamentoReservaPage/>}/>
         <Route path="/reserva-confirmada/:id" element={<ReservaConfirmadaPage/>}/>
-        <Route path="/feedbacks" element={<FeedbackPage/>}/>
+        <Route path="/feedbacks" element={<FeedbacksPage/>}/>
       </Route>
 
       <Route element={<AuthLayout />}>

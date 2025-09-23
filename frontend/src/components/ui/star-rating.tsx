@@ -8,21 +8,15 @@ interface RatingStarsProps extends React.ComponentProps<"div"> {
   max?: number;
 }
 
-function RatingStars({ rating, max=5, className, children, ...props }: RatingStarsProps) {
-    return(
-        <div 
-            data-slot="rating"
-            className={cn(`flex gap-2 items-center`, className)} {...props}
-        >
-            {Array.from({ length: max }).map((_, i) =>
-            i < rating ? <FullStarIcon key={i} /> : <HollowStarIcon key={i} />
+export const StarRating = ({ rating, max = 5, className, children, ...props }: RatingStarsProps) => {
+  return (
+    <div 
+      className={cn(`flex gap-2 items-center`, className)}
+      {...props}
+    >
+      {Array.from({ length: max }).map((_, i) =>
+        i < rating ? <FullStarIcon key={i} /> : <HollowStarIcon key={i} />
       )}
-        </div>
-    )
-}
-
-
-
-export const StarRating = {
-  Stars: RatingStars
+    </div>
+  )
 }
