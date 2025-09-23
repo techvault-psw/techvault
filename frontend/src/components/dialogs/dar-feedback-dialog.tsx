@@ -1,10 +1,7 @@
-import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
-import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
-import type { Feedback } from "@/consts/feedbacks";
 import { useState } from 'react';
 import {
     Select,
@@ -20,11 +17,7 @@ interface DarFeedbackDialogProps {
   children: ReactNode
 }
 
-
-
-
 export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
-  const [open, setOpen] = useState(false);
   const [selectedPack, setSelectedPack] = useState<string | undefined>();
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
