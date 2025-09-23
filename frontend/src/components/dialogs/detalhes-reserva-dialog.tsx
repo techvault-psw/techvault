@@ -16,7 +16,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTimePicker } from "../ui/datetime-picker";
 import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
-import { clientes } from "@/data/clientes";
+import { clientes } from "@/consts/clientes";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
