@@ -16,6 +16,7 @@ import InformacoesReservasPage from "./pages/informacoes-reserva";
 import EnderecosClientePage from "./pages/enderecos-cliente";
 import ReservasPage from "./pages/reservas";
 import ReservaConfirmadaPage from "./pages/reserva-confirmada";
+import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
 
 export default function App() {
@@ -36,6 +37,7 @@ export default function App() {
         <Route path="/enderecos-cliente" element={<EnderecosClientePage/>}/>
         <Route path="/pagamento/:id" element={<PagamentoReservaPage/>}/>
         <Route path="/reserva-confirmada/:id" element={<ReservaConfirmadaPage/>}/>
+        <Route path="/pacotes" element={<Pacotes/>}/>
         <Route path="/feedbacks" element={<FeedbacksPage/>}/>
       </Route>
 
