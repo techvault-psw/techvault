@@ -10,12 +10,14 @@ interface OperacaoConfirmadaDialogProps {
 }
 
 export const OperacaoConfirmadaDialog = ({ tipo, reserva, open, setOpen }: OperacaoConfirmadaDialogProps) => {
+    const pacoteName = pacotes[reserva.pacoteIndex].name
+
     return tipo && (
         <Dialog.Container open={open} onOpenChange={setOpen}>
             <Dialog.Content>
                 <Dialog.Title>{tipo} confirmada!</Dialog.Title>
 
-                <Dialog.Description>A {tipo.toLowerCase()} do reserva {pacotes[reserva.pacoteIndex].name} foi confirmada com sucesso!</Dialog.Description>
+                <Dialog.Description>A {tipo.toLowerCase()} do pacote "{pacoteName}" foi confirmada com sucesso!</Dialog.Description>
             </Dialog.Content>
         </Dialog.Container>
     );

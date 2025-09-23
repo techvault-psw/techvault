@@ -10,7 +10,7 @@ import { Button } from "../ui/button";
 import type { Reserva } from "@/consts/reservas";
 import { OperacaoConfirmadaDialog } from "./operacao-confirmada-dialog";
 
-interface ConfirmarEntregaDialogProps {
+interface ConfirmarOperacaoDialogProps {
     children: ReactNode,
     reserva: Reserva,
     tipo: string | undefined
@@ -19,15 +19,15 @@ interface ConfirmarEntregaDialogProps {
 const formSchema = z
     .object({
         code: z.string()
-               .min(1, { message: "Insira um código válido" })
-               .length(6, { message: "O código deve ter exatamente 6 caracteres" })
-               .regex(
-                    /^(?=(?:.*[A-Z]){3})(?=(?:.*\d){3})[A-Z\d]{6}$/,
-                    { message: "O código deve conter 3 letras maiúsculas e 3 dígitos" }
-               )
-    })
+            .min(1, { message: "Insira um código válido" })
+            .length(7, { message: "O código deve ter exatamente 7 caracteres" })
+            .regex(
+                /^(?=(?:.*[A-Z]){4})(?=(?:.*\d){3})[A-Z\d]{7}$/,
+                { message: "O código deve conter 4 letras maiúsculas e 3 dígitos" }
+            )
+})
 
-export const ConfirmarEntregaDialog = ({ children, reserva, tipo }: ConfirmarEntregaDialogProps) => {
+export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOperacaoDialogProps) => {
     const [isOpen, setOpen] = useState(false)
     const [isConfirmedOpen, setConfirmedOpen] = useState(false)
     
@@ -62,7 +62,7 @@ export const ConfirmarEntregaDialog = ({ children, reserva, tipo }: ConfirmarEnt
                                 <FormItem>
                                     <FormLabel>Código</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="ABC123" type="text" {...field}/>
+                                        <Input placeholder="A1B2C3D" type="text" {...field}/>
                                     </FormControl>
                                     <FormMessage/>
                                 </FormItem>
