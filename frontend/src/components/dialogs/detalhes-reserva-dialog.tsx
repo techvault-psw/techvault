@@ -188,7 +188,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
               )}
 
               { isSuporte() &&
-                <ConfirmarEntregaDialog reserva={reserva}>
+                <ConfirmarEntregaDialog reserva={reserva} tipo={tipo}>
                   <Button className="w-full">
                     Confirmar Entrega
                   </Button>

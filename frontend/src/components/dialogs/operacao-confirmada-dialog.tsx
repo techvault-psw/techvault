@@ -6,16 +6,16 @@ interface OperacaoConfirmadaDialogProps {
     open: boolean
     setOpen: (open: boolean) => void
     reserva: Reserva
-    tipo: "Entrega" | "Coleta"
+    tipo: string | undefined
 }
 
 export const OperacaoConfirmadaDialog = ({ tipo, reserva, open, setOpen }: OperacaoConfirmadaDialogProps) => {
-    return (
+    return tipo && (
         <Dialog.Container open={open} onOpenChange={setOpen}>
             <Dialog.Content>
                 <Dialog.Title>{tipo} confirmada!</Dialog.Title>
 
-                <Dialog.Description>A {tipo} do reserva {pacotes[reserva.pacoteIndex].name} foi confirmada com sucesso!</Dialog.Description>
+                <Dialog.Description>A {tipo.toLowerCase()} do reserva {pacotes[reserva.pacoteIndex].name} foi confirmada com sucesso!</Dialog.Description>
             </Dialog.Content>
         </Dialog.Container>
     );

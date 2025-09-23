@@ -12,7 +12,8 @@ import { OperacaoConfirmadaDialog } from "./operacao-confirmada-dialog";
 
 interface ConfirmarEntregaDialogProps {
     children: ReactNode,
-    reserva: Reserva
+    reserva: Reserva,
+    tipo: string | undefined
 }
 
 const formSchema = z
@@ -26,7 +27,7 @@ const formSchema = z
                )
     })
 
-export const ConfirmarEntregaDialog = ({ children, reserva }: ConfirmarEntregaDialogProps) => {
+export const ConfirmarEntregaDialog = ({ children, reserva, tipo }: ConfirmarEntregaDialogProps) => {
     const [isOpen, setOpen] = useState(false)
     const [isConfirmedOpen, setConfirmedOpen] = useState(false)
     
@@ -81,7 +82,7 @@ export const ConfirmarEntregaDialog = ({ children, reserva }: ConfirmarEntregaDi
             </Dialog.Content>
         </Dialog.Container>
 
-        <OperacaoConfirmadaDialog reserva={reserva} tipo="Entrega" open={isConfirmedOpen} setOpen={setConfirmedOpen}/>
+        <OperacaoConfirmadaDialog reserva={reserva} tipo={tipo} open={isConfirmedOpen} setOpen={setConfirmedOpen}/>
         </>
     );
 }
