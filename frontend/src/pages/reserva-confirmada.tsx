@@ -63,7 +63,7 @@ export default function ReservaConfirmadaPage() {
                 <Button>
                     Visualizar NF-e
                 </Button>
-                <Button variant={"outline"}>
+                <Button variant={"outline"} asChild>
                     <Link to={"/minhas-reservas"}>Ver minhas reservas</Link>
                 </Button>
             </div>
