@@ -1,8 +1,11 @@
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from '@hookform/resolvers/zod';
+
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
-import { useState } from 'react';
 import {
     Select,
     SelectContent,
@@ -12,17 +15,45 @@ import {
 } from "@/components/ui/select";
 import { pacotes } from "@/consts/pacotes";
 import { StarRating } from "../ui/star-rating";
+import { 
+  Form,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormMessage
+} from "../ui/form";
+import { Textarea } from "../ui/textarea";
+
+const formSchema = z.object({
+  pacoteName: z.string().min(1, "Selecione um pacote"),
+  rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
+  comment: z.string().min(1, "O comentário é obrigatório").min(10, "O comentário deve ter pelo menos 10 caracteres")
+});
 
 interface DarFeedbackDialogProps {
   children: ReactNode
 }
 
 export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
-  const [selectedPack, setSelectedPack] = useState<string | undefined>();
-  const [rating, setRating] = useState(0);
-  const [comment, setComment] = useState("");
+  const [isOpen, setIsOpen] = useState(false)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      pacoteName: "",
+      rating: 0,
+      comment: ""
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsOpen(false)
+    form.reset()
+  }
+
   return (
-    <Dialog.Container>
+    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -30,51 +61,81 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
 
         <Separator />
 
-        <div className="space-y-2">
-            <label className="block font-medium text-gray leading-none">Pacote</label>
-            <Select onValueChange={setSelectedPack}>
-                <SelectTrigger className="w-full text-white">
-                    <SelectValue className="text-gray-200" placeholder="Escolher pacote"></SelectValue>
-                </SelectTrigger>
-                <SelectContent>
-                    {pacotes.map((p, index) => (
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
+            <FormField
+              control={form.control}
+              name="pacoteName"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Pacote</FormLabel>
+                  <Select onValueChange={field.onChange} value={field.value}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Escolher pacote" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {pacotes.map((pacote, index) => (
                         <SelectItem key={index} value={String(index)}>
-                            {p.name}
+                          {pacote.name}
                         </SelectItem>
-                    ))}
-                </SelectContent>
-            </Select>
-        </div>
-        <div className="space-y-2">
-          <label className="block font-medium text-gray leading-none">Estrelas</label>
-          <StarRating rating={rating} onRatingChange={setRating} />
-        </div>
-        <div className="space-y-2">
-          <label htmlFor="comment-new" className="block font-medium text-gray leading-none">
-            Comentário
-          </label>
-          <textarea
-            id="comment-new"
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="min-h-28 max-h-52 w-full rounded-lg px-3 py-2 bg-gray/5 backdrop-blur-sm border border-gray/50 text-white leading-[130%] focus:outline-none"
-          />
-        </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-        <Dialog.Footer>
-          <Dialog.Close asChild>    
-            <Button variant="outline"> 
-              Cancelar
-            </Button>
-          </Dialog.Close>
+            <FormField
+              control={form.control}
+              name="rating"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Estrelas</FormLabel>
+                  <FormControl>
+                    <StarRating 
+                      rating={field.value} 
+                      onRatingChange={field.onChange} 
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
-          <Dialog.Close asChild>
-            <Button className="h-[2.625rem]">
-              Confirmar
-            </Button>
-          </Dialog.Close>
-        </Dialog.Footer>
+            <FormField
+              control={form.control}
+              name="comment"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Comentário</FormLabel>
+                  <FormControl>
+                    <Textarea
+                      placeholder="Deixe seu comentário sobre o pacote..."
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <Dialog.Footer>
+              <Dialog.Close asChild>    
+                <Button variant="outline" type="button"> 
+                  Cancelar
+                </Button>
+              </Dialog.Close>
+
+              <Button type="submit" className="h-[2.625rem]">
+                Confirmar
+              </Button>
+            </Dialog.Footer>
+          </form>
+        </Form>
       </Dialog.Content>
     </Dialog.Container>
-  );
-};
+  )
+}
