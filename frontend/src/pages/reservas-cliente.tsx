@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { pacotes } from "@/consts/pacotes"
 import { reservas, type Reserva } from "@/consts/reservas"
+import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useMemo } from "react"
+import { useNavigate } from "react-router"
 
 interface ReservaSectionProps {
   titulo: string
@@ -58,6 +60,14 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
 };
 
 export default function ReservasClientePage() {
+  const {isGerente, isSuporte} = useCargo()
+
+  const navigate = useNavigate()
+
+  if(!isGerente() && !isSuporte()) {
+    navigate("/")
+  }
+
   const sortedReservas = useMemo(() => {
     return [...reservas].sort((a, b) => {
         const dateA = a.dataInicio.getTime();

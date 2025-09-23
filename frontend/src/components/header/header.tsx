@@ -28,7 +28,7 @@ const Header: React.FC = () => {
                         <HeaderItem to="/pacotes-disponiveis">Pacotes</HeaderItem>
                         <HeaderItem to="/minhas-reservas">Reservas</HeaderItem>
                         <HeaderItem to="/feedbacks">Feedbacks</HeaderItem>
-                        {isGerente() || isSuporte() && <HeaderItem to="/dashboard" className="gerente suporte">Dashboard</HeaderItem>}
+                        {(isGerente() || isSuporte()) && <HeaderItem to="/dashboard">Dashboard</HeaderItem>}
                         <HeaderItem to="/perfil">Perfil</HeaderItem>
                     </nav>
 

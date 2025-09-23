@@ -91,9 +91,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
 
                 { (isSuporte() || isGerente()) && 
                     <>
-                        <Separator className="gerente suporte" />
+                        <Separator />
                         
-                        <nav className="gerente suporte flex flex-col gap-2">
+                        <nav className="flex flex-col gap-2">
                             <SidebarItem closeSidebar={closeSidebar} display="Dashboard" icon={DashboardIcon} to="/dashboard" />
                             <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Reservas" icon={CalendarsIcon} to="/reservas" />
                             {isGerente() &&
