@@ -15,9 +15,12 @@ import { Separator } from "@/components/ui/separator";
 import { DarFeedbackDialog } from "@/components/dialogs/dar-feedback-dialog";
 import { EditarFeedbackDialog } from "@/components/dialogs/editar-feedback-dialog";
 import { ExcluirFeedbackDialog } from "@/components/dialogs/excluir-feedback-dialog";
+import useCargo from "@/hooks/useCargo";
 
 
 export default function FeedbacksPage() {
+    const { isGerente } = useCargo()
+
     return (
         <PageContainer.List>
             <PageTitle>Feedbacks</PageTitle>
@@ -47,7 +50,7 @@ export default function FeedbacksPage() {
                 {Array(10).fill(feedbacks).flat().map((feedback, index) => {
                     return (
                         <div key={index} className="w-full h-full p-3 flex flex-col gap-3 bg-white/5 border border-gray/40 rounded-lg backdrop-blur-sm">
-                            <div className="flex items-start justify-between gap-2 overflow-x-hidden">
+                            <div className="flex-1 flex items-start justify-between gap-2 overflow-x-hidden">
                                 <div className="flex-1 flex flex-col gap-3">
                                     <span className="text-lg text-white font-semibold leading-none">{feedback.cliente}</span>
 
@@ -58,38 +61,40 @@ export default function FeedbacksPage() {
                                     </span>
                                 </div>
 
-                                {/* TODO: Apenas o Gerente deve poder ver todos botões de editar/excluir, o cliente apenas no seu próprio feedback */}
-                                <div className="flex-col gap-3 hidden md:flex">
-                                    <EditarFeedbackDialog feedback={feedback}>
-                                        <Button variant="outline" size="icon" className="rounded-full size-8 p-1.5">
-                                            <Pen className="size-full" />
-                                        </Button>
-                                    </EditarFeedbackDialog>
+                                {(isGerente() || index === 0) && (
+                                    <div className="flex-col gap-3 hidden md:flex">
+                                        <EditarFeedbackDialog feedback={feedback}>
+                                            <Button variant="outline" size="icon" className="rounded-full size-8 p-1.5">
+                                                <Pen className="size-full" />
+                                            </Button>
+                                        </EditarFeedbackDialog>
 
+                                        <ExcluirFeedbackDialog feedback={feedback}>
+                                            <Button variant="destructive" size="icon" className="rounded-full size-8 p-1.5">
+                                                <TrashIcon className="size-full" />
+                                            </Button>
+                                        </ExcluirFeedbackDialog>
+                                    </div>
+                                )}
+                            </div>
+
+                            {(isGerente() || index === 0) && (
+                                <div className="flex items-center gap-3 md:hidden">
                                     <ExcluirFeedbackDialog feedback={feedback}>
-                                        <Button variant="destructive" size="icon" className="rounded-full size-8 p-1.5">
-                                            <TrashIcon className="size-full" />
+                                        <Button variant="destructive" size="sm" className="gap-2">
+                                            <TrashIcon className="size-4" />
+                                            Excluir
                                         </Button>
                                     </ExcluirFeedbackDialog>
+
+                                    <EditarFeedbackDialog feedback={feedback}>
+                                        <Button variant="outline" size="sm" className="gap-2">
+                                            <Pen className="size-4" />
+                                            Editar
+                                        </Button>
+                                    </EditarFeedbackDialog>
                                 </div>
-                            </div>
-
-                            {/* TODO: Apenas o Gerente deve poder ver todos botões de editar/excluir, o cliente apenas no seu próprio feedback */}
-                            <div className="flex items-center gap-3 md:hidden">
-                                <ExcluirFeedbackDialog feedback={feedback}>
-                                    <Button variant="destructive" size="sm" className="gap-2">
-                                        <TrashIcon className="size-4" />
-                                        Excluir
-                                    </Button>
-                                </ExcluirFeedbackDialog>
-
-                                <EditarFeedbackDialog feedback={feedback}>
-                                    <Button variant="outline" size="sm" className="gap-2">
-                                        <Pen className="size-4" />
-                                        Editar
-                                    </Button>
-                                </EditarFeedbackDialog>
-                            </div>
+                            )}
 
                             <Card.Container>
                                 <Link to={`/informacoes-pacote/${feedback.pacoteIndex}`}>

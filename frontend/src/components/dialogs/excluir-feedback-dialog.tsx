@@ -6,6 +6,7 @@ import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { pacotes } from "@/consts/pacotes";
+import useCargo from "@/hooks/useCargo";
 
 interface ExcluirFeedbackDialogProps {
   feedback: Feedback
@@ -13,6 +14,9 @@ interface ExcluirFeedbackDialogProps {
 }
 
 export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDialogProps) => {
+  const { isGerente } = useCargo()
+  const pacoteName = pacotes[feedback.pacoteIndex].name
+
   return (
     <Dialog.Container>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -22,14 +26,16 @@ export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDia
 
         <Separator />
 
-        {/* TODO: Se for gerente */}
-        {/* <Dialog.Description>
-          Tem certeza de que deseja excluir permanentemente o feedback do pacote “{pacotes[feedback.pacoteIndex].name}” feito por "{feedback.cliente}"?
-        </Dialog.Description> */}
+        {isGerente() ? (
+          <Dialog.Description>
+            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{pacoteName}” feito por "{feedback.cliente}"?
+          </Dialog.Description>
+        ) : (
+          <Dialog.Description>
+            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{pacoteName}”?
+          </Dialog.Description>
+        )}
 
-        <Dialog.Description>
-          Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{pacotes[feedback.pacoteIndex].name}”?
-        </Dialog.Description>
 
         <Dialog.Description>
           Essa ação não poderá ser desfeita.

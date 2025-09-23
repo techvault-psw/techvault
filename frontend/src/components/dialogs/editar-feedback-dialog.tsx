@@ -25,6 +25,7 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import type { Feedback } from "@/consts/feedbacks";
+import useCargo from "@/hooks/useCargo";
 
 const formSchema = z.object({
   pacoteName: z.string()
@@ -49,6 +50,7 @@ interface EditarFeedbackDialogProps {
 
 export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const { isGerente } = useCargo()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,16 +78,18 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
             <FormField
-              // TODO: "disabled={!isGerente()}"
-              disabled
               control={form.control}
               name="pacoteName"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pacote</FormLabel>
-                  <Select onValueChange={field.onChange} value={field.value}>
+                  <Select
+                    onValueChange={field.onChange}
+                    value={field.value}
+                    disabled={!isGerente()}
+                  >
                     <FormControl>
-                      <SelectTrigger className="w-full">
+                      <SelectTrigger className="w-full disabled:opacity-70">
                         <SelectValue placeholder="Escolher pacote" />
                       </SelectTrigger>
                     </FormControl>
