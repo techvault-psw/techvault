@@ -201,7 +201,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                                     <FormItem>
                                         <FormLabel>Estado</FormLabel>
                                         <FormControl>
-                                            <Input disabled={disabled} type="text" placeholder="Rio de Janeiro" {...field}/>
+                                            <Input disabled={disabled} type="text" placeholder="RJ" {...field}/>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

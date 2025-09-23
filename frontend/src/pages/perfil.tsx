@@ -59,6 +59,7 @@ export default function PerfilPage() {
 
     const onSubmit = (x: z.infer<typeof formSchema>) => {
         user = x;
+        toggleEditProfileInfo()
     }
 
     const toggleEditProfileInfo = () => {
@@ -133,7 +134,7 @@ export default function PerfilPage() {
                             <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
                                 Editar informações
                             </Button>
-                            <Button className="h-[2.625rem]" type="submit" onClick={toggleEditProfileInfo} hidden={formDisabled}>
+                            <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
                                 Salvar alterações
                             </Button>
                         </div>
@@ -142,7 +143,7 @@ export default function PerfilPage() {
 
                 <Separator/>
 
-                <div className="flex flex-col gap-4 scrollbar">
+                <div className="flex flex-col gap-4 overflow-y-hidden">
                     <div className="w-full flex flex-wrap gap-2 items-center justify-between">
                         <h3 className="font-semibold text-white text-lg leading-none">Endereços</h3>
                         <CriarEnderecoDialog>
@@ -153,7 +154,7 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
-                    <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3">
+                    <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
                         {enderecos.map((endereco) => {
                             return (
                                 <DadosEnderecoDialog endereco={endereco}>

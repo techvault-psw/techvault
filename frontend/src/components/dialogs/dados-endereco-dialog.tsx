@@ -89,8 +89,6 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     useEffect(() => {
         if(cepCompleto) {
             fetchCep();
-        } else {
-            setDisabled(true)
         }
     }, [cep, form]);
 
@@ -214,7 +212,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                                     <FormItem>
                                         <FormLabel>Estado</FormLabel>
                                         <FormControl>
-                                            <Input disabled={disabled} type="text" placeholder="Rio de Janeiro" {...field}/>
+                                            <Input disabled={disabled} type="text" placeholder="RJ" {...field}/>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

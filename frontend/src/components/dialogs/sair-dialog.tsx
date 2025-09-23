@@ -23,14 +23,19 @@ export const SairDialog = ({ children, handleCloseClick }: SairDialogProps) => {
                 <Dialog.Description>Tem certeza de que deseja sair da sua sessão atual?</Dialog.Description>
 
                 <Dialog.Footer className="flex flex-row-reverse">
-                    <Button variant="destructive" onClick={handleCloseClick}>
-                        <LogOutIcon/>
-                        Sair
-                    </Button>
-                    <Button variant="outline">
-                        <ArrowLeftIcon/>
-                        Voltar
-                    </Button>
+                    <Dialog.Close asChild>
+                        <Button variant="destructive" onClick={handleCloseClick}>
+                            <LogOutIcon/>
+                            Sair
+                        </Button>
+                    </Dialog.Close>
+
+                    <Dialog.Close asChild>
+                        <Button variant="outline">
+                            <ArrowLeftIcon/>
+                            Voltar
+                        </Button>
+                    </Dialog.Close>
                 </Dialog.Footer>
             </Dialog.Content>
         </Dialog.Container>
