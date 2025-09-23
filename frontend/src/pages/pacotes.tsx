@@ -16,6 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
+import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
 
 export default function Pacotes() {
   const { isGerente } = useCargo()
@@ -50,10 +51,12 @@ export default function Pacotes() {
           </Button>
         </div>
 
-        <Button className="w-full max-w-52" size="sm">
-          <PlusIcon className="size-4.5 stroke-white" />
-          Criar novo
-        </Button>
+        <CriarPacoteDialog>
+          <Button className="w-full max-w-52" size="sm">
+            <PlusIcon className="size-4.5 stroke-white" />
+            Criar novo
+          </Button>
+        </CriarPacoteDialog>
       </div>
 
       <div className="relative flex-shrink-0 w-full">
