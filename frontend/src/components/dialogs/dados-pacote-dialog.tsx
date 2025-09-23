@@ -261,34 +261,36 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
               />
             </div>
 
-            <Dialog.Footer className="block space-y-3">
-              {isEditting ? (
-                <Button type="submit" className="h-[2.625rem] w-full">
-                  Salvar alterações
-                </Button>
-              ) : isGerente() && (
-                <div className="w-full flex gap-3 items-center">
-                  <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={() => setIsOpen(false)}>
-                    <Button variant="destructive">
-                      <Trash2 className="size-4"/>
-                      Excluir
-                    </Button>
-                  </ExcluirPacoteDialog>
-
-                  <Button variant="outline" onClick={() => setIsEditting(true)}>
-                    <Pen className="size-4" />
-                    Editar
+            {isGerente() && (
+              <Dialog.Footer className="block space-y-3">
+                {isEditting ? (
+                  <Button type="submit" className="h-[2.625rem] w-full">
+                    Salvar alterações
                   </Button>
-                </div>
-              )}
+                ) : (
+                  <div className="w-full flex gap-3 items-center">
+                    <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={() => setIsOpen(false)}>
+                      <Button variant="destructive">
+                        <Trash2 className="size-4"/>
+                        Excluir
+                      </Button>
+                    </ExcluirPacoteDialog>
 
-              <Dialog.Close asChild>
-                <Button variant="outline" className="w-full">
-                  <ArrowLeft className="size-4"/>
-                  Voltar
-                </Button>
-              </Dialog.Close>
-            </Dialog.Footer>
+                    <Button variant="outline" onClick={() => setIsEditting(true)}>
+                      <Pen className="size-4" />
+                      Editar
+                    </Button>
+                  </div>
+                )}
+
+                <Dialog.Close asChild>
+                  <Button variant="outline" className="w-full">
+                    <ArrowLeft className="size-4"/>
+                    Voltar
+                  </Button>
+                </Dialog.Close>
+              </Dialog.Footer>
+            )}
           </form>
         </Form>
       </Dialog.Content>
