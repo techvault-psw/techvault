@@ -14,6 +14,7 @@ import { TrashIcon } from "@/components/icons/trash-icon";
 import { Separator } from "@/components/ui/separator";
 import { DarFeedbackDialog } from "@/components/dialogs/dar-feedback-dialog";
 import { EditarFeedbackDialog } from "@/components/dialogs/editar-feedback-dialog";
+import { ExcluirFeedbackDialog } from "@/components/dialogs/excluir-feedback-dialog";
 
 
 export default function FeedbacksPage() {
@@ -50,13 +51,14 @@ export default function FeedbacksPage() {
                                 <div className="flex-1 flex flex-col gap-3">
                                     <span className="text-lg text-white font-semibold leading-none">{feedback.cliente}</span>
 
-                                    <StarRating rating={feedback.nota}/>
+                                    <StarRating rating={feedback.nota} readonly/>
 
                                     <span className="leading-[130%] text-gray font-light text-justify flex-1 line-clamp-4">
                                         {feedback.descricao}
                                     </span>
                                 </div>
 
+                                {/* TODO: Apenas o Gerente deve poder ver todos botões de editar/excluir, o cliente apenas no seu próprio feedback */}
                                 <div className="flex-col gap-3 hidden md:flex">
                                     <EditarFeedbackDialog feedback={feedback}>
                                         <Button variant="outline" size="icon" className="rounded-full size-8 p-1.5">
@@ -64,17 +66,22 @@ export default function FeedbacksPage() {
                                         </Button>
                                     </EditarFeedbackDialog>
 
-                                    <Button variant="destructive" size="icon" className="rounded-full size-8 p-1.5">
-                                        <TrashIcon className="size-full" />
-                                    </Button>
+                                    <ExcluirFeedbackDialog feedback={feedback}>
+                                        <Button variant="destructive" size="icon" className="rounded-full size-8 p-1.5">
+                                            <TrashIcon className="size-full" />
+                                        </Button>
+                                    </ExcluirFeedbackDialog>
                                 </div>
                             </div>
 
+                            {/* TODO: Apenas o Gerente deve poder ver todos botões de editar/excluir, o cliente apenas no seu próprio feedback */}
                             <div className="flex items-center gap-3 md:hidden">
-                                <Button variant="destructive" size="sm" className="gap-2">
-                                    <TrashIcon className="size-4" />
-                                    Excluir
-                                </Button>
+                                <ExcluirFeedbackDialog feedback={feedback}>
+                                    <Button variant="destructive" size="sm" className="gap-2">
+                                        <TrashIcon className="size-4" />
+                                        Excluir
+                                    </Button>
+                                </ExcluirFeedbackDialog>
 
                                 <EditarFeedbackDialog feedback={feedback}>
                                     <Button variant="outline" size="sm" className="gap-2">
