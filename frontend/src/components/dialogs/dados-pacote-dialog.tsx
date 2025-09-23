@@ -19,6 +19,7 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
+import { ExcluirPacoteDialog } from './excluir-pacote-dialog';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -265,10 +266,12 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                 </Button>
               ) : (
                 <div className="w-full flex gap-3 items-center">
-                  <Button variant="destructive">
-                    <Trash2 className="size-4"/>
-                    Excluir
-                  </Button>
+                  <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={() => setIsOpen(false)}>
+                    <Button variant="destructive">
+                      <Trash2 className="size-4"/>
+                      Excluir
+                    </Button>
+                  </ExcluirPacoteDialog>
 
                   <Button variant="outline" onClick={() => setIsEditting(true)}>
                     <Pen className="size-4" />
