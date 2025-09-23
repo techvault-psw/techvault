@@ -96,13 +96,13 @@ export default function FeedbacksPage() {
                                 </div>
                             )}
 
-                            <Card.Container>
-                                <Link to={`/informacoes-pacote/${feedback.pacoteIndex}`}>
+                            <Link to={`/informacoes-pacote/${feedback.pacoteIndex}`}>
+                                <Card.Container>
                                     <Card.Title>
                                         {pacotes[feedback.pacoteIndex].name}
                                     </Card.Title>
-                                </Link>
-                            </Card.Container>
+                                </Card.Container>
+                            </Link>
                         </div>
                     )
                 })}
