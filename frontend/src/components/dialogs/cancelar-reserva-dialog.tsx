@@ -21,7 +21,7 @@ export const CancelarReservaDialog = ({ reserva, children }: CancelarReservaDial
       </Dialog.Trigger>
 
       <Dialog.Content>
-        <Dialog.Title>Relatório de Reservas</Dialog.Title>
+        <Dialog.Title>Cancelar Reserva</Dialog.Title>
 
         <Separator />
 
@@ -35,17 +35,17 @@ export const CancelarReservaDialog = ({ reserva, children }: CancelarReservaDial
 
         <Dialog.Footer>
           <Dialog.Close asChild>
-            <Button variant="outline" className="md:order-1 xl:col-start-2">
+            <Button variant="outline">
               <ArrowLeftIcon className="size-5" />
-              <span className="text-white text-lg font-medium leading-none">Voltar</span>
+              Voltar
             </Button>
           </Dialog.Close>
 
           <Dialog.Close asChild>
             <Button variant="destructive" asChild>
               <Link to="/minhas-reservas">
-                <X className="size-5 text-red" />
-                <span className="text-red text-lg font-medium leading-none">Cancelar</span>
+                <X className="size-5" />
+                Cancelar
               </Link>
             </Button>
           </Dialog.Close>
