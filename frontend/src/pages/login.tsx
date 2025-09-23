@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import InputPassword from '@/components/ui/input-password';
 import { Button } from '../components/ui/button';
 import { Separator } from "@/components/ui/separator";
+import useCargo from "@/hooks/useCargo";
 
 const formSchema = z.object({
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
@@ -26,6 +27,7 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const { setCargo } = useCargo()
 
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -36,8 +38,12 @@ export default function LoginPage() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    navigate("/")
+    if(values.password != "gerente" && values.password != "suporte") {
+      navigate("/")
+    } else {
+      setCargo(values.password)
+      navigate("/dashboard")
+    }
   }
 
   return (

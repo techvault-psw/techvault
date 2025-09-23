@@ -4,8 +4,11 @@ import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import useCargo from "@/hooks/useCargo";
 import type { ComponentType, ReactNode } from "react";
 import { Link } from "react-router";
+
+import { useNavigate } from 'react-router'
 
 type DashboardCard = {
   title: string
@@ -71,6 +74,13 @@ const dashboardCards: Record<string, DashboardCard[]> = {
 }
 
 export default function DashboardPage() {
+  const { isGerente, isSuporte } = useCargo()
+  const navigate = useNavigate()
+
+  if(!isGerente() && !isSuporte()) {
+    navigate("/")
+  }
+
   return (
     <PageContainer.Card>
       <PageTitle>Dashboard</PageTitle>
@@ -78,41 +88,57 @@ export default function DashboardPage() {
       <Separator />
 
      <section className="flex flex-col gap-5 scrollbar">
-      {Object.entries(dashboardCards).map(([section, cards]) => (
-        <div key={section} className="flex flex-col gap-5">
-          <h3 className="text-white text-xl font-semibold">{section}</h3>
+      {Object.entries(dashboardCards).map(([section, cards]) => {
 
-          <div className="flex flex-col lg:grid lg:grid-cols-3 gap-3 text-white">
-            {cards.map((card) => {
-              const cardContent = (
-                <Card.Container className="lg:!py-3 h-full">
-                  <Card.TextContainer className="lg:h-full">
-                    <Card.Title className="lg:font-semibold lg:text-xl">{card.title}</Card.Title>
-                    <Card.Description className="hidden lg:block font-normal tracking-tight">
-                      {card.description}
-                    </Card.Description>
-                  </Card.TextContainer>
-                </Card.Container>
-              );
+        const visibleCards = cards.filter((card) => {
+          return (
+            !(card.role == "gerente" && !isGerente()) && 
+            !(card.role == "suporte" && !isSuporte())
+          )
+        });
 
-              if (card.url) {
-                return (
-                  <Link key={card.url} to={card.url} className="h-full">
-                    {cardContent}
-                  </Link>
+        if (visibleCards.length == 0) return null;
+
+        return (
+          <div key={section} className="flex flex-col gap-5">
+            <h3 className="text-white text-xl font-semibold">{section}</h3>
+
+            <div className="flex flex-col lg:grid lg:grid-cols-3 gap-3 text-white">
+              {cards.map((card) => {
+                if(card.role == "gerente" && !isGerente()) {
+                  return null
+                }
+
+                const cardContent = (
+                  <Card.Container className="lg:!py-3 h-full">
+                    <Card.TextContainer className="lg:h-full">
+                      <Card.Title className="lg:font-semibold lg:text-xl">{card.title}</Card.Title>
+                      <Card.Description className="hidden lg:block font-normal tracking-tight">
+                        {card.description}
+                      </Card.Description>
+                    </Card.TextContainer>
+                  </Card.Container>
                 );
-              }
 
-              const Dialog = card.dialog;
-              return Dialog ? (
-                <Dialog key={card.title}>{cardContent}</Dialog>
-              ) : (
-                <div key={card.title}>{cardContent}</div>
-              )
-            })}
+                if (card.url) {
+                  return (
+                    <Link key={card.url} to={card.url} className="h-full">
+                      {cardContent}
+                    </Link>
+                  );
+                }
+
+                const Dialog = card.dialog;
+                return Dialog ? (
+                  <Dialog key={card.title}>{cardContent}</Dialog>
+                ) : (
+                  <div key={card.title}>{cardContent}</div>
+                )
+              })}
+            </div>
           </div>
-        </div>
-      ))}
+        )
+      })}
     </section>
 
     </PageContainer.Card>

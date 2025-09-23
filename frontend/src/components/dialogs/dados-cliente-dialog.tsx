@@ -20,6 +20,7 @@ import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { TrashIcon } from '../icons/trash-icon';
 import { ExcluirClienteDialog } from './excluir-cliente-dialog';
+import useCargo from '@/hooks/useCargo';
 
 interface DadosClienteDialogProps {
   cliente: Cliente;
@@ -37,6 +38,8 @@ const formSchema = z.object({
 export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isEditting, setIsEditting] = useState(false)
+
+  const { isGerente } = useCargo()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -141,12 +144,11 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
             </FormItem>
 
             <div className="flex flex-col gap-3">
-              {/* TODO: Apenas o Gerente deve poder ver */}
               {isEditting ? (
                 <Button type="submit" className='min-h-[2.625rem]'>
                   Salvar alterações
                 </Button>
-              ) : (
+              ) : isGerente() && (
                 <Button type="button" onClick={handleEditClick} variant="outline">
                   Editar informações
                 </Button>
@@ -164,13 +166,14 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
                 </Card.Container>
               </Link>
 
-              {/* TODO: Apenas o Gerente deve poder ver */}
-              <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={setIsOpen}>
-                <Button variant="destructive">
-                  <TrashIcon className="size-5" />
-                  Excluir
-                </Button>
-              </ExcluirClienteDialog>
+              { isGerente() && 
+                <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={setIsOpen}>
+                  <Button variant="destructive">
+                    <TrashIcon className="size-5" />
+                    Excluir
+                  </Button>
+                </ExcluirClienteDialog>
+              }
             </div>
           </form>
         </Form>

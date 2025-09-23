@@ -16,7 +16,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTimePicker } from "../ui/datetime-picker";
 import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
-import { clientes } from "@/data/clientes";
+import { clientes } from "@/consts/clientes";
+import useCargo from "@/hooks/useCargo";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -39,6 +40,8 @@ type FormData = z.infer<typeof formSchema>;
 export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+
+  const { isGerente, isSuporte } = useCargo()
   
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -163,7 +166,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                 <Button type="submit" className="h-[2.625rem] w-full">
                   Salvar alterações
                 </Button>
-              ) : (
+              ) : isGerente() && (
                 <div className="w-full flex gap-3 items-center">
                   <CancelarReservaDialog
                     cliente={clientes[0]}
@@ -182,6 +185,13 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                   </Button>
                 </div>
               )}
+
+              {/* TODO: Pop-up de confirmar entrega */}
+              { isSuporte() &&
+                <Button className="w-full">
+                  Confirmar Entrega
+                </Button>
+              }
 
               <Dialog.Close asChild>
                 <Button variant="outline" className="w-full">

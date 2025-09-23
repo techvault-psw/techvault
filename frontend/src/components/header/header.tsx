@@ -3,9 +3,12 @@ import { Sidebar, openSidebar, closeSidebar } from '../sidebar/sidebar';
 import { HeaderItem } from './header-item';
 import { Logo } from '../logo';
 import { MenuIcon } from '../icons/menu-icon';
+import useCargo from '@/hooks/useCargo';
 
 const Header: React.FC = () => {
     const [showSidebar, setShowSidebar] = useState(false);
+
+    const {isGerente, isSuporte} = useCargo()
 
     useEffect(() => {
         if(showSidebar) {
@@ -25,7 +28,7 @@ const Header: React.FC = () => {
                         <HeaderItem to="/pacotes-disponiveis">Pacotes</HeaderItem>
                         <HeaderItem to="/minhas-reservas">Reservas</HeaderItem>
                         <HeaderItem to="/feedbacks">Feedbacks</HeaderItem>
-                        <HeaderItem to="/dashboard" className="gerente suporte">Dashboard</HeaderItem>
+                        {isGerente() || isSuporte() && <HeaderItem to="/dashboard" className="gerente suporte">Dashboard</HeaderItem>}
                         <HeaderItem to="/perfil">Perfil</HeaderItem>
                     </nav>
 

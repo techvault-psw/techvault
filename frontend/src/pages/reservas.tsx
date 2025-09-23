@@ -9,6 +9,9 @@ import { pacotes } from "@/consts/pacotes";
 import { reservas } from "@/consts/reservas";
 import { format, isToday, isTomorrow, isYesterday } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
+import useCargo from "@/hooks/useCargo";
+import { useNavigate } from "react-router";
 
 const hoje = new Date()
 
@@ -78,6 +81,14 @@ const reservasPorData: {
 
 
 export default function ReservasPage() {
+  const {isGerente, isSuporte} = useCargo()
+
+  const navigate = useNavigate()
+
+  if(!isGerente() && !isSuporte()) {
+    navigate("/")
+  }
+
   return (
   <PageContainer.List> 
     <PageTitle>Reservas</PageTitle>
@@ -105,29 +116,31 @@ export default function ReservasPage() {
               const pacote = pacotes[reserva.pacoteIndex]
 
               return (
-                <Card.Container key={i}>
-                  <Card.TextContainer className="flex-1 truncate">
-                    <div className="flex items-center justify-between gap-2 flex-1">
-                      <Card.Title className="truncate" title={pacote.name}>
-                        {pacote.name}
-                      </Card.Title>
+                <DetalhesReservaDialog reserva={reserva} tipo={tipo}>
+                  <Card.Container key={i}>
+                    <Card.TextContainer className="flex-1 truncate">
+                      <div className="flex items-center justify-between gap-2 flex-1">
+                        <Card.Title className="truncate" title={pacote.name}>
+                          {pacote.name}
+                        </Card.Title>
 
-                      <Badge variant={tipo === "Entrega" ? "blue" : "purple"}>
-                        {tipo}
-                      </Badge>
-                    </div>
+                        <Badge variant={tipo === "Entrega" ? "blue" : "purple"}>
+                          {tipo}
+                        </Badge>
+                      </div>
 
-                    <Card.Description className="leading-[120%] truncate" title={reserva.endereco}>
-                      <span className="font-medium">Endereço: </span>
-                      {reserva.endereco}
-                    </Card.Description>
+                      <Card.Description className="leading-[120%] truncate" title={reserva.endereco}>
+                        <span className="font-medium">Endereço: </span>
+                        {reserva.endereco}
+                      </Card.Description>
 
-                    <Card.Description className="leading-[120%]">
-                      <span className="font-medium">Horário: </span>
-                      {formatarHora(hora)}
-                    </Card.Description>
-                  </Card.TextContainer>
-                </Card.Container>
+                      <Card.Description className="leading-[120%]">
+                        <span className="font-medium">Horário: </span>
+                        {formatarHora(hora)}
+                      </Card.Description>
+                    </Card.TextContainer>
+                  </Card.Container>
+                </DetalhesReservaDialog>
               )
             })}
           </section>

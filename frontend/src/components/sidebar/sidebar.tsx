@@ -12,6 +12,7 @@ import { PersonIcon } from "../icons/person-icon";
 import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { SidebarItem } from "./sidebar-item";
+import useCargo from "@/hooks/useCargo";
 
 interface SidebarProps {
     closeSidebar: () => void;
@@ -50,6 +51,8 @@ export const closeSidebar = () => {
 };
 
 export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
+    const { isGerente, isSuporte } = useCargo()
+
     return (
         <div id="sidebar" className="absolute inset-0 z-10 hidden">
             <div onClick={() => closeSidebar()} className="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"/>
@@ -86,14 +89,22 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
                     <SidebarItem closeSidebar={closeSidebar} display="Feedbacks" icon={CommentIcon} to="/feedbacks" />
                 </nav>
 
-                <Separator className="gerente suporte" />
-
-                <nav className="gerente suporte flex flex-col gap-2">
-                    <SidebarItem closeSidebar={closeSidebar} display="Dashboard" icon={DashboardIcon} to="/dashboard" />
-                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Reservas" icon={CalendarsIcon} to="/reservas" />
-                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Pacotes" icon={CubeIcon} to="/pacotes" />
-                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Clientes" icon={PeopleIcon} to="/clientes" />
-                </nav>
+                { (isSuporte() || isGerente()) && 
+                    <>
+                        <Separator className="gerente suporte" />
+                        
+                        <nav className="gerente suporte flex flex-col gap-2">
+                            <SidebarItem closeSidebar={closeSidebar} display="Dashboard" icon={DashboardIcon} to="/dashboard" />
+                            <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Reservas" icon={CalendarsIcon} to="/reservas" />
+                            {isGerente() &&
+                                <>
+                                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Pacotes" icon={CubeIcon} to="/pacotes" />
+                                    <SidebarItem closeSidebar={closeSidebar} display="Gerenciar Clientes" icon={PeopleIcon} to="/clientes" />
+                                </>
+                            }
+                        </nav>
+                    </>
+                }
             </div>
         </div>
     )
