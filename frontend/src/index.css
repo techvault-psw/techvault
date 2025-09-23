@@ -128,4 +128,8 @@
   .scrollbar {
     @apply overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none];
   }
+
+  .white-calendar {
+    @apply [&::-webkit-calendar-picker-indicator]:invert
+  }
 }
