@@ -29,7 +29,7 @@ function CardTextContainer({ className, ...props }: React.ComponentProps<"div">)
   return (
     <div
       data-slot="card-text-container"
-      className={cn("flex flex-col gap-2", className)}
+      className={cn("flex flex-col gap-2 h-full", className)}
       {...props}
     />
   )

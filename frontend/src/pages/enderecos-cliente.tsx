@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate } from "react-router";
+import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
 
 export default function EnderecosClientePage() {
   const {isGerente, isSuporte} = useCargo()
@@ -27,14 +28,16 @@ export default function EnderecosClientePage() {
 
       <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
         {Array(10).fill(enderecos).flat().map((endereco: Endereco, i) => (
-          <Card.Container key={i} className="h-full">
-            <Card.TextContainer className="h-full">
-              <Card.Title>{endereco.name}</Card.Title>
-              <Card.Description>
-                {stringifyAddress(endereco)}
-              </Card.Description>
-            </Card.TextContainer>
-          </Card.Container>
+          <DadosEnderecoDialog endereco={endereco} key={i}>
+            <Card.Container className="h-full">
+              <Card.TextContainer className="h-full">
+                <Card.Title>{endereco.name}</Card.Title>
+                <Card.Description>
+                  {stringifyAddress(endereco)}
+                </Card.Description>
+              </Card.TextContainer>
+            </Card.Container>
+          </DadosEnderecoDialog>
         ))}
       </section>
 
@@ -51,23 +54,25 @@ export default function EnderecosClientePage() {
             </tr>
           </Table.Header>
           <Table.Body>
-            {Array(10).fill(enderecos).flat().map((endereco: Endereco, i) => (
-              <Table.Row key={i}>
-                <Table.Cell className="font-medium text-white">{endereco.name}</Table.Cell>
-                <Table.Cell>{endereco.cep}</Table.Cell>
-                <Table.Cell>{endereco.state}</Table.Cell>
-                <Table.Cell>{endereco.city}</Table.Cell>
-                <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
-                <Table.Cell>
-                  <ArrowRightIcon className="size-6" />
-                </Table.Cell>
-              </Table.Row>
+            {Array(2).fill(enderecos).flat().map((endereco: Endereco, i) => (
+              <DadosEnderecoDialog endereco={endereco} key={i}>
+                <Table.Row>
+                  <Table.Cell className="font-medium text-white">{endereco.name}</Table.Cell>
+                  <Table.Cell>{endereco.cep}</Table.Cell>
+                  <Table.Cell>{endereco.state}</Table.Cell>
+                  <Table.Cell>{endereco.city}</Table.Cell>
+                  <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
+                  <Table.Cell>
+                    <ArrowRightIcon className="size-6" />
+                  </Table.Cell>
+                </Table.Row>
+              </DadosEnderecoDialog>
             ))}
           </Table.Body>
         </Table.Container>
       </section>
 
-      <Button onClick={history.back} className="w-full max-w-100 mx-auto mt-auto" variant="outline">
+      <Button onClick={history.back} className="w-full max-w-100 mx-auto mt-auto flex-none" variant="outline">
         <ArrowLeftIcon className="size-5" />
         Voltar
       </Button>
