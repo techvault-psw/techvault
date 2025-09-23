@@ -13,6 +13,7 @@ import { TrashIcon } from "../icons/trash-icon";
 import { type MouseEvent } from "react";
 import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
 import { useNavigate } from "react-router";
+import useCargo from "@/hooks/useCargo";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
@@ -36,6 +37,7 @@ const formSchema = z
 export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [disabled, setDisabled] = useState(true)
+    const { isGerente } = useCargo()
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -220,24 +222,26 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                             />
                         </div>
 
-                        <Dialog.Footer className="block text-center space-y-3 items-center">
-                            <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={() => setIsOpen(false)}>
-                                <Button type="button" variant="destructive" className="w-full">
-                                    <TrashIcon/>
-                                    Excluir endereço
-                                </Button>
-                            </ExcluirEnderecoDialog>
-                            {disabled ? (
-                                <Button type="button" variant="outline" className="w-full" onClick={toggleEditAddressInfo}>
-                                    Editar informações
-                                </Button>
-                            ) : (
-                                <Button type="submit" className="w-full h-[2.625rem]">
-                                    Salvar alterações
-                                </Button>
-                            )}
-                            
-                        </Dialog.Footer>
+                        {isGerente() && (
+                            <Dialog.Footer className="block text-center space-y-3 items-center">
+                                <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={() => setIsOpen(false)}>
+                                    <Button type="button" variant="destructive" className="w-full">
+                                        <TrashIcon/>
+                                        Excluir endereço
+                                    </Button>
+                                </ExcluirEnderecoDialog>
+                                {disabled ? (
+                                    <Button type="button" variant="outline" className="w-full" onClick={toggleEditAddressInfo}>
+                                        Editar informações
+                                    </Button>
+                                ) : (
+                                    <Button type="submit" className="w-full h-[2.625rem]">
+                                        Salvar alterações
+                                    </Button>
+                                )}
+                                
+                            </Dialog.Footer>
+                        )}
                     </form>
                 </Form>
             </Dialog.Content>

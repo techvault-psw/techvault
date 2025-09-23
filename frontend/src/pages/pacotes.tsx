@@ -14,8 +14,18 @@ import { Input } from "@/components/ui/input";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
+import { useNavigate } from "react-router";
+import useCargo from "@/hooks/useCargo";
 
 export default function Pacotes() {
+  const { isGerente } = useCargo()
+
+  const navigate = useNavigate()
+
+  if(!isGerente()) {
+    navigate("/")
+  }
+
   const [searchTerm, setSearchTerm] = useState('')
 
   const pacotesFiltrados = pacotes.filter(pacote =>

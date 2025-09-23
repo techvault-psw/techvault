@@ -13,6 +13,8 @@ import { Button } from "../ui/button";
 import { Separator } from "../ui/separator";
 import { SidebarItem } from "./sidebar-item";
 import useCargo from "@/hooks/useCargo";
+import { SairDialog } from "../dialogs/sair-dialog";
+import { useNavigate } from "react-router";
 
 interface SidebarProps {
     closeSidebar: () => void;
@@ -52,6 +54,7 @@ export const closeSidebar = () => {
 
 export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
     const { isGerente, isSuporte } = useCargo()
+    const navigate = useNavigate()
 
     return (
         <div id="sidebar" className="absolute inset-0 z-10 hidden">
@@ -74,9 +77,11 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
                         <p className="text-gray text-base leading-none">jose.silva@email.com</p>
                     </div>
 
-                    <Button variant="destructive" size="icon">
-                        <LogOutIcon className="size-4" />
-                    </Button>
+                    <SairDialog handleCloseClick={() => navigate("/login")}>
+                        <Button variant="destructive" size="icon">
+                            <LogOutIcon className="size-4" />
+                        </Button>
+                    </SairDialog>
                 </div>
 
                 <Separator />

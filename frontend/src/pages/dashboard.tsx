@@ -111,7 +111,7 @@ export default function DashboardPage() {
 
                 const cardContent = (
                   <Card.Container className="lg:!py-3 h-full">
-                    <Card.TextContainer className="lg:h-full">
+                    <Card.TextContainer className="justify-center lg:justify-start">
                       <Card.Title className="lg:font-semibold lg:text-xl">{card.title}</Card.Title>
                       <Card.Description className="hidden lg:block font-normal tracking-tight">
                         {card.description}
