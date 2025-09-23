@@ -104,7 +104,7 @@ export default function ReservasClientePage() {
 
       <Button
         variant="outline"
-        onClick={history.back}
+        onClick={() => history.back()}
         className="w-full max-w-100 mx-auto mt-auto flex-none"
       >
         <ArrowLeft size={16} className="mr-2" />

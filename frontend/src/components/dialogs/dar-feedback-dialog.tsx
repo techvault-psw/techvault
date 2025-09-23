@@ -67,7 +67,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
         <Separator />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
             <FormField
               control={form.control}
               name="pacoteName"

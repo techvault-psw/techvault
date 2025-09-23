@@ -16,6 +16,8 @@ import { Separator } from "@/components/ui/separator";
 import { useState } from "react";
 import { useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
+import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
+import { DadosPacoteDialog } from "@/components/dialogs/dados-pacote-dialog";
 
 export default function Pacotes() {
   const { isGerente } = useCargo()
@@ -50,10 +52,12 @@ export default function Pacotes() {
           </Button>
         </div>
 
-        <Button className="w-full max-w-52" size="sm">
-          <PlusIcon className="size-4.5 stroke-white" />
-          Criar novo
-        </Button>
+        <CriarPacoteDialog>
+          <Button className="w-full max-w-52" size="sm">
+            <PlusIcon className="size-4.5 stroke-white" />
+            Criar novo
+          </Button>
+        </CriarPacoteDialog>
       </div>
 
       <div className="relative flex-shrink-0 w-full">
@@ -81,15 +85,17 @@ export default function Pacotes() {
         <>
           <div className="w-full flex flex-col gap-5 scrollbar md:grid min-[900px]:grid-cols-2 xl:grid-cols-3 lg:hidden">
             {Array(6).fill(pacotesFiltrados).flat().map((pacote, i) => (
-              <Card.Container key={i} className="flex items-center justify-between p-4">
-                <div className="flex items-center gap-4 overflow-hidden">
-                  <PacoteImage pacote = {pacote} className="h-20 rounded-lg border-gray/50"/>
-                  <Card.TextContainer className="truncate">
-                    <Card.Title className="truncate font-semibold">{pacote.name}</Card.Title>
-                    <Card.Description>Valor (hora): {formatCurrency(pacote.value)}</Card.Description>
-                  </Card.TextContainer>
-                </div>
-              </Card.Container>
+              <DadosPacoteDialog pacote={pacote} key={i}>
+                <Card.Container className="flex items-center justify-between p-4">
+                  <div className="flex items-center gap-4 overflow-hidden">
+                    <PacoteImage pacote = {pacote} className="h-20 rounded-lg border-gray/50"/>
+                    <Card.TextContainer className="truncate">
+                      <Card.Title className="truncate font-semibold">{pacote.name}</Card.Title>
+                      <Card.Description>Valor (hora): {formatCurrency(pacote.value)}</Card.Description>
+                    </Card.TextContainer>
+                  </div>
+                </Card.Container>
+              </DadosPacoteDialog>
             ))}
           </div>
 
@@ -106,17 +112,19 @@ export default function Pacotes() {
               </Table.Header>
               <Table.Body>
                 {Array(6).fill(pacotesFiltrados).flat().map((pacote, i) => (
-                  <Table.Row key={i}>
-                    <Table.Cell>
-                      <PacoteImage pacote = {pacote} className="w-24 rounded-lg border-gray/50"/>
-                    </Table.Cell>
-                    <Table.Cell className="font-medium text-white" title={pacote.name}>{pacote.name}</Table.Cell>
-                    <Table.Cell className="max-w-sm truncate" title={pacote.description}>{pacote.description}</Table.Cell>
-                    <Table.Cell>{formatCurrency(pacote.value)}</Table.Cell>
-                    <Table.Cell>
-                      <ArrowRightIcon className="size-6" />
-                    </Table.Cell>
-                  </Table.Row>
+                  <DadosPacoteDialog pacote={pacote} key={i}>
+                    <Table.Row>
+                      <Table.Cell>
+                        <PacoteImage pacote = {pacote} className="w-24 rounded-lg border-gray/50"/>
+                      </Table.Cell>
+                      <Table.Cell className="font-medium text-white" title={pacote.name}>{pacote.name}</Table.Cell>
+                      <Table.Cell className="max-w-sm truncate" title={pacote.description}>{pacote.description}</Table.Cell>
+                      <Table.Cell>{formatCurrency(pacote.value)}</Table.Cell>
+                      <Table.Cell>
+                        <ArrowRightIcon className="size-6" />
+                      </Table.Cell>
+                    </Table.Row>
+                  </DadosPacoteDialog>
                 ))}
               </Table.Body>
             </Table.Container>

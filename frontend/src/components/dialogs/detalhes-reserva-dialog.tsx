@@ -18,6 +18,10 @@ import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
 import { clientes } from "@/consts/clientes";
 import useCargo from "@/hooks/useCargo";
 import { ConfirmarOperacaoDialog } from "./confirmar-operacao-dialog";
+import { DadosClienteDialog } from "./dados-cliente-dialog";
+import { DadosEnderecoDialog } from "./dados-endereco-dialog";
+import { enderecos } from "@/consts/enderecos";
+import { DadosPacoteDialog } from "./dados-pacote-dialog";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -89,35 +93,38 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
           </div>
         </div>
 
-        {/* TODO: Dialog de Pacote */}
-        <FormItem>
-          <Label>Pacote</Label>
-          <Card.Container>
-            <Card.Title>
-              {pacotes[reserva.pacoteIndex].name}
-            </Card.Title>
-          </Card.Container>
-        </FormItem>
+        <DadosPacoteDialog pacote={pacotes[reserva.pacoteIndex]}>
+          <FormItem>
+            <Label>Pacote</Label>
+            <Card.Container>
+              <Card.Title>
+                {pacotes[reserva.pacoteIndex].name}
+              </Card.Title>
+            </Card.Container>
+          </FormItem>
+        </DadosPacoteDialog>
 
-        {/* TODO: Dialog de Endereço */}
-        <FormItem>
-          <Label>Endereço</Label>
-          <Card.Container>
-            <Card.Title>
-              {reserva.endereco}
-            </Card.Title>
-          </Card.Container>
-        </FormItem>
+        <DadosEnderecoDialog endereco={enderecos[0]}>
+          <FormItem>
+            <Label>Endereço</Label>
+            <Card.Container>
+              <Card.Title>
+                {reserva.endereco}
+              </Card.Title>
+            </Card.Container>
+          </FormItem>
+        </DadosEnderecoDialog>
 
-        {/* TODO: Dialog de Cliente */}
-        <FormItem>
-          <Label>Cliente</Label>
-          <Card.Container>
-            <Card.Title>
-              João Silva
-            </Card.Title>
-          </Card.Container>
-        </FormItem>
+        <DadosClienteDialog cliente={clientes[0]}>
+          <FormItem>
+            <Label>Cliente</Label>
+            <Card.Container>
+              <Card.Title>
+                João Silva
+              </Card.Title>
+            </Card.Container>
+          </FormItem>
+        </DadosClienteDialog>
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">

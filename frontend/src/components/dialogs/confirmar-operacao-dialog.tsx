@@ -70,9 +70,11 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
                         />
 
                         <Dialog.Footer>
-                            <Button variant="outline">
-                                Cancelar
-                            </Button>
+                            <Dialog.Close asChild>
+                                <Button variant="outline" type="button">
+                                    Cancelar
+                                </Button>
+                            </Dialog.Close>
                             <Button className="h-[2.625rem]">
                                 Confirmar
                             </Button>

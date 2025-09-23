@@ -72,7 +72,10 @@ export default function EnderecosClientePage() {
         </Table.Container>
       </section>
 
-      <Button onClick={history.back} className="w-full max-w-100 mx-auto mt-auto flex-none" variant="outline">
+      <Button
+        onClick={() => history.back()}
+        className="w-full max-w-100 mx-auto mt-auto flex-none" variant="outline"
+      >
         <ArrowLeftIcon className="size-5" />
         Voltar
       </Button>
