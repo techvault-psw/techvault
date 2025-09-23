@@ -18,6 +18,7 @@ import { DateTimePicker } from "../ui/datetime-picker";
 import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
 import { clientes } from "@/consts/clientes";
 import useCargo from "@/hooks/useCargo";
+import { ConfirmarEntregaDialog } from "./confirmar-entrega-dialog";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -186,11 +187,12 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                 </div>
               )}
 
-              {/* TODO: Pop-up de confirmar entrega */}
               { isSuporte() &&
-                <Button className="w-full">
-                  Confirmar Entrega
-                </Button>
+                <ConfirmarEntregaDialog reserva={reserva}>
+                  <Button className="w-full">
+                    Confirmar Entrega
+                  </Button>
+                </ConfirmarEntregaDialog>
               }
 
               <Dialog.Close asChild>
