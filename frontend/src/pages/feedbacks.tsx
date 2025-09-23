@@ -12,6 +12,8 @@ import { Link } from "react-router";
 import { Pen, X } from "lucide-react";
 import { TrashIcon } from "@/components/icons/trash-icon";
 import { Separator } from "@/components/ui/separator";
+import { DarFeedbackDialog } from "@/components/dialogs/dar-feedback-dialog";
+
 
 export default function FeedbacksPage() {
     return (
@@ -30,10 +32,11 @@ export default function FeedbacksPage() {
                         Ordenar por
                     </Button>
                 </div>
-
-                <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
-                    <Card.Title>Dar Feedback</Card.Title>
-                </Card.Container>
+                <DarFeedbackDialog>
+                    <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
+                        <Card.Title>Dar Feedback</Card.Title>
+                    </Card.Container>
+                </DarFeedbackDialog>
             </div>
 
             <Separator />
