@@ -4,30 +4,36 @@ import { ArrowLeftIcon } from "../icons/arrow-left-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
-import type { Reserva } from "@/consts/reservas";
 import { pacotes } from "@/consts/pacotes";
-import { Link } from "react-router";
+import type { Reserva } from "@/consts/reservas";
+import type { Cliente } from "@/consts/clientes";
 
-interface CancelarReservaDialog {
-  children: ReactNode
+interface CancelarReservaDialogProps {
   reserva: Reserva
+  cliente?: Cliente
+  handleCancelClick: () => void
+  children: ReactNode
 }
 
-export const CancelarReservaDialog = ({ reserva, children }: CancelarReservaDialog) => {
+export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, children }: CancelarReservaDialogProps) => {
   return (
     <Dialog.Container>
-      <Dialog.Trigger asChild>
-        {children}
-      </Dialog.Trigger>
+      <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
         <Dialog.Title>Cancelar Reserva</Dialog.Title>
 
         <Separator />
 
-        <Dialog.Description>
-          Tem certeza que deseja cancelar a sua reserva do “{pacotes[reserva.pacoteIndex].name}”?
-        </Dialog.Description>
+        {cliente ? (
+          <Dialog.Description>
+            Tem certeza que deseja cancelar a reserva do "{pacotes[reserva.pacoteIndex].name}" feita por “{cliente.name}”?
+          </Dialog.Description>
+        ) : (
+          <Dialog.Description>
+            Tem certeza que deseja cancelar sua a reserva do "{pacotes[reserva.pacoteIndex].name}"?
+          </Dialog.Description>
+        )}
 
         <Dialog.Description>
           Essa ação não pode ser desfeita.
@@ -40,13 +46,11 @@ export const CancelarReservaDialog = ({ reserva, children }: CancelarReservaDial
               Voltar
             </Button>
           </Dialog.Close>
-
+          
           <Dialog.Close asChild>
-            <Button variant="destructive" asChild>
-              <Link to="/minhas-reservas">
-                <X className="size-5" />
-                Cancelar
-              </Link>
+            <Button variant="destructive" onClick={handleCancelClick}>
+              <X className="size-4" />
+              Cancelar
             </Button>
           </Dialog.Close>
         </Dialog.Footer>
