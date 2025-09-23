@@ -11,9 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Separator } from '@/components/ui/separator';
 import { Table } from "@/components/ui/table";
 import { clientes } from '@/consts/clientes';
+import useCargo from '@/hooks/useCargo';
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 
 export default function ClientesPage() {
+
   const [searchTerm, setSearchTerm] = useState('');
 
   const clientesFiltrados = clientes.filter(cliente =>
@@ -21,6 +24,14 @@ export default function ClientesPage() {
     cliente.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
     cliente.phone.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  const {isGerente} = useCargo()
+
+  const navigate = useNavigate()
+
+  if(!isGerente()) {
+    navigate("/")
+  }
 
   return (
     <div className="flex flex-col h-full"> 

@@ -7,9 +7,19 @@ import { enderecos, stringifyAddress, type Endereco } from "@/consts/enderecos";
 import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
+import useCargo from "@/hooks/useCargo";
+import { useNavigate } from "react-router";
 import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
 
 export default function EnderecosClientePage() {
+  const {isGerente, isSuporte} = useCargo()
+
+  const navigate = useNavigate()
+
+  if(!isGerente() && !isSuporte()) {
+    navigate("/")
+  }
+
   return (
     <PageContainer.List>
       <PageTitle>Endereços de João Silva</PageTitle>
