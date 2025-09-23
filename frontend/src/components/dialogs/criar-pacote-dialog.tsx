@@ -28,6 +28,8 @@ const formSchema = z.object({
       (value) => value.trim().length >= 10,
       { message: "A descrição deve ter pelo menos 10 caracteres" }
     ),
+  components: z.string()
+    .min(1, "Os componentes são obrigatórios"),
   value: z.string()
     .min(1, "O valor é obrigatório")
     .refine(
@@ -51,6 +53,7 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
     defaultValues: {
       name: "",
       description: "",
+      components: "",
       value: "",
       image: undefined
     },
@@ -109,104 +112,126 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
         <Separator />
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 scrollbar" noValidate>
-            <FormField
-              control={form.control}
-              name="image"
-              render={({ field, fieldState }) => (
-                <FormItem>
-                  <FormLabel>Foto</FormLabel>
-                  <FormControl>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 overflow-y-hidden" noValidate>
+            <div className='flex flex-col gap-5 custom-scrollbar-ver'>
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field, fieldState }) => (
+                  <FormItem>
+                    <FormLabel>Foto</FormLabel>
+                    <FormControl>
+                      <FormItem>
+                        <input
+                          ref={fileInputRef}
+                          type="file"
+                          accept="image/*"
+                          onChange={(e) => handleFileChange(e, field.onChange)}
+                          className="hidden"
+                        />
+                        <div
+                          onClick={handleUploadClick}
+                          className={cn(
+                          `w-2/3 aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors`,
+                            fieldState.error
+                              ? 'border-red' 
+                              : 'border-gray/80'
+                          )}
+                        >
+                          {previewUrl ? (
+                            <img 
+                              src={previewUrl} 
+                              alt="Preview" 
+                              className="object-cover w-full h-full"
+                            />
+                          ) : (
+                            <Upload className="size-10 text-gray" />
+                          )}
+                        </div>
+                      </FormItem>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <div className='grid grid-cols-[2fr_1fr] gap-3'>
+                <FormField
+                  control={form.control}
+                  name="name"
+                  render={({ field }) => (
                     <FormItem>
-                      <input
-                        ref={fileInputRef}
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => handleFileChange(e, field.onChange)}
-                        className="hidden"
-                      />
-                      <div
-                        onClick={handleUploadClick}
-                        className={cn(
-                          `w-full aspect-[1.6] rounded-lg bg-black border flex items-center justify-center cursor-pointer overflow-hidden transition-colors`,
-                          fieldState.error
-                            ? 'border-red' 
-                            : 'border-gray/80'
-                        )}
-                      >
-                        {previewUrl ? (
-                          <img 
-                            src={previewUrl} 
-                            alt="Preview" 
-                            className="object-cover w-full h-full"
-                          />
-                        ) : (
-                          <Upload className="size-10 text-gray" />
-                        )}
-                      </div>
+                      <FormLabel>Nome</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="Nome do Pacote"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
                     </FormItem>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                  )}
+                />
 
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Nome</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="Nome do Pacote"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                <FormField
+                  control={form.control}
+                  name="value"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Valor (hora)</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="R$ 0,00"
+                          value={field.value}
+                          onChange={(e) => handleValueChange(e.target.value, field.onChange)}
+                          onBlur={field.onBlur}
+                          name={field.name}
+                          ref={field.ref}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
 
-            <FormField
-              control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descrição</FormLabel>
-                  <FormControl>
-                    <Textarea
-                      placeholder="Descreva o pacote..."
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="description"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Descrição</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Descreva o pacote..."
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="value"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Valor (hora)</FormLabel>
-                  <FormControl>
-                    <Input
-                      type="text"
-                      placeholder="R$ 0,00"
-                      value={field.value}
-                      onChange={(e) => handleValueChange(e.target.value, field.onChange)}
-                      onBlur={field.onBlur}
-                      name={field.name}
-                      ref={field.ref}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="components"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Componentes</FormLabel>
+                    <FormControl>
+                      <Textarea
+                        placeholder="Liste os componentes (um por linha)..."
+                        rows={5}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <Dialog.Footer>
               <Dialog.Close asChild>    
