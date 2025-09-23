@@ -1,0 +1,128 @@
+import { PacoteImage } from "@/components/pacote-image"
+import { PageContainer } from "@/components/page-container"
+import { PageTitle } from "@/components/page-title"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
+import { pacotes } from "@/consts/pacotes"
+import { reservas } from "@/consts/reservas"
+import { Link, useParams } from "react-router"
+
+export default function PagamentoReservaPage() {
+    const { id } = useParams<{ id: string }>();
+
+    const numberId = Number(id)
+
+    if (isNaN(numberId) || numberId >= reservas.length) {
+        return
+    }
+
+    const reserva = reservas[numberId]
+    const pacote = pacotes[reserva.pacoteIndex]
+
+    return (
+        <PageContainer.Card>
+            <PageTitle>
+                Finalizar Pagamento
+            </PageTitle>
+
+            <Separator/>
+
+            <section className="flex-1 flex flex-col justify-between gap-5 overflow-y-hidden lg:hidden">
+                <div className="flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
+                    <div className="flex md:flex-col items-center gap-3">
+                        <PacoteImage
+                            pacote={pacote}
+                            className="h-22 md:h-44 rounded-lg"
+                        />
+
+                        <span className="text-white text-lg md:text-xl font-semibold">{pacote.name}</span>
+                    </div>
+
+                    <Separator/>
+
+                    <div className="flex flex-col gap-1">
+                        <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Valor do Pacote:</span>
+                            <span>R$ 660,00</span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Taxa de Transporte:</span>
+                            <span>R$ 40,00</span>
+                        </div>
+
+                        <Separator/>
+
+                        <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Total:</span>
+                            <span className="font-semibold">R$ 700,00</span>
+                        </div>
+                    </div>
+
+                    <div className="mt-auto space-y-4">
+                        <h3 className="text-lg font-semibold text-white text-center">
+                        Pague com <span className="text-blue">PIX</span>!
+                        </h3>
+
+                        <img src="/qrcode.png" alt="qrcode" className="size-75 md:size-50 mx-auto"/>
+                    </div>
+                </div>
+                
+                {/* TODO: Usar props para definir método de pagamento nessa página */}
+                <Button asChild size="lg" className="flex-none font-bold">
+                    <Link to="/reserva-confirmada">Copiar Código Pix</Link>
+                </Button>
+            </section>
+
+            <section className="flex-1 gap-5 overflow-y-hidden hidden lg:flex lg:gap-5">
+                <div className="flex-1 flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
+                    <div className="flex md:flex-col items-center gap-3">
+                        <PacoteImage
+                            pacote={pacote}
+                            className="w-8/10"
+                        />
+
+                        <span className="text-white text-2xl font-semibold">{pacote.name}</span>
+                    </div>
+
+                    <Separator/>
+
+                    <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Valor do Pacote:</span>
+                            <span>R$ 660,00</span>
+                        </div>
+
+                        <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Taxa de Transporte:</span>
+                            <span>R$ 40,00</span>
+                        </div>
+
+                        <Separator/>
+
+                        <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Total:</span>
+                            <span className="font-semibold">R$ 700,00</span>
+                        </div>
+                    </div>
+                </div>
+
+                <Separator orientation="vertical"/>
+
+                <div className="flex flex-col gap-8 justify-center">
+                    <h3 className="text-3xl font-semibold text-white text-center">
+                        Pague com <span className="text-blue">PIX</span>!
+                    </h3>
+
+                    <img src="/qrcode.png" alt="qrcode" className="size-76 mx-auto"/>
+
+                    {/* TODO: Usar props para definir método de pagamento nessa página */}
+                    <Button asChild size="lg" className="flex-none font-bold">
+                        <Link to={`/reserva-confirmada/${numberId}`}>Copiar Código Pix</Link>
+                    </Button>
+                </div>
+            </section>
+
+        </PageContainer.Card>
+    )
+}
