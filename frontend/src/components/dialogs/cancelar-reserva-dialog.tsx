@@ -42,7 +42,7 @@ export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, chi
         <Dialog.Footer>
           <Dialog.Close asChild>
             <Button variant="outline">
-              <ArrowLeftIcon className="size-4" />
+              <ArrowLeftIcon className="size-5" />
               Voltar
             </Button>
           </Dialog.Close>
