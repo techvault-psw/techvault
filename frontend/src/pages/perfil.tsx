@@ -29,8 +29,9 @@ import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog'
 import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
 import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
+import { deleteCliente } from '@/redux/clientes/slice';
 
 const formSchema = z
     .object({
@@ -60,6 +61,13 @@ export default function PerfilPage() {
 
     const toggleEditProfileInfo = () => {
         setFormDisabled(!formDisabled)
+    }
+    const dispatch = useDispatch();
+    const handleDeleteClick = () => {
+        navigate("/cadastro");
+        if(clienteAtual){
+            dispatch(deleteCliente(clienteAtual.id));
+        }
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -173,7 +181,7 @@ export default function PerfilPage() {
             </div>
 
             <div className="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
-                <ExcluirContaDialog handleDeleteClick={() => navigate("/cadastro")}>
+                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
                     <Button variant="destructive">
                         <TrashIcon/>
                         Excluir
