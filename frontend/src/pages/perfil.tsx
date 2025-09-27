@@ -29,12 +29,8 @@ import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog'
 import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
 import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
-
-let user = {
-    name: "José da Silva",
-    phone: "(00) 12345-6789",
-    email: "jose.silva@email.com"
-}
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/redux/root-reducer';
 
 const formSchema = z
     .object({
@@ -48,17 +44,17 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
 
+    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: user.name || "",
-            email: user.email || "",
-            phone: user.phone || ""
+            name: clienteAtual?.name || "",
+            email: clienteAtual?.email || "",
+            phone: clienteAtual?.phone || ""
         }
     })
 
     const onSubmit = (x: z.infer<typeof formSchema>) => {
-        user = x;
         toggleEditProfileInfo()
     }
 
