@@ -5,12 +5,10 @@ import { clientes } from "@/consts/clientes";
 
 type ClienteState = {
   clientes: Cliente[];
-  clienteSelecionado?: Cliente;
 };
 
 const initialState: ClienteState = {
   clientes: clientes,
-  clienteSelecionado: undefined,
 };
 
 const clienteSlice = createSlice({
