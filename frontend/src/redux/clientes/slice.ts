@@ -29,15 +29,9 @@ const clienteSlice = createSlice({
     deleteCliente: (state, action: PayloadAction<number>) => {
       state.clientes = state.clientes.filter(c => c.id !== action.payload);
     },
-    consultarCliente: (state, action: PayloadAction<number>) => {
-      state.clienteSelecionado = state.clientes.find(c => c.id === action.payload);
-    },
-    limparConsulta: (state) => {
-      state.clienteSelecionado = undefined;
-    }
   },
 });
 
-export const { addCliente, updateCliente, deleteCliente, consultarCliente, limparConsulta } = clienteSlice.actions;
+export const { addCliente, updateCliente, deleteCliente } = clienteSlice.actions;
 
 export const clienteReducer = clienteSlice.reducer;
