@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
 
-import { enderecos, stringifyAddress } from '@/consts/enderecos';
+import { stringifyAddress } from '@/consts/enderecos';
 import { Card } from '@/components/ui/card';
 import { LogOutIcon } from '@/components/icons/log-out-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
@@ -29,12 +29,9 @@ import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog'
 import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
 import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
-
-let user = {
-    name: "José da Silva",
-    phone: "(00) 12345-6789",
-    email: "jose.silva@email.com"
-}
+import { useSelector } from 'react-redux';
+import type { RootState } from '@/redux/root-reducer';
+import { clientes } from '@/consts/clientes';
 
 const formSchema = z
     .object({
@@ -48,17 +45,24 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
 
+    let currentUser = clientes[0]
+
+    const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: user.name || "",
-            email: user.email || "",
-            phone: user.phone || ""
+            name: currentUser.name || "",
+            email: currentUser.email || "",
+            phone: currentUser.phone || ""
         }
     })
 
-    const onSubmit = (x: z.infer<typeof formSchema>) => {
-        user = x;
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        currentUser = {
+            ...currentUser,
+            ...values
+        };
         toggleEditProfileInfo()
     }
 
@@ -156,6 +160,8 @@ export default function PerfilPage() {
 
                     <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
                         {enderecos.map((endereco) => {
+                            if(endereco.cliente != currentUser) return;
+                            
                             return (
                                 <DadosEnderecoDialog endereco={endereco}>
                                     <Card.Container>
