@@ -16,9 +16,11 @@ export const addAddressAction = (enderecos: Endereco[], newEndereco: NewEndereco
 }
 
 export const updateAddressAction = (enderecos: Endereco[], newEndereco: Endereco) => {
-    enderecos.splice(newEndereco.id, 1, newEndereco)
+    const addressIndex = enderecos.findIndex((endereco) => endereco.id == newEndereco.id)
+    enderecos.splice(addressIndex, 1, newEndereco)
 }
 
 export const deleteAddressAction = (enderecos: Endereco[], id: number) => {
-    enderecos.splice(id, 1)
+    const addressIndex = enderecos.findIndex((endereco) => endereco.id == id)
+    enderecos.splice(addressIndex, 1)
 }
