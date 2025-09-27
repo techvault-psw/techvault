@@ -20,6 +20,12 @@ import { Button } from '../components/ui/button';
 import { Separator } from "@/components/ui/separator";
 import { useHookFormMask } from 'use-mask-input';
 
+//redux part
+import { useDispatch } from "react-redux";
+import { addCliente } from "@/redux/clientes/slice";
+import type { Cliente } from "@/consts/clientes";
+
+
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
   phone: z.string().min(1, "O telefone é obrigatório").regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX"),
@@ -29,7 +35,7 @@ const formSchema = z.object({
 
 export default function CadastroPage() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -41,8 +47,17 @@ export default function CadastroPage() {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    navigate("/")
+    const novoCliente: Cliente = {
+      id: Date.now(), // gera um ID 
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      registrationDate: new Date().toLocaleDateString("pt-BR"), // data atual
+    };
+
+    dispatch(addCliente(novoCliente));
+    navigate("/");
+
   }
 
   const registerWithMask = useHookFormMask(form2.register)
