@@ -30,7 +30,6 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const navigate = useNavigate();
-  const { setCargo } = useCargo()
 
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,7 +48,6 @@ export default function LoginPage() {
       dispatch(loginCliente(values)); 
       if(cliente.role === "Gerente" || cliente.role === "Suporte"){
         navigate("/dashboard");
-        setCargo(cliente.role.toLocaleLowerCase());
       }
       else{
         navigate("/");
