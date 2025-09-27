@@ -5,6 +5,8 @@ import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { useDispatch } from "react-redux";
+import { deleteCliente } from "@/redux/clientes/slice";
 
 interface ExcluirClienteDialogProps {
   cliente: Cliente
@@ -13,7 +15,9 @@ interface ExcluirClienteDialogProps {
 }
 
 export const ExcluirClienteDialog = ({ cliente, children, setIsClientDialogOpen }: ExcluirClienteDialogProps) => {
+  const dispatch = useDispatch();
   const handleDeleteClick = () => {
+    dispatch(deleteCliente(cliente.id));
     setIsClientDialogOpen(false)
   }
 
