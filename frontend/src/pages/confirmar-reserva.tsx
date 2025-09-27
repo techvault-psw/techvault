@@ -1,4 +1,8 @@
 import { useNavigate, useParams } from "react-router";
+import { useDispatch } from 'react-redux';
+import { addReserva } from '@/redux/reservas/slice'; 
+
+
 
 import * as z from "zod";
 
@@ -67,9 +71,28 @@ export default function ConfirmarReservaPage() {
         },
         mode: "onChange"
     });
+    
+    const dispatch = useDispatch();
 
-    const onSubmit = () => {
-        navigate(`/pagamento/${numberId}`)
+    const gerarCodigo = () => {
+        return Array.from({ length: 7 }, () => 
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]
+        ).join('');
+    };
+    
+    const onSubmit = (data: FormData) => {
+        const novaReserva = {
+            pacoteIndex: numberId,
+            valor: pacotes[numberId].value, 
+            status: "Confirmada" as const,
+            dataInicio: data.dataHoraInicial,
+            dataTermino: data.dataHoraFinal,
+            endereco: data.endereco,
+            codigoEntrega: gerarCodigo(), 
+            codigoColeta: gerarCodigo()
+        };
+        dispatch(addReserva(novaReserva));
+        navigate(`/pagamento/${numberId}`);
     };
 
     const navigate = useNavigate();
