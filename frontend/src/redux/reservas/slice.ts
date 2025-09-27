@@ -15,7 +15,7 @@ const initialState = {
     reservas: []
 }
 const reservasSlice = createSlice( {
-    name:'feedback',
+    name:'reserva',
     initialState,
     reducers: {
         addReserva: (state, action) => {},
