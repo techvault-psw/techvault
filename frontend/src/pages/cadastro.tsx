@@ -20,10 +20,10 @@ import { Button } from '../components/ui/button';
 import { Separator } from "@/components/ui/separator";
 import { useHookFormMask } from 'use-mask-input';
 
-//redux part
-import { useDispatch } from "react-redux";
-import { addCliente } from "@/redux/clientes/slice";
+import { useDispatch, useSelector } from "react-redux";
+import { addCliente, loginCliente } from "@/redux/clientes/slice";
 import type { Cliente } from "@/consts/clientes";
+import type { RootState } from "@/redux/root-reducer";
 
 
 const formSchema = z.object({
@@ -46,16 +46,25 @@ export default function CadastroPage() {
     },
   })
 
+  const {clientes,clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
   function onSubmit(values: z.infer<typeof formSchema>) {
     const novoCliente: Cliente = {
       id: Date.now(), // gera um ID 
       name: values.name,
       email: values.email,
       phone: values.phone,
+      password: values.password,
       registrationDate: new Date().toLocaleDateString("pt-BR"), // data atual
+      role: "Cliente"
     };
 
+    if(clientes.find(cliente => cliente.email === values.email)){
+      form2.setError("email", {type:"custom", message: "Este e-mail já está sendo usado"});
+      return;
+    }
+
     dispatch(addCliente(novoCliente));
+    dispatch(loginCliente(values));
     navigate("/");
 
   }
