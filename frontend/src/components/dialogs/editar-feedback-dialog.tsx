@@ -24,8 +24,8 @@ import {
   FormMessage
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import type { Feedback } from "@/consts/feedbacks";
 import useCargo from "@/hooks/useCargo";
+import type { Feedback } from "@/redux/feedbacks/slice";
 
 const formSchema = z.object({
   pacoteName: z.string()
@@ -55,7 +55,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pacoteName: pacotes[feedback.pacoteIndex].name,
+      pacoteName: pacotes[feedback.pacote.id].name,
       rating: feedback.nota,
       comment: feedback.descricao
     },

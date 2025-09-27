@@ -1,5 +1,10 @@
 import { combineReducers } from "redux";
+import { feedbacksReducer } from "./feedbacks/slice";
 
-const rootReducer = combineReducers({})
+const rootReducer = combineReducers({
+  feedbacksReducer,
+});
 
-export default rootReducer
+export type RootState = ReturnType<typeof rootReducer>;
+
+export default rootReducer;

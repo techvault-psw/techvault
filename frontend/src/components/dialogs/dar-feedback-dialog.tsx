@@ -24,9 +24,12 @@ import {
   FormMessage
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
+import { useDispatch } from "react-redux";
+import { addFeedback } from "@/redux/feedbacks/slice";
+import { clientes } from "@/consts/clientes";
 
 const formSchema = z.object({
-  pacoteName: z.string().min(1, "Selecione um pacote"),
+  pacoteIndex: z.string().min(1, "Selecione um pacote"),
   rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
   comment: z.string()
     .min(1, "O comentário é obrigatório")
@@ -46,15 +49,28 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pacoteName: "",
+      pacoteIndex: "",
       rating: 0,
       comment: ""
     },
   });
 
+  const dispatch = useDispatch()
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
+
+    const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
+
+    if (!pacote) return
+
+    dispatch(addFeedback({
+      cliente: clientes[0],
+      descricao: values.comment,
+      nota: values.rating,
+      pacote,
+    }))
   }
 
   return (
@@ -70,7 +86,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
             <FormField
               control={form.control}
-              name="pacoteName"
+              name="pacoteIndex"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pacote</FormLabel>

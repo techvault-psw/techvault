@@ -7,10 +7,10 @@ export type Cliente = {
 }
 
 export const clientes: Cliente[] = [
-  { id: 1, name: 'Cliente 1', email: 'cliente01@example.com', phone: '(11) 98765-4321', registrationDate: '01/09/2025' },
-  { id: 2, name: 'Cliente 2', email: 'cliente02@example.com', phone: '(21) 91234-5678', registrationDate: '01/09/2025' },
-  { id: 3, name: 'Cliente 3', email: 'cliente03@example.com', phone: '(31) 98888-7777', registrationDate: '02/09/2025' },
-  { id: 4, name: 'Cliente 4', email: 'cliente04@example.com', phone: '(41) 97777-6666', registrationDate: '03/09/2025' },
+  { id: 1, name: 'João Silva', email: 'joao.silva@example.com', phone: '(11) 98765-4321', registrationDate: '01/09/2025' },
+  { id: 2, name: 'Maria Fernandes', email: 'maria.fernandes@example.com', phone: '(21) 91234-5678', registrationDate: '01/09/2025' },
+  { id: 3, name: 'Diogo Mendonça', email: 'diogo.mendonca@example.com', phone: '(31) 98888-7777', registrationDate: '02/09/2025' },
+  { id: 4, name: 'Roberto Johnson', email: 'roberto.johnson@example.com', phone: '(41) 97777-6666', registrationDate: '03/09/2025' },
   { id: 5, name: 'Cliente 5', email: 'cliente05@example.com', phone: '(51) 96666-5555', registrationDate: '03/09/2025' },
   { id: 6, name: 'Cliente 6', email: 'cliente06@example.com', phone: '(61) 95555-4444', registrationDate: '04/09/2025' },
   { id: 7, name: 'Cliente 7', email: 'cliente07@example.com', phone: '(71) 94444-3333', registrationDate: '05/09/2025' },

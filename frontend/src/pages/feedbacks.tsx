@@ -4,22 +4,25 @@ import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { StarRating } from "@/components/ui/star-rating";
-import { feedbacks } from "@/consts/feedbacks";
 import { pacotes } from "@/consts/pacotes";
 
-import { Card } from "@/components/ui/card";
-import { Link } from "react-router";
-import { Pen, X } from "lucide-react";
-import { TrashIcon } from "@/components/icons/trash-icon";
-import { Separator } from "@/components/ui/separator";
 import { DarFeedbackDialog } from "@/components/dialogs/dar-feedback-dialog";
 import { EditarFeedbackDialog } from "@/components/dialogs/editar-feedback-dialog";
 import { ExcluirFeedbackDialog } from "@/components/dialogs/excluir-feedback-dialog";
+import { TrashIcon } from "@/components/icons/trash-icon";
+import { Card } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
+import type { RootState } from "@/redux/root-reducer";
+import { Pen } from "lucide-react";
+import { useSelector } from "react-redux";
+import { Link } from "react-router";
 
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
+
+    const { feedbacks } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
 
     return (
         <PageContainer.List>
@@ -47,12 +50,12 @@ export default function FeedbacksPage() {
             <Separator />
         
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
-                {Array(10).fill(feedbacks).flat().map((feedback, index) => {
+                {feedbacks.map((feedback, index) => {
                     return (
                         <div key={index} className="w-full h-full p-3 flex flex-col gap-3 bg-white/5 border border-gray/40 rounded-lg backdrop-blur-sm">
                             <div className="flex-1 flex items-start justify-between gap-2 overflow-x-hidden">
                                 <div className="flex-1 flex flex-col gap-3">
-                                    <span className="text-lg text-white font-semibold leading-none">{feedback.cliente}</span>
+                                    <span className="text-lg text-white font-semibold leading-none">{feedback.cliente.name}</span>
 
                                     <StarRating rating={feedback.nota} readonly/>
 
@@ -96,10 +99,10 @@ export default function FeedbacksPage() {
                                 </div>
                             )}
 
-                            <Link to={`/informacoes-pacote/${feedback.pacoteIndex}`}>
+                            <Link to={`/informacoes-pacote/${feedback.pacote.id}`}>
                                 <Card.Container>
                                     <Card.Title>
-                                        {pacotes[feedback.pacoteIndex].name}
+                                        {feedback.pacote.name}
                                     </Card.Title>
                                 </Card.Container>
                             </Link>
