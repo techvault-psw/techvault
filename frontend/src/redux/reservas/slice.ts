@@ -23,3 +23,7 @@ const reservasSlice = createSlice( {
         deleteReserva: (state, action) => {}
     }
 })
+
+export const { addReserva, deleteReserva, updateReserva } = reservasSlice.actions
+
+export const reservasReducer = reservasSlice.reducer
