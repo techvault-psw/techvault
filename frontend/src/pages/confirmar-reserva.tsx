@@ -19,11 +19,13 @@ import {
 
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { enderecos } from "@/consts/enderecos";
 import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import { clientes } from "@/consts/clientes";
 
 const metodosPagamento = [
     "Cartão de Crédito",
@@ -36,11 +38,7 @@ const formSchema = z
         dataHoraInicial: z.date({message: "Por favor, preencha a data inicial"}),
         dataHoraFinal: z.date({message: "Por favor, preencha a data final"}),
         endereco: z.string()
-            .min(1, { message: "Por favor, selecione um endereço" })
-            .refine(
-                (endereco) => enderecos.some(e => e.name === endereco),
-                { message: "Endereço inválido" }
-            ),
+            .min(1, { message: "Por favor, selecione um endereço" }),
         metodoPagamento: z.string()
             .min(1, { message: "Por favor, selecione um método" })
             .refine(
@@ -57,6 +55,10 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
+    const currentUser = clientes[0];
+
+    const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -155,11 +157,15 @@ export default function ConfirmarReservaPage() {
                                             <SelectValue placeholder="Selecione um endereço" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {enderecos.map((endereco, index) => (
-                                            <SelectItem key={index} value={endereco.name}>
-                                                {endereco.name}
-                                            </SelectItem>
-                                            ))}
+                                            {enderecos.map((endereco, index) => {
+                                                if(endereco.cliente != currentUser) return
+
+                                                return (
+                                                    <SelectItem key={index} value={endereco.name}>
+                                                        {endereco.name}
+                                                    </SelectItem>
+                                                )
+                                            })}
                                         </SelectContent>
                                         </Select>
                                     </FormControl>
