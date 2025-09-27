@@ -37,10 +37,13 @@ const clienteSlice = createSlice({
       if (cliente) {
         state.clienteAtual = cliente;
       } 
+    },
+    logoutCliente: (state) => {
+      state.clienteAtual = undefined;
     }
   },
 });
 
-export const { addCliente, updateCliente, deleteCliente, loginCliente } = clienteSlice.actions;
+export const { addCliente, updateCliente, deleteCliente, loginCliente, logoutCliente } = clienteSlice.actions;
 
 export const clienteReducer = clienteSlice.reducer;

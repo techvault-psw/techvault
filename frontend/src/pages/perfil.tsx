@@ -31,7 +31,7 @@ import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { deleteCliente } from '@/redux/clientes/slice';
+import { deleteCliente, logoutCliente } from '@/redux/clientes/slice';
 
 const formSchema = z
     .object({
@@ -68,6 +68,10 @@ export default function PerfilPage() {
         if(clienteAtual){
             dispatch(deleteCliente(clienteAtual.id));
         }
+    }
+    const handleLogoutClick = () => {
+        navigate("/login");
+        dispatch(logoutCliente());
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -187,7 +191,7 @@ export default function PerfilPage() {
                         Excluir
                     </Button>
                 </ExcluirContaDialog>
-                <SairDialog handleCloseClick={() => navigate("/login")}>
+                <SairDialog handleCloseClick={handleLogoutClick}>
                     <Button variant="destructive">
                         <LogOutIcon/>
                         Sair
