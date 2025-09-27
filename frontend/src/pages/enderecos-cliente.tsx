@@ -8,10 +8,21 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import useCargo from "@/hooks/useCargo";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
+import { clientes } from "@/consts/clientes";
 
 export default function EnderecosClientePage() {
+  const { id } = useParams<{ id: string }>();
+  const numberId = Number(id)
+
+  if (isNaN(numberId) || numberId >= clientes.length) {
+    return
+  }
+
+  const clienteIndex = clientes.findIndex((cliente) => cliente.id == numberId)
+  const cliente = clientes[clienteIndex]
+
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
@@ -22,23 +33,27 @@ export default function EnderecosClientePage() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Endereços de João Silva</PageTitle>
+      <PageTitle>Endereços de {cliente.name}</PageTitle>
 
       <Separator />
 
       <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
-        {Array(10).fill(enderecos).flat().map((endereco: Endereco, i) => (
-          <DadosEnderecoDialog endereco={endereco} key={i}>
-            <Card.Container className="h-full">
-              <Card.TextContainer className="h-full">
-                <Card.Title>{endereco.name}</Card.Title>
-                <Card.Description>
-                  {stringifyAddress(endereco)}
-                </Card.Description>
-              </Card.TextContainer>
-            </Card.Container>
-          </DadosEnderecoDialog>
-        ))}
+        {enderecos.map((endereco: Endereco, i) => {
+          if(endereco.cliente != cliente) return
+
+          return (
+            <DadosEnderecoDialog endereco={endereco} key={i}>
+              <Card.Container className="h-full">
+                <Card.TextContainer className="h-full">
+                  <Card.Title>{endereco.name}</Card.Title>
+                  <Card.Description>
+                    {stringifyAddress(endereco)}
+                  </Card.Description>
+                </Card.TextContainer>
+              </Card.Container>
+            </DadosEnderecoDialog>
+          )
+        })}
       </section>
 
       <section className="hidden lg:block w-full scrollbar">
@@ -54,20 +69,24 @@ export default function EnderecosClientePage() {
             </tr>
           </Table.Header>
           <Table.Body>
-            {Array(2).fill(enderecos).flat().map((endereco: Endereco, i) => (
-              <DadosEnderecoDialog endereco={endereco} key={i}>
-                <Table.Row>
-                  <Table.Cell className="font-medium text-white">{endereco.name}</Table.Cell>
-                  <Table.Cell>{endereco.cep}</Table.Cell>
-                  <Table.Cell>{endereco.state}</Table.Cell>
-                  <Table.Cell>{endereco.city}</Table.Cell>
-                  <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
-                  <Table.Cell>
-                    <ArrowRightIcon className="size-6" />
-                  </Table.Cell>
-                </Table.Row>
-              </DadosEnderecoDialog>
-            ))}
+            {enderecos.map((endereco: Endereco, i) => {
+              if(endereco.cliente != cliente) return
+
+              return (
+                <DadosEnderecoDialog endereco={endereco} key={i}>
+                  <Table.Row>
+                    <Table.Cell className="font-medium text-white">{endereco.name}</Table.Cell>
+                    <Table.Cell>{endereco.cep}</Table.Cell>
+                    <Table.Cell>{endereco.state}</Table.Cell>
+                    <Table.Cell>{endereco.city}</Table.Cell>
+                    <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
+                    <Table.Cell>
+                      <ArrowRightIcon className="size-6" />
+                    </Table.Cell>
+                  </Table.Row>
+                </DadosEnderecoDialog>
+              )
+            })}
           </Table.Body>
         </Table.Container>
       </section>

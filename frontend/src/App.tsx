@@ -35,7 +35,7 @@ export default function App() {
         <Route path="/reservas" element={<ReservasPage/>}/> 
         <Route path="/clientes" element={<ClientesPage/>}/>
         <Route path="/informacoes-reserva/:id" element={<InformacoesReservasPage />}/>
-        <Route path="/enderecos-cliente" element={<EnderecosClientePage/>}/>
+        <Route path="/enderecos-cliente/:id" element={<EnderecosClientePage/>}/>
         <Route path="/pagamento/:id" element={<PagamentoReservaPage/>}/>
         <Route path="/reserva-confirmada/:id" element={<ReservaConfirmadaPage/>}/>
         <Route path="/perfil" element={<PerfilPage/>}/>
