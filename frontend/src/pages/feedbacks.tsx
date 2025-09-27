@@ -62,7 +62,7 @@ export default function FeedbacksPage() {
 
                                     <StarRating rating={feedback.rating} readonly/>
 
-                                    <span className="leading-[130%] text-gray font-light text-justify flex-1 line-clamp-4">
+                                    <span className="leading-[130%] text-gray font-light text-justify flex-1 line-clamp-4 [overflow-wrap:anywhere]">
                                         {feedback.comment}
                                     </span>
                                 </div>
