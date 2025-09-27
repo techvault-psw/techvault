@@ -10,14 +10,18 @@ import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from '@/components/ui/separator';
 import { Table } from "@/components/ui/table";
-import { clientes } from '@/consts/clientes';
 import useCargo from '@/hooks/useCargo';
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 
-export default function ClientesPage() {
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
+
+export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
+
+  const {clientes} = useSelector((state: RootState) => state.clienteReducer);
 
   const clientesFiltrados = clientes.filter(cliente =>
     cliente.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -25,11 +29,10 @@ export default function ClientesPage() {
     cliente.phone.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const {isGerente} = useCargo()
+  const { isGerente } = useCargo();
+  const navigate = useNavigate();
 
-  const navigate = useNavigate()
-
-  if(!isGerente()) {
+  if (!isGerente()) {
     navigate("/")
   }
 
