@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { addReservaAction } from "./actions";
 
 export type Reserva = {
     pacoteIndex: number
@@ -11,7 +12,7 @@ export type Reserva = {
     codigoColeta: string
 }
 
-const initialState = {
+const initialState: {reservas: Reserva[] } = {
     reservas: [
     {
         pacoteIndex: 0,
@@ -49,7 +50,7 @@ const reservasSlice = createSlice( {
     name:'reserva',
     initialState,
     reducers: {
-        addReserva: (state, action) => {},
+        addReserva: (state, action : {payload : Reserva}) => addReservaAction(state.reservas, action.payload),
         updateReserva: (state, action) => {},
         deleteReserva: (state, action) => {}
     }
