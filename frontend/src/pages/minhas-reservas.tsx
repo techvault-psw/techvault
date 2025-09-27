@@ -9,12 +9,14 @@ import { formatCurrency } from "@/lib/format-currency";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-import { reservas } from "@/consts/reservas";
+// import { reservas } from "@/consts/reservas";
 import { pacotes } from "@/consts/pacotes";
 import { PacoteImage } from "@/components/pacote-image";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
 
 export default function MinhasReservasPage() {
+    const {reservas} = useSelector((rootReducer : any) => rootReducer.reservasReducer)
     return (
         <PageContainer.List>
             <PageTitle>Minhas Reservas</PageTitle>
