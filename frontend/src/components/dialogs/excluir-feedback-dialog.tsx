@@ -1,7 +1,8 @@
 import useCargo from "@/hooks/useCargo";
-import type { Feedback } from "@/redux/feedbacks/slice";
+import { deleteFeedback, type Feedback } from "@/redux/feedbacks/slice";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
+import { useDispatch } from "react-redux";
 import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
@@ -15,6 +16,12 @@ interface ExcluirFeedbackDialogProps {
 export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDialogProps) => {
   const { isGerente } = useCargo()
 
+  const dispatch = useDispatch()
+
+  const handleDeleteClick = () => {
+    dispatch(deleteFeedback(feedback.id))
+  }
+
   return (
     <Dialog.Container>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -26,11 +33,11 @@ export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDia
 
         {isGerente() ? (
           <Dialog.Description>
-            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{feedback.pacote.name}” feito por "{feedback.cliente.name}"?
+            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{feedback.package.name}” feito por "{feedback.customer.name}"?
           </Dialog.Description>
         ) : (
           <Dialog.Description>
-            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{feedback.pacote.name}”?
+            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{feedback.package.name}”?
           </Dialog.Description>
         )}
 
@@ -48,7 +55,7 @@ export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDia
           </Dialog.Close>
 
           <Dialog.Close asChild>
-            <Button variant="destructive">
+            <Button variant="destructive" onClick={handleDeleteClick}>
               <TrashIcon className="size-5" />
               Excluir
             </Button>

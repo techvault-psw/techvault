@@ -66,10 +66,9 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     if (!pacote) return
 
     dispatch(addFeedback({
-      cliente: clientes[0],
-      descricao: values.comment,
-      nota: values.rating,
-      pacote,
+      ...values,
+      customer: clientes[0],
+      package: pacote,
     }))
   }
 

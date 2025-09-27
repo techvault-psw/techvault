@@ -1,4 +1,4 @@
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -25,15 +25,11 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import useCargo from "@/hooks/useCargo";
-import type { Feedback } from "@/redux/feedbacks/slice";
+import { updateFeedback, type Feedback } from "@/redux/feedbacks/slice";
+import { useDispatch } from "react-redux";
 
 const formSchema = z.object({
-  pacoteName: z.string()
-    .min(1, { message: "Selecione um pacote" })
-    .refine(
-        (pacote) => pacotes.some(e => e.name === pacote),
-        { message: "Pacote inválido" }
-    ),
+  pacoteIndex: z.string().min(1, "Selecione um pacote"),
   rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
   comment: z.string()
     .min(1, "O comentário é obrigatório")
@@ -55,15 +51,29 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pacoteName: pacotes[feedback.pacote.id].name,
-      rating: feedback.nota,
-      comment: feedback.descricao
+      pacoteIndex: String(feedback.package.id),
+      rating: feedback.rating,
+      comment: feedback.comment
     },
   });
+
+  const dispatch = useDispatch()
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
+    
+    const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
+
+    if (!pacote) return
+
+    dispatch(updateFeedback({
+      ...feedback,
+      ...values,
+      package: pacote,
+    }))
+
+    form.reset(values)
   }
 
   return (
@@ -79,7 +89,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6" noValidate>
             <FormField
               control={form.control}
-              name="pacoteName"
+              name="pacoteIndex"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pacote</FormLabel>
@@ -95,7 +105,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
                     </FormControl>
                     <SelectContent>
                       {pacotes.map((pacote, index) => (
-                        <SelectItem key={index} value={pacote.name}>
+                        <SelectItem key={index} value={String(index)}>
                           {pacote.name}
                         </SelectItem>
                       ))}

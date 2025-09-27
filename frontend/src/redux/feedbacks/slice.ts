@@ -1,43 +1,51 @@
 import { clientes, type Cliente } from "@/consts/clientes"
 import { pacotes, type Pacote } from "@/consts/pacotes"
 import { createSlice } from "@reduxjs/toolkit"
-import { addFeedbackAction } from "./actions"
+import { addFeedbackAction, deleteFeedbackAction, updateFeedbackAction } from "./actions"
+import type { Optional } from "@/types/optional"
 
 export type Feedback = {
-    cliente: Cliente
-    pacote: Pacote
-    nota: number
-    descricao: string
+  id: number
+  customer: Cliente
+  package: Pacote
+  rating: number
+  comment: string
 }
 
-const initialState = {
+export type NewFeedback = Optional<Feedback, 'id'>
+
+const feedbacksInitialState = {
   feedbacks: [
     {
-      cliente: clientes[0],
-      pacote: pacotes[0],
-      nota: 4,
-      descricao:
+      id: 0,
+      customer: clientes[0],
+      package: pacotes[0],
+      rating: 4,
+      comment:
         "O setup gamer é excelente, máquinas muito rápidas e silenciosas. Só achei que os fones poderiam ter uma qualidade um pouco melhor.",
     },
     {
-      cliente: clientes[1],
-      pacote: pacotes[1],
-      nota: 3,
-      descricao:
+      id: 1,
+      customer: clientes[1],
+      package: pacotes[1],
+      rating: 3,
+      comment:
         "O notebook é realmente potente e a cadeira é confortável, mas o monitor auxiliar poderia ter mais ajustes de altura. No geral, bom custo-benefício.",
     },
     {
-      cliente: clientes[2],
-      pacote: pacotes[2],
-      nota: 5,
-      descricao:
+      id: 2,
+      customer: clientes[2],
+      package: pacotes[2],
+      rating: 5,
+      comment:
         "Perfeito para o nosso time! Todos ficaram satisfeitos com o desempenho e a ergonomia. O espaço de trabalho colaborativo ficou incrível.",
     },
     {
-      cliente: clientes[3],
-      pacote: pacotes[0],
-      nota: 4,
-      descricao:
+      id: 3,
+      customer: clientes[3],
+      package: pacotes[0],
+      rating: 4,
+      comment:
         "Uso o setup profissional diariamente no home office e tem atendido muito bem. A iluminação para videoconferência foi um diferencial.",
     },
   ]
@@ -45,11 +53,11 @@ const initialState = {
 
 const feedbacksSlice = createSlice({
   name: 'feedback',
-  initialState,
+  initialState: feedbacksInitialState,
   reducers: {
-    addFeedback: (state, action: { payload: Feedback }) => addFeedbackAction(state.feedbacks, action.payload),
-    updateFeedback: (state, action) => {},
-    deleteFeedback: (state, action) => {},
+    addFeedback: ({ feedbacks }, action: { payload: NewFeedback }) => addFeedbackAction(feedbacks, action.payload),
+    updateFeedback: ({ feedbacks }, action: { payload: Feedback }) => updateFeedbackAction(feedbacks, action.payload),
+    deleteFeedback: ({ feedbacks }, action: { payload: number }) => deleteFeedbackAction(feedbacks, action.payload),
   }
 })
 

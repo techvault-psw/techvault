@@ -17,6 +17,7 @@ import type { RootState } from "@/redux/root-reducer";
 import { Pen } from "lucide-react";
 import { useSelector } from "react-redux";
 import { Link } from "react-router";
+import { clientes } from "@/consts/clientes";
 
 
 export default function FeedbacksPage() {
@@ -51,20 +52,22 @@ export default function FeedbacksPage() {
         
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
                 {feedbacks.map((feedback, index) => {
+                    const isMyFeedback = feedback.customer.id === clientes[0].id
+
                     return (
                         <div key={index} className="w-full h-full p-3 flex flex-col gap-3 bg-white/5 border border-gray/40 rounded-lg backdrop-blur-sm">
                             <div className="flex-1 flex items-start justify-between gap-2 overflow-x-hidden">
                                 <div className="flex-1 flex flex-col gap-3">
-                                    <span className="text-lg text-white font-semibold leading-none">{feedback.cliente.name}</span>
+                                    <span className="text-lg text-white font-semibold leading-none">{feedback.customer.name}</span>
 
-                                    <StarRating rating={feedback.nota} readonly/>
+                                    <StarRating rating={feedback.rating} readonly/>
 
                                     <span className="leading-[130%] text-gray font-light text-justify flex-1 line-clamp-4">
-                                        {feedback.descricao}
+                                        {feedback.comment}
                                     </span>
                                 </div>
 
-                                {(isGerente() || index === 0) && (
+                                {(isGerente() || isMyFeedback) && (
                                     <div className="flex-col gap-3 hidden md:flex">
                                         <EditarFeedbackDialog feedback={feedback}>
                                             <Button variant="outline" size="icon" className="rounded-full size-8 p-1.5">
@@ -99,10 +102,10 @@ export default function FeedbacksPage() {
                                 </div>
                             )}
 
-                            <Link to={`/informacoes-pacote/${feedback.pacote.id}`}>
+                            <Link to={`/informacoes-pacote/${feedback.package.id}`}>
                                 <Card.Container>
                                     <Card.Title>
-                                        {feedback.pacote.name}
+                                        {feedback.package.name}
                                     </Card.Title>
                                 </Card.Container>
                             </Link>
