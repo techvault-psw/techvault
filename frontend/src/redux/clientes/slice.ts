@@ -5,10 +5,12 @@ import { clientes } from "@/consts/clientes";
 
 type ClienteState = {
   clientes: Cliente[];
+  clienteAtual?:Cliente
 };
 
 const initialState: ClienteState = {
   clientes: clientes,
+  clienteAtual:undefined
 };
 
 const clienteSlice = createSlice({
@@ -27,9 +29,18 @@ const clienteSlice = createSlice({
     deleteCliente: (state, action: PayloadAction<number>) => {
       state.clientes = state.clientes.filter(c => c.id !== action.payload);
     },
+    loginCliente: (state, action: PayloadAction<Pick<Cliente, "email" | "password">>) => {
+      const clientePayload = action.payload
+      const { email, password } = clientePayload
+
+      const cliente = state.clientes.find(cliente => cliente.email === email && cliente.password === password);
+      if (cliente) {
+        state.clienteAtual = cliente;
+      } 
+    }
   },
 });
 
-export const { addCliente, updateCliente, deleteCliente } = clienteSlice.actions;
+export const { addCliente, updateCliente, deleteCliente, loginCliente } = clienteSlice.actions;
 
 export const clienteReducer = clienteSlice.reducer;
