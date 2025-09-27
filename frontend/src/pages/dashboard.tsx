@@ -79,6 +79,7 @@ export default function DashboardPage() {
 
   if(!isGerente() && !isSuporte()) {
     navigate("/")
+    return null;
   }
 
   return (
