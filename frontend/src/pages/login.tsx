@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -30,6 +30,8 @@ const formSchema = z.object({
 
 export default function LoginPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
 
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -46,10 +48,11 @@ export default function LoginPage() {
     const cliente = clientes.find(cliente => cliente.email === values.email && cliente.password === values.password);
     if(cliente){
       dispatch(loginCliente(values)); 
-      if(cliente.role === "Gerente" || cliente.role === "Suporte"){
-        navigate("/dashboard");
-      }
-      else{
+      if (redirectTo) {
+        navigate(redirectTo, { replace: true })
+      } else if (cliente.role === "Gerente" || cliente.role === "Suporte") {
+        navigate("/dashboard")
+      } else {
         navigate("/");
       }
     }

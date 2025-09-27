@@ -11,9 +11,12 @@ import { Separator } from "@/components/ui/separator"
 import { pacotes } from "@/consts/pacotes"
 import { reservas } from "@/consts/reservas"
 import { formatCurrency } from "@/lib/format-currency"
+import type { RootState } from "@/redux/root-reducer"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { X } from "lucide-react"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
 import { Link, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
@@ -32,6 +35,14 @@ export default function InformacoesReservasPage() {
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
   const navigate = useNavigate()
+
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+  useEffect(() => {
+    if (!clienteAtual) {
+      navigate("/login")
+    }
+  }, [])
 
   return (
     <PageContainer.Card>

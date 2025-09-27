@@ -5,7 +5,7 @@ import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
-import type { ComponentType, ReactNode } from "react";
+import { useEffect, type ComponentType, type ReactNode } from "react";
 import { Link } from "react-router";
 
 import { useNavigate } from 'react-router'
@@ -77,10 +77,11 @@ export default function DashboardPage() {
   const { isGerente, isSuporte } = useCargo()
   const navigate = useNavigate()
 
-  if(!isGerente() && !isSuporte()) {
-    navigate("/")
-    return null;
-  }
+  useEffect(() => {
+    if(!isGerente() && !isSuporte()) {
+      navigate("/login")
+    }
+  }, [])
 
   return (
     <PageContainer.Card>

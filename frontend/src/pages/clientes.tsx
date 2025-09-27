@@ -11,7 +11,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from '@/components/ui/separator';
 import { Table } from "@/components/ui/table";
 import useCargo from '@/hooks/useCargo';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 
 import { useSelector } from "react-redux";
@@ -32,9 +32,11 @@ export default function ClientesPage() {
   const { isGerente } = useCargo();
   const navigate = useNavigate();
 
-  if (!isGerente()) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if (!isGerente()) {
+      navigate("/login")
+    }
+  }, [])
 
   return (
     <div className="flex flex-col h-full"> 

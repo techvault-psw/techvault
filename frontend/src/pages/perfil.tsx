@@ -14,7 +14,7 @@ import {
     FormMessage 
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
@@ -77,6 +77,12 @@ export default function PerfilPage() {
     const registerWithMask = useHookFormMask(form.register)
 
     const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
 
     return (
         <PageContainer.Card>
