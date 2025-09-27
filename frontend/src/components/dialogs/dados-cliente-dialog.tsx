@@ -21,6 +21,8 @@ import { Separator } from "../ui/separator";
 import { TrashIcon } from '../icons/trash-icon';
 import { ExcluirClienteDialog } from './excluir-cliente-dialog';
 import useCargo from '@/hooks/useCargo';
+import { useDispatch } from 'react-redux';
+import { updateCliente } from '@/redux/clientes/slice';
 
 interface DadosClienteDialogProps {
   cliente: Cliente;
@@ -56,8 +58,13 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
     setIsEditting(true)
   }
 
+  const dispatch = useDispatch();
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsEditting(false)
+    dispatch(updateCliente({
+      ...cliente,
+      ...values
+    }));
   }
 
   const registerWithMask = useHookFormMask(form.register)
