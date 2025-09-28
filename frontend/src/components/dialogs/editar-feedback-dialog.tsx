@@ -13,7 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { pacotes } from "@/consts/pacotes";
+//import { pacotes } from "@/consts/pacotes";
 import { StarRating } from "../ui/star-rating";
 import { 
   Form,
@@ -61,11 +61,12 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
 
   const dispatch = useDispatch()
 
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
     
-    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
     const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
 
