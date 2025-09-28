@@ -24,6 +24,7 @@ import { DadosPacoteDialog } from "./dados-pacote-dialog";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { deleteReserva, updateReserva } from "@/redux/reservas/slice";
+import { stringifyAddress } from "@/consts/enderecos";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -122,23 +123,23 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
           </FormItem>
         </DadosPacoteDialog>
 
-        <DadosEnderecoDialog endereco={enderecos[0]}>
+        <DadosEnderecoDialog endereco={reserva.endereco}>
           <FormItem>
             <Label>Endereço</Label>
             <Card.Container>
               <Card.Title>
-                {reserva.endereco}
+                {stringifyAddress(reserva.endereco)}
               </Card.Title>
             </Card.Container>
           </FormItem>
         </DadosEnderecoDialog>
 
-        <DadosClienteDialog cliente={clientes[0]}>
+        <DadosClienteDialog cliente={reserva.cliente}>
           <FormItem>
             <Label>Cliente</Label>
             <Card.Container>
               <Card.Title>
-                João Silva
+                {reserva.cliente.name}
               </Card.Title>
             </Card.Container>
           </FormItem>
@@ -193,16 +194,18 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                 </Button>
               ) : isGerente() && (
                 <div className="w-full flex gap-3 items-center">
-                  <CancelarReservaDialog
-                    cliente={clientes[0]}
-                    handleCancelClick={cancelarReserva}
-                    reserva={reserva}
-                  >
-                    <Button variant="destructive">
-                      <X className="size-4"/>
-                      Cancelar
-                    </Button>
-                  </CancelarReservaDialog>
+                  {reserva.status === "Confirmada" && (
+                    <CancelarReservaDialog
+                      cliente={clientes[0]}
+                      handleCancelClick={cancelarReserva}
+                      reserva={reserva}
+                    >
+                      <Button variant="destructive">
+                        <X className="size-4"/>
+                        Cancelar
+                      </Button>
+                    </CancelarReservaDialog>
+                  )}
 
                   <Button variant="outline" onClick={() => setIsEditting(true)}>
                     <Pen className="size-4" />

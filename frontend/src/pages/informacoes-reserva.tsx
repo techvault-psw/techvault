@@ -24,21 +24,17 @@ export default function InformacoesReservasPage() {
   const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
   const { id } = useParams<{ id: string }>();
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
-
   const numberId = Number(id)
+  const reserva = reservas.find((reserva) => reserva.id === numberId)
   
-  if (isNaN(numberId) || numberId >= reservas.length) {
+  if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
     return
   }
   
-  const reserva = reservas[numberId]
   const pacote = reserva.pacote
   const formattedValue = formatCurrency(reserva.valor)
   const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
-  
-
   
   const navigate = useNavigate()
   
@@ -130,7 +126,7 @@ export default function InformacoesReservasPage() {
                 disabled
                 id="endereco"
                 type="text"
-                value="Faculdade"
+                value={reserva.endereco.name}
               />
             </FormItem>
           </div>

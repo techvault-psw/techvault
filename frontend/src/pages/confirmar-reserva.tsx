@@ -60,8 +60,8 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
     const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+    const { reservas } = useSelector((state: RootState) => state.reservasReducer)
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -83,20 +83,23 @@ export default function ConfirmarReservaPage() {
     };
     
     const onSubmit = (data: FormData) => {
-        if(!clienteAtual) return;
+        const endereco = enderecos.find(endereco => endereco.name === data.endereco)
+
+        if (!clienteAtual || !endereco) return;
+
         const novaReserva : NewReserva = {
             pacote: pacotes[numberId],
             valor: pacotes[numberId].value, 
             status: "Confirmada" as const,
             dataInicio: data.dataHoraInicial.toISOString(),
             dataTermino: data.dataHoraFinal.toISOString(),
-            endereco: data.endereco,
+            endereco,
             codigoEntrega: gerarCodigo(), 
             codigoColeta: gerarCodigo(),
             cliente: clienteAtual,
         };
+        navigate(`/pagamento/${reservas.length}`);
         dispatch(addReserva(novaReserva));
-        navigate(`/pagamento/${numberId}`);
     };
 
     const navigate = useNavigate();

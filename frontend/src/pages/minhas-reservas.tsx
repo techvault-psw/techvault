@@ -65,7 +65,7 @@ export default function MinhasReservasPage() {
                     if (!pacote) return
 
                     return (
-                        <Link to={`/informacoes-reserva/${index % reservas.length}`} key={index} className="w-full max-w-120 lg:max-w-140 border border-gray/50 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl shadow-lg flex flex-col gap-4 p-4 cursor-pointer transition-colors duration-200">
+                        <Link to={`/informacoes-reserva/${reserva.id}`} key={index} className="w-full max-w-120 lg:max-w-140 border border-gray/50 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl shadow-lg flex flex-col gap-4 p-4 cursor-pointer transition-colors duration-200">
                             <div className="flex gap-2">
                                 <PacoteImage
                                     pacote={pacote}

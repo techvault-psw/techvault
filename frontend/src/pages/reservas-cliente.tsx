@@ -15,6 +15,7 @@ import { useNavigate, useParams } from "react-router"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
 import { Separator } from "@/components/ui/separator"
+import { stringifyAddress } from "@/consts/enderecos"
 
 interface ReservaSectionProps {
   titulo: string
@@ -24,8 +25,6 @@ interface ReservaSectionProps {
 const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   if (reservas.length === 0) return null;
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
-  
   return (
     <div className="w-full flex flex-col gap-3">
       <div className="flex gap-2 items-center w-full">
@@ -50,7 +49,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
                     {reserva.status === "Cancelada" && <Badge variant="dark-red">Cancelada</Badge>}
                   </div>
                   <Card.Description className="leading-[120%]">
-                    <span className="font-medium">Endereço:</span> {reserva.endereco}
+                    <span className="font-medium">Endereço:</span> {stringifyAddress(reserva.endereco)}
                   </Card.Description>
                   <Card.Description className="leading-[120%]">
                     <span className="font-medium">Data:</span> {formattedStartDate} - {formattedEndDate}

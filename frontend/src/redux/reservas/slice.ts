@@ -4,6 +4,8 @@ import { clientes, type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
 import type { Pacote } from "../pacotes/slice";
 import { pacotes } from "@/consts/pacotes";
+import { enderecosInitialState } from "../endereco/slice";
+import type { Endereco } from "@/consts/enderecos";
 
 export type Reserva = {
     id: number
@@ -12,7 +14,7 @@ export type Reserva = {
     status: "Confirmada" | "Cancelada" | "Concluída"
     dataInicio: string
     dataTermino: string
-    endereco: string
+    endereco: Endereco
     codigoEntrega: string
     codigoColeta: string
     cliente: Cliente
@@ -20,6 +22,8 @@ export type Reserva = {
 }
 
 export type NewReserva = Optional<Reserva,"id">
+
+const { enderecos } = enderecosInitialState
 
 const initialState: {reservas: Reserva[] } = {
     reservas: [
@@ -30,7 +34,7 @@ const initialState: {reservas: Reserva[] } = {
         status: "Confirmada",
         dataInicio: new Date("2025-10-01T10:00:00").toISOString(),
         dataTermino: new Date("2025-10-05T10:00:00").toISOString(),
-        endereco: "Rua das Flores, 123, São Paulo, SP",
+        endereco: enderecos[0],
         codigoEntrega: "A7F3K2Z",
         codigoColeta: "9M2XQ8B",
         cliente: clientes[0],
@@ -42,7 +46,7 @@ const initialState: {reservas: Reserva[] } = {
         status: "Cancelada",
         dataInicio: new Date("2025-10-10T12:00:00").toISOString(),
         dataTermino: new Date("2025-10-12T12:00:00").toISOString(),
-        endereco: "Avenida Brasil, 456, Rio de Janeiro, RJ",
+        endereco: enderecos[1],
         codigoEntrega: "L4P7R1T",
         codigoColeta: "C6Z8V5Y",
         cliente: clientes[0],
@@ -54,7 +58,7 @@ const initialState: {reservas: Reserva[] } = {
         status: "Concluída",
         dataInicio: new Date("2025-09-20T08:00:00").toISOString(),
         dataTermino: new Date("2025-09-25T08:00:00").toISOString(),
-        endereco: "Praça Central, 789, Belo Horizonte, MG",
+        endereco: enderecos[2],
         codigoEntrega: "Q3N9W0K",
         codigoColeta: "H2B7D6M",
         cliente: clientes[0],

@@ -10,7 +10,7 @@ interface EnderecosState {
 
 export type NewEndereco = Optional<Endereco, 'id'>
 
-const initialState: EnderecosState = {
+export const enderecosInitialState: EnderecosState = {
     enderecos: [
         {
             id: 0,
@@ -149,7 +149,7 @@ const initialState: EnderecosState = {
 
 const enderecosSlice = createSlice({
     name: 'enderecos',
-    initialState,
+    initialState: enderecosInitialState,
     reducers: {
         addAddress: (state, action: { payload: NewEndereco }) => addAddressAction(state.enderecos, action.payload),
         updateAddress: (state, action: { payload: Endereco }) => updateAddressAction(state.enderecos, action.payload),
