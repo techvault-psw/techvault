@@ -10,7 +10,6 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import { reservas } from "@/consts/reservas";
-import { pacotes } from "@/consts/pacotes";
 import { PacoteImage } from "@/components/pacote-image";
 import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -20,6 +19,8 @@ import { useEffect } from "react";
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
     useEffect(() => {
         if (!clienteAtual) {
