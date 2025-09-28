@@ -72,7 +72,7 @@ const pacotesInitialState: PacoteState = {
 }
 
 const pacotesSlice = createSlice({
-  name: 'enderecos',
+  name: 'pacotes',
   initialState: pacotesInitialState,
   reducers: {
     addPackage: ({ pacotes }, action: { payload: NewPacote }) => addPackageAction(pacotes, action.payload),
