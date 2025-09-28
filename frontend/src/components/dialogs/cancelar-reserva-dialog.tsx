@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { pacotes } from "@/consts/pacotes";
-import type { Reserva } from "@/consts/reservas";
+import type { Reserva } from "@/redux/reservas/slice";
 import type { Cliente } from "@/consts/clientes";
 
 interface CancelarReservaDialogProps {

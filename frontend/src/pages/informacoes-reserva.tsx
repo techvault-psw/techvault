@@ -9,7 +9,6 @@ import { FormItem } from "@/components/ui/form"
 import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { pacotes } from "@/consts/pacotes"
-import { reservas } from "@/consts/reservas"
 import { formatCurrency } from "@/lib/format-currency"
 import type { RootState } from "@/redux/root-reducer"
 import { format } from "date-fns"
@@ -20,22 +19,26 @@ import { useSelector } from "react-redux"
 import { Link, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
+  
+  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
   const { id } = useParams<{ id: string }>();
-
+  
   const numberId = Number(id)
-
-  if (isNaN(numberId) || numberId >= pacotes.length) {
+  
+  if (isNaN(numberId) || numberId >= reservas.length) {
     return
   }
-
+  
   const reserva = reservas[numberId]
   const pacote = pacotes[reserva.pacoteIndex]
   const formattedValue = formatCurrency(reserva.valor)
   const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
+  
 
+  
   const navigate = useNavigate()
-
+  
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   useEffect(() => {

@@ -1,6 +1,6 @@
 import { useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux';
-import { addReserva } from '@/redux/reservas/slice'; 
+import { addReserva, type Reserva } from '@/redux/reservas/slice'; 
 
 
 
@@ -83,12 +83,12 @@ export default function ConfirmarReservaPage() {
     
     const onSubmit = (data: FormData) => {
         if(!clienteAtual) return;
-        const novaReserva = {
+        const novaReserva : Reserva = {
             pacoteIndex: numberId,
             valor: pacotes[numberId].value, 
             status: "Confirmada" as const,
-            dataInicio: data.dataHoraInicial,
-            dataTermino: data.dataHoraFinal,
+            dataInicio: data.dataHoraInicial.toISOString(),
+            dataTermino: data.dataHoraFinal.toISOString(),
             endereco: data.endereco,
             codigoEntrega: gerarCodigo(), 
             codigoColeta: gerarCodigo(),
