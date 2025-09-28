@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addReservaAction } from "./actions";
+import { clientes, type Cliente } from "@/consts/clientes"
 
 export type Reserva = {
     pacoteIndex: number
@@ -10,6 +11,8 @@ export type Reserva = {
     endereco: string
     codigoEntrega: string
     codigoColeta: string
+    cliente: Cliente
+    
 }
 
 const initialState: {reservas: Reserva[] } = {
@@ -22,7 +25,8 @@ const initialState: {reservas: Reserva[] } = {
         dataTermino: new Date("2025-10-05T10:00:00"),
         endereco: "Rua das Flores, 123, São Paulo, SP",
         codigoEntrega: "A7F3K2Z",
-        codigoColeta: "9M2XQ8B"
+        codigoColeta: "9M2XQ8B",
+        cliente: clientes[0],
     },
     {
         pacoteIndex: 1,
@@ -32,7 +36,8 @@ const initialState: {reservas: Reserva[] } = {
         dataTermino: new Date("2025-10-12T12:00:00"),
         endereco: "Avenida Brasil, 456, Rio de Janeiro, RJ",
         codigoEntrega: "L4P7R1T",
-        codigoColeta: "C6Z8V5Y"
+        codigoColeta: "C6Z8V5Y",
+        cliente: clientes[0],
     },
     {
         pacoteIndex: 2,
@@ -42,7 +47,8 @@ const initialState: {reservas: Reserva[] } = {
         dataTermino: new Date("2025-09-25T08:00:00"),
         endereco: "Praça Central, 789, Belo Horizonte, MG",
         codigoEntrega: "Q3N9W0K",
-        codigoColeta: "H2B7D6M"
+        codigoColeta: "H2B7D6M",
+        cliente: clientes[0],
     }
     ]
 }
