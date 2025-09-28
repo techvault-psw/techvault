@@ -6,6 +6,42 @@
   "pacotes": [
   ],
   "reservas": [
+    {
+        "id": 0,
+        "pacoteId": 0,
+        "valor": 500.00,
+        "status": "Confirmada",
+        "dataInicio": "2025-10-01T10:00:00",
+        "dataTermino": "2025-10-05T10:00:00",
+        "enderecoId": 0,
+        "codigoEntrega": "A7F3K2Z",
+        "codigoColeta": "9M2XQ8B",
+        "clienteId": 0
+    },
+    {
+        "id": 1,
+        "pacoteId": 1,
+        "valor": 300.00,
+        "status": "Cancelada",
+        "dataInicio": "2025-10-10T12:00:00",
+        "dataTermino": "2025-10-12T12:00:00",
+        "enderecoId": 1,
+        "codigoEntrega": "L4P7R1T",
+        "codigoColeta": "C6Z8V5Y",
+        "clienteId": 0
+    },
+    {
+        "id": 2,
+        "pacoteId": 2,
+        "valor": 700.00,
+        "status": "Concluída",
+        "dataInicio": "2025-09-20T08:00:00",
+        "dataTermino": "2025-09-25T08:00:00",
+        "enderecoId": 2,
+        "codigoEntrega": "Q3N9W0K",
+        "codigoColeta": "H2B7D6M",
+        "clienteId": 0
+    }
   ],
   "feedbacks": [
   ]
