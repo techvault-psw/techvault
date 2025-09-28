@@ -11,7 +11,7 @@ import { reservas, type Reserva } from "@/consts/reservas"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { useNavigate } from "react-router"
 
 interface ReservaSectionProps {
@@ -64,9 +64,11 @@ export default function ReservasClientePage() {
 
   const navigate = useNavigate()
 
-  if(!isGerente() && !isSuporte()) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if(!isGerente() && !isSuporte()) {
+      navigate("/login")
+    }
+  })
 
   const sortedReservas = useMemo(() => {
     return [...reservas].sort((a, b) => {

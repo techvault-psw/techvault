@@ -16,10 +16,14 @@ import { DarFeedbackDialog } from "@/components/dialogs/dar-feedback-dialog";
 import { EditarFeedbackDialog } from "@/components/dialogs/editar-feedback-dialog";
 import { ExcluirFeedbackDialog } from "@/components/dialogs/excluir-feedback-dialog";
 import useCargo from "@/hooks/useCargo";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
+
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     return (
         <PageContainer.List>
@@ -37,11 +41,13 @@ export default function FeedbacksPage() {
                         Ordenar por
                     </Button>
                 </div>
-                <DarFeedbackDialog>
-                    <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
-                        <Card.Title>Dar Feedback</Card.Title>
-                    </Card.Container>
-                </DarFeedbackDialog>
+                {clienteAtual && (
+                    <DarFeedbackDialog>
+                        <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
+                            <Card.Title>Dar Feedback</Card.Title>
+                        </Card.Container>
+                    </DarFeedbackDialog>
+                )}
             </div>
 
             <Separator />

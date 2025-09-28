@@ -12,6 +12,7 @@ import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate } from "react-router";
+import { useEffect } from "react";
 
 const hoje = new Date()
 
@@ -85,9 +86,11 @@ export default function ReservasPage() {
 
   const navigate = useNavigate()
 
-  if(!isGerente() && !isSuporte()) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if(!isGerente() && !isSuporte()) {
+      navigate("/login")
+    }
+  }, [])
 
   return (
   <PageContainer.List> 

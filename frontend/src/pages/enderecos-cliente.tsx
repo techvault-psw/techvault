@@ -10,15 +10,18 @@ import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate } from "react-router";
 import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
+import { useEffect } from "react";
 
 export default function EnderecosClientePage() {
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
 
-  if(!isGerente() && !isSuporte()) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if(!isGerente() && !isSuporte()) {
+      navigate("/login")
+    }
+  }, [])
 
   return (
     <PageContainer.List>
