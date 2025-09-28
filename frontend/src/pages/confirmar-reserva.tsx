@@ -26,6 +26,7 @@ import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { clientes } from "@/consts/clientes";
+import { useEffect } from "react";
 
 const metodosPagamento = [
     "Cartão de Crédito",
@@ -55,8 +56,6 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
-    const currentUser = clientes[0];
-
     const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
 
     const form = useForm<FormData>({
@@ -83,6 +82,14 @@ export default function ConfirmarReservaPage() {
     if (isNaN(numberId) || numberId >= pacotes.length) {
         return
     }
+
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
 
     return (
         <PageContainer.Card>
@@ -158,7 +165,7 @@ export default function ConfirmarReservaPage() {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {enderecos.map((endereco, index) => {
-                                                if(endereco.cliente != currentUser) return
+                                                if(endereco.cliente.id !== clienteAtual?.id) return
 
                                                 return (
                                                     <SelectItem key={index} value={endereco.name}>

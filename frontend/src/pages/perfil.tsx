@@ -14,7 +14,7 @@ import {
     FormMessage 
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
@@ -29,9 +29,9 @@ import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog'
 import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
 import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { clientes } from '@/consts/clientes';
+import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
 
 const formSchema = z
     .object({
@@ -45,34 +45,52 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
 
-    let currentUser = clientes[0]
-
-    const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-
+    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: currentUser.name || "",
-            email: currentUser.email || "",
-            phone: currentUser.phone || ""
+            name: clienteAtual?.name || "",
+            email: clienteAtual?.email || "",
+            phone: clienteAtual?.phone || ""
         }
     })
 
+    const dispatch = useDispatch();
     const onSubmit = (values: z.infer<typeof formSchema>) => {
-        currentUser = {
-            ...currentUser,
-            ...values
-        };
+        if (!clienteAtual) return
+
+        dispatch(updateCliente({
+            ...clienteAtual,
+            ...values,
+        }))
         toggleEditProfileInfo()
     }
 
     const toggleEditProfileInfo = () => {
         setFormDisabled(!formDisabled)
     }
+    const handleDeleteClick = () => {
+        navigate("/cadastro");
+        if(clienteAtual){
+            dispatch(deleteCliente(clienteAtual.id));
+        }
+    }
+    const handleLogoutClick = () => {
+        navigate("/login");
+        dispatch(logoutCliente());
+    }
 
     const registerWithMask = useHookFormMask(form.register)
 
     const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
+
+    const { enderecos } = useSelector((state: RootState) => state.enderecosReducer);
 
     return (
         <PageContainer.Card>
@@ -160,7 +178,7 @@ export default function PerfilPage() {
 
                     <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
                         {enderecos.map((endereco) => {
-                            if(endereco.cliente != currentUser) return;
+                            if(endereco.cliente.id !== clienteAtual?.id) return;
                             
                             return (
                                 <DadosEnderecoDialog endereco={endereco}>
@@ -183,13 +201,13 @@ export default function PerfilPage() {
             </div>
 
             <div className="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
-                <ExcluirContaDialog handleDeleteClick={() => navigate("/cadastro")}>
+                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
                     <Button variant="destructive">
                         <TrashIcon/>
                         Excluir
                     </Button>
                 </ExcluirContaDialog>
-                <SairDialog handleCloseClick={() => navigate("/login")}>
+                <SairDialog handleCloseClick={handleLogoutClick}>
                     <Button variant="destructive">
                         <LogOutIcon/>
                         Sair

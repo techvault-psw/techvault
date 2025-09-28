@@ -11,6 +11,7 @@ import useCargo from "@/hooks/useCargo";
 import { useNavigate, useParams } from "react-router";
 import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
 import { clientes } from "@/consts/clientes";
+import { useEffect } from "react";
 
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
@@ -27,9 +28,11 @@ export default function EnderecosClientePage() {
 
   const navigate = useNavigate()
 
-  if(!isGerente() && !isSuporte()) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if(!isGerente() && !isSuporte()) {
+      navigate("/login")
+    }
+  }, [])
 
   return (
     <PageContainer.List>
@@ -70,7 +73,7 @@ export default function EnderecosClientePage() {
           </Table.Header>
           <Table.Body>
             {enderecos.map((endereco: Endereco, i) => {
-              if(endereco.cliente != cliente) return
+              if(endereco.cliente.id !== cliente.id) return
 
               return (
                 <DadosEnderecoDialog endereco={endereco} key={i}>

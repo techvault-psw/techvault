@@ -15,6 +15,9 @@ import { SidebarItem } from "./sidebar-item";
 import useCargo from "@/hooks/useCargo";
 import { SairDialog } from "../dialogs/sair-dialog";
 import { useNavigate } from "react-router";
+import { useDispatch, useSelector } from "react-redux";
+import { logoutCliente } from "@/redux/clientes/slice";
+import type { RootState } from "@/redux/root-reducer";
 
 interface SidebarProps {
     closeSidebar: () => void;
@@ -56,6 +59,13 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
     const { isGerente, isSuporte } = useCargo()
     const navigate = useNavigate()
 
+    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+    const dispatch = useDispatch();
+    const handleLogoutClick = () => {
+        navigate("/login");
+        dispatch(logoutCliente());
+    }
+
     return (
         <div id="sidebar" className="absolute inset-0 z-10 hidden">
             <div onClick={() => closeSidebar()} className="overlay z-11 absolute inset-0 bg-overlay/40 backdrop-blur-sm opacity-0"/>
@@ -73,11 +83,10 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
 
                 <div className="flex justify-between items-center gap-2">
                     <div className="flex flex-col gap-2">
-                        <h3 className="text-white font-semibold text-xl">José da Silva</h3>
-                        <p className="text-gray text-base leading-none">jose.silva@email.com</p>
+                        <h3 className="text-white font-semibold text-xl">{clienteAtual?.name}</h3>
+                        <p className="text-gray text-base leading-none">{clienteAtual?.email}</p>
                     </div>
-
-                    <SairDialog handleCloseClick={() => navigate("/login")}>
+                    <SairDialog handleCloseClick = { handleLogoutClick }> 
                         <Button variant="destructive" size="icon">
                             <LogOutIcon className="size-4" />
                         </Button>

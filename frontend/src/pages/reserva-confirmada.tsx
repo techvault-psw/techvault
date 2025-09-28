@@ -4,10 +4,13 @@ import { PageTitle } from "@/components/page-title";
 import { Separator } from "@/components/ui/separator";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import { reservas } from "@/consts/reservas";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import { useEffect } from "react";
 
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
@@ -21,6 +24,15 @@ export default function ReservaConfirmadaPage() {
     const reserva = reservas[numberId]
     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
+
+    const navigate = useNavigate()
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    })
 
     return (
         <>
