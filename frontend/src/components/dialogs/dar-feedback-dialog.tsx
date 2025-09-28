@@ -70,9 +70,10 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     if (!pacote || !clienteAtual) return
 
     dispatch(addFeedback({
-      ...values,
-      customer: clienteAtual,
-      package: pacote,
+      rating: values.rating,
+      comentario: values.comment,
+      cliente: clienteAtual,
+      pacote,
     }))
   }
 

@@ -8,5 +8,37 @@
   "reservas": [
   ],
   "feedbacks": [
+    {
+      "id": 0,
+      "clienteId": 3,
+      "pacoteId": 0,
+      "rating": 4,
+      "comentario":
+        "O setup gamer é excelente, máquinas muito rápidas e silenciosas. Só achei que os fones poderiam ter uma qualidade um pouco melhor."
+    },
+    {
+      "id": 1,
+      "clienteId": 4,
+      "pacoteId": 1,
+      "rating": 3,
+      "comentario":
+        "O notebook é realmente potente e a cadeira é confortável, mas o monitor auxiliar poderia ter mais ajustes de altura. No geral, bom custo-benefício."
+    },
+    {
+      "id": 2,
+      "clienteId": 5,
+      "pacoteId": 2,
+      "rating": 5,
+      "comentario":
+        "Perfeito para o nosso time! Todos ficaram satisfeitos com o desempenho e a ergonomia. O espaço de trabalho colaborativo ficou incrível."
+    },
+    {
+      "id": 3,
+      "clienteId": 6,
+      "pacoteId": 0,
+      "rating": 4,
+      "comentario":
+        "Uso o setup profissional diariamente no home office e tem atendido muito bem. A iluminação para videoconferência foi um diferencial."
+    }
   ]
 }
