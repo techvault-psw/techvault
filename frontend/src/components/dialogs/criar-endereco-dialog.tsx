@@ -36,7 +36,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     const [isOpen, setOpen] = useState(false);
     const [disabled, setDisabled] = useState(true);
 
-    const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     const dispatch = useDispatch()
 
@@ -54,9 +54,11 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     })
 
     const onSubmit = (endereco: z.infer<typeof formSchema>) => {
+        if (!clienteAtual) return
+
         dispatch(addAddress({
             ...endereco,
-            cliente: clientes[0]
+            cliente: clienteAtual
         }))
         setOpen(false);
     }
@@ -222,7 +224,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                         </div>
 
                         <Dialog.Footer className='grid grid-rows-2 md:flex md:flex-row-reverse'>
-                            <Button type="submit">
+                            <Button type="submit" className='h-[2.625rem]'>
                                 Criar
                             </Button>
                             <Dialog.Close asChild>

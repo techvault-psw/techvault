@@ -84,6 +84,7 @@ export default function ConfirmarReservaPage() {
     }
 
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
     useEffect(() => {
         if (!clienteAtual) {
@@ -164,9 +165,7 @@ export default function ConfirmarReservaPage() {
                                             <SelectValue placeholder="Selecione um endereço" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {enderecos.map((endereco, index) => {
-                                                if(endereco.cliente.id !== clienteAtual?.id) return
-
+                                            {enderecosCliente.map((endereco, index) => {
                                                 return (
                                                     <SelectItem key={index} value={endereco.name}>
                                                         {endereco.name}

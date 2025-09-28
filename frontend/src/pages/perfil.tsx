@@ -92,6 +92,8 @@ export default function PerfilPage() {
 
     const { enderecos } = useSelector((state: RootState) => state.enderecosReducer);
 
+    const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
+
     return (
         <PageContainer.Card>
             <PageTitle>
@@ -176,15 +178,19 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
+                    {!enderecosCliente.length && (
+                        <p className='text-base text-gray text-center'>
+                            Você ainda não possui nenhum endereço cadastrado.
+                        </p>
+                    )}
+
                     <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
-                        {enderecos.map((endereco) => {
-                            if(endereco.cliente.id !== clienteAtual?.id) return;
-                            
+                        {enderecosCliente.map((endereco) => {
                             return (
                                 <DadosEnderecoDialog endereco={endereco}>
                                     <Card.Container>
-                                        <Card.TextContainer>
-                                            <Card.Title>{endereco.name}</Card.Title>
+                                        <Card.TextContainer className='overflow-x-hidden'>
+                                            <Card.Title className='truncate'>{endereco.name}</Card.Title>
                                             <Card.Description>{stringifyAddress(endereco)}</Card.Description>
                                         </Card.TextContainer>
                                     </Card.Container>

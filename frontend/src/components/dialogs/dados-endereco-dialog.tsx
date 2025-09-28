@@ -1,4 +1,4 @@
-import { enderecos, type Endereco } from "@/consts/enderecos";
+import { type Endereco } from "@/consts/enderecos";
 import { useEffect, useState, type ReactNode } from "react";
 import { Dialog } from "../ui/dialog";
 import z from "zod";
