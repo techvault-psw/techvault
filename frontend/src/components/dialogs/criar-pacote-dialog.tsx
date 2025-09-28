@@ -119,6 +119,22 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
     }
   };
 
+  const handleQuantityKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const blockedKeys = ['-', '+', 'e', 'E', '.', ','];
+    
+    if (blockedKeys.includes(e.key)) {
+      e.preventDefault()
+    }
+  }
+
+  const handleQuantityPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pastedValue = e.clipboardData.getData('text');
+    
+    if (!/^\d+$/.test(pastedValue)) {
+      e.preventDefault();
+    }
+  }
+
   return (
     <Dialog.Container open={isOpen} onOpenChange={(open) => {
       setIsOpen(open);
@@ -212,7 +228,9 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
                           <Input
                             type="number"
                             placeholder="0"
-                            min="1"
+                            min="0"
+                            onKeyDown={handleQuantityKeyDown}
+                            onPaste={handleQuantityPaste}
                             {...field}
                           />
                         </FormControl>

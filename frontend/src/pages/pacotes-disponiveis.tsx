@@ -29,8 +29,8 @@ export default function PacotesDisponiveisPage() {
         </Button>
       </div>
 
-      <section className="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Array(10).fill(pacotesDisponiveis).flat().map((pacote, i) => {
+      <section className="flex-1 flex flex-col gap-4 scrollbar pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {pacotesDisponiveis.map((pacote, i) => {
           const formattedValue = formatCurrency(pacote.value)
 
           return (
