@@ -4,11 +4,15 @@ import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
-import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 export default function PacotesDisponiveisPage() {
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+
   return (
     <PageContainer.List>
       <PageTitle>Pacotes Disponíveis</PageTitle>
