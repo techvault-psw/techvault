@@ -24,9 +24,10 @@ import {
   FormMessage
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addFeedback } from "@/redux/feedbacks/slice";
 import { clientes } from "@/consts/clientes";
+import type { RootState } from "@/redux/root-reducer";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -56,6 +57,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   });
 
   const dispatch = useDispatch()
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
@@ -63,11 +65,11 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
 
     const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
 
-    if (!pacote) return
+    if (!pacote || !clienteAtual) return
 
     dispatch(addFeedback({
       ...values,
-      customer: clientes[0],
+      customer: clienteAtual,
       package: pacote,
     }))
   }

@@ -18,7 +18,7 @@ const feedbacksInitialState = {
   feedbacks: [
     {
       id: 0,
-      customer: clientes[0],
+      customer: clientes[3],
       package: pacotes[0],
       rating: 4,
       comment:
@@ -26,7 +26,7 @@ const feedbacksInitialState = {
     },
     {
       id: 1,
-      customer: clientes[1],
+      customer: clientes[4],
       package: pacotes[1],
       rating: 3,
       comment:
@@ -34,7 +34,7 @@ const feedbacksInitialState = {
     },
     {
       id: 2,
-      customer: clientes[2],
+      customer: clientes[5],
       package: pacotes[2],
       rating: 5,
       comment:
@@ -42,7 +42,7 @@ const feedbacksInitialState = {
     },
     {
       id: 3,
-      customer: clientes[3],
+      customer: clientes[6],
       package: pacotes[0],
       rating: 4,
       comment:

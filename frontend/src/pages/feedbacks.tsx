@@ -15,7 +15,6 @@ import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
 import { Pen } from "lucide-react";
 import { Link } from "react-router";
-import { clientes } from "@/consts/clientes";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 
@@ -54,7 +53,7 @@ export default function FeedbacksPage() {
         
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
                 {feedbacks.map((feedback, index) => {
-                    const isMyFeedback = feedback.customer.id === clientes[0].id
+                    const isMyFeedback = feedback.customer.id === clienteAtual?.id
 
                     return (
                         <div key={index} className="w-full h-full p-3 flex flex-col gap-3 bg-white/5 border border-gray/40 rounded-lg backdrop-blur-sm">
@@ -86,7 +85,7 @@ export default function FeedbacksPage() {
                                 )}
                             </div>
 
-                            {(isGerente() || index === 0) && (
+                            {(isGerente() || isMyFeedback) && (
                                 <div className="flex items-center gap-3 md:hidden">
                                     <ExcluirFeedbackDialog feedback={feedback}>
                                         <Button variant="destructive" size="sm" className="gap-2">
