@@ -23,7 +23,7 @@ import { DadosEnderecoDialog } from "./dados-endereco-dialog";
 import { DadosPacoteDialog } from "./dados-pacote-dialog";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { deleteReserva } from "@/redux/reservas/slice";
+import { deleteReserva, updateReserva } from "@/redux/reservas/slice";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -58,8 +58,14 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
     mode: "onChange"
   })
 
-  const onSubmit = () => {
+  const onSubmit = (values: FormData) => {
     setIsEditting(false)
+    
+    dispatch(updateReserva({
+      ...reserva,
+      dataInicio: values.dataHoraInicial.toISOString(),
+      dataTermino: values.dataHoraFinal.toISOString(),
+    }))
   }
 
   const dispatch = useDispatch()

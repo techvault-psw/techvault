@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addReservaAction, deleteReservaAction } from "./actions";
+import { addReservaAction, deleteReservaAction, updateReservaAction } from "./actions";
 import { clientes, type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
 
@@ -64,7 +64,7 @@ const reservasSlice = createSlice( {
     initialState,
     reducers: {
         addReserva: (state, action : {payload : NewReserva}) => addReservaAction(state.reservas, action.payload),
-        updateReserva: (state, action) => {},
+        updateReserva: (state, action : {payload: Reserva}) => updateReservaAction(state.reservas, action.payload),
         deleteReserva: (state, action : {payload: number}) => deleteReservaAction(state.reservas, action.payload)
     }
 })

@@ -33,9 +33,9 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
         <div className="flex-1 bg-white/50 h-px" />
       </div>
       <section className="w-full grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4">
-        {Array(qtdReservas).fill(reservas).flat().map((reserva, i) => {
-          const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy hh:MM")
-          const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy hh:MM")
+        {reservas.map((reserva, i) => {
+          const formattedStartDate = format(new Date(reserva.dataInicio), "dd/MM/yyyy HH:mm")
+          const formattedEndDate = format(new Date(reserva.dataTermino), "dd/MM/yyyy HH:mm")
 
           return (
             <DetalhesReservaDialog reserva={reserva}>
