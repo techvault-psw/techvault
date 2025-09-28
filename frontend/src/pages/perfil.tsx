@@ -31,7 +31,7 @@ import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { deleteCliente, logoutCliente } from '@/redux/clientes/slice';
+import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
 
 const formSchema = z
     .object({
@@ -55,14 +55,20 @@ export default function PerfilPage() {
         }
     })
 
-    const onSubmit = (x: z.infer<typeof formSchema>) => {
+    const dispatch = useDispatch();
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        if (!clienteAtual) return
+
+        dispatch(updateCliente({
+            ...clienteAtual,
+            ...values,
+        }))
         toggleEditProfileInfo()
     }
 
     const toggleEditProfileInfo = () => {
         setFormDisabled(!formDisabled)
     }
-    const dispatch = useDispatch();
     const handleDeleteClick = () => {
         navigate("/cadastro");
         if(clienteAtual){

@@ -28,6 +28,10 @@ const clienteSlice = createSlice({
     },
     deleteCliente: (state, action: PayloadAction<number>) => {
       state.clientes = state.clientes.filter(c => c.id !== action.payload);
+
+      if (state.clienteAtual?.id === action.payload) {
+        state.clienteAtual = undefined;
+      }
     },
     loginCliente: (state, action: PayloadAction<Pick<Cliente, "email" | "password">>) => {
       const clientePayload = action.payload
