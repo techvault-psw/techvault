@@ -88,7 +88,7 @@ export default function ReservasClientePage() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Reservas de João Silva</PageTitle>
+      <PageTitle>Reservas de {reservas[0].cliente.name}</PageTitle>
 
       <div className="flex items-center gap-4">
         <Button variant="secondary" className="w-40 md:w-52" size="sm">

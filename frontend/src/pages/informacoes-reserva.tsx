@@ -10,6 +10,7 @@ import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { pacotes } from "@/consts/pacotes"
 import { formatCurrency } from "@/lib/format-currency"
+import { cn } from "@/lib/utils"
 import { deleteReserva } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
 import { format } from "date-fns"
@@ -156,15 +157,18 @@ export default function InformacoesReservasPage() {
       </div>
 
       <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
-        <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
-          <Button variant="destructive" className="md:order-2 xl:col-start-3">
-            <X className="size-5 text-red" />
-            <span className="text-red text-lg font-medium leading-none">Cancelar</span>
-          </Button>
-        </CancelarReservaDialog>
+        {reserva.status === "Confirmada" && (
 
-        <Button variant="outline" className="md:order-1 xl:col-start-2" asChild>
-          <Link to="/minhas-reservas">
+          <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
+            <Button variant="destructive" className="md:order-2 xl:col-start-3">
+              <X className="size-5 text-red" />
+              <span className="text-red text-lg font-medium leading-none">Cancelar</span>
+            </Button>
+          </CancelarReservaDialog>
+        ) }
+
+          <Button variant="outline" className={cn("md:order-1 xl:col-start-2", reserva.status !== "Confirmada" ? "col-span-2" : "")} asChild>
+            <Link to="/minhas-reservas">
             <ArrowLeftIcon className="size-5" />
             <span className="text-white text-lg font-medium leading-none">Voltar</span>
           </Link>
