@@ -19,7 +19,9 @@ import ReservaConfirmadaPage from "./pages/reserva-confirmada";
 import PerfilPage from "./pages/perfil";
 import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
-
+import store from "./redux/store";
+import { fetchReservas } from "./redux/reservas/fetch";
+store.dispatch(fetchReservas());
 export default function App() {
   return (
     <Routes>
