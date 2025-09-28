@@ -47,6 +47,8 @@ interface DarFeedbackDialogProps {
 export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {

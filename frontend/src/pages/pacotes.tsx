@@ -18,11 +18,16 @@ import { useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
 import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
 import { DadosPacoteDialog } from "@/components/dialogs/dados-pacote-dialog";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import type { Pacote } from "@/redux/pacotes/slice";
 
 export default function Pacotes() {
   const { isGerente } = useCargo()
 
   const navigate = useNavigate()
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
   useEffect(() => {
     if (!isGerente()) {
@@ -86,14 +91,15 @@ export default function Pacotes() {
       {pacotesFiltrados.length !== 0 && (
         <>
           <div className="w-full flex flex-col gap-5 scrollbar md:grid min-[900px]:grid-cols-2 xl:grid-cols-3 lg:hidden">
-            {Array(6).fill(pacotesFiltrados).flat().map((pacote, i) => (
+            {pacotesFiltrados.map((pacote: Pacote, i) => (
               <DadosPacoteDialog pacote={pacote} key={i}>
                 <Card.Container className="flex items-center justify-between p-4">
                   <div className="flex items-center gap-4 overflow-hidden">
                     <PacoteImage pacote = {pacote} className="h-20 rounded-lg border-gray/50"/>
                     <Card.TextContainer className="truncate">
-                      <Card.Title className="truncate font-semibold">{pacote.name}</Card.Title>
-                      <Card.Description>Valor (hora): {formatCurrency(pacote.value)}</Card.Description>
+                      <Card.Title className="truncate font-semibold leading-[110%]">{pacote.name}</Card.Title>
+                      <Card.Description className="leading-[110%]">Valor (hora): {formatCurrency(pacote.value)}</Card.Description>
+                      <Card.Description className="leading-[110%]">Quantidade: {pacote.quantity}</Card.Description>
                     </Card.TextContainer>
                   </div>
                 </Card.Container>
@@ -109,19 +115,21 @@ export default function Pacotes() {
                   <Table.Head>Nome</Table.Head>
                   <Table.Head>Descrição</Table.Head>
                   <Table.Head>Valor (hora)</Table.Head>
+                  <Table.Head>Quantidade</Table.Head>
                   <Table.Head className="w-16"></Table.Head>
                 </tr>
               </Table.Header>
               <Table.Body>
-                {Array(6).fill(pacotesFiltrados).flat().map((pacote, i) => (
+                {pacotesFiltrados.map((pacote: Pacote, i) => (
                   <DadosPacoteDialog pacote={pacote} key={i}>
                     <Table.Row>
                       <Table.Cell>
                         <PacoteImage pacote = {pacote} className="w-24 rounded-lg border-gray/50"/>
                       </Table.Cell>
                       <Table.Cell className="font-medium text-white" title={pacote.name}>{pacote.name}</Table.Cell>
-                      <Table.Cell className="max-w-sm truncate" title={pacote.description}>{pacote.description}</Table.Cell>
+                      <Table.Cell className="max-w-sm truncate" title={pacote.description[0]}>{pacote.description[0]}</Table.Cell>
                       <Table.Cell>{formatCurrency(pacote.value)}</Table.Cell>
+                      <Table.Cell>{pacote.quantity}</Table.Cell>
                       <Table.Cell>
                         <ArrowRightIcon className="size-6" />
                       </Table.Cell>

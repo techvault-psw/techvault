@@ -6,7 +6,6 @@ import { PageTitle } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { pacotes } from "@/consts/pacotes"
 import { type Reserva } from "@/redux/reservas/slice"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
@@ -24,7 +23,7 @@ interface ReservaSectionProps {
 const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   if (reservas.length === 0) return null;
 
-  const qtdReservas = Math.floor(Math.random() * (8 - 5 + 1)) + 5;
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
   
   return (
     <div className="w-full flex flex-col gap-3">
@@ -37,12 +36,16 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
           const formattedStartDate = format(new Date(reserva.dataInicio), "dd/MM/yyyy HH:mm")
           const formattedEndDate = format(new Date(reserva.dataTermino), "dd/MM/yyyy HH:mm")
 
+          const pacote = pacotes[reserva.pacoteIndex]
+
+          if (!pacote) return
+
           return (
             <DetalhesReservaDialog reserva={reserva}>
               <Card.Container key={i} className="bg-white/5 hover:bg-white/10 border border-slate-500/50 backdrop-blur-sm transition-colors duration-200 h-full">
                 <Card.TextContainer className="text-white truncate">
                   <div className="flex items-center justify-between gap-2 font-semibold">
-                    <Card.Title className="truncate">{pacotes[reserva.pacoteIndex].name}</Card.Title>
+                    <Card.Title className="truncate">{pacote.name}</Card.Title>
                     {reserva.status === "Cancelada" && <Badge variant="dark-red">Cancelada</Badge>}
                   </div>
                   <Card.Description className="leading-[120%]">

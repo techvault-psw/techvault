@@ -13,7 +13,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { pacotes } from "@/consts/pacotes";
+//import { pacotes } from "@/consts/pacotes";
 import { StarRating } from "../ui/star-rating";
 import { 
   Form,
@@ -27,6 +27,8 @@ import { Textarea } from "../ui/textarea";
 import useCargo from "@/hooks/useCargo";
 import { updateFeedback, type Feedback } from "@/redux/feedbacks/slice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -59,10 +61,13 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
 
   const dispatch = useDispatch()
 
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
     
+
     const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
 
     if (!pacote) return

@@ -4,14 +4,15 @@ import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
 import type { RootState } from "@/redux/root-reducer";
 import { useSelector } from "react-redux";
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export default function InformacoesPacotePage() {
   const { id } = useParams<{ id: string }>();
+  
+  const pacotes = useSelector(((state: RootState) => state.pacotesReducer.pacotes));
 
   const numberId = Number(id)
 

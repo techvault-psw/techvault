@@ -9,7 +9,6 @@ import { formatCurrency } from "@/lib/format-currency";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-import { pacotes } from "@/consts/pacotes";
 import { PacoteImage } from "@/components/pacote-image";
 import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -20,6 +19,8 @@ export default function MinhasReservasPage() {
     const navigate = useNavigate()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+
+    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
     useEffect(() => {
         if (!clienteAtual) {
@@ -59,16 +60,20 @@ export default function MinhasReservasPage() {
                     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
                     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
+                    const pacote = pacotes[reserva.pacoteIndex]
+
+                    if (!pacote) return
+
                     return (
                         <Link to={`/informacoes-reserva/${index % reservas.length}`} key={index} className="w-full max-w-120 lg:max-w-140 border border-gray/50 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl shadow-lg flex flex-col gap-4 p-4 cursor-pointer transition-colors duration-200">
                             <div className="flex gap-2">
                                 <PacoteImage
-                                    pacote={pacotes[reserva.pacoteIndex]}
+                                    pacote={pacote}
                                     className="h-22"
                                 />
 
                                 <div className="flex-1 flex flex-col gap-2 justify-between text-white text-lg font-semibold">
-                                    <h2 className="text-lg">{pacotes[reserva.pacoteIndex].name}</h2>
+                                    <h2 className="text-lg">{pacote.name}</h2>
                                     <p className="text-right text-gray font-medium">{formattedValue}</p>
                                 </div>
                             </div>

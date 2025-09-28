@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { pacotes } from "@/consts/pacotes";
 import { format, isToday, isTomorrow, isYesterday } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
@@ -94,6 +93,9 @@ function criarReservasPorData(reservas: Reserva[]) {
 
 export default function ReservasPage() {
   const {isGerente, isSuporte} = useCargo()
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -134,6 +136,8 @@ export default function ReservasPage() {
               }
 
               const pacote = pacotes[reserva.pacoteIndex]
+
+              if (!pacote) return
 
               return (
                 <DetalhesReservaDialog key={`${reserva.id}-${tipo}-${j}`} reserva={reserva} tipo={tipo}>

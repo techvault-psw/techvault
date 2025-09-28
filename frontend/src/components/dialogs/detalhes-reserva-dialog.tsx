@@ -76,6 +76,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
   }
 
   const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
   return (
     <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>

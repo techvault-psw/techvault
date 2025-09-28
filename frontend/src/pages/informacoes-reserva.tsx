@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { FormItem } from "@/components/ui/form"
 import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { pacotes } from "@/consts/pacotes"
 import { formatCurrency } from "@/lib/format-currency"
 import { cn } from "@/lib/utils"
 import { deleteReserva } from "@/redux/reservas/slice"
@@ -24,7 +23,9 @@ export default function InformacoesReservasPage() {
   
   const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
   const { id } = useParams<{ id: string }>();
-  
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+
   const numberId = Number(id)
   
   if (isNaN(numberId) || numberId >= reservas.length) {
