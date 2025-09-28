@@ -6,13 +6,14 @@ import { PageTitle } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { pacotes } from "@/consts/pacotes"
 import { reservas, type Reserva } from "@/consts/reservas"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { useNavigate } from "react-router"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/redux/root-reducer"
 
 interface ReservaSectionProps {
   titulo: string
@@ -23,6 +24,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   if (reservas.length === 0) return null;
 
   const qtdReservas = Math.floor(Math.random() * (8 - 5 + 1)) + 5;
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
   
   return (
     <div className="w-full flex flex-col gap-3">
