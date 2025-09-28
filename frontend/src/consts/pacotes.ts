@@ -1,4 +1,5 @@
 export type Pacote = {
+  id: number
   name: string
   image: string
   description: string[]
@@ -8,6 +9,7 @@ export type Pacote = {
 
 export const pacotes: Pacote[] = [
   {
+    id: 0,
     name: 'Setup Gamer Duplo',
     image: 'setup-1.png',
     description: [
@@ -23,6 +25,7 @@ export const pacotes: Pacote[] = [
     value: 200,
   },
   {
+    id: 1,
     name: 'Setup de Trabalho Profissional',
     image: 'setup-2.png',
     description: [
@@ -39,6 +42,7 @@ export const pacotes: Pacote[] = [
     value: 100,
   },
   {
+    id: 2,
     name: 'Setup Gamer Squad',
     image: 'setup-3.png',
     description: [
