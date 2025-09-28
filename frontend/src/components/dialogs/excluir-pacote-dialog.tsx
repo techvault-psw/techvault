@@ -1,4 +1,4 @@
-import { pacotes, type Pacote } from "@/consts/pacotes";
+import { type Pacote } from "@/consts/pacotes";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { TrashIcon } from "../icons/trash-icon";

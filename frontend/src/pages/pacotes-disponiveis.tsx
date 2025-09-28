@@ -4,11 +4,15 @@ import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
-import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
 import { Link } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 export default function PacotesDisponiveisPage() {
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotesDisponiveis = pacotes.filter(pacote => pacote.quantity > 0)
+
   return (
     <PageContainer.List>
       <PageTitle>Pacotes Disponíveis</PageTitle>
@@ -25,12 +29,12 @@ export default function PacotesDisponiveisPage() {
         </Button>
       </div>
 
-      <section className="flex-1 flex flex-col gap-4 overflow-y-auto [&::-webkit-scrollbar]:hidden [scrollbar-width:none] pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {Array(10).fill(pacotes).flat().map((pacote, i) => {
+      <section className="flex-1 flex flex-col gap-4 scrollbar pb-4 md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {pacotesDisponiveis.map((pacote, i) => {
           const formattedValue = formatCurrency(pacote.value)
 
           return (
-            <Link key={pacote.name} to={`/informacoes-pacote/${i % pacotes.length}`} className="w-80 md:w-full max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+            <Link key={pacote.name} to={`/informacoes-pacote/${i % pacotesDisponiveis.length}`} className="w-80 md:w-full max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
               <PacoteImage
                 pacote={pacote}
                 className="w-full"

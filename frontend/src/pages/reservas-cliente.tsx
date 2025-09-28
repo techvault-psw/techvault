@@ -6,13 +6,14 @@ import { PageTitle } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { pacotes } from "@/consts/pacotes"
 import { reservas, type Reserva } from "@/consts/reservas"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { useNavigate } from "react-router"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/redux/root-reducer"
 
 interface ReservaSectionProps {
   titulo: string
@@ -23,6 +24,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   if (reservas.length === 0) return null;
 
   const qtdReservas = Math.floor(Math.random() * (8 - 5 + 1)) + 5;
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
   
   return (
     <div className="w-full flex flex-col gap-3">
@@ -35,12 +37,16 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
           const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy hh:MM")
           const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy hh:MM")
 
+          const pacote = pacotes[reserva.pacoteIndex]
+
+          if (!pacote) return
+
           return (
             <DetalhesReservaDialog reserva={reserva}>
               <Card.Container key={i} className="bg-white/5 hover:bg-white/10 border border-slate-500/50 backdrop-blur-sm transition-colors duration-200 h-full">
                 <Card.TextContainer className="text-white truncate">
                   <div className="flex items-center justify-between gap-2 font-semibold">
-                    <Card.Title className="truncate">{pacotes[reserva.pacoteIndex].name}</Card.Title>
+                    <Card.Title className="truncate">{pacote.name}</Card.Title>
                     {reserva.status === "Cancelada" && <Badge variant="dark-red">Cancelada</Badge>}
                   </div>
                   <Card.Description className="leading-[120%]">

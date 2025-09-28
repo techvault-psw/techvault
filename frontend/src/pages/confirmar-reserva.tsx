@@ -19,7 +19,6 @@ import {
 
 import { DateTimePicker } from "@/components/ui/datetime-picker";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
-import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -57,6 +56,8 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
     const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),

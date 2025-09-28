@@ -5,7 +5,6 @@ import { Button } from "@/components/ui/button";
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { pacotes } from "@/consts/pacotes";
 import { reservas } from "@/consts/reservas";
 import { format, isToday, isTomorrow, isYesterday } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -13,6 +12,8 @@ import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dia
 import useCargo from "@/hooks/useCargo";
 import { useNavigate } from "react-router";
 import { useEffect } from "react";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 const hoje = new Date()
 
@@ -84,6 +85,8 @@ const reservasPorData: {
 export default function ReservasPage() {
   const {isGerente, isSuporte} = useCargo()
 
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -117,6 +120,8 @@ export default function ReservasPage() {
             {reservasComTipo.map(({ reservaIndex, hora, tipo }, j) => {
               const reserva = reservas[reservaIndex]
               const pacote = pacotes[reserva.pacoteIndex]
+
+              if (!pacote) return
 
               return (
                 <DetalhesReservaDialog reserva={reserva} tipo={tipo}>

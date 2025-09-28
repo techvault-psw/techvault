@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { FormItem } from "@/components/ui/form"
 import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { pacotes } from "@/consts/pacotes"
 import { reservas } from "@/consts/reservas"
 import { formatCurrency } from "@/lib/format-currency"
 import type { RootState } from "@/redux/root-reducer"
@@ -21,6 +20,8 @@ import { Link, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
   const { id } = useParams<{ id: string }>();
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
   const numberId = Number(id)
 
