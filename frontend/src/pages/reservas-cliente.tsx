@@ -7,12 +7,14 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { pacotes } from "@/consts/pacotes"
-import { reservas, type Reserva } from "@/consts/reservas"
+import { type Reserva } from "@/redux/reservas/slice"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { useNavigate } from "react-router"
+import { useSelector } from "react-redux"
+import type { RootState } from "@/redux/root-reducer"
 
 interface ReservaSectionProps {
   titulo: string
@@ -70,10 +72,12 @@ export default function ReservasClientePage() {
     }
   })
 
+  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+
   const sortedReservas = useMemo(() => {
     return [...reservas].sort((a, b) => {
-        const dateA = a.dataInicio.getTime();
-        const dateB = b.dataInicio.getTime();
+        const dateA = new Date(a.dataInicio).getTime();
+        const dateB = new Date(b.dataInicio).getTime();
         return dateB - dateA;
     })
   }, [reservas])
