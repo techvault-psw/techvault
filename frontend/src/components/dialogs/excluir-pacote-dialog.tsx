@@ -1,10 +1,12 @@
-import { pacotes, type Pacote } from "@/consts/pacotes";
+import { type Pacote } from "@/consts/pacotes";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 interface ExcluirPacoteDialogProps {
   pacote: Pacote
@@ -13,6 +15,9 @@ interface ExcluirPacoteDialogProps {
 }
 
 export const ExcluirPacoteDialog = ({ pacote, children, handleDeleteClick }: ExcluirPacoteDialogProps) => {
+  
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  
   return (
     <Dialog.Container>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
