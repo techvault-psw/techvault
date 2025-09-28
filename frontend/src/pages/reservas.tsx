@@ -121,6 +121,8 @@ export default function ReservasPage() {
               const reserva = reservas[reservaIndex]
               const pacote = pacotes[reserva.pacoteIndex]
 
+              if (!pacote) return
+
               return (
                 <DetalhesReservaDialog reserva={reserva} tipo={tipo}>
                   <Card.Container key={i}>

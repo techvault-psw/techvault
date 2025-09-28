@@ -21,7 +21,9 @@ import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
 import { ExcluirPacoteDialog } from './excluir-pacote-dialog';
 import useCargo from '@/hooks/useCargo';
-import type { Pacote } from '@/consts/pacotes';
+import { deletePackage, type Pacote } from '@/redux/pacotes/slice';
+import { useDispatch } from 'react-redux';
+import { updatePackage } from '@/redux/pacotes/slice';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -53,6 +55,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   const [previewUrl, setPreviewUrl] = useState<string | null>(pacote.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isGerente } = useCargo()
+  const dispatch = useDispatch()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -66,15 +69,16 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Para salvar, usaremos o updatedPacote:
-    // const updatedPacote: Pacote = {
-    //   ...pacote,
-    //   name: values.name,
-    //   description: values.description.split('\n\n').filter(desc => desc.trim()),
-    //   components: values.components.split('\n').filter(comp => comp.trim()),
-    //   value: currencyMask.parseCurrency(values.value),
-    // };
+    const updatedPacote: Pacote = {
+      ...pacote,
+      name: values.name,
+      description: values.description.split('\n\n').filter(desc => desc.trim()),
+      components: values.components.split('\n').filter(comp => comp.trim()),
+      value: currencyMask.parseCurrency(values.value),
+      image: previewUrl || pacote.image,
+    };
     
+    dispatch(updatePackage(updatedPacote))
     setIsEditting(false)
   }
 
@@ -91,7 +95,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       setPreviewUrl(url);
       onChange(file);
     } else {
-      setPreviewUrl(null);
+      setPreviewUrl(pacote.image);
       onChange(undefined);
     }
   };
@@ -103,11 +107,27 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   };
 
   const cleanupPreview = () => {
-    if (previewUrl && previewUrl.startsWith('blob:')) {
+    if (previewUrl && previewUrl !== pacote.image) {
       URL.revokeObjectURL(previewUrl);
     }
     setPreviewUrl(pacote.image);
   };
+
+  const resetForm = () => {
+    form.reset({
+      name: pacote.name,
+      description: pacote.description.join('\n\n'),
+      components: pacote.components.join('\n'),
+      value: currencyMask.formatCurrency((pacote.value * 100).toString()),
+      image: undefined
+    });
+    setPreviewUrl(pacote.image);
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(deletePackage(pacote.id))
+    setIsOpen(false)
+  }
 
   return (
     <Dialog.Container open={isOpen} onOpenChange={(open) => {
@@ -115,7 +135,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       if (!open) {
         cleanupPreview();
         setIsEditting(false);
-        form.reset();
+        resetForm();
       }
     }}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -262,7 +282,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                   </Button>
                 ) : (
                   <div className="w-full flex gap-3 items-center">
-                    <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={() => setIsOpen(false)}>
+                    <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={handleDeleteClick}>
                       <Button variant="destructive">
                         <Trash2 className="size-4"/>
                         Excluir

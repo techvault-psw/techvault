@@ -10,7 +10,6 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 
 export default function PacotesDisponiveisPage() {
-
   const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
   return (

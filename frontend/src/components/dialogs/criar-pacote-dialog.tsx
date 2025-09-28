@@ -19,6 +19,8 @@ import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
+import { useDispatch } from 'react-redux';
+import { addPackage } from '@/redux/pacotes/slice';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -59,9 +61,18 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
     },
   });
 
+  const dispatch = useDispatch()
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Para salvar, usaremos o numericValue:
-    // const numericValue = currencyMask.parseCurrency(values.value);
+    if (!previewUrl) return
+    
+    dispatch(addPackage({
+      ...values,
+      image: previewUrl,
+      value: currencyMask.parseCurrency(values.value),
+      description: values.description.split('\n\n').filter(desc => desc.trim()),
+      components: values.components.split('\n').filter(comp => comp.trim()),
+    }))
     
     setIsOpen(false)
     form.reset()
@@ -101,6 +112,7 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
     <Dialog.Container open={isOpen} onOpenChange={(open) => {
       setIsOpen(open);
       if (!open) {
+        form.reset();
         cleanupPreview();
       }
     }}>
@@ -132,7 +144,7 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
                         <div
                           onClick={handleUploadClick}
                           className={cn(
-                          `w-2/3 aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors`,
+                          `w-2/3 aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors cursor-pointer`,
                             fieldState.error
                               ? 'border-red' 
                               : 'border-gray/80'
