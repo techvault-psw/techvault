@@ -1,42 +1,30 @@
+import type { RootState } from "@/redux/root-reducer"
 import { useEffect, useState } from "react"
+import { useSelector } from "react-redux"
 
 interface useCargoReturn {
     cargo: string,
-    setCargo: (novoCargo: string) => void
     isGerente: () => boolean,
     isSuporte: () => boolean
 }
 
 export default function useCargo(): useCargoReturn {
-    const [cargo, setCargoState] = useState(() => {
+    const { clienteAtual } = useSelector((state: RootState) => state.clienteReducer)
+
+    const [cargo, _] = useState(() => {
         if(typeof window !== "undefined") {
-            return localStorage.getItem("cargo") || ""
+            return clienteAtual?.role || ""
         }
         return ""
     })
 
-    const setCargo = (novoCargo: string) => {
-        localStorage.setItem("cargo", novoCargo)
-    }
-
     const isGerente = () => {
-        return localStorage.getItem("cargo") == "gerente"
+        return clienteAtual?.role.toLocaleLowerCase() == "gerente"
     }
 
     const isSuporte = () => {
-        return localStorage.getItem("cargo") == "suporte"
+        return clienteAtual?.role.toLocaleLowerCase() == "suporte"
     }
 
-    useEffect(() => {
-        const handleStorage = (event: StorageEvent) => {
-        if (event.key == "cargo") {
-            setCargoState(event.newValue || "");
-        }
-        };
-
-        window.addEventListener("storage", handleStorage);
-        return () => window.removeEventListener("storage", handleStorage);
-    }, []);
-
-    return {cargo, setCargo, isGerente, isSuporte}
+    return {cargo, isGerente, isSuporte}
 }

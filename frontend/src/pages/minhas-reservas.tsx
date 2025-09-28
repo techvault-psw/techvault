@@ -12,9 +12,21 @@ import { ptBR } from "date-fns/locale";
 import { reservas } from "@/consts/reservas";
 import { pacotes } from "@/consts/pacotes";
 import { PacoteImage } from "@/components/pacote-image";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import { useEffect } from "react";
 
 export default function MinhasReservasPage() {
+    const navigate = useNavigate()
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
+
     return (
         <PageContainer.List>
             <PageTitle>Minhas Reservas</PageTitle>

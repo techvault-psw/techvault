@@ -5,6 +5,10 @@ import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteCliente } from "@/redux/clientes/slice";
+import type { RootState } from "@/redux/root-reducer";
+import { useNavigate } from "react-router";
 
 interface ExcluirClienteDialogProps {
   cliente: Cliente
@@ -13,7 +17,15 @@ interface ExcluirClienteDialogProps {
 }
 
 export const ExcluirClienteDialog = ({ cliente, children, setIsClientDialogOpen }: ExcluirClienteDialogProps) => {
+  const dispatch = useDispatch();
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const navigate = useNavigate()
+
   const handleDeleteClick = () => {
+    dispatch(deleteCliente(cliente.id));
+    if (clienteAtual?.id === cliente.id) {
+      navigate("/cadastro")
+    }
     setIsClientDialogOpen(false)
   }
 

@@ -13,17 +13,17 @@ import { TrashIcon } from "@/components/icons/trash-icon";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
-import type { RootState } from "@/redux/root-reducer";
 import { Pen } from "lucide-react";
-import { useSelector } from "react-redux";
 import { Link } from "react-router";
 import { clientes } from "@/consts/clientes";
-
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
 
     const { feedbacks } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     return (
         <PageContainer.List>
@@ -41,11 +41,13 @@ export default function FeedbacksPage() {
                         Ordenar por
                     </Button>
                 </div>
-                <DarFeedbackDialog>
-                    <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
-                        <Card.Title>Dar Feedback</Card.Title>
-                    </Card.Container>
-                </DarFeedbackDialog>
+                {clienteAtual && (
+                    <DarFeedbackDialog>
+                        <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
+                            <Card.Title>Dar Feedback</Card.Title>
+                        </Card.Container>
+                    </DarFeedbackDialog>
+                )}
             </div>
 
             <Separator />

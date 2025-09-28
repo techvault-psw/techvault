@@ -5,7 +5,10 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { pacotes } from "@/consts/pacotes"
 import { reservas } from "@/consts/reservas"
-import { Link, useParams } from "react-router"
+import type { RootState } from "@/redux/root-reducer"
+import { useEffect } from "react"
+import { useSelector } from "react-redux"
+import { Link, useNavigate, useParams } from "react-router"
 
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
@@ -18,6 +21,15 @@ export default function PagamentoReservaPage() {
 
     const reserva = reservas[numberId]
     const pacote = pacotes[reserva.pacoteIndex]
+
+    const navigate = useNavigate()
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    })
 
     return (
         <PageContainer.Card>

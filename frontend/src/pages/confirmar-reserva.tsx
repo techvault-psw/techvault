@@ -24,6 +24,9 @@ import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import { useEffect } from "react";
 
 const metodosPagamento = [
     "Cartão de Crédito",
@@ -81,6 +84,14 @@ export default function ConfirmarReservaPage() {
     if (isNaN(numberId) || numberId >= pacotes.length) {
         return
     }
+
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
 
     return (
         <PageContainer.Card>
