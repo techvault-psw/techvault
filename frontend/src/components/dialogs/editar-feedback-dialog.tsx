@@ -27,6 +27,8 @@ import { Textarea } from "../ui/textarea";
 import useCargo from "@/hooks/useCargo";
 import { updateFeedback, type Feedback } from "@/redux/feedbacks/slice";
 import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -63,6 +65,8 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
     setIsOpen(false)
     form.reset()
     
+    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+
     const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
 
     if (!pacote) return
