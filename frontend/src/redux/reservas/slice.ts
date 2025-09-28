@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { addReservaAction } from "./actions";
+import { addReservaAction, deleteReservaAction } from "./actions";
 import { clientes, type Cliente } from "@/consts/clientes"
+import type { Optional } from "@/types/optional";
 
 export type Reserva = {
+    id: number
     pacoteIndex: number
     valor: number
     status: "Confirmada" | "Cancelada" | "Concluída"
@@ -15,9 +17,12 @@ export type Reserva = {
     
 }
 
+export type NewReserva = Optional<Reserva,"id">
+
 const initialState: {reservas: Reserva[] } = {
     reservas: [
     {
+        id: 0,
         pacoteIndex: 0,
         valor: 500.00,
         status: "Confirmada",
@@ -29,6 +34,7 @@ const initialState: {reservas: Reserva[] } = {
         cliente: clientes[0],
     },
     {
+        id: 1,
         pacoteIndex: 1,
         valor: 300.00,
         status: "Cancelada",
@@ -40,6 +46,7 @@ const initialState: {reservas: Reserva[] } = {
         cliente: clientes[0],
     },
     {
+        id: 2,
         pacoteIndex: 2,
         valor: 700.00,
         status: "Concluída",
@@ -56,9 +63,9 @@ const reservasSlice = createSlice( {
     name:'reserva',
     initialState,
     reducers: {
-        addReserva: (state, action : {payload : Reserva}) => addReservaAction(state.reservas, action.payload),
+        addReserva: (state, action : {payload : NewReserva}) => addReservaAction(state.reservas, action.payload),
         updateReserva: (state, action) => {},
-        deleteReserva: (state, action) => {}
+        deleteReserva: (state, action : {payload: number}) => deleteReservaAction(state.reservas, action.payload)
     }
 })
 
