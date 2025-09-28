@@ -104,7 +104,7 @@ export default function ReservasPage() {
 
   const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
   
-  const reservasPorDataAtual = criarReservasPorData(reservas)
+  const reservasPorDataAtual = criarReservasPorData(reservas.filter(reserva => reserva.status === "Confirmada"))
 
   return (
   <PageContainer.List> 

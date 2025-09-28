@@ -45,6 +45,12 @@ export default function MinhasReservasPage() {
                 </Button>
             </div>
 
+            {!reservasFiltradas.length && (
+                <p className='text-base text-white text-center w-full'>
+                    Você ainda não realizou nenhuma reserva.
+                </p>
+            )}
+
         
             <div className="w-full flex flex-col items-center gap-5 scrollbar md:grid lg:grid-cols-2 2xl:grid-cols-3">
                 {reservasFiltradas.map((reserva, index) => {
