@@ -85,7 +85,7 @@ export default function ConfirmarReservaPage() {
     const onSubmit = (data: FormData) => {
         if(!clienteAtual) return;
         const novaReserva : NewReserva = {
-            pacoteIndex: numberId,
+            pacote: pacotes[numberId],
             valor: pacotes[numberId].value, 
             status: "Confirmada" as const,
             dataInicio: data.dataHoraInicial.toISOString(),

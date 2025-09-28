@@ -60,7 +60,7 @@ export default function MinhasReservasPage() {
                     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
                     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
-                    const pacote = pacotes[reserva.pacoteIndex]
+                    const pacote = reserva.pacote
 
                     if (!pacote) return
 

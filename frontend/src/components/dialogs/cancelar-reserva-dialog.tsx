@@ -29,11 +29,11 @@ export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, chi
 
         {cliente ? (
           <Dialog.Description>
-            Tem certeza que deseja cancelar a reserva do "{pacotes[reserva.pacoteIndex].name}" feita por “{cliente.name}”?
+            Tem certeza que deseja cancelar a reserva do "{reserva.pacote.name}" feita por “{cliente.name}”?
           </Dialog.Description>
         ) : (
           <Dialog.Description>
-            Tem certeza que deseja cancelar sua a reserva do "{pacotes[reserva.pacoteIndex].name}"?
+            Tem certeza que deseja cancelar sua a reserva do "{reserva.pacote.name}"?
           </Dialog.Description>
         )}
 

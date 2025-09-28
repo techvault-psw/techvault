@@ -1,5 +1,5 @@
-import type { Pacote } from "@/consts/pacotes";
 import { cn } from "@/lib/utils";
+import type { Pacote } from "@/redux/pacotes/slice";
 import type { ComponentProps } from "react";
 
 interface PacoteImageProps extends ComponentProps<'div'> {

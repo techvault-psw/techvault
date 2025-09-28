@@ -111,12 +111,12 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
           </div>
         </div>
 
-        <DadosPacoteDialog pacote={pacotes[reserva.pacoteIndex]}>
+        <DadosPacoteDialog pacote={reserva.pacote}>
           <FormItem>
             <Label>Pacote</Label>
             <Card.Container>
               <Card.Title>
-                {pacotes[reserva.pacoteIndex].name}
+                {reserva.pacote.name}
               </Card.Title>
             </Card.Container>
           </FormItem>

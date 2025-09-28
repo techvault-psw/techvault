@@ -135,7 +135,7 @@ export default function ReservasPage() {
                 return null;
               }
 
-              const pacote = pacotes[reserva.pacoteIndex]
+              const pacote = reserva.pacote
 
               if (!pacote) return
 

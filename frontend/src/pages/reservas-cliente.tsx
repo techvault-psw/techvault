@@ -36,7 +36,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
           const formattedStartDate = format(new Date(reserva.dataInicio), "dd/MM/yyyy HH:mm")
           const formattedEndDate = format(new Date(reserva.dataTermino), "dd/MM/yyyy HH:mm")
 
-          const pacote = pacotes[reserva.pacoteIndex]
+          const pacote = reserva.pacote
 
           if (!pacote) return
 

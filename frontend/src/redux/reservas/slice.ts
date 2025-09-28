@@ -2,10 +2,12 @@ import { createSlice } from "@reduxjs/toolkit";
 import { addReservaAction, deleteReservaAction, updateReservaAction } from "./actions";
 import { clientes, type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
+import type { Pacote } from "../pacotes/slice";
+import { pacotes } from "@/consts/pacotes";
 
 export type Reserva = {
     id: number
-    pacoteIndex: number
+    pacote: Pacote
     valor: number
     status: "Confirmada" | "Cancelada" | "Concluída"
     dataInicio: string
@@ -23,7 +25,7 @@ const initialState: {reservas: Reserva[] } = {
     reservas: [
     {
         id: 0,
-        pacoteIndex: 0,
+        pacote: pacotes[0],
         valor: 500.00,
         status: "Confirmada",
         dataInicio: new Date("2025-10-01T10:00:00").toISOString(),
@@ -35,7 +37,7 @@ const initialState: {reservas: Reserva[] } = {
     },
     {
         id: 1,
-        pacoteIndex: 1,
+        pacote: pacotes[1],
         valor: 300.00,
         status: "Cancelada",
         dataInicio: new Date("2025-10-10T12:00:00").toISOString(),
@@ -47,7 +49,7 @@ const initialState: {reservas: Reserva[] } = {
     },
     {
         id: 2,
-        pacoteIndex: 2,
+        pacote: pacotes[2],
         valor: 700.00,
         status: "Concluída",
         dataInicio: new Date("2025-09-20T08:00:00").toISOString(),

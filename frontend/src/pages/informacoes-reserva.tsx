@@ -33,7 +33,7 @@ export default function InformacoesReservasPage() {
   }
   
   const reserva = reservas[numberId]
-  const pacote = pacotes[reserva.pacoteIndex]
+  const pacote = reserva.pacote
   const formattedValue = formatCurrency(reserva.valor)
   const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
