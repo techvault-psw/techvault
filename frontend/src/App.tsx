@@ -19,6 +19,10 @@ import ReservaConfirmadaPage from "./pages/reserva-confirmada";
 import PerfilPage from "./pages/perfil";
 import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
+import store from "./redux/store";
+import { fetchClientes } from "./redux/clientes/fetch";
+
+store.dispatch(fetchClientes());
 
 export default function App() {
   return (
