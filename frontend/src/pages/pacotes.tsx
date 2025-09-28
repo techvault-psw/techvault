@@ -18,11 +18,15 @@ import { useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
 import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
 import { DadosPacoteDialog } from "@/components/dialogs/dados-pacote-dialog";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 export default function Pacotes() {
   const { isGerente } = useCargo()
 
   const navigate = useNavigate()
+
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
   useEffect(() => {
     if (!isGerente()) {
