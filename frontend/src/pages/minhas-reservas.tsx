@@ -9,7 +9,6 @@ import { formatCurrency } from "@/lib/format-currency";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-import { reservas } from "@/consts/reservas";
 import { PacoteImage } from "@/components/pacote-image";
 import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
@@ -19,6 +18,7 @@ import { useEffect } from "react";
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
 
     const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
 
@@ -27,6 +27,8 @@ export default function MinhasReservasPage() {
             navigate("/login")
         }
     }, [])
+
+    const reservasFiltradas = reservas.filter(reserva => reserva.cliente.id === clienteAtual?.id)
 
     return (
         <PageContainer.List>
@@ -44,20 +46,26 @@ export default function MinhasReservasPage() {
                 </Button>
             </div>
 
+            {!reservasFiltradas.length && (
+                <p className='text-base text-white text-center w-full'>
+                    Você ainda não realizou nenhuma reserva.
+                </p>
+            )}
+
         
             <div className="w-full flex flex-col items-center gap-5 scrollbar md:grid lg:grid-cols-2 2xl:grid-cols-3">
-                {Array(200).fill(reservas).flat().map((reserva, index) => {
+                {reservasFiltradas.map((reserva, index) => {
                     const formattedValue = formatCurrency(reserva.valor);
 
                     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
                     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
-                    const pacote = pacotes[reserva.pacoteIndex]
+                    const pacote = reserva.pacote
 
                     if (!pacote) return
 
                     return (
-                        <Link to={`/informacoes-reserva/${index % reservas.length}`} key={index} className="w-full max-w-120 lg:max-w-140 border border-gray/50 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl shadow-lg flex flex-col gap-4 p-4 cursor-pointer transition-colors duration-200">
+                        <Link to={`/informacoes-reserva/${reserva.id}`} key={index} className="w-full max-w-120 lg:max-w-140 border border-gray/50 bg-white/5 hover:bg-white/10 backdrop-blur-md rounded-2xl shadow-lg flex flex-col gap-4 p-4 cursor-pointer transition-colors duration-200">
                             <div className="flex gap-2">
                                 <PacoteImage
                                     pacote={pacote}

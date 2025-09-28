@@ -5,8 +5,7 @@ import { Button } from "@/components/ui/button";
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { reservas } from "@/consts/reservas";
-import { format, isToday, isTomorrow, isYesterday } from "date-fns";
+import { format, isToday, isTomorrow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
 import useCargo from "@/hooks/useCargo";
@@ -14,147 +13,109 @@ import { useNavigate } from "react-router";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import type { Reserva } from "@/redux/reservas/slice";
+import { stringifyAddress } from "@/consts/enderecos";
+import { agruparReservasPorData } from "@/lib/agrupar-reservas";
 
-const hoje = new Date()
-
-function criarData(diaOffset: number, hora: number, minuto: number) {
-  const d = new Date(hoje)
-  d.setDate(hoje.getDate() + diaOffset)
-  d.setHours(hora, minuto, 0, 0)
-  return d
+export interface ReservaComTipo {
+  reserva: Reserva;
+  tipo: 'Entrega' | 'Coleta';
+  hora: Date;
 }
-
-function formatarDia(date: Date): string {
-  if (isToday(date)) {
-    return "Hoje";
-  }
-  if (isTomorrow(date)) {
-    return "Amanhã";
-  }
-  if (isYesterday(date)) {
-    return "Ontem";
-  }
-  return format(date, "d 'de' MMMM", { locale: ptBR });
-}
-
-function formatarHora(date: Date): string {
-  return format(date, "HH:mm");
-}
-
-const reservasPorData: {
-  date: Date
-  reservas: {
-    reservaIndex: number
-    tipo: 'Entrega' | 'Coleta'
-    hora: Date
-  }[]
-}[] = [
-  {
-    date: criarData(0, 0, 0), // hoje (00:00 só como marcador do dia)
-    reservas: [
-      { reservaIndex: 0, tipo: 'Entrega', hora: criarData(0, 9, 30) },
-      { reservaIndex: 1, tipo: 'Coleta', hora: criarData(0, 14, 0) },
-      { reservaIndex: 2, tipo: 'Coleta', hora: criarData(0, 16, 15) },
-      { reservaIndex: 1, tipo: 'Coleta', hora: criarData(0, 19, 0) },
-    ],
-  },
-  {
-    date: criarData(1, 0, 0), // amanhã
-    reservas: [
-      { reservaIndex: 0, tipo: 'Entrega', hora: criarData(1, 10, 0) },
-      { reservaIndex: 1, tipo: 'Entrega', hora: criarData(1, 13, 30) },
-      { reservaIndex: 1, tipo: 'Coleta', hora: criarData(1, 14, 40) },
-      { reservaIndex: 2, tipo: 'Entrega', hora: criarData(1, 18, 30) },
-      { reservaIndex: 0, tipo: 'Coleta', hora: criarData(1, 21, 30) },
-    ],
-  },
-  {
-    date: criarData(2, 0, 0), // depois de amanhã
-    reservas: [
-      { reservaIndex: 0, tipo: 'Coleta', hora: criarData(2, 8, 45) },
-      { reservaIndex: 1, tipo: 'Entrega', hora: criarData(2, 11, 15) },
-      { reservaIndex: 2, tipo: 'Coleta', hora: criarData(2, 17, 0) },
-      { reservaIndex: 0, tipo: 'Entrega', hora: criarData(2, 18, 15) },
-      { reservaIndex: 2, tipo: 'Coleta', hora: criarData(2, 20, 30) },
-    ],
-  },
-]
-
-
 
 export default function ReservasPage() {
-  const {isGerente, isSuporte} = useCargo()
-
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
-
-  const navigate = useNavigate()
+  const { isGerente, isSuporte } = useCargo();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    if(!isGerente() && !isSuporte()) {
-      navigate("/login")
+    if (!isGerente() && !isSuporte()) {
+      navigate("/login");
     }
-  }, [])
+  }, []);
+
+  const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer);
+  
+  const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
+  const reservasPorData = agruparReservasPorData(reservasConfirmadas)
 
   return (
-  <PageContainer.List> 
-    <PageTitle>Reservas</PageTitle>
+    <PageContainer.List> 
+      <PageTitle>Reservas</PageTitle>
 
-    <div className="w-40 md:w-52 py-1 gap-4 items-center justify-center">
-      <Button className="w-40 md:w-52" variant="secondary" size="sm">
-        <FilterIcon className="size-4.5" />
-        Filtros
-      </Button>
-    </div>
+      <div className="w-40 md:w-52 py-1 gap-4 items-center justify-center">
+        <Button className="w-40 md:w-52" variant="secondary" size="sm">
+          <FilterIcon className="size-4.5" />
+          Filtros
+        </Button>
+      </div>
 
-    <section className="w-full flex flex-col gap-3 scrollbar">
-      {reservasPorData.map(({ date, reservas: reservasComTipo }, i) => (
-        <div className="w-full flex flex-col gap-3" key={i}>
-          <div className="flex items-center gap-4 w-full">
-            <h2 className="text-xl font-semibold text-white whitespace-nowrap">
-              {formatarDia(date)}
-            </h2>
-            <Separator className="w-auto flex-1" />
-          </div>
+      {reservasPorData.length === 0 ? (
+        <p className="text-base text-white w-full text-center">
+          Não há reservas confirmadas no momento.
+        </p>
+      ) : (
+        <section className="w-full flex flex-col gap-6 scrollbar">
+          {reservasPorData.map(({ date, reservas: reservasComTipo }, i) => {
+            const diaFormatado = 
+              isToday(date)
+                ? "Hoje"
+                : isTomorrow(date)
+                  ? "Amanhã"
+                  : format(date, "d 'de' MMMM", { locale: ptBR })
 
-          <section className="flex flex-col gap-4 w-full md:grid md:grid-cols-2 xl:grid-cols-3">
-            {reservasComTipo.map(({ reservaIndex, hora, tipo }, j) => {
-              const reserva = reservas[reservaIndex]
-              const pacote = pacotes[reserva.pacoteIndex]
+            return (
+              <div className="w-full flex flex-col gap-4" key={i}>
+                <div className="flex items-center gap-4 w-full">
+                  <h2 className="text-xl font-semibold text-white whitespace-nowrap">
+                    {diaFormatado}
+                  </h2>
+                  <Separator className="w-auto flex-1" />
+                </div>
 
-              if (!pacote) return
+                <section className="flex flex-col gap-4 w-full md:grid md:grid-cols-2 xl:grid-cols-3">
+                  {reservasComTipo.map(({ reserva, hora, tipo }, j) => {
+                    const pacote = reserva.pacote;
 
-              return (
-                <DetalhesReservaDialog reserva={reserva} tipo={tipo}>
-                  <Card.Container key={i}>
-                    <Card.TextContainer className="flex-1 truncate">
-                      <div className="flex items-center justify-between gap-2 flex-1">
-                        <Card.Title className="truncate" title={pacote.name}>
-                          {pacote.name}
-                        </Card.Title>
+                    if (!pacote) return null;
 
-                        <Badge variant={tipo === "Entrega" ? "blue" : "purple"}>
-                          {tipo}
-                        </Badge>
-                      </div>
+                    return (
+                      <DetalhesReservaDialog 
+                        key={`${reserva.id}-${tipo}-${hora.getTime()}`} 
+                        reserva={reserva} 
+                        tipo={tipo}
+                      >
+                        <Card.Container>
+                          <Card.TextContainer className="flex-1 truncate">
+                            <div className="flex items-center justify-between gap-2 flex-1">
+                              <Card.Title className="truncate" title={pacote.name}>
+                                {pacote.name}
+                              </Card.Title>
 
-                      <Card.Description className="leading-[120%] truncate" title={reserva.endereco}>
-                        <span className="font-medium">Endereço: </span>
-                        {reserva.endereco}
-                      </Card.Description>
+                              <Badge variant={tipo === "Entrega" ? "blue" : "purple"}>
+                                {tipo}
+                              </Badge>
+                            </div>
 
-                      <Card.Description className="leading-[120%]">
-                        <span className="font-medium">Horário: </span>
-                        {formatarHora(hora)}
-                      </Card.Description>
-                    </Card.TextContainer>
-                  </Card.Container>
-                </DetalhesReservaDialog>
-              )
-            })}
-          </section>
-        </div>
-      ))}
-    </section>
-  </PageContainer.List>
+                            <Card.Description className="leading-[120%] truncate" title={stringifyAddress(reserva.endereco)}>
+                              <span className="font-medium">Endereço: </span>
+                              {stringifyAddress(reserva.endereco)}
+                            </Card.Description>
+
+                            <Card.Description className="leading-[120%]">
+                              <span className="font-medium">Horário: </span>
+                              {format(hora, "HH:mm")}
+                            </Card.Description>
+                          </Card.TextContainer>
+                        </Card.Container>
+                      </DetalhesReservaDialog>
+                    );
+                  })}
+                </section>
+              </div>
+            )
+          })}
+        </section>
+      )}
+    </PageContainer.List>
   );
 }

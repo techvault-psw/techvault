@@ -1,11 +1,4 @@
-export type Pacote = {
-  id: number
-  name: string
-  image: string
-  description: string[]
-  components: string[]
-  value: number
-}
+import type { Pacote } from "@/redux/pacotes/slice";
 
 export const pacotes: Pacote[] = [
   {
@@ -23,6 +16,7 @@ export const pacotes: Pacote[] = [
       'Placa-mãe compatível',
     ],
     value: 200,
+    quantity: 3,
   },
   {
     id: 1,
@@ -40,6 +34,7 @@ export const pacotes: Pacote[] = [
       'Headset com microfone profissional',
     ],
     value: 100,
+    quantity: 5,
   },
   {
     id: 2,
@@ -56,5 +51,6 @@ export const pacotes: Pacote[] = [
       'Mesa compartilhada ampla',
     ],
     value: 400,
+    quantity: 2,
   },
 ]

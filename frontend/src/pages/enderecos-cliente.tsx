@@ -10,7 +10,6 @@ import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate, useParams } from "react-router";
 import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
-import { clientes } from "@/consts/clientes";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
@@ -18,6 +17,7 @@ import type { RootState } from "@/redux/root-reducer";
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
   const numberId = Number(id)
+  const { clientes } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   if (isNaN(numberId) || numberId >= clientes.length) {
     return

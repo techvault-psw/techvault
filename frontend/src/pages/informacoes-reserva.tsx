@@ -8,34 +8,42 @@ import { Button } from "@/components/ui/button"
 import { FormItem } from "@/components/ui/form"
 import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
-import { reservas } from "@/consts/reservas"
 import { formatCurrency } from "@/lib/format-currency"
+import { cn } from "@/lib/utils"
+import { deleteReserva } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { X } from "lucide-react"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
+  
+  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
   const { id } = useParams<{ id: string }>();
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
-
   const numberId = Number(id)
-
-  if (isNaN(numberId) || numberId >= pacotes.length) {
+  const reserva = reservas.find((reserva) => reserva.id === numberId)
+  
+  if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
     return
   }
-
-  const reserva = reservas[numberId]
-  const pacote = pacotes[reserva.pacoteIndex]
+  
+  const pacote = reserva.pacote
   const formattedValue = formatCurrency(reserva.valor)
   const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
-
+  
   const navigate = useNavigate()
+  
+  const dispatch = useDispatch()
+
+  const cancelarReserva = () => {
+    navigate("/minhas-reservas")
+    dispatch(deleteReserva(numberId))
+  }
 
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
@@ -118,7 +126,7 @@ export default function InformacoesReservasPage() {
                 disabled
                 id="endereco"
                 type="text"
-                value="Faculdade"
+                value={reserva.endereco.name}
               />
             </FormItem>
           </div>
@@ -146,15 +154,18 @@ export default function InformacoesReservasPage() {
       </div>
 
       <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
-        <CancelarReservaDialog reserva={reserva} handleCancelClick={() => navigate("/minhas-reservas")}>
-          <Button variant="destructive" className="md:order-2 xl:col-start-3">
-            <X className="size-5 text-red" />
-            <span className="text-red text-lg font-medium leading-none">Cancelar</span>
-          </Button>
-        </CancelarReservaDialog>
+        {reserva.status === "Confirmada" && (
 
-        <Button variant="outline" className="md:order-1 xl:col-start-2" asChild>
-          <Link to="/minhas-reservas">
+          <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
+            <Button variant="destructive" className="md:order-2 xl:col-start-3">
+              <X className="size-5 text-red" />
+              <span className="text-red text-lg font-medium leading-none">Cancelar</span>
+            </Button>
+          </CancelarReservaDialog>
+        ) }
+
+          <Button variant="outline" className={cn("md:order-1 xl:col-start-2", reserva.status !== "Confirmada" ? "col-span-2" : "")} asChild>
+            <Link to="/minhas-reservas">
             <ArrowLeftIcon className="size-5" />
             <span className="text-white text-lg font-medium leading-none">Voltar</span>
           </Link>

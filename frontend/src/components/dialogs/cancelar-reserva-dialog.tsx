@@ -4,7 +4,7 @@ import { ArrowLeftIcon } from "../icons/arrow-left-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
-import type { Reserva } from "@/consts/reservas";
+import type { Reserva } from "@/redux/reservas/slice";
 import type { Cliente } from "@/consts/clientes";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
@@ -29,11 +29,11 @@ export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, chi
 
         {cliente ? (
           <Dialog.Description>
-            Tem certeza que deseja cancelar a reserva do "{pacotes[reserva.pacoteIndex].name}" feita por “{cliente.name}”?
+            Tem certeza que deseja cancelar a reserva do "{reserva.pacote.name}" feita por “{cliente.name}”?
           </Dialog.Description>
         ) : (
           <Dialog.Description>
-            Tem certeza que deseja cancelar sua a reserva do "{pacotes[reserva.pacoteIndex].name}"?
+            Tem certeza que deseja cancelar sua a reserva do "{reserva.pacote.name}"?
           </Dialog.Description>
         )}
 

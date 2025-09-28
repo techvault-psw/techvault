@@ -1,4 +1,8 @@
 import { useNavigate, useParams } from "react-router";
+import { useDispatch } from 'react-redux';
+import { addReserva, type NewReserva, type Reserva } from '@/redux/reservas/slice'; 
+
+
 
 import * as z from "zod";
 
@@ -56,8 +60,8 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
     const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+    const { reservas } = useSelector((state: RootState) => state.reservasReducer)
 
     const form = useForm<FormData>({
         resolver: zodResolver(formSchema),
@@ -69,9 +73,33 @@ export default function ConfirmarReservaPage() {
         },
         mode: "onChange"
     });
+    
+    const dispatch = useDispatch();
 
-    const onSubmit = () => {
-        navigate(`/pagamento/${numberId}`)
+    const gerarCodigo = () => {
+        return Array.from({ length: 7 }, () => 
+            'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'[Math.floor(Math.random() * 36)]
+        ).join('');
+    };
+    
+    const onSubmit = (data: FormData) => {
+        const endereco = enderecos.find(endereco => endereco.name === data.endereco)
+
+        if (!clienteAtual || !endereco) return;
+
+        const novaReserva : NewReserva = {
+            pacote: pacotes[numberId],
+            valor: pacotes[numberId].value, 
+            status: "Confirmada" as const,
+            dataInicio: data.dataHoraInicial.toISOString(),
+            dataTermino: data.dataHoraFinal.toISOString(),
+            endereco,
+            codigoEntrega: gerarCodigo(), 
+            codigoColeta: gerarCodigo(),
+            cliente: clienteAtual,
+        };
+        navigate(`/pagamento/${reservas.length}`);
+        dispatch(addReserva(novaReserva));
     };
 
     const navigate = useNavigate();

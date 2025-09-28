@@ -1,8 +1,9 @@
 import { clientes, type Cliente } from "@/consts/clientes"
-import { pacotes, type Pacote } from "@/consts/pacotes"
+import { pacotes } from "@/consts/pacotes"
 import { createSlice } from "@reduxjs/toolkit"
 import { addFeedbackAction, deleteFeedbackAction, updateFeedbackAction } from "./actions"
 import type { Optional } from "@/types/optional"
+import type { Pacote } from "../pacotes/slice"
 
 export type Feedback = {
   id: number

@@ -161,7 +161,7 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
                 </Button>
               )}
 
-              <Link to="/reservas-cliente">
+              <Link to={`/reservas-cliente/${cliente.id % clientes.length}`}>
                 <Card.Container>
                   <Card.Title>Ver Reservas</Card.Title>
                 </Card.Container>
