@@ -1,4 +1,4 @@
-import type { Reserva } from "./slice";
+import type { NewReserva, Reserva } from "./slice";
 
 export const addReservaAction = (reservas: Reserva[], newReserva: NewReserva) => {
     reservas.push({
@@ -8,4 +8,10 @@ export const addReservaAction = (reservas: Reserva[], newReserva: NewReserva) =>
 
     //debug:
     console.log(newReserva)
+}
+
+
+export const deleteReservaAction =  (reservas: Reserva[], reservaID: number) => {
+    const reservaIndex = reservas.findIndex((reserva) => reserva.id === reservaID)
+    reservas.splice(reservaIndex, 1)
 }

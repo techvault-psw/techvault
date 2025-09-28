@@ -1,5 +1,5 @@
 import { Dialog } from "../ui/dialog";
-import type { Reserva } from "@/consts/reservas";
+import type { Reserva } from "@/redux/reservas/slice";
 import { pacotes } from "@/consts/pacotes"
 
 interface OperacaoConfirmadaDialogProps {
