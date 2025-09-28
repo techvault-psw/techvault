@@ -1,6 +1,8 @@
 import { Dialog } from "../ui/dialog";
 import type { Reserva } from "@/consts/reservas";
 import { pacotes } from "@/consts/pacotes"
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 interface OperacaoConfirmadaDialogProps {
     open: boolean
@@ -10,7 +12,9 @@ interface OperacaoConfirmadaDialogProps {
 }
 
 export const OperacaoConfirmadaDialog = ({ tipo, reserva, open, setOpen }: OperacaoConfirmadaDialogProps) => {
-    const pacoteName = pacotes[reserva.pacoteIndex].name
+  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  
+  const pacoteName = pacotes[reserva.pacoteIndex].name
 
     return tipo && (
         <Dialog.Container open={open} onOpenChange={setOpen}>
