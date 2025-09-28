@@ -27,6 +27,8 @@ export default function MinhasReservasPage() {
         }
     }, [])
 
+    const reservasFiltradas = reservas.filter(reserva => reserva.cliente.id === clienteAtual?.id)
+
     return (
         <PageContainer.List>
             <PageTitle>Minhas Reservas</PageTitle>
@@ -45,7 +47,7 @@ export default function MinhasReservasPage() {
 
         
             <div className="w-full flex flex-col items-center gap-5 scrollbar md:grid lg:grid-cols-2 2xl:grid-cols-3">
-                {reservas.map((reserva, index) => {
+                {reservasFiltradas.map((reserva, index) => {
                     const formattedValue = formatCurrency(reserva.valor);
 
                     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
