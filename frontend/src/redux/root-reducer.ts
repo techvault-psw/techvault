@@ -1,6 +1,16 @@
 import { combineReducers } from "redux";
 import { reservasReducer } from "./reservas/slice";
+import { enderecosReducer } from "./endereco/slice";
+import { clienteReducer } from "./clientes/slice";
+import { feedbacksReducer } from "./feedbacks/slice";
 
-const rootReducer = combineReducers({reservasReducer})
+const rootReducer = combineReducers({
+  clienteReducer,
+  reservasReducer,
+  enderecosReducer,
+  feedbacksReducer,
+})
+
+export type RootState = ReturnType<typeof rootReducer>;
 
 export default rootReducer

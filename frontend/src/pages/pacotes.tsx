@@ -13,7 +13,7 @@ import { PlusIcon } from "@/components/icons/plus-icon";
 import { Input } from "@/components/ui/input";
 import { SearchIcon } from "@/components/icons/search-icon";
 import { Separator } from "@/components/ui/separator";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
 import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
@@ -24,9 +24,11 @@ export default function Pacotes() {
 
   const navigate = useNavigate()
 
-  if(!isGerente()) {
-    navigate("/")
-  }
+  useEffect(() => {
+    if (!isGerente()) {
+      navigate("/login")
+    }
+  }, [])
 
   const [searchTerm, setSearchTerm] = useState('')
 

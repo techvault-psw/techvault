@@ -20,6 +20,12 @@ import { Button } from '../components/ui/button';
 import { Separator } from "@/components/ui/separator";
 import { useHookFormMask } from 'use-mask-input';
 
+import { useDispatch, useSelector } from "react-redux";
+import { addCliente, loginCliente } from "@/redux/clientes/slice";
+import type { Cliente } from "@/consts/clientes";
+import type { RootState } from "@/redux/root-reducer";
+
+
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
   phone: z.string().min(1, "O telefone é obrigatório").regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX"),
@@ -29,7 +35,7 @@ const formSchema = z.object({
 
 export default function CadastroPage() {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -40,9 +46,27 @@ export default function CadastroPage() {
     },
   })
 
+  const {clientes,clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    navigate("/")
+    const novoCliente: Cliente = {
+      id: Date.now(), // gera um ID 
+      name: values.name,
+      email: values.email,
+      phone: values.phone,
+      password: values.password,
+      registrationDate: new Date().toLocaleDateString("pt-BR"), // data atual
+      role: "Cliente"
+    };
+
+    if(clientes.find(cliente => cliente.email === values.email)){
+      form2.setError("email", {type:"custom", message: "Este e-mail já está sendo usado"});
+      return;
+    }
+
+    dispatch(addCliente(novoCliente));
+    dispatch(loginCliente(values));
+    navigate("/");
+
   }
 
   const registerWithMask = useHookFormMask(form2.register)

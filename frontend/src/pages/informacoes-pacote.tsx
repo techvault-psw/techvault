@@ -6,7 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { pacotes } from "@/consts/pacotes";
 import { formatCurrency } from "@/lib/format-currency";
-import { Link, useParams } from "react-router";
+import type { RootState } from "@/redux/root-reducer";
+import { useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from "react-router";
 
 export default function InformacoesPacotePage() {
   const { id } = useParams<{ id: string }>();
@@ -19,6 +21,20 @@ export default function InformacoesPacotePage() {
 
   const pacote = pacotes[numberId]
   const formattedValue = formatCurrency(pacote.value)
+
+  const navigate = useNavigate()
+
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+  const handleSolicitarReserva = () => {
+    const url = `/confirmar-reserva/${numberId % pacotes.length}`;
+
+    if (clienteAtual) {
+      navigate(url)
+    } else {
+      navigate(`/login?redirectTo=${encodeURIComponent(url)}`)
+    }
+  }
 
   return (
     <PageContainer.Card>
@@ -61,10 +77,8 @@ export default function InformacoesPacotePage() {
           Valor (hora): {formattedValue}
         </HighlightBox>
 
-        <Button size="lg" className="md:w-2/3" asChild>
-          <Link to={`/confirmar-reserva/${numberId % pacotes.length}`}>
-            Solicitar Reserva
-          </Link>
+        <Button onClick={handleSolicitarReserva} size="lg" className="md:w-2/3">
+          Solicitar Reserva
         </Button>
       </div>
     </PageContainer.Card>

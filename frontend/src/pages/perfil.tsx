@@ -14,12 +14,12 @@ import {
     FormMessage 
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
 
-import { enderecos, stringifyAddress } from '@/consts/enderecos';
+import { stringifyAddress } from '@/consts/enderecos';
 import { Card } from '@/components/ui/card';
 import { LogOutIcon } from '@/components/icons/log-out-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
@@ -29,12 +29,9 @@ import { CriarEnderecoDialog } from '@/components/dialogs/criar-endereco-dialog'
 import { ExcluirContaDialog } from '@/components/dialogs/excluir-conta-dialog';
 import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
-
-let user = {
-    name: "José da Silva",
-    phone: "(00) 12345-6789",
-    email: "jose.silva@email.com"
-}
+import { useDispatch, useSelector } from 'react-redux';
+import type { RootState } from '@/redux/root-reducer';
+import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
 
 const formSchema = z
     .object({
@@ -48,27 +45,54 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
 
+    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            name: user.name || "",
-            email: user.email || "",
-            phone: user.phone || ""
+            name: clienteAtual?.name || "",
+            email: clienteAtual?.email || "",
+            phone: clienteAtual?.phone || ""
         }
     })
 
-    const onSubmit = (x: z.infer<typeof formSchema>) => {
-        user = x;
+    const dispatch = useDispatch();
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        if (!clienteAtual) return
+
+        dispatch(updateCliente({
+            ...clienteAtual,
+            ...values,
+        }))
         toggleEditProfileInfo()
     }
 
     const toggleEditProfileInfo = () => {
         setFormDisabled(!formDisabled)
     }
+    const handleDeleteClick = () => {
+        navigate("/cadastro");
+        if(clienteAtual){
+            dispatch(deleteCliente(clienteAtual.id));
+        }
+    }
+    const handleLogoutClick = () => {
+        navigate("/login");
+        dispatch(logoutCliente());
+    }
 
     const registerWithMask = useHookFormMask(form.register)
 
     const navigate = useNavigate()
+    
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
+
+    const { enderecos } = useSelector((state: RootState) => state.enderecosReducer);
+
+    const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
     return (
         <PageContainer.Card>
@@ -154,13 +178,19 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
+                    {!enderecosCliente.length && (
+                        <p className='text-base text-gray text-center'>
+                            Você ainda não possui nenhum endereço cadastrado.
+                        </p>
+                    )}
+
                     <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
-                        {enderecos.map((endereco) => {
+                        {enderecosCliente.map((endereco) => {
                             return (
                                 <DadosEnderecoDialog endereco={endereco}>
                                     <Card.Container>
-                                        <Card.TextContainer>
-                                            <Card.Title>{endereco.name}</Card.Title>
+                                        <Card.TextContainer className='overflow-x-hidden'>
+                                            <Card.Title className='truncate'>{endereco.name}</Card.Title>
                                             <Card.Description>{stringifyAddress(endereco)}</Card.Description>
                                         </Card.TextContainer>
                                     </Card.Container>
@@ -177,13 +207,13 @@ export default function PerfilPage() {
             </div>
 
             <div className="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
-                <ExcluirContaDialog handleDeleteClick={() => navigate("/cadastro")}>
+                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
                     <Button variant="destructive">
                         <TrashIcon/>
                         Excluir
                     </Button>
                 </ExcluirContaDialog>
-                <SairDialog handleCloseClick={() => navigate("/login")}>
+                <SairDialog handleCloseClick={handleLogoutClick}>
                     <Button variant="destructive">
                         <LogOutIcon/>
                         Sair

@@ -24,9 +24,13 @@ import {
   FormMessage
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
+import { useDispatch, useSelector } from "react-redux";
+import { addFeedback } from "@/redux/feedbacks/slice";
+import { clientes } from "@/consts/clientes";
+import type { RootState } from "@/redux/root-reducer";
 
 const formSchema = z.object({
-  pacoteName: z.string().min(1, "Selecione um pacote"),
+  pacoteIndex: z.string().min(1, "Selecione um pacote"),
   rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
   comment: z.string()
     .min(1, "O comentário é obrigatório")
@@ -46,15 +50,28 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pacoteName: "",
+      pacoteIndex: "",
       rating: 0,
       comment: ""
     },
   });
 
+  const dispatch = useDispatch()
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
+
+    const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
+
+    if (!pacote || !clienteAtual) return
+
+    dispatch(addFeedback({
+      ...values,
+      customer: clienteAtual,
+      package: pacote,
+    }))
   }
 
   return (
@@ -70,7 +87,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
             <FormField
               control={form.control}
-              name="pacoteName"
+              name="pacoteIndex"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Pacote</FormLabel>

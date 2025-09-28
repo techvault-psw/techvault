@@ -9,14 +9,24 @@ import { formatCurrency } from "@/lib/format-currency";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
-// import { reservas } from "@/consts/reservas";
 import { pacotes } from "@/consts/pacotes";
 import { PacoteImage } from "@/components/pacote-image";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import { useEffect } from "react";
 
 export default function MinhasReservasPage() {
-    const {reservas} = useSelector((rootReducer : any) => rootReducer.reservasReducer)
+    const navigate = useNavigate()
+    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+
+    useEffect(() => {
+        if (!clienteAtual) {
+            navigate("/login")
+        }
+    }, [])
+
     return (
         <PageContainer.List>
             <PageTitle>Minhas Reservas</PageTitle>
@@ -35,7 +45,7 @@ export default function MinhasReservasPage() {
 
         
             <div className="w-full flex flex-col items-center gap-5 scrollbar md:grid lg:grid-cols-2 2xl:grid-cols-3">
-                {Array(200).fill(reservas).flat().map((reserva, index) => {
+                {reservas.map((reserva, index) => {
                     const formattedValue = formatCurrency(reserva.valor);
 
                     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
