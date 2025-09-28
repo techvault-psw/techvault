@@ -20,8 +20,9 @@ import useCargo from "@/hooks/useCargo";
 import { ConfirmarOperacaoDialog } from "./confirmar-operacao-dialog";
 import { DadosClienteDialog } from "./dados-cliente-dialog";
 import { DadosEnderecoDialog } from "./dados-endereco-dialog";
-import { enderecos } from "@/consts/enderecos";
 import { DadosPacoteDialog } from "./dados-pacote-dialog";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -59,6 +60,8 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
   const onSubmit = () => {
     setIsEditting(false)
   }
+
+  const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
 
   return (
     <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>

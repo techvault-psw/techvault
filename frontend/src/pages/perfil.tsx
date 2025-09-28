@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
 
-import { enderecos, stringifyAddress } from '@/consts/enderecos';
+import { stringifyAddress } from '@/consts/enderecos';
 import { Card } from '@/components/ui/card';
 import { LogOutIcon } from '@/components/icons/log-out-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
@@ -89,6 +89,10 @@ export default function PerfilPage() {
             navigate("/login")
         }
     }, [])
+
+    const { enderecos } = useSelector((state: RootState) => state.enderecosReducer);
+
+    const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
     return (
         <PageContainer.Card>
@@ -174,13 +178,19 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
+                    {!enderecosCliente.length && (
+                        <p className='text-base text-gray text-center'>
+                            Você ainda não possui nenhum endereço cadastrado.
+                        </p>
+                    )}
+
                     <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
-                        {enderecos.map((endereco) => {
+                        {enderecosCliente.map((endereco) => {
                             return (
                                 <DadosEnderecoDialog endereco={endereco}>
                                     <Card.Container>
-                                        <Card.TextContainer>
-                                            <Card.Title>{endereco.name}</Card.Title>
+                                        <Card.TextContainer className='overflow-x-hidden'>
+                                            <Card.Title className='truncate'>{endereco.name}</Card.Title>
                                             <Card.Description>{stringifyAddress(endereco)}</Card.Description>
                                         </Card.TextContainer>
                                     </Card.Container>

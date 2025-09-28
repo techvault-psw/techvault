@@ -1,4 +1,4 @@
-import { enderecos, type Endereco } from "@/consts/enderecos";
+import { type Endereco } from "@/consts/enderecos";
 import { useEffect, useState, type ReactNode } from "react";
 import { Dialog } from "../ui/dialog";
 import z from "zod";
@@ -14,6 +14,9 @@ import { type MouseEvent } from "react";
 import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
 import { useLocation, useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
+
+import { useDispatch } from "react-redux";
+import { deleteAddress, updateAddress } from "@/redux/endereco/slice";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
@@ -39,6 +42,8 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     const [disabled, setDisabled] = useState(true)
     const { isGerente } = useCargo()
 
+    const dispatch = useDispatch()
+
     const location = useLocation();
     const fullPath = location.pathname;
     const isProfilePage = fullPath === "/perfil";
@@ -56,8 +61,13 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
         }
     })
 
-    const onSubmit = (x: z.infer<typeof formSchema>) => {
+    const onSubmit = (newEndereco: z.infer<typeof formSchema>) => {
+        dispatch(updateAddress({
+            ...endereco,
+            ...newEndereco
+        }))
         setDisabled(true)
+        form.reset(newEndereco)
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -111,7 +121,10 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
         setDisabled(!disabled)
     }
 
-    const navigate = useNavigate()
+    const handleDeleteClick = () => {
+        dispatch(deleteAddress(endereco.id))
+        setIsOpen(false)
+    }
 
     return (
         <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
@@ -228,7 +241,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
 
                         {(isProfilePage || isGerente()) && (
                             <Dialog.Footer className="block text-center space-y-3 items-center">
-                                <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={() => setIsOpen(false)}>
+                                <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={handleDeleteClick}>
                                     <Button type="button" variant="destructive" className="w-full">
                                         <TrashIcon/>
                                         Excluir endereço

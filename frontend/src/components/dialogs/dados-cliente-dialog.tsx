@@ -7,7 +7,7 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input, Label } from "@/components/ui/input";
-import type { Cliente } from "@/consts/clientes";
+import { clientes, type Cliente } from "@/consts/clientes";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type MouseEvent, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -167,7 +167,7 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
                 </Card.Container>
               </Link>
 
-              <Link to="/enderecos-cliente">
+              <Link to={`/enderecos-cliente/${cliente.id % clientes.length}`}>
                 <Card.Container>
                   <Card.Title>Ver Endereços</Card.Title>
                 </Card.Container>
