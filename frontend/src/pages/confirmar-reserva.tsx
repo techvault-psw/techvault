@@ -82,6 +82,7 @@ export default function ConfirmarReservaPage() {
     };
     
     const onSubmit = (data: FormData) => {
+        if(!clienteAtual) return;
         const novaReserva = {
             pacoteIndex: numberId,
             valor: pacotes[numberId].value, 
@@ -90,7 +91,8 @@ export default function ConfirmarReservaPage() {
             dataTermino: data.dataHoraFinal,
             endereco: data.endereco,
             codigoEntrega: gerarCodigo(), 
-            codigoColeta: gerarCodigo()
+            codigoColeta: gerarCodigo(),
+            cliente: clienteAtual,
         };
         dispatch(addReserva(novaReserva));
         navigate(`/pagamento/${numberId}`);
