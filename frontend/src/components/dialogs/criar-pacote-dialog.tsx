@@ -38,6 +38,15 @@ const formSchema = z.object({
       (value) => currencyMask.isValidCurrency(value),
       { message: "O valor deve ser maior que zero" }
     ),
+  quantity: z.string()
+    .min(1, "A quantidade é obrigatória")
+    .refine(
+      (value) => {
+        const num = parseFloat(value);
+        return !isNaN(num) && num >= 0 && Number.isInteger(num);
+      },
+      { message: "A quantidade deve ser um número inteiro não negativo" }
+    ),
   image: z.instanceof(File, { message: "A imagem é obrigatória" })
 });
 
@@ -57,6 +66,7 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
       description: "",
       components: "",
       value: "",
+      quantity: "",
       image: undefined
     },
   });
@@ -70,6 +80,7 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
       ...values,
       image: previewUrl,
       value: currencyMask.parseCurrency(values.value),
+      quantity: parseInt(values.quantity),
       description: values.description.split('\n\n').filter(desc => desc.trim()),
       components: values.components.split('\n').filter(comp => comp.trim()),
     }))
@@ -126,88 +137,109 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 overflow-y-hidden" noValidate>
             <div className='flex flex-col gap-5 custom-scrollbar-ver'>
+              <div className='grid grid-cols-[2fr_1fr] gap-3'>
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormLabel>Foto</FormLabel>
+                      <FormControl>
+                        <FormItem>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleFileChange(e, field.onChange)}
+                            className="hidden"
+                          />
+                          <div
+                            onClick={handleUploadClick}
+                            className={cn(
+                            `w-full aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors cursor-pointer`,
+                              fieldState.error
+                                ? 'border-red' 
+                                : 'border-gray/80'
+                            )}
+                          >
+                            {previewUrl ? (
+                              <img 
+                                src={previewUrl} 
+                                alt="Preview" 
+                                className="object-cover w-full h-full"
+                              />
+                            ) : (
+                              <Upload className="size-10 text-gray" />
+                            )}
+                          </div>
+                        </FormItem>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className='flex flex-col gap-6 items-center'>
+                  <FormField
+                    control={form.control}
+                    name="value"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Valor (hora)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="R$ 0,00"
+                            value={field.value}
+                            onChange={(e) => handleValueChange(e.target.value, field.onChange)}
+                            onBlur={field.onBlur}
+                            name={field.name}
+                            ref={field.ref}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="quantity"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Quantidade</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="0"
+                            min="1"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
               <FormField
                 control={form.control}
-                name="image"
-                render={({ field, fieldState }) => (
+                name="name"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Foto</FormLabel>
+                    <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <FormItem>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleFileChange(e, field.onChange)}
-                          className="hidden"
-                        />
-                        <div
-                          onClick={handleUploadClick}
-                          className={cn(
-                          `w-2/3 aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors cursor-pointer`,
-                            fieldState.error
-                              ? 'border-red' 
-                              : 'border-gray/80'
-                          )}
-                        >
-                          {previewUrl ? (
-                            <img 
-                              src={previewUrl} 
-                              alt="Preview" 
-                              className="object-cover w-full h-full"
-                            />
-                          ) : (
-                            <Upload className="size-10 text-gray" />
-                          )}
-                        </div>
-                      </FormItem>
+                      <Input
+                        type="text"
+                        placeholder="Nome do Pacote"
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <div className='grid grid-cols-[2fr_1fr] gap-3'>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Nome do Pacote"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="value"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Valor (hora)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="R$ 0,00"
-                          value={field.value}
-                          onChange={(e) => handleValueChange(e.target.value, field.onChange)}
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          ref={field.ref}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
 
               <FormField
                 control={form.control}

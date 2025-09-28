@@ -13,6 +13,7 @@ export type Pacote = {
   description: string[]
   components: string[]
   value: number
+  quantity: number
 }
 
 export type NewPacote = Optional<Pacote, 'id'>
@@ -34,6 +35,7 @@ const pacotesInitialState: PacoteState = {
         'Placa-mãe compatível',
       ],
       value: 200,
+      quantity: 3,
     },
     {
       id: 1,
@@ -51,6 +53,7 @@ const pacotesInitialState: PacoteState = {
         'Headset com microfone profissional',
       ],
       value: 100,
+      quantity: 5,
     },
     {
       id: 2,
@@ -67,6 +70,7 @@ const pacotesInitialState: PacoteState = {
         'Mesa compartilhada ampla',
       ],
       value: 400,
+      quantity: 2,
     },
   ]
 }

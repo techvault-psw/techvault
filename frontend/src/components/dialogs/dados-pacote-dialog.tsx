@@ -41,6 +41,15 @@ const formSchema = z.object({
       (value) => currencyMask.isValidCurrency(value),
       { message: "O valor deve ser maior que zero" }
     ),
+  quantity: z.string()
+    .min(1, "A quantidade é obrigatória")
+    .refine(
+      (value) => {
+        const num = parseFloat(value);
+        return !isNaN(num) && num >= 0 && Number.isInteger(num);
+      },
+      { message: "A quantidade deve ser um número inteiro não negativo" }
+    ),
   image: z.instanceof(File, { message: "A imagem é obrigatória" }).optional()
 });
 
@@ -64,6 +73,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       description: pacote.description.join('\n\n'),
       components: pacote.components.join('\n'),
       value: currencyMask.formatCurrency((pacote.value * 100).toString()),
+      quantity: pacote.quantity.toString(),
       image: undefined
     },
   });
@@ -75,6 +85,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       description: values.description.split('\n\n').filter(desc => desc.trim()),
       components: values.components.split('\n').filter(comp => comp.trim()),
       value: currencyMask.parseCurrency(values.value),
+      quantity: parseInt(values.quantity),
       image: previewUrl || pacote.image,
     };
     
@@ -119,6 +130,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       description: pacote.description.join('\n\n'),
       components: pacote.components.join('\n'),
       value: currencyMask.formatCurrency((pacote.value * 100).toString()),
+      quantity: pacote.quantity.toString(),
       image: undefined
     });
     setPreviewUrl(pacote.image);
@@ -191,7 +203,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                 )}
               />
 
-              <div className='grid grid-cols-[2fr_1fr] gap-3'>
+              <div className='grid grid-cols-[2fr_1fr_1fr] gap-3'>
                 <FormField
                   control={form.control}
                   name="name"
@@ -227,6 +239,26 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                           onBlur={field.onBlur}
                           name={field.name}
                           ref={field.ref}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="quantity"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Quantidade</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="number"
+                          placeholder="0"
+                          min="0"
+                          disabled={!isEditting}
+                          {...field}
                         />
                       </FormControl>
                       <FormMessage />
