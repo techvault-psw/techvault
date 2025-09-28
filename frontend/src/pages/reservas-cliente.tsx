@@ -11,9 +11,10 @@ import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
-import { useNavigate } from "react-router"
+import { useNavigate, useParams } from "react-router"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
+import { Separator } from "@/components/ui/separator"
 
 interface ReservaSectionProps {
   titulo: string
@@ -65,6 +66,16 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
 };
 
 export default function ReservasClientePage() {
+  const { id } = useParams<{ id: string }>();
+  const numberId = Number(id)
+  const { clientes } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+  const cliente = clientes.find((cliente) => cliente.id === numberId)
+
+  if (isNaN(numberId) || numberId >= clientes.length || !cliente) {
+    return
+  }
+
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
@@ -77,13 +88,15 @@ export default function ReservasClientePage() {
 
   const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
 
+  const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === numberId)
+
   const sortedReservas = useMemo(() => {
-    return [...reservas].sort((a, b) => {
+    return [...filteredReservas].sort((a, b) => {
         const dateA = new Date(a.dataInicio).getTime();
         const dateB = new Date(b.dataInicio).getTime();
         return dateB - dateA;
     })
-  }, [reservas])
+  }, [filteredReservas])
 
   const reservasAtuais = sortedReservas.filter((r) => r.status === "Confirmada")
   const reservasConcluidas = sortedReservas.filter((r) => r.status === "Concluída")
@@ -91,7 +104,7 @@ export default function ReservasClientePage() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Reservas de {reservas[0].cliente.name}</PageTitle>
+      <PageTitle>Reservas de {cliente.name}</PageTitle>
 
       <div className="flex items-center gap-4">
         <Button variant="secondary" className="w-40 md:w-52" size="sm">
@@ -104,6 +117,15 @@ export default function ReservasClientePage() {
           Ordenar por
         </Button>
       </div>
+
+      {!filteredReservas.length && (
+        <>
+          <Separator />
+          <p className='text-base text-white text-center w-full'>
+            O cliente "{cliente.name}" ainda não realizou nenhuma reserva.
+          </p>
+        </>
+      )}
 
       <section className="w-full flex flex-col gap-4 scrollbar">
         <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
