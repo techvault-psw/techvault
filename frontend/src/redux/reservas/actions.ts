@@ -21,5 +21,8 @@ export const updateReservaAction = (
 
 export const deleteReservaAction =  (reservas: Reserva[], reservaID: number) => {
     const reservaIndex = reservas.findIndex((reserva) => reserva.id === reservaID)
-    reservas.splice(reservaIndex, 1)
+    reservas.splice(reservaIndex, 1, {
+      ...reservas[reservaIndex],
+      status: "Cancelada"
+    })
 }
