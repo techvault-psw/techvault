@@ -1,12 +1,12 @@
-import type { Feedback } from "@/consts/feedbacks";
+import useCargo from "@/hooks/useCargo";
+import { deleteFeedback, type Feedback } from "@/redux/feedbacks/slice";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
+import { useDispatch } from "react-redux";
 import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
-import { pacotes } from "@/consts/pacotes";
-import useCargo from "@/hooks/useCargo";
 
 interface ExcluirFeedbackDialogProps {
   feedback: Feedback
@@ -15,7 +15,12 @@ interface ExcluirFeedbackDialogProps {
 
 export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDialogProps) => {
   const { isGerente } = useCargo()
-  const pacoteName = pacotes[feedback.pacoteIndex].name
+
+  const dispatch = useDispatch()
+
+  const handleDeleteClick = () => {
+    dispatch(deleteFeedback(feedback.id))
+  }
 
   return (
     <Dialog.Container>
@@ -28,11 +33,11 @@ export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDia
 
         {isGerente() ? (
           <Dialog.Description>
-            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{pacoteName}” feito por "{feedback.cliente}"?
+            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{feedback.package.name}” feito por "{feedback.customer.name}"?
           </Dialog.Description>
         ) : (
           <Dialog.Description>
-            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{pacoteName}”?
+            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{feedback.package.name}”?
           </Dialog.Description>
         )}
 
@@ -50,7 +55,7 @@ export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDia
           </Dialog.Close>
 
           <Dialog.Close asChild>
-            <Button variant="destructive">
+            <Button variant="destructive" onClick={handleDeleteClick}>
               <TrashIcon className="size-5" />
               Excluir
             </Button>

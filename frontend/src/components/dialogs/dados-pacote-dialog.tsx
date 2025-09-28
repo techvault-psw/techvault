@@ -21,6 +21,7 @@ import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
 import { ExcluirPacoteDialog } from './excluir-pacote-dialog';
 import useCargo from '@/hooks/useCargo';
+import type { Pacote } from '@/consts/pacotes';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -40,14 +41,6 @@ const formSchema = z.object({
     ),
   image: z.instanceof(File, { message: "A imagem é obrigatória" }).optional()
 });
-
-export type Pacote = {
-  name: string
-  image: string
-  description: string[]
-  components: string[]
-  value: number
-}
 
 interface DadosPacoteDialogProps {
   pacote: Pacote;
