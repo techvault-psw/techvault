@@ -1,8 +1,9 @@
+import { API_URL } from "@/lib/api-url"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 
 export const fetchReservas = createAsyncThunk("reservas/fetchReservas",
   async () => {
-    const response = await fetch('http://localhost:3000/reservas?_embed=cliente&_embed=pacote&_embed=endereco')
+    const response = await fetch(`${API_URL}/reservas?_expand=cliente&_expand=pacote&_expand=endereco`)
     const data = await response.json()
     return { reservas: data }
   }
