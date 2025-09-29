@@ -53,9 +53,9 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      pacoteIndex: String(feedback.package.id),
+      pacoteIndex: String(feedback.pacote.id),
       rating: feedback.rating,
-      comment: feedback.comment
+      comment: feedback.comentario
     },
   });
 
@@ -75,7 +75,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
     dispatch(updateFeedback({
       ...feedback,
       ...values,
-      package: pacote,
+      pacote,
     }))
 
     form.reset(values)

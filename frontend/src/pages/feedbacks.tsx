@@ -53,18 +53,18 @@ export default function FeedbacksPage() {
         
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
                 {feedbacks.map((feedback, index) => {
-                    const isMyFeedback = feedback.customer.id === clienteAtual?.id
+                    const isMyFeedback = feedback.cliente.id === clienteAtual?.id
 
                     return (
                         <div key={index} className="w-full h-full p-3 flex flex-col gap-3 bg-white/5 border border-gray/40 rounded-lg backdrop-blur-sm">
                             <div className="flex-1 flex items-start justify-between gap-2 overflow-x-hidden">
                                 <div className="flex-1 flex flex-col gap-3">
-                                    <span className="text-lg text-white font-semibold leading-none">{feedback.customer.name}</span>
+                                    <span className="text-lg text-white font-semibold leading-none">{feedback.cliente.name}</span>
 
                                     <StarRating rating={feedback.rating} readonly/>
 
                                     <span className="leading-[130%] text-gray font-light text-justify flex-1 line-clamp-4 [overflow-wrap:anywhere]">
-                                        {feedback.comment}
+                                        {feedback.comentario}
                                     </span>
                                 </div>
 
@@ -103,10 +103,10 @@ export default function FeedbacksPage() {
                                 </div>
                             )}
 
-                            <Link to={`/informacoes-pacote/${feedback.package.id}`}>
+                            <Link to={`/informacoes-pacote/${feedback.pacote.id}`}>
                                 <Card.Container>
                                     <Card.Title>
-                                        {feedback.package.name}
+                                        {feedback.pacote.name}
                                     </Card.Title>
                                 </Card.Container>
                             </Link>
