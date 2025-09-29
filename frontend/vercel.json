@@ -5,5 +5,10 @@
       "source": "/api/(.*)",
       "destination": "/api/json-server.js"
     }
-  ]
+  ],
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "backend-mock.json"
+    }
+  }
 }
