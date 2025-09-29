@@ -20,9 +20,13 @@ import PerfilPage from "./pages/perfil";
 import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
 import { fetchFeedbacks } from "./redux/feedbacks/fetch";
-import store from "./redux/store";
+import { fetchPacotes } from "./redux/pacotes/fetch";
+import { fetchClientes } from "./redux/clientes/fetch";
+import store from './redux/store.ts'
 
-store.dispatch(fetchFeedbacks())
+store.dispatch(fetchClientes());
+store.dispatch(fetchPacotes());
+store.dispatch(fetchFeedbacks());
 
 export default function App() {
   return (
