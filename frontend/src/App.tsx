@@ -22,9 +22,11 @@ import FeedbacksPage from "./pages/feedbacks";
 import { fetchFeedbacks } from "./redux/feedbacks/fetch";
 import { fetchPacotes } from "./redux/pacotes/fetch";
 import { fetchClientes } from "./redux/clientes/fetch";
+import { fetchEnderecos } from './redux/endereco/fetch.ts'
 import store from './redux/store.ts'
 
 store.dispatch(fetchClientes());
+store.dispatch(fetchEnderecos())
 store.dispatch(fetchPacotes());
 store.dispatch(fetchFeedbacks());
 
