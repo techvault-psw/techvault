@@ -19,9 +19,19 @@ import ReservaConfirmadaPage from "./pages/reserva-confirmada";
 import PerfilPage from "./pages/perfil";
 import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
-import store from "./redux/store";
 import { fetchReservas } from "./redux/reservas/fetch";
+import { fetchFeedbacks } from "./redux/feedbacks/fetch";
+import { fetchPacotes } from "./redux/pacotes/fetch";
+import { fetchClientes } from "./redux/clientes/fetch";
+import { fetchEnderecos } from './redux/endereco/fetch.ts'
+import store from './redux/store.ts'
+
+store.dispatch(fetchClientes());
+store.dispatch(fetchEnderecos())
+store.dispatch(fetchPacotes());
+store.dispatch(fetchFeedbacks());
 store.dispatch(fetchReservas());
+
 export default function App() {
   return (
     <Routes>
