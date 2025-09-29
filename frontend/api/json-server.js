@@ -11,8 +11,29 @@ export default function handler(req, res) {
   }
 
   try {
-    const dataPath = join(process.cwd(), '../backend-mock.json');
-    const data = JSON.parse(readFileSync(dataPath, 'utf-8'));
+    let dataPath;
+    let data;
+    
+    const possiblePaths = [
+      join(process.cwd(), 'backend-mock.json'),
+      join(process.cwd(), 'api', 'backend-mock.json'),
+      './backend-mock.json',
+      '../backend-mock.json'
+    ];
+    
+    for (const path of possiblePaths) {
+      try {
+        data = JSON.parse(readFileSync(path, 'utf-8'));
+        dataPath = path;
+        break;
+      } catch (e) {
+        continue;
+      }
+    }
+    
+    if (!data) {
+      throw new Error('backend-mock.json not found');
+    }
     
     const [urlPath, queryString] = req.url.split('?');
     const pathParts = urlPath.replace(/^\/api\//, '').split('/').filter(Boolean);
