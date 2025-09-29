@@ -19,9 +19,11 @@ import ReservaConfirmadaPage from "./pages/reserva-confirmada";
 import PerfilPage from "./pages/perfil";
 import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
+import { fetchClientes } from "./redux/clientes/fetch";
 import { fetchEnderecos } from './redux/endereco/fetch.ts'
 import store from './redux/store.ts'
 
+store.dispatch(fetchClientes());
 store.dispatch(fetchEnderecos())
 
 export default function App() {
