@@ -14,7 +14,7 @@ import { Separator } from "../ui/separator";
 import { SidebarItem } from "./sidebar-item";
 import useCargo from "@/hooks/useCargo";
 import { SairDialog } from "../dialogs/sair-dialog";
-import { useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutCliente } from "@/redux/clientes/slice";
 import type { RootState } from "@/redux/root-reducer";
@@ -58,6 +58,7 @@ export const closeSidebar = () => {
 export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
     const { isGerente, isSuporte } = useCargo()
     const navigate = useNavigate()
+    const location = useLocation()
 
     const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
     const dispatch = useDispatch();
@@ -81,17 +82,27 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
 
                 <Separator />
 
-                <div className="flex justify-between items-center gap-2">
-                    <div className="flex flex-col gap-2">
-                        <h3 className="text-white font-semibold text-xl">{clienteAtual?.name}</h3>
-                        <p className="text-gray text-base leading-none">{clienteAtual?.email}</p>
+                {clienteAtual ? (
+                    <div className="flex justify-between items-center gap-2">
+                        <div className="flex flex-col gap-2">
+                            <h3 className="text-white font-semibold text-xl">{clienteAtual.name}</h3>
+                            <p className="text-gray text-base leading-none">{clienteAtual.email}</p>
+                        </div>
+                        <SairDialog handleCloseClick = {handleLogoutClick}> 
+                            <Button variant="destructive" size="icon">
+                                <LogOutIcon className="size-4" />
+                            </Button>
+                        </SairDialog>
                     </div>
-                    <SairDialog handleCloseClick = { handleLogoutClick }> 
-                        <Button variant="destructive" size="icon">
-                            <LogOutIcon className="size-4" />
+                ) : (
+                    <div className="flex">
+                        <Button variant="outline" asChild>
+                            <Link to={`/login?redirectTo=${location.pathname}`}>
+                                Login
+                            </Link>
                         </Button>
-                    </SairDialog>
-                </div>
+                    </div>
+                )}
 
                 <Separator />
 
