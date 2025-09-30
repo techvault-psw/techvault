@@ -8,7 +8,8 @@
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
-    "server": "json-server --watch backend-mock.json"
+    "server": "node server.js",
+    "json-server": "json-server --watch backend-mock.json"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.2.7",
