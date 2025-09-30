@@ -21,7 +21,9 @@ import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
 import { ExcluirPacoteDialog } from './excluir-pacote-dialog';
 import useCargo from '@/hooks/useCargo';
-import type { Pacote } from '@/consts/pacotes';
+import { deletePackage, type Pacote } from '@/redux/pacotes/slice';
+import { useDispatch } from 'react-redux';
+import { updatePackage } from '@/redux/pacotes/slice';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -39,6 +41,15 @@ const formSchema = z.object({
       (value) => currencyMask.isValidCurrency(value),
       { message: "O valor deve ser maior que zero" }
     ),
+  quantity: z.string()
+    .min(1, "A quantidade é obrigatória")
+    .refine(
+      (value) => {
+        const num = parseFloat(value);
+        return !isNaN(num) && num >= 0 && Number.isInteger(num);
+      },
+      { message: "A quantidade deve ser um número inteiro não negativo" }
+    ),
   image: z.instanceof(File, { message: "A imagem é obrigatória" }).optional()
 });
 
@@ -53,6 +64,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   const [previewUrl, setPreviewUrl] = useState<string | null>(pacote.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isGerente } = useCargo()
+  const dispatch = useDispatch()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,20 +73,23 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       description: pacote.description.join('\n\n'),
       components: pacote.components.join('\n'),
       value: currencyMask.formatCurrency((pacote.value * 100).toString()),
+      quantity: pacote.quantity.toString(),
       image: undefined
     },
   });
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    // Para salvar, usaremos o updatedPacote:
-    // const updatedPacote: Pacote = {
-    //   ...pacote,
-    //   name: values.name,
-    //   description: values.description.split('\n\n').filter(desc => desc.trim()),
-    //   components: values.components.split('\n').filter(comp => comp.trim()),
-    //   value: currencyMask.parseCurrency(values.value),
-    // };
+    const updatedPacote: Pacote = {
+      ...pacote,
+      name: values.name,
+      description: values.description.split('\n\n').filter(desc => desc.trim()),
+      components: values.components.split('\n').filter(comp => comp.trim()),
+      value: currencyMask.parseCurrency(values.value),
+      quantity: parseInt(values.quantity),
+      image: previewUrl || pacote.image,
+    };
     
+    dispatch(updatePackage(updatedPacote))
     setIsEditting(false)
   }
 
@@ -91,7 +106,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       setPreviewUrl(url);
       onChange(file);
     } else {
-      setPreviewUrl(null);
+      setPreviewUrl(pacote.image);
       onChange(undefined);
     }
   };
@@ -103,11 +118,44 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   };
 
   const cleanupPreview = () => {
-    if (previewUrl && previewUrl.startsWith('blob:')) {
+    if (previewUrl && previewUrl !== pacote.image) {
       URL.revokeObjectURL(previewUrl);
     }
     setPreviewUrl(pacote.image);
   };
+
+  const resetForm = () => {
+    form.reset({
+      name: pacote.name,
+      description: pacote.description.join('\n\n'),
+      components: pacote.components.join('\n'),
+      value: currencyMask.formatCurrency((pacote.value * 100).toString()),
+      quantity: pacote.quantity.toString(),
+      image: undefined
+    });
+    setPreviewUrl(pacote.image);
+  };
+
+  const handleDeleteClick = () => {
+    dispatch(deletePackage(pacote.id))
+    setIsOpen(false)
+  }
+
+  const handleQuantityKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const blockedKeys = ['-', '+', 'e', 'E', '.', ','];
+    
+    if (blockedKeys.includes(e.key)) {
+      e.preventDefault()
+    }
+  }
+
+  const handleQuantityPaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+    const pastedValue = e.clipboardData.getData('text');
+    
+    if (!/^\d+$/.test(pastedValue)) {
+      e.preventDefault();
+    }
+  }
 
   return (
     <Dialog.Container open={isOpen} onOpenChange={(open) => {
@@ -115,7 +163,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       if (!open) {
         cleanupPreview();
         setIsEditting(false);
-        form.reset();
+        resetForm();
       }
     }}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -128,92 +176,116 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5 overflow-y-hidden" noValidate>
             <div className='flex flex-col gap-5 custom-scrollbar-ver'>
+              <div className='grid grid-cols-[2fr_1fr] gap-3'>
+                <FormField
+                  control={form.control}
+                  name="image"
+                  render={({ field, fieldState }) => (
+                    <FormItem>
+                      <FormLabel>Foto</FormLabel>
+                      <FormControl>
+                        <FormItem>
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/*"
+                            onChange={(e) => handleFileChange(e, field.onChange)}
+                            className="hidden"
+                            disabled={!isEditting}
+                          />
+                          <div
+                            onClick={handleUploadClick}
+                            className={cn(
+                              `w-full aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors`,
+                              isEditting ? 'cursor-pointer' : 'cursor-not-allowed',
+                              fieldState.error
+                                ? 'border-red' 
+                                : 'border-gray/80'
+                            )}
+                          >
+                            {previewUrl ? (
+                              <img 
+                                src={previewUrl} 
+                                alt="Preview" 
+                                className="object-cover w-full h-full"
+                              />
+                            ) : (
+                              <Upload className="size-10 text-gray" />
+                            )}
+                          </div>
+                        </FormItem>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className='flex flex-col gap-6 items-center'>
+                  <FormField
+                    control={form.control}
+                    name="value"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Valor (hora)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            placeholder="R$ 0,00"
+                            disabled={!isEditting}
+                            value={field.value}
+                            onChange={(e) => handleValueChange(e.target.value, field.onChange)}
+                            onBlur={field.onBlur}
+                            name={field.name}
+                            ref={field.ref}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="quantity"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Quantidade</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="0"
+                            min="0"
+                            onKeyDown={handleQuantityKeyDown}
+                            onPaste={handleQuantityPaste}
+                            disabled={!isEditting}
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
               <FormField
                 control={form.control}
-                name="image"
-                render={({ field, fieldState }) => (
+                name="name"
+                render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Foto</FormLabel>
+                    <FormLabel>Nome</FormLabel>
                     <FormControl>
-                      <FormItem>
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/*"
-                          onChange={(e) => handleFileChange(e, field.onChange)}
-                          className="hidden"
-                          disabled={!isEditting}
-                        />
-                        <div
-                          onClick={handleUploadClick}
-                          className={cn(
-                            `w-2/3 aspect-[1.6] rounded-lg bg-black border flex items-center justify-center overflow-hidden transition-colors`,
-                            isEditting ? 'cursor-pointer' : 'cursor-default',
-                            fieldState.error
-                              ? 'border-red' 
-                              : 'border-gray/80'
-                          )}
-                        >
-                          {previewUrl ? (
-                            <img 
-                              src={previewUrl} 
-                              alt="Preview" 
-                              className="object-cover w-full h-full"
-                            />
-                          ) : (
-                            <Upload className="size-10 text-gray" />
-                          )}
-                        </div>
-                      </FormItem>
+                      <Input
+                        type="text"
+                        placeholder="Nome do Pacote"
+                        disabled={!isEditting}
+                        {...field}
+                      />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              <div className='grid grid-cols-[2fr_1fr] gap-3'>
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Nome</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="Nome do Pacote"
-                          disabled={!isEditting}
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-
-                <FormField
-                  control={form.control}
-                  name="value"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Valor (hora)</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="text"
-                          placeholder="R$ 0,00"
-                          disabled={!isEditting}
-                          value={field.value}
-                          onChange={(e) => handleValueChange(e.target.value, field.onChange)}
-                          onBlur={field.onBlur}
-                          name={field.name}
-                          ref={field.ref}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
 
               <FormField
                 control={form.control}
@@ -262,7 +334,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                   </Button>
                 ) : (
                   <div className="w-full flex gap-3 items-center">
-                    <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={() => setIsOpen(false)}>
+                    <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={handleDeleteClick}>
                       <Button variant="destructive">
                         <Trash2 className="size-4"/>
                         Excluir

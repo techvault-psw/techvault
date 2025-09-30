@@ -5,7 +5,6 @@ import { Separator } from "@/components/ui/separator";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate, useParams } from "react-router";
-import { reservas } from "@/consts/reservas";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSelector } from "react-redux";
@@ -15,13 +14,15 @@ import { useEffect } from "react";
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const numberId = Number(id)
+    const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
-    if (isNaN(numberId) || numberId >= reservas.length) {
+    const numberId = Number(id)
+    const reserva = reservas.find((reserva) => reserva.id === numberId)
+
+    if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
         return
     }
 
-    const reserva = reservas[numberId]
     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 

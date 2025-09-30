@@ -1,10 +1,10 @@
-import { pacotes, type Pacote } from "@/consts/pacotes";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import type { Pacote } from "@/redux/pacotes/slice";
 
 interface ExcluirPacoteDialogProps {
   pacote: Pacote

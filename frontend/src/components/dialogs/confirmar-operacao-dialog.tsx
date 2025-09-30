@@ -7,7 +7,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import type { Reserva } from "@/consts/reservas";
+import type { Reserva } from "@/redux/reservas/slice";
 import { OperacaoConfirmadaDialog } from "./operacao-confirmada-dialog";
 
 interface ConfirmarOperacaoDialogProps {

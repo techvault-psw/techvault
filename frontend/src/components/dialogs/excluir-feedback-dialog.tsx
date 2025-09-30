@@ -33,11 +33,11 @@ export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDia
 
         {isGerente() ? (
           <Dialog.Description>
-            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{feedback.package.name}” feito por "{feedback.customer.name}"?
+            Tem certeza de que deseja excluir permanentemente o feedback do pacote “{feedback.pacote.name}” feito por "{feedback.cliente.name}"?
           </Dialog.Description>
         ) : (
           <Dialog.Description>
-            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{feedback.package.name}”?
+            Tem certeza de que deseja excluir permanentemente seu feedback do pacote “{feedback.pacote.name}”?
           </Dialog.Description>
         )}
 

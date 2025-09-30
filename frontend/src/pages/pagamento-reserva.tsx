@@ -3,8 +3,6 @@ import { PageContainer } from "@/components/page-container"
 import { PageTitle } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
-import { pacotes } from "@/consts/pacotes"
-import { reservas } from "@/consts/reservas"
 import type { RootState } from "@/redux/root-reducer"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
@@ -13,14 +11,16 @@ import { Link, useNavigate, useParams } from "react-router"
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const numberId = Number(id)
+    const { reservas } = useSelector((state: RootState) => state.reservasReducer)
 
-    if (isNaN(numberId) || numberId >= reservas.length) {
+    const numberId = Number(id)
+    const reserva = reservas.find((reserva) => reserva.id === numberId)
+
+    if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
         return
     }
 
-    const reserva = reservas[numberId]
-    const pacote = pacotes[reserva.pacoteIndex]
+    const pacote = reserva.pacote
 
     const navigate = useNavigate()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
@@ -130,7 +130,7 @@ export default function PagamentoReservaPage() {
 
                     {/* TODO: Usar props para definir método de pagamento nessa página */}
                     <Button asChild size="lg" className="flex-none font-bold">
-                        <Link to={`/reserva-confirmada/${numberId}`}>Copiar Código Pix</Link>
+                        <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
                     </Button>
                 </div>
             </section>

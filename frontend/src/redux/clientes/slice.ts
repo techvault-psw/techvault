@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { Cliente } from "@/consts/clientes";
-import { clientes } from "@/consts/clientes";
+import { fetchClientes } from "./fetch";
 
 type ClienteState = {
   clientes: Cliente[];
@@ -9,7 +9,7 @@ type ClienteState = {
 };
 
 const initialState: ClienteState = {
-  clientes: clientes,
+  clientes: [],
   clienteAtual:undefined
 };
 
@@ -46,6 +46,9 @@ const clienteSlice = createSlice({
       state.clienteAtual = undefined;
     }
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchClientes.fulfilled, (_, action) => action.payload)
+  } 
 });
 
 export const { addCliente, updateCliente, deleteCliente, loginCliente, logoutCliente } = clienteSlice.actions;
