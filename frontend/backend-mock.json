@@ -1,6 +1,6 @@
 {
   "clientes": [
-    { "id": 0, "name": "Cliente", "email": "cliente@email.com", "phone": "(12) 34567-890", "registrationDate": "27/09/2025", "password": "123456", "role": "Cliente" },
+    { "id": 0, "name": "Cliente", "email": "cliente@email.com", "phone": "(12) 34567-8901", "registrationDate": "27/09/2025", "password": "123456", "role": "Cliente" },
     { "id": 1, "name": "Administrador", "email": "admin@email.com", "phone": "(00) 00000-0000", "registrationDate": "01/01/2025", "password": "123456", "role": "Gerente" },
     { "id": 2, "name": "Equipe de Suporte", "email": "suporte@email.com", "phone": "(33) 33333-3333", "registrationDate": "03/03/2025", "password": "123456", "role": "Suporte" },
     { "id": 3, "name": "João Silva", "email": "joao.silva@example.com", "phone": "(11) 98765-4321", "registrationDate": "01/09/2025", "password": "123456", "role": "Cliente" },
