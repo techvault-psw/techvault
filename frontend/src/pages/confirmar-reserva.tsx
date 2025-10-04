@@ -30,6 +30,8 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { clientes } from "@/consts/clientes";
 import { useEffect } from "react";
+import { CriarEnderecoDialog } from "@/components/dialogs/criar-endereco-dialog";
+import { PlusIcon } from "@/components/icons/plus-icon";
 
 const metodosPagamento = [
     "Cartão de Crédito",
@@ -194,13 +196,30 @@ export default function ConfirmarReservaPage() {
                                             <SelectValue placeholder="Selecione um endereço" />
                                         </SelectTrigger>
                                         <SelectContent>
-                                            {enderecosCliente.map((endereco, index) => {
-                                                return (
+                                            {enderecosCliente.length === 0 ? (
+                                                <div className="p-2 text-sm text-gray/60">
+                                                    Nenhum endereço cadastrado
+                                                </div>
+                                            ) : (
+                                                enderecosCliente.map((endereco, index) => (
                                                     <SelectItem key={index} value={endereco.name}>
                                                         {endereco.name}
                                                     </SelectItem>
-                                                )
-                                            })}
+                                                ))
+                                            )}
+                                            <Separator className="my-1" />
+
+                                            <CriarEnderecoDialog>
+                                                <Button
+                                                    type="button"
+                                                    variant="ghost"
+                                                    size="sm"
+                                                    className="w-full justify-start font-normal text-gray"
+                                                >
+                                                    <PlusIcon className="size-4" />
+                                                    Adicionar novo endereço
+                                                </Button>
+                                            </CriarEnderecoDialog>
                                         </SelectContent>
                                         </Select>
                                     </FormControl>
