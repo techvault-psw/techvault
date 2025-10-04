@@ -1,5 +1,5 @@
 import useCargo from "@/hooks/useCargo";
-import { deleteFeedback, type Feedback } from "@/redux/feedbacks/slice";
+import { type Feedback } from "@/redux/feedbacks/slice";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { useDispatch } from "react-redux";
@@ -7,6 +7,8 @@ import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import { deleteFeedbackServer } from "@/redux/feedbacks/fetch";
+import { type AppDispatch } from "@/redux/store";
 
 interface ExcluirFeedbackDialogProps {
   feedback: Feedback
@@ -16,10 +18,10 @@ interface ExcluirFeedbackDialogProps {
 export const ExcluirFeedbackDialog = ({ feedback, children }: ExcluirFeedbackDialogProps) => {
   const { isGerente } = useCargo()
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const handleDeleteClick = () => {
-    dispatch(deleteFeedback(feedback.id))
+    dispatch(deleteFeedbackServer(feedback))
   }
 
   return (
