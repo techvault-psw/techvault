@@ -15,4 +15,9 @@ const rootReducer = combineReducers({
 
 export type RootState = ReturnType<typeof rootReducer>;
 
+export type InitialState = {
+  status: 'not_loaded' | 'loading' | 'deleting' | 'saving' | 'loaded' | 'deleted' | 'saved' | 'failed'
+  error: null | string
+}
+
 export default rootReducer
