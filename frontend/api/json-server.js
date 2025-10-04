@@ -1,7 +1,27 @@
-import { readFileSync } from 'fs';
+import { readFileSync, writeFileSync } from 'fs';
 import { join } from 'path';
 
-export default function handler(req, res) {
+async function parseBody(req) {
+  return new Promise((resolve, reject) => {
+    let body = '';
+    
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
+    
+    req.on('end', () => {
+      try {
+        resolve(body ? JSON.parse(body) : {});
+      } catch (e) {
+        reject(e);
+      }
+    });
+    
+    req.on('error', reject);
+  });
+}
+
+export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
@@ -49,6 +69,75 @@ export default function handler(req, res) {
       return res.status(404).json({ error: `Resource '${resource}' not found` });
     }
     
+    if (req.method === 'POST') {
+      const body = await parseBody(req);
+      const newItem = { ...body };
+      
+      const maxId = data[resource].reduce((max, item) => {
+        const itemId = typeof item.id === 'number' ? item.id : parseInt(item.id) || 0;
+        return Math.max(max, itemId);
+      }, 0);
+      
+      newItem.id = maxId + 1;
+      
+      if (!newItem.createdAt) {
+        newItem.createdAt = new Date().toISOString();
+      }
+      
+      data[resource].push(newItem);
+      writeFileSync(dataPath, JSON.stringify(data, null, 2), 'utf-8');
+      
+      return res.status(201).json(newItem);
+    }
+    
+    if (req.method === 'PUT' || req.method === 'PATCH') {
+      if (!id) {
+        return res.status(400).json({ error: 'ID is required for update' });
+      }
+      
+      const body = await parseBody(req);
+      
+      const index = data[resource].findIndex(item => 
+        item.id === id || item.id === parseInt(id) || item.id === Number(id)
+      );
+      
+      if (index === -1) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+      
+      const updatedItem = req.method === 'PUT' 
+        ? { ...body, id: data[resource][index].id }
+        : { ...data[resource][index], ...body }
+
+      updatedItem.updatedAt = new Date().toISOString();
+      
+      data[resource][index] = updatedItem;
+      writeFileSync(dataPath, JSON.stringify(data, null, 2), 'utf-8');
+
+      return res.status(200).json(updatedItem);
+    }
+    
+    if (req.method === 'DELETE') {
+      if (!id) {
+        return res.status(400).json({ error: 'ID is required for deletion' });
+      }
+      
+      const index = data[resource].findIndex(item => 
+        item.id === id || item.id === parseInt(id) || item.id === Number(id)
+      );
+      
+      if (index === -1) {
+        return res.status(404).json({ error: 'Item not found' });
+      }
+      
+      const deletedItem = data[resource][index];
+      data[resource].splice(index, 1);
+      writeFileSync(dataPath, JSON.stringify(data, null, 2), 'utf-8');
+      
+      return res.status(200).json(deletedItem);
+    }
+    
+    // GET
     let result = data[resource];
     
     if (id) {
