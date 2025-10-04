@@ -25,6 +25,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { deleteReserva, updateReserva } from "@/redux/reservas/slice";
 import { stringifyAddress } from "@/consts/enderecos";
+import { useLocation } from "react-router";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -47,6 +48,7 @@ type FormData = z.infer<typeof formSchema>;
 export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
   const [isOpen, setIsOpen] = useState(false)
+  const location = useLocation()
 
   const { isGerente, isSuporte } = useCargo()
   
@@ -76,8 +78,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
     dispatch(deleteReserva(reserva.id))
   }
 
-  const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const isClientePage = location.pathname.startsWith('/reservas-cliente')
 
   return (
     <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
@@ -128,22 +129,24 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
             <Label>Endereço</Label>
             <Card.Container>
               <Card.Title>
-                {stringifyAddress(reserva.endereco)}
+                {reserva.endereco.name}
               </Card.Title>
             </Card.Container>
           </FormItem>
         </DadosEnderecoDialog>
 
-        <DadosClienteDialog cliente={reserva.cliente}>
-          <FormItem>
-            <Label>Cliente</Label>
-            <Card.Container>
-              <Card.Title>
-                {reserva.cliente.name}
-              </Card.Title>
-            </Card.Container>
-          </FormItem>
-        </DadosClienteDialog>
+        {!isClientePage && (
+          <DadosClienteDialog cliente={reserva.cliente}>
+            <FormItem>
+              <Label>Cliente</Label>
+              <Card.Container>
+                <Card.Title>
+                  {reserva.cliente.name}
+                </Card.Title>
+              </Card.Container>
+            </FormItem>
+          </DadosClienteDialog>
+        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
