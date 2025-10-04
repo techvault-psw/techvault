@@ -9,9 +9,9 @@ import {
 import { Input, Label } from "@/components/ui/input";
 import { clientes, type Cliente } from "@/consts/clientes";
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, type MouseEvent, type ReactNode } from "react";
+import { useState, useEffect, type MouseEvent, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 import { useHookFormMask } from 'use-mask-input';
 import * as z from "zod";
 import { Button } from "../ui/button";
@@ -26,7 +26,10 @@ import { updateCliente } from '@/redux/clientes/slice';
 
 interface DadosClienteDialogProps {
   cliente: Cliente;
-  children: ReactNode
+  children: ReactNode;
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
+  fromReservaId?: number;
 }
 
 const formSchema = z.object({
@@ -37,10 +40,14 @@ const formSchema = z.object({
     .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX")
 })
 
-export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProps) => {
-  const [isOpen, setIsOpen] = useState(false)
+export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, onOpenChange, fromReservaId }: DadosClienteDialogProps) => {
+  const [internalOpen, setInternalOpen] = useState(false)
   const [isEditting, setIsEditting] = useState(false)
 
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  const location = useLocation()
   const { isGerente } = useCargo()
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -69,8 +76,15 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
 
   const registerWithMask = useHookFormMask(form.register)
 
+  const handleOpenChange = (open: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(open);
+    }
+    onOpenChange?.(open);
+  };
+
   return (
-    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Container open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -161,20 +175,34 @@ export const DadosClienteDialog = ({ cliente, children }: DadosClienteDialogProp
                 </Button>
               )}
 
-              <Link to={`/reservas-cliente/${cliente.id % clientes.length}`}>
+              <Link 
+                to={`/reservas-cliente/${cliente.id % clientes.length}`} 
+                state={{ 
+                  fromClientDialog: cliente.id,
+                  returnTo: location.pathname,
+                  fromReservaId
+                }}
+              >
                 <Card.Container>
                   <Card.Title>Ver Reservas</Card.Title>
                 </Card.Container>
               </Link>
 
-              <Link to={`/enderecos-cliente/${cliente.id % clientes.length}`}>
+              <Link 
+                to={`/enderecos-cliente/${cliente.id % clientes.length}`} 
+                state={{ 
+                  fromClientDialog: cliente.id,
+                  returnTo: location.pathname,
+                  fromReservaId
+                }}
+              >
                 <Card.Container>
                   <Card.Title>Ver Endereços</Card.Title>
                 </Card.Container>
               </Link>
 
               { isGerente() && 
-                <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={setIsOpen}>
+                <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={(open) => handleOpenChange(open)}>
                   <Button variant="destructive">
                     <TrashIcon className="size-5" />
                     Excluir

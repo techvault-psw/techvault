@@ -12,7 +12,7 @@ import { Separator } from '@/components/ui/separator';
 import { Table } from "@/components/ui/table";
 import useCargo from '@/hooks/useCargo';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, useLocation } from 'react-router';
 
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
@@ -20,8 +20,10 @@ import type { RootState } from "@/redux/root-reducer";
 
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
   const {clientes} = useSelector((state: RootState) => state.clienteReducer);
+  const location = useLocation();
 
   const clientesFiltrados = clientes.filter(cliente =>
     cliente.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -37,6 +39,13 @@ export default function ClientesPage() {
       navigate("/login")
     }
   }, [])
+
+  useEffect(() => {
+    const state = location.state as { fromClientDialog?: number };
+    if (state?.fromClientDialog !== undefined) {
+      setClienteToOpen(state.fromClientDialog);
+    }
+  }, [location])
 
   return (
     <div className="flex flex-col h-full"> 
@@ -79,7 +88,18 @@ export default function ClientesPage() {
           <>
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
               {clientesFiltrados.map((cliente) => (
-                <DadosClienteDialog cliente={cliente} key={cliente.id}>
+                <DadosClienteDialog 
+                  cliente={cliente} 
+                  key={cliente.id}
+                  open={clienteToOpen === cliente.id}
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      setClienteToOpen(null);
+                    } else {
+                      setClienteToOpen(cliente.id);
+                    }
+                  }}
+                >
                   <Card.Container>
                     <Card.TextContainer>
                       <Card.Title>{cliente.name}</Card.Title>
@@ -108,7 +128,18 @@ export default function ClientesPage() {
                 </Table.Header>
                 <Table.Body>
                   {clientesFiltrados.map((cliente) => (
-                    <DadosClienteDialog cliente={cliente} key={cliente.id}>
+                    <DadosClienteDialog 
+                      cliente={cliente} 
+                      key={cliente.id}
+                      open={clienteToOpen === cliente.id}
+                      onOpenChange={(open) => {
+                        if (!open) {
+                          setClienteToOpen(null);
+                        } else {
+                          setClienteToOpen(cliente.id);
+                        }
+                      }}
+                    >
                       <Table.Row>
                         <Table.Cell className="text-white font-medium">{cliente.name}</Table.Cell>
                         <Table.Cell>{cliente.email}</Table.Cell>

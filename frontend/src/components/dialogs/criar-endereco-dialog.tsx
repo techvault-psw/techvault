@@ -63,6 +63,12 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
         setOpen(false);
     }
 
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit(onSubmit)(e);
+    }
+
     const registerWithMask = useHookFormMask(form.register)
 
     const cep = form.watch("cep")
@@ -119,7 +125,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                 <Separator/>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+                    <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
                         <FormField
                             control={form.control}
                             name="name"
@@ -228,7 +234,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                                 Criar
                             </Button>
                             <Dialog.Close asChild>
-                                <Button variant="outline">
+                                <Button variant="outline" type="button">
                                     Cancelar
                                 </Button>
                             </Dialog.Close>

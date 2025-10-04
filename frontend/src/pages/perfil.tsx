@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
@@ -83,10 +83,11 @@ export default function PerfilPage() {
     const registerWithMask = useHookFormMask(form.register)
 
     const navigate = useNavigate()
+    const location = useLocation()
     
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])
 

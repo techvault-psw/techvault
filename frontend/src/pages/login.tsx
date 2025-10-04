@@ -109,7 +109,7 @@ export default function LoginPage() {
       </Form>
 
       <p className="text-base text-center">
-        Não possui uma conta? <Link to="/cadastro" className="font-semibold underline">Cadastrar-se</Link>
+        Não possui uma conta? <Link to={redirectTo ? `/cadastro?redirectTo=${redirectTo}` : "/cadastro"} className="font-semibold underline">Cadastrar-se</Link>
       </p>
     </PageContainer.Auth>
   );

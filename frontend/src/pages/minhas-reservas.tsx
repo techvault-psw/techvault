@@ -10,40 +10,68 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import { PacoteImage } from "@/components/pacote-image";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
+import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
 
-    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+    const location = useLocation()
 
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])
 
-    const reservasFiltradas = reservas.filter(reserva => reserva.cliente.id === clienteAtual?.id)
+    const reservasFiltradas = reservas
+        .filter(reserva => reserva.cliente.id === clienteAtual?.id)
+        .sort((a, b) => {
+            const statusOrder: Record<string, number> = {
+                "Confirmada": 1,
+                "Concluída": 2,
+                "Cancelada": 3
+            };
+
+            const statusA = statusOrder[a.status] ?? 99
+            const statusB = statusOrder[b.status] ?? 99
+
+            if (statusA !== statusB) {
+                return statusA - statusB
+            }
+
+            return new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime()
+        })
 
     return (
         <PageContainer.List>
             <PageTitle>Minhas Reservas</PageTitle>
 
-            <div className="flex items-center gap-4 flex-shrink-0">
-                <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                    <FilterIcon className="size-4.5" />
-                    Filtros
-                </Button>
+            <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
+                <div className="flex items-center gap-4 flex-shrink-0">
+                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                        <FilterIcon className="size-4.5" />
+                        Filtros
+                    </Button>
 
-                <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                    <SlidersIcon className="size-4.5" />
-                    Ordenar por
-                </Button>
+                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                        <SlidersIcon className="size-4.5" />
+                        Ordenar por
+                    </Button>
+                </div>
+                {clienteAtual && (
+                    <Link to="/pacotes-disponiveis" className="w-full max-w-120 lg:flex lg:justify-end">
+                        <Card.Container className="sm:w-120 lg:w-90 bg-black hover:bg-slate-900">
+                            <Card.Title>Deseja fazer uma nova reserva?</Card.Title>
+                        </Card.Container>
+                    </Link>
+                )}
             </div>
 
             {!reservasFiltradas.length && (
@@ -81,7 +109,15 @@ export default function MinhasReservasPage() {
                             <Separator/>
 
                             <div className="grid grid-cols-[1.8fr_1.2fr] grid-rows-3 gap-1 text-white">
-                                <p>Status:</p><p className="text-right">{reserva.status}</p>
+                                <p>Status:</p><p className="text-right">
+                                    {reserva.status === "Confirmada" ? (
+                                        <Badge className="py-0" variant="green">{reserva.status}</Badge>
+                                    ) : reserva.status === "Concluída" ? (
+                                        <Badge className="py-0" variant="purple">{reserva.status}</Badge>
+                                    ) : reserva.status === "Cancelada" && (
+                                        <Badge className="py-0" variant="dark-red">{reserva.status}</Badge>
+                                    )}
+                                </p>
                                 <p>Data e Hora de Início:</p><p className="text-right">{formattedStartDate}</p>
                                 <p>Data e Hora de Término:</p><p className="text-right">{formattedEndDate}</p>
                             </div>

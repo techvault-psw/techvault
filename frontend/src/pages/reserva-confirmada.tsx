@@ -4,7 +4,7 @@ import { PageTitle } from "@/components/page-title";
 import { Separator } from "@/components/ui/separator";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSelector } from "react-redux";
@@ -27,11 +27,13 @@ export default function ReservaConfirmadaPage() {
     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
     const navigate = useNavigate()
+    const location = useLocation()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            const fullPath = location.pathname + location.search + location.hash;
+            navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
     })
 
