@@ -28,7 +28,7 @@ export default function FeedbacksPage() {
     const { status, error } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
 
     useEffect(() => {
-        if (status === 'not_loaded' || status === 'saved' || status === 'deleted') {
+        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
             dispatch(fetchFeedbacks())
         }
     }, [status, dispatch])
