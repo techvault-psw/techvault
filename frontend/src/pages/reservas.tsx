@@ -9,8 +9,8 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
 import useCargo from "@/hooks/useCargo";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
+import { useNavigate, useLocation } from "react-router";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import type { Reserva } from "@/redux/reservas/slice";
@@ -26,6 +26,9 @@ export interface ReservaComTipo {
 export default function ReservasPage() {
   const { isGerente, isSuporte } = useCargo();
   const navigate = useNavigate();
+  const location = useLocation();
+  const [reservaToOpen, setReservaToOpen] = useState<number | null>(null);
+  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isGerente() && !isSuporte()) {
@@ -33,10 +36,22 @@ export default function ReservasPage() {
     }
   }, []);
 
+  useEffect(() => {
+    const state = location.state as { fromClientDialog?: number; fromReservaId?: number } | null;
+    if (state?.fromReservaId !== undefined) {
+      setReservaToOpen(state.fromReservaId);
+    }
+    if (state?.fromClientDialog !== undefined) {
+      setClienteToOpen(state.fromClientDialog);
+    }
+  }, [location]);
+
   const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer);
   
   const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
   const reservasPorData = agruparReservasPorData(reservasConfirmadas)
+  
+  const reservaParaAbrir = reservaToOpen !== null ? reservas.find(r => r.id === reservaToOpen) : null;
 
   return (
     <PageContainer.List> 
@@ -115,6 +130,22 @@ export default function ReservasPage() {
             )
           })}
         </section>
+      )}
+
+      {reservaParaAbrir && (
+        <DetalhesReservaDialog
+          reserva={reservaParaAbrir}
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setReservaToOpen(null);
+              setClienteToOpen(null);
+            }
+          }}
+          openClientDialog={clienteToOpen === reservaParaAbrir.cliente.id}
+        >
+          <div style={{ display: 'none' }} />
+        </DetalhesReservaDialog>
       )}
     </PageContainer.List>
   );

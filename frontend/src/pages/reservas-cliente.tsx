@@ -11,7 +11,7 @@ import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
-import { useNavigate, useParams } from "react-router"
+import { useNavigate, useParams, useLocation } from "react-router"
 import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
 import { Separator } from "@/components/ui/separator"
@@ -78,6 +78,8 @@ export default function ReservasClientePage() {
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
+  const location = useLocation()
+  const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
 
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
@@ -134,7 +136,15 @@ export default function ReservasClientePage() {
 
       <Button
         variant="outline"
-        onClick={() => history.back()}
+        onClick={() => {
+          const returnTo = state?.returnTo || "/clientes";
+          navigate(returnTo, { 
+            state: { 
+              fromClientDialog: numberId,
+              fromReservaId: state?.fromReservaId
+            } 
+          });
+        }}
         className="w-full max-w-100 mx-auto mt-auto flex-none"
       >
         <ArrowLeft size={16} className="mr-2" />

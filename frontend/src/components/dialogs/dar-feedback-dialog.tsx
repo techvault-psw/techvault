@@ -28,6 +28,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addFeedback } from "@/redux/feedbacks/slice";
 import { clientes } from "@/consts/clientes";
 import type { RootState } from "@/redux/root-reducer";
+import { useLocation, useNavigate } from "react-router";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -77,8 +78,20 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     }))
   }
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!clienteAtual) {
+      navigate(`/login?redirectTo=${location.pathname}`)
+      return
+    }
+
+    setIsOpen(isOpen)
+  }
+
   return (
-    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Container open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>

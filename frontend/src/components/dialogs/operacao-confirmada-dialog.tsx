@@ -1,5 +1,6 @@
 import { Dialog } from "../ui/dialog";
-import type { Reserva } from "@/redux/reservas/slice";
+import { updateReserva, type Reserva } from "@/redux/reservas/slice";
+import { useDispatch } from "react-redux";
 
 interface OperacaoConfirmadaDialogProps {
     open: boolean
@@ -9,8 +10,23 @@ interface OperacaoConfirmadaDialogProps {
 }
 
 export const OperacaoConfirmadaDialog = ({ tipo, reserva, open, setOpen }: OperacaoConfirmadaDialogProps) => {
+    const dispatch = useDispatch()
+
+    const handleOpenChange = (isOpen: boolean) => {
+        const now = new Date().toISOString()
+
+        dispatch(updateReserva({
+            ...reserva,
+            dataEntrega: tipo === "Entrega" ? now : reserva.dataEntrega,
+            dataColeta: tipo === "Coleta" ? now : reserva.dataColeta,
+            status: tipo === "Coleta" ? "Concluída" : reserva.status,
+        }))
+
+        setOpen(isOpen)
+    }
+
     return tipo && (
-        <Dialog.Container open={open} onOpenChange={setOpen}>
+        <Dialog.Container open={open} onOpenChange={handleOpenChange}>
             <Dialog.Content>
                 <Dialog.Title>{tipo} confirmada!</Dialog.Title>
 

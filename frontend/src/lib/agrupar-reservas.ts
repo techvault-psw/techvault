@@ -11,17 +11,21 @@ export function agruparReservasPorData(reservas: Reserva[]): ReservasPorData[] {
   const reservasComTipo: ReservaComTipo[] = []
 
   reservas.forEach(reserva => {
-    reservasComTipo.push({
-      reserva,
-      tipo: 'Entrega',
-      hora: new Date(reserva.dataInicio)
-    });
+    if (!reserva.dataEntrega) {
+      reservasComTipo.push({
+        reserva,
+        tipo: 'Entrega',
+        hora: new Date(reserva.dataInicio)
+      });
+    }
 
-    reservasComTipo.push({
-      reserva,
-      tipo: 'Coleta',
-      hora: new Date(reserva.dataTermino)
-    });
+    if (!reserva.dataColeta) {
+      reservasComTipo.push({
+        reserva,
+        tipo: 'Coleta',
+        hora: new Date(reserva.dataTermino)
+      });
+    }
   });
 
   const grupos = new Map<string, ReservaComTipo[]>();

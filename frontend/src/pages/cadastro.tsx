@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -35,6 +35,8 @@ const formSchema = z.object({
 
 export default function CadastroPage() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
   const dispatch = useDispatch();
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -65,7 +67,11 @@ export default function CadastroPage() {
 
     dispatch(addCliente(novoCliente));
     dispatch(loginCliente(values));
-    navigate("/");
+    if (redirectTo) {
+      navigate(redirectTo, { replace: true })
+    } else {
+      navigate("/");
+    }
 
   }
 
@@ -149,7 +155,7 @@ export default function CadastroPage() {
       </Form>
 
       <p className="text-base text-center">
-        Já possui uma conta? <Link to="/login" className="font-semibold underline">Entrar</Link>
+        Já possui uma conta? <Link to={redirectTo ? `/login?redirectTo=${redirectTo}` : "/login"} className="font-semibold underline">Entrar</Link>
       </p>
     </PageContainer.Auth>
   );

@@ -7,13 +7,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import type { Reserva } from "@/redux/reservas/slice";
+import { updateReserva, type Reserva } from "@/redux/reservas/slice";
 import { OperacaoConfirmadaDialog } from "./operacao-confirmada-dialog";
+import { useDispatch } from "react-redux";
 
 interface ConfirmarOperacaoDialogProps {
     children: ReactNode,
     reserva: Reserva,
-    tipo: string | undefined
+    tipo: "Entrega" | "Coleta"
 }
 
 const formSchema = z
@@ -38,9 +39,39 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
         }
     })
 
-    const onSubmit = (form: z.infer<typeof formSchema>) => {
+    const dispatch = useDispatch()
+
+    const onSubmit = (values: z.infer<typeof formSchema>) => {
+        if (
+            (reserva.dataEntrega && tipo === "Entrega") ||
+            (reserva.dataColeta && tipo === "Coleta")
+        ) {
+            form.setError("code", { type: "manual", message: "Operação inválida!" })
+            return
+        }
+
+        if (tipo === "Coleta" && !reserva.dataEntrega) {
+            form.setError("code", { type: "manual", message: "Não é possível coletar antes da entrega!" });
+            return;
+        }
+
+        if (
+            (tipo === "Entrega" && values.code !== reserva.codigoEntrega) ||
+            (tipo === "Coleta" && values.code !== reserva.codigoColeta)
+        ) {
+            form.setError("code", { type: "manual", message: `Código de ${tipo.toLocaleLowerCase()} inválido!` })
+            return
+        }
+
+        form.reset()
         setConfirmedOpen(true)
         setOpen(false)
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit(onSubmit)(e);
     }
     
     return (
@@ -54,13 +85,13 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
                 <Separator/>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
+                    <form onSubmit={handleSubmit} className="flex flex-col gap-5">
                         <FormField
                             control={form.control}
                             name="code"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Código</FormLabel>
+                                    <FormLabel>Código de {tipo}</FormLabel>
                                     <FormControl>
                                         <Input placeholder="A1B2C3D" type="text" {...field}/>
                                     </FormControl>
@@ -75,7 +106,7 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
                                     Cancelar
                                 </Button>
                             </Dialog.Close>
-                            <Button className="h-[2.625rem]">
+                            <Button className="h-[2.625rem]" type="submit">
                                 Confirmar
                             </Button>
                         </Dialog.Footer>
@@ -84,7 +115,12 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
             </Dialog.Content>
         </Dialog.Container>
 
-        <OperacaoConfirmadaDialog reserva={reserva} tipo={tipo} open={isConfirmedOpen} setOpen={setConfirmedOpen}/>
+        <OperacaoConfirmadaDialog
+            reserva={reserva}
+            tipo={tipo}
+            open={isConfirmedOpen}
+            setOpen={setConfirmedOpen}
+        />
         </>
     );
 }

@@ -5,7 +5,7 @@ import type { Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, Pen, X } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input, Label } from "../ui/input";
 import { Card } from "../ui/card";
@@ -25,17 +25,23 @@ import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { deleteReserva, updateReserva } from "@/redux/reservas/slice";
 import { stringifyAddress } from "@/consts/enderecos";
+import { useLocation } from "react-router";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
   tipo?: 'Entrega' | 'Coleta'
   children: ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  openClientDialog?: boolean
 }
 
 const formSchema = z
     .object({
         dataHoraInicial: z.date({message: "Por favor, preencha a data inicial"}),
         dataHoraFinal: z.date({message: "Por favor, preencha a data final"}),
+        dataEntrega: z.date().optional(),
+        dataColeta: z.date().optional(),
     })
     .refine((data) => data.dataHoraInicial <= data.dataHoraFinal, {
         message: "Data final não pode ser antes que a data inicial",
@@ -44,9 +50,22 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
-export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
+export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const [clientDialogOpen, setClientDialogOpen] = useState(false)
+  const location = useLocation()
+
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  useEffect(() => {
+    if (openClientDialog && isOpen) {
+      setClientDialogOpen(true);
+    } else if (!openClientDialog) {
+      setClientDialogOpen(false);
+    }
+  }, [openClientDialog, isOpen]);
 
   const { isGerente, isSuporte } = useCargo()
   
@@ -55,6 +74,8 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
     defaultValues: {
       dataHoraInicial: new Date(reserva.dataInicio),
       dataHoraFinal: new Date(reserva.dataTermino),
+      dataEntrega: reserva.dataEntrega ? new Date(reserva.dataEntrega) : undefined,
+      dataColeta: reserva.dataColeta ? new Date(reserva.dataColeta) : undefined,
     },
     mode: "onChange"
   })
@@ -66,21 +87,29 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
       ...reserva,
       dataInicio: values.dataHoraInicial.toISOString(),
       dataTermino: values.dataHoraFinal.toISOString(),
+      dataEntrega: values.dataEntrega?.toISOString(),
+      dataColeta: values.dataColeta?.toISOString(),
     }))
   }
 
   const dispatch = useDispatch()
 
+  const handleOpenChange = (open: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(open);
+    }
+    onOpenChange?.(open);
+  };
+
   const cancelarReserva = () => {
-    setIsOpen(false)
+    handleOpenChange(false)
     dispatch(deleteReserva(reserva.id))
   }
 
-  const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const isClientePage = location.pathname.startsWith('/reservas-cliente')
 
   return (
-    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Container open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -128,64 +157,115 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
             <Label>Endereço</Label>
             <Card.Container>
               <Card.Title>
-                {stringifyAddress(reserva.endereco)}
+                {reserva.endereco.name}
               </Card.Title>
             </Card.Container>
           </FormItem>
         </DadosEnderecoDialog>
 
-        <DadosClienteDialog cliente={reserva.cliente}>
-          <FormItem>
-            <Label>Cliente</Label>
-            <Card.Container>
-              <Card.Title>
-                {reserva.cliente.name}
-              </Card.Title>
-            </Card.Container>
-          </FormItem>
-        </DadosClienteDialog>
+        {!isClientePage && (
+          <DadosClienteDialog 
+            cliente={reserva.cliente} 
+            fromReservaId={reserva.id}
+            open={clientDialogOpen}
+            onOpenChange={setClientDialogOpen}
+          >
+            <FormItem>
+              <Label>Cliente</Label>
+              <Card.Container>
+                <Card.Title>
+                  {reserva.cliente.name}
+                </Card.Title>
+              </Card.Container>
+            </FormItem>
+          </DadosClienteDialog>
+        )}
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
-            <FormField
-              control={form.control}
-              name="dataHoraInicial"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data e Hora de Início</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      minuteStep={1}
-                      disabled={!isEditting}
-                      placeholder="Selecione uma data"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex items-center gap-2 w-full">
+              <FormField
+                control={form.control}
+                name="dataHoraInicial"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Início</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Selecione uma data"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="dataHoraFinal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data e Hora de Término</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      minuteStep={1}
-                      disabled={!isEditting}
-                      placeholder="Selecione uma data"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="dataHoraFinal"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Término</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Selecione uma data"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 w-full">
+              <FormField
+                control={form.control}
+                name="dataEntrega"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Entrega</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Não houve entrega"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="dataColeta"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Coleta</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Não houve coleta"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <Dialog.Footer className="block space-y-3">
               {isEditting ? (
@@ -193,7 +273,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                   Salvar alterações
                 </Button>
               ) : isGerente() && (
-                <div className="w-full flex gap-3 items-center">
+                <div className="w-full flex gap-2 items-center">
                   {reserva.status === "Confirmada" && (
                     <CancelarReservaDialog
                       cliente={clientes[0]}
@@ -214,13 +294,13 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
                 </div>
               )}
 
-              { isSuporte() &&
+              {isSuporte() && tipo && (
                 <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo}>
                   <Button className="w-full h-[2.625rem]">
                     Confirmar {tipo}
                   </Button>
                 </ConfirmarOperacaoDialog>
-              }
+              )}
 
               <Dialog.Close asChild>
                 <Button variant="outline" className="w-full">

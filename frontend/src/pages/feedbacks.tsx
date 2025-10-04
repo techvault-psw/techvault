@@ -40,13 +40,11 @@ export default function FeedbacksPage() {
                         Ordenar por
                     </Button>
                 </div>
-                {clienteAtual && (
-                    <DarFeedbackDialog>
-                        <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
-                            <Card.Title>Dar Feedback</Card.Title>
-                        </Card.Container>
-                    </DarFeedbackDialog>
-                )}
+                <DarFeedbackDialog>
+                    <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
+                        <Card.Title>Dar Feedback</Card.Title>
+                    </Card.Container>
+                </DarFeedbackDialog>
             </div>
 
             <Separator />

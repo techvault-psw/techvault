@@ -8,7 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { Button } from "@/components/ui/button";
 import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import useCargo from "@/hooks/useCargo";
-import { useNavigate, useParams } from "react-router";
+import { useNavigate, useParams, useLocation } from "react-router";
 import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog";
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
@@ -29,6 +29,8 @@ export default function EnderecosClientePage() {
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
+  const location = useLocation()
+  const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
 
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
@@ -106,7 +108,15 @@ export default function EnderecosClientePage() {
       )}
 
       <Button
-        onClick={() => history.back()}
+        onClick={() => {
+          const returnTo = state?.returnTo || "/clientes";
+          navigate(returnTo, { 
+            state: { 
+              fromClientDialog: numberId,
+              fromReservaId: state?.fromReservaId
+            } 
+          });
+        }}
         className="w-full max-w-100 mx-auto mt-auto flex-none" variant="outline"
       >
         <ArrowLeftIcon className="size-5" />
