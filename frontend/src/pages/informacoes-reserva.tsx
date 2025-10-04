@@ -95,6 +95,19 @@ export default function InformacoesReservasPage() {
             </FormItem>
 
             <FormItem>
+              <Label htmlFor="endereco">
+                Endereço de Entrega:
+              </Label>
+
+              <Input
+                disabled
+                id="endereco"
+                type="text"
+                value={reserva.endereco.name}
+              />
+            </FormItem>
+
+            <FormItem>
               <Label htmlFor="inicio">
                 Data e Hora de Início:
               </Label>
@@ -117,19 +130,6 @@ export default function InformacoesReservasPage() {
                 id="termino"
                 type="text"
                 value={formattedEndDate}
-              />
-            </FormItem>
-
-            <FormItem>
-              <Label htmlFor="endereco">
-                Endereço de Entrega:
-              </Label>
-
-              <Input
-                disabled
-                id="endereco"
-                type="text"
-                value={reserva.endereco.name}
               />
             </FormItem>
           </div>
