@@ -21,7 +21,7 @@ export type Reserva = {
   cliente: Cliente
 }
 
-export type NewReserva = Optional<Reserva, "id" | "codigoEntrega" | "codigoColeta">
+export type NewReserva = Optional<Reserva, "id" | "codigoEntrega" | "codigoColeta" | "valor">
 
 const initialState: { reservas: Reserva[] } = {
   reservas: []

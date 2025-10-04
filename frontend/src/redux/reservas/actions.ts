@@ -1,3 +1,4 @@
+import { differenceInMilliseconds } from "date-fns";
 import type { NewReserva, Reserva } from "./slice";
 
 const gerarCodigo = () => {
@@ -16,11 +17,18 @@ const gerarCodigo = () => {
 };
 
 export const addReservaAction = (reservas: Reserva[], newReserva: NewReserva) => {
+  const valorHoraPacote = newReserva.pacote.value
+  const dataInicio = new Date(newReserva.dataInicio)
+  const dataTermino = new Date(newReserva.dataTermino)
+  const horasReserva = differenceInMilliseconds(dataTermino, dataInicio) / (1000 * 60 * 60)
+  const valorReserva = valorHoraPacote * horasReserva
+
   reservas.push({
     ...newReserva,
     id: reservas.length,
     codigoEntrega: gerarCodigo(),
-    codigoColeta: gerarCodigo()
+    codigoColeta: gerarCodigo(),
+    valor: valorReserva,
   })
 }
 

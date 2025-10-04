@@ -3,6 +3,7 @@ import { PageContainer } from "@/components/page-container"
 import { PageTitle } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { formatCurrency } from "@/lib/format-currency"
 import type { RootState } from "@/redux/root-reducer"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
@@ -33,6 +34,10 @@ export default function PagamentoReservaPage() {
         }
     })
 
+    const valorReserva = reserva.valor
+    const taxaTransporte = 40.00
+    const valorTotal = reserva.valor + taxaTransporte
+
     return (
         <PageContainer.Card>
             <PageTitle>
@@ -57,19 +62,19 @@ export default function PagamentoReservaPage() {
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
-                            <span>R$ 660,00</span>
+                            <span>{formatCurrency(valorReserva)}</span>
                         </div>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Taxa de Transporte:</span>
-                            <span>R$ 40,00</span>
+                            <span>{formatCurrency(taxaTransporte)}</span>
                         </div>
 
                         <Separator/>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Total:</span>
-                            <span className="font-semibold">R$ 700,00</span>
+                            <span className="font-semibold">{formatCurrency(valorTotal)}</span>
                         </div>
                     </div>
 
@@ -104,19 +109,19 @@ export default function PagamentoReservaPage() {
                     <div className="flex flex-col gap-1.5">
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
-                            <span>R$ 660,00</span>
+                            <span>{formatCurrency(valorReserva)}</span>
                         </div>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Taxa de Transporte:</span>
-                            <span>R$ 40,00</span>
+                            <span>{formatCurrency(taxaTransporte)}</span>
                         </div>
 
                         <Separator/>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Total:</span>
-                            <span className="font-semibold">R$ 700,00</span>
+                            <span className="font-semibold">{formatCurrency(valorTotal)}</span>
                         </div>
                     </div>
                 </div>

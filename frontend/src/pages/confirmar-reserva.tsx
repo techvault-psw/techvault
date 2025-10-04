@@ -85,7 +85,6 @@ export default function ConfirmarReservaPage() {
 
     const novaReserva: NewReserva = {
       pacote: pacotes[numberId],
-      valor: pacotes[numberId].value,
       status: "Confirmada" as const,
       dataInicio: data.dataHoraInicial.toISOString(),
       dataTermino: data.dataHoraFinal.toISOString(),
