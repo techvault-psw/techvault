@@ -14,6 +14,7 @@ import { Link, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
+import { Card } from "@/components/ui/card";
 
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
@@ -34,16 +35,25 @@ export default function MinhasReservasPage() {
         <PageContainer.List>
             <PageTitle>Minhas Reservas</PageTitle>
 
-            <div className="flex items-center gap-4 flex-shrink-0">
-                <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                    <FilterIcon className="size-4.5" />
-                    Filtros
-                </Button>
+            <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
+                <div className="flex items-center gap-4 flex-shrink-0">
+                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                        <FilterIcon className="size-4.5" />
+                        Filtros
+                    </Button>
 
-                <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                    <SlidersIcon className="size-4.5" />
-                    Ordenar por
-                </Button>
+                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                        <SlidersIcon className="size-4.5" />
+                        Ordenar por
+                    </Button>
+                </div>
+                {clienteAtual && (
+                    <Link to="/pacotes-disponiveis" className="w-full max-w-120 lg:flex lg:justify-end">
+                        <Card.Container className="sm:w-120 lg:w-90 bg-black hover:bg-slate-900">
+                            <Card.Title>Deseja fazer uma nova reserva?</Card.Title>
+                        </Card.Container>
+                    </Link>
+                )}
             </div>
 
             {!reservasFiltradas.length && (
