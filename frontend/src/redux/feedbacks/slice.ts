@@ -42,7 +42,7 @@ const feedbacksSlice = createSlice({
       .addCase(fetchFeedbacks.fulfilled,       (state, action) => { state.status = 'loaded'; feedbacksAdapter.setAll(state, action.payload) })
       .addCase(fetchFeedbacks.rejected,        (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar feedbacks!' })
       .addCase(addFeedbackServer.pending,      (state, action) => { state.status = 'saving' })
-      .addCase(addFeedbackServer.fulfilled,    (state, action) => { state.status = 'saved';  feedbacksAdapter.addOne(state, action.payload) })
+      .addCase(addFeedbackServer.fulfilled,    (state, action) => { state.status = 'saved'; })
       .addCase(addFeedbackServer.rejected,     (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar feedback!' })
       .addCase(updateFeedbackServer.pending,   (state, action) => { state.status = 'saving' })
       .addCase(updateFeedbackServer.fulfilled, (state, action) => { state.status = 'saved';  feedbacksAdapter.upsertOne(state, action.payload) })
