@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 
 import { PacoteImage } from "@/components/pacote-image";
-import { Link, useNavigate } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
@@ -21,11 +21,11 @@ export default function MinhasReservasPage() {
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
 
-    const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+    const location = useLocation()
 
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])
 

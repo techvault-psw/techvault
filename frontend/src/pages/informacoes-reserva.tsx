@@ -17,10 +17,9 @@ import { ptBR } from "date-fns/locale"
 import { X } from "lucide-react"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useNavigate, useParams } from "react-router"
+import { Link, useLocation, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
-  
   const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
   const { id } = useParams<{ id: string }>();
 
@@ -37,6 +36,7 @@ export default function InformacoesReservasPage() {
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
   
   const navigate = useNavigate()
+  const location = useLocation()
   
   const dispatch = useDispatch()
 
@@ -49,7 +49,8 @@ export default function InformacoesReservasPage() {
 
   useEffect(() => {
     if (!clienteAtual) {
-      navigate("/login")
+      const fullPath = location.pathname + location.search + location.hash;
+      navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
     }
   }, [])
 

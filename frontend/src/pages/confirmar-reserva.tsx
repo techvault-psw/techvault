@@ -1,4 +1,4 @@
-import { useNavigate, useParams } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux';
 import { addReserva, type NewReserva, type Reserva } from '@/redux/reservas/slice'; 
 
@@ -117,9 +117,12 @@ export default function ConfirmarReservaPage() {
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
+    const location = useLocation()
+
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            const fullPath = location.pathname + location.search + location.hash;
+            navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
     }, [])
 

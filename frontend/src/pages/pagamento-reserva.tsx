@@ -6,7 +6,7 @@ import { Separator } from "@/components/ui/separator"
 import type { RootState } from "@/redux/root-reducer"
 import { useEffect } from "react"
 import { useSelector } from "react-redux"
-import { Link, useNavigate, useParams } from "react-router"
+import { Link, useLocation, useNavigate, useParams } from "react-router"
 
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
@@ -23,11 +23,13 @@ export default function PagamentoReservaPage() {
     const pacote = reserva.pacote
 
     const navigate = useNavigate()
+    const location = useLocation()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            const fullPath = location.pathname + location.search + location.hash;
+            navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
     })
 
