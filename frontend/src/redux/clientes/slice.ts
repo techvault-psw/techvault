@@ -1,56 +1,71 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import type { Cliente } from "@/consts/clientes";
-import { fetchClientes } from "./fetch";
+import { addClienteServer, deleteClienteServer, fetchClientes, updateClienteServer } from "./fetch";
+import type { Optional } from "@/types/optional";
+import type { InitialState, RootState } from "../root-reducer";
 
-type ClienteState = {
-  clientes: Cliente[];
-  clienteAtual?:Cliente
-};
+export type Cliente = {
+  id: number
+  name: string
+  email: string
+  phone: string
+  registrationDate: string
+  password: string
+  role: "Cliente" | "Gerente" | "Suporte"; 
+}
+export type NewCliente = Optional<Cliente, 'id'>
+export type ClienteServer = Cliente
 
-const initialState: ClienteState = {
-  clientes: [],
-  clienteAtual:undefined
-};
+export type NewClienteServer = Optional<ClienteServer, 'id'>
+const clientesAdapter = createEntityAdapter<Cliente>()
+
+const ClienteInitialState = clientesAdapter.getInitialState<InitialState & { clienteAtual?: Cliente}>({
+  status: 'not_loaded',
+  error: null,
+  clienteAtual: undefined
+})
 
 const clienteSlice = createSlice({
   name: "cliente",
-  initialState,
+  initialState: ClienteInitialState,
   reducers: {
-    addCliente: (state, action: PayloadAction<Cliente>) => {
-      state.clientes.push(action.payload);
-    },
-    updateCliente: (state, action: PayloadAction<Cliente>) => {
-      const index = state.clientes.findIndex(c => c.id === action.payload.id);
-      if (index !== -1) {
-        state.clientes[index] = action.payload;
-      }
-    },
-    deleteCliente: (state, action: PayloadAction<number>) => {
-      state.clientes = state.clientes.filter(c => c.id !== action.payload);
 
-      if (state.clienteAtual?.id === action.payload) {
-        state.clienteAtual = undefined;
-      }
-    },
     loginCliente: (state, action: PayloadAction<Pick<Cliente, "email" | "password">>) => {
       const clientePayload = action.payload
       const { email, password } = clientePayload
 
-      const cliente = state.clientes.find(cliente => cliente.email === email && cliente.password === password);
+      const cliente = Object.values(state.entities).find(cliente => cliente.email === email && cliente.password === password);
       if (cliente) {
         state.clienteAtual = cliente;
       } 
     },
+    
     logoutCliente: (state) => {
       state.clienteAtual = undefined;
     }
   },
   extraReducers: (builder) => {
-    builder.addCase(fetchClientes.fulfilled, (_, action) => action.payload)
+    builder
+      .addCase(fetchClientes.pending,         (state, action) => { state.status = 'loading' })
+      .addCase(fetchClientes.fulfilled,       (state, action) => { state.status = 'loaded'; clientesAdapter.setAll(state, action.payload) })
+      .addCase(fetchClientes.rejected,        (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar Clientes!' })
+      .addCase(addClienteServer.pending,      (state, action) => { state.status = 'saving' })
+      .addCase(addClienteServer.fulfilled,    (state, action) => { state.status = 'saved';  clientesAdapter.addOne(state, action.payload) })
+      .addCase(addClienteServer.rejected,     (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar feedback!' })
+      .addCase(updateClienteServer.pending,   (state, action) => { state.status = 'saving' })
+      .addCase(updateClienteServer.fulfilled, (state, action) => { state.status = 'saved';  clientesAdapter.upsertOne(state, action.payload) })
+      .addCase(updateClienteServer.rejected,  (state, action) => { state.status = 'failed'; state.error = 'Falha ao atualizar feedback!' })
+      .addCase(deleteClienteServer.pending,   (state, action) => { state.status = 'deleting' })
+      .addCase(deleteClienteServer.fulfilled, (state, action) => { state.status = 'deleted'; clientesAdapter.removeOne(state, action.payload) })
+      .addCase(deleteClienteServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao excluir feedback!' })
   } 
 });
 
-export const { addCliente, updateCliente, deleteCliente, loginCliente, logoutCliente } = clienteSlice.actions;
-
+export const { loginCliente, logoutCliente } = clienteSlice.actions;
 export const clienteReducer = clienteSlice.reducer;
+
+export const {
+  selectAll: selectAllClientes,
+  selectById: selectClientesById,
+  selectIds: selectClientesIds,
+} = clientesAdapter.getSelectors((reducer: RootState) => reducer.clienteReducer)
