@@ -13,6 +13,10 @@ import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog"
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import { selectAllEnderecos } from "@/redux/endereco/slice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
+import { fetchEnderecos } from "@/redux/endereco/fetch";
 
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
@@ -38,7 +42,17 @@ export default function EnderecosClientePage() {
     }
   }, [])
 
-  const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+  const dispatch = useDispatch<AppDispatch>()
+  const { status, error } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
+
+  useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+            dispatch(fetchEnderecos())
+        }
+    }, [status, dispatch])
+
+
+  const enderecos = useSelector(selectAllEnderecos)
   const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === numberId)
 
   return (
@@ -55,55 +69,67 @@ export default function EnderecosClientePage() {
 
       {enderecosCliente.length !== 0 && (
         <>
-          <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
-            {enderecosCliente.map((endereco: Endereco, i) => {
-              return (
-                <DadosEnderecoDialog endereco={endereco} key={i}>
-                  <Card.Container className="h-full">
-                    <Card.TextContainer className="h-full">
-                      <Card.Title>{endereco.name}</Card.Title>
-                      <Card.Description>
-                        {stringifyAddress(endereco)}
-                      </Card.Description>
-                    </Card.TextContainer>
-                  </Card.Container>
-                </DadosEnderecoDialog>
-              )
-            })}
-          </section>
+          {['loading', 'saving', 'deleting'].includes(status) ? (
+              <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+          ) : ['failed'].includes(status) ? (
+              <p className="text-lg text-white text-center py-2 w-full">{error}</p>
+          ) : (
+            <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
+              {enderecosCliente.map((endereco: Endereco, i) => {
+                return (
+                  <DadosEnderecoDialog endereco={endereco} key={i}>
+                    <Card.Container className="h-full">
+                      <Card.TextContainer className="h-full">
+                        <Card.Title>{endereco.name}</Card.Title>
+                        <Card.Description>
+                          {stringifyAddress(endereco)}
+                        </Card.Description>
+                      </Card.TextContainer>
+                    </Card.Container>
+                  </DadosEnderecoDialog>
+                )
+              })}
+            </section>
+          )}
 
-          <section className="hidden lg:block w-full scrollbar">
-            <Table.Container>
-              <Table.Header>
-                <tr>
-                  <Table.Head>Nome</Table.Head>
-                  <Table.Head>CEP</Table.Head>
-                  <Table.Head>Estado</Table.Head>
-                  <Table.Head>Cidade</Table.Head>
-                  <Table.Head>Logradouro</Table.Head>
-                  <Table.Head className="w-16"></Table.Head>
-                </tr>
-              </Table.Header>
-              <Table.Body>
-                {enderecosCliente.map((endereco: Endereco, i) => {
-                  return (
-                    <DadosEnderecoDialog endereco={endereco} key={i}>
-                      <Table.Row>
-                        <Table.Cell className="font-medium text-white">{endereco.name}</Table.Cell>
-                        <Table.Cell>{endereco.cep}</Table.Cell>
-                        <Table.Cell>{endereco.state}</Table.Cell>
-                        <Table.Cell>{endereco.city}</Table.Cell>
-                        <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
-                        <Table.Cell>
-                          <ArrowRightIcon className="size-6" />
-                        </Table.Cell>
-                      </Table.Row>
-                    </DadosEnderecoDialog>
-                  )
-                })}
-              </Table.Body>
-            </Table.Container>
-          </section>
+          {['loading', 'saving', 'deleting'].includes(status) ? (
+              <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+          ) : ['failed'].includes(status) ? (
+              <p className="text-lg text-white text-center py-2 w-full">{error}</p>
+          ) : (
+            <section className="hidden lg:block w-full scrollbar">
+              <Table.Container>
+                <Table.Header>
+                  <tr>
+                    <Table.Head>Nome</Table.Head>
+                    <Table.Head>CEP</Table.Head>
+                    <Table.Head>Estado</Table.Head>
+                    <Table.Head>Cidade</Table.Head>
+                    <Table.Head>Logradouro</Table.Head>
+                    <Table.Head className="w-16"></Table.Head>
+                  </tr>
+                </Table.Header>
+                <Table.Body>
+                  {enderecosCliente.map((endereco: Endereco, i) => {
+                    return (
+                      <DadosEnderecoDialog endereco={endereco} key={i}>
+                        <Table.Row>
+                          <Table.Cell className="font-medium text-white">{endereco.name}</Table.Cell>
+                          <Table.Cell>{endereco.cep}</Table.Cell>
+                          <Table.Cell>{endereco.state}</Table.Cell>
+                          <Table.Cell>{endereco.city}</Table.Cell>
+                          <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
+                          <Table.Cell>
+                            <ArrowRightIcon className="size-6" />
+                          </Table.Cell>
+                        </Table.Row>
+                      </DadosEnderecoDialog>
+                    )
+                  })}
+                </Table.Body>
+              </Table.Container>
+            </section>
+          )}
         </>
       )}
 
