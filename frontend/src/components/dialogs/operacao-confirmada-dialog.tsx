@@ -19,6 +19,7 @@ export const OperacaoConfirmadaDialog = ({ tipo, reserva, open, setOpen }: Opera
             ...reserva,
             dataEntrega: tipo === "Entrega" ? now : reserva.dataEntrega,
             dataColeta: tipo === "Coleta" ? now : reserva.dataColeta,
+            status: tipo === "Coleta" ? "Concluída" : reserva.status,
         }))
 
         setOpen(isOpen)

@@ -15,6 +15,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
 
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
@@ -29,7 +30,24 @@ export default function MinhasReservasPage() {
         }
     }, [])
 
-    const reservasFiltradas = reservas.filter(reserva => reserva.cliente.id === clienteAtual?.id)
+    const reservasFiltradas = reservas
+        .filter(reserva => reserva.cliente.id === clienteAtual?.id)
+        .sort((a, b) => {
+            const statusOrder: Record<string, number> = {
+                "Confirmada": 1,
+                "Concluída": 2,
+                "Cancelada": 3
+            };
+
+            const statusA = statusOrder[a.status] ?? 99
+            const statusB = statusOrder[b.status] ?? 99
+
+            if (statusA !== statusB) {
+                return statusA - statusB
+            }
+
+            return new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime()
+        })
 
     return (
         <PageContainer.List>
@@ -91,7 +109,15 @@ export default function MinhasReservasPage() {
                             <Separator/>
 
                             <div className="grid grid-cols-[1.8fr_1.2fr] grid-rows-3 gap-1 text-white">
-                                <p>Status:</p><p className="text-right">{reserva.status}</p>
+                                <p>Status:</p><p className="text-right">
+                                    {reserva.status === "Confirmada" ? (
+                                        <Badge className="py-0" variant="green">{reserva.status}</Badge>
+                                    ) : reserva.status === "Concluída" ? (
+                                        <Badge className="py-0" variant="purple">{reserva.status}</Badge>
+                                    ) : reserva.status === "Cancelada" && (
+                                        <Badge className="py-0" variant="dark-red">{reserva.status}</Badge>
+                                    )}
+                                </p>
                                 <p>Data e Hora de Início:</p><p className="text-right">{formattedStartDate}</p>
                                 <p>Data e Hora de Término:</p><p className="text-right">{formattedEndDate}</p>
                             </div>

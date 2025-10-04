@@ -34,6 +34,8 @@ export default function InformacoesReservasPage() {
   const formattedValue = formatCurrency(reserva.valor)
   const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
   const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
+  const formattedDataEntrega = reserva.dataEntrega ? format(reserva.dataEntrega, "dd/MM/yyyy HH:mm", {locale: ptBR}) : undefined
+  const formattedDataColeta = reserva.dataColeta ? format(reserva.dataColeta, "dd/MM/yyyy HH:mm", {locale: ptBR}) : undefined
   
   const navigate = useNavigate()
   const location = useLocation()
@@ -135,7 +137,7 @@ export default function InformacoesReservasPage() {
 
         <Separator />
 
-        <div className="flex flex-col gap-4 md:flex-row">
+        <div className="flex flex-col gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
           <div className="md:flex-1 flex flex-col gap-4">
             <h3 className="font-semibold text-white text-lg leading-none">Código para entrega:</h3>
             
@@ -151,6 +153,34 @@ export default function InformacoesReservasPage() {
               {reserva.codigoColeta}
             </HighlightBox>
           </div>
+
+          <FormItem className="gap-4">
+            <Label htmlFor="entrega">
+              Data e Hora de Entrega:
+            </Label>
+
+            <Input
+              disabled
+              id="entrega"
+              type="text"
+              className="flex-1"
+              value={formattedDataEntrega ?? "Não houve entrega"}
+            />
+          </FormItem>
+
+          <FormItem className="gap-4">
+            <Label htmlFor="coleta">
+              Data e Hora de Coleta:
+            </Label>
+
+            <Input
+              disabled
+              id="coleta"
+              type="text"
+              className="flex-1"
+              value={formattedDataColeta ?? "Não houve coleta"}
+            />
+          </FormItem>
         </div>
       </div>
 
