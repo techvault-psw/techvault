@@ -13,7 +13,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { pacotes } from "@/consts/pacotes";
 import { StarRating } from "../ui/star-rating";
 import { 
   Form,
@@ -25,10 +24,10 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeedback } from "@/redux/feedbacks/slice";
-import { clientes } from "@/consts/clientes";
+import { addFeedbackServer } from "@/redux/feedbacks/fetch";
 import type { RootState } from "@/redux/root-reducer";
 import { useLocation, useNavigate } from "react-router";
+import type { AppDispatch } from "@/redux/store";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -59,7 +58,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     },
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -70,7 +69,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
 
     if (!pacote || !clienteAtual) return
 
-    dispatch(addFeedback({
+    dispatch(addFeedbackServer({
       rating: values.rating,
       comentario: values.comment,
       cliente: clienteAtual,
