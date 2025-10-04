@@ -5,7 +5,7 @@ import type { Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, Pen, X } from "lucide-react";
-import { useState, type ReactNode } from "react";
+import { useState, useEffect, type ReactNode } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input, Label } from "../ui/input";
 import { Card } from "../ui/card";
@@ -31,6 +31,9 @@ interface DetalhesReservaDialogProps {
   reserva: Reserva
   tipo?: 'Entrega' | 'Coleta'
   children: ReactNode
+  open?: boolean
+  onOpenChange?: (open: boolean) => void
+  openClientDialog?: boolean
 }
 
 const formSchema = z
@@ -45,10 +48,22 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
-export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReservaDialogProps) => {
+export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
-  const [isOpen, setIsOpen] = useState(false)
+  const [internalOpen, setInternalOpen] = useState(false)
+  const [clientDialogOpen, setClientDialogOpen] = useState(false)
   const location = useLocation()
+
+  const isControlled = controlledOpen !== undefined;
+  const isOpen = isControlled ? controlledOpen : internalOpen;
+
+  useEffect(() => {
+    if (openClientDialog && isOpen) {
+      setClientDialogOpen(true);
+    } else if (!openClientDialog) {
+      setClientDialogOpen(false);
+    }
+  }, [openClientDialog, isOpen]);
 
   const { isGerente, isSuporte } = useCargo()
   
@@ -73,15 +88,22 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
 
   const dispatch = useDispatch()
 
+  const handleOpenChange = (open: boolean) => {
+    if (!isControlled) {
+      setInternalOpen(open);
+    }
+    onOpenChange?.(open);
+  };
+
   const cancelarReserva = () => {
-    setIsOpen(false)
+    handleOpenChange(false)
     dispatch(deleteReserva(reserva.id))
   }
 
   const isClientePage = location.pathname.startsWith('/reservas-cliente')
 
   return (
-    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Container open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -136,7 +158,12 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children }: DetalhesReser
         </DadosEnderecoDialog>
 
         {!isClientePage && (
-          <DadosClienteDialog cliente={reserva.cliente}>
+          <DadosClienteDialog 
+            cliente={reserva.cliente} 
+            fromReservaId={reserva.id}
+            open={clientDialogOpen}
+            onOpenChange={setClientDialogOpen}
+          >
             <FormItem>
               <Label>Cliente</Label>
               <Card.Container>
