@@ -40,6 +40,8 @@ const formSchema = z
     .object({
         dataHoraInicial: z.date({message: "Por favor, preencha a data inicial"}),
         dataHoraFinal: z.date({message: "Por favor, preencha a data final"}),
+        dataEntrega: z.date().optional(),
+        dataColeta: z.date().optional(),
     })
     .refine((data) => data.dataHoraInicial <= data.dataHoraFinal, {
         message: "Data final não pode ser antes que a data inicial",
@@ -72,6 +74,8 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
     defaultValues: {
       dataHoraInicial: new Date(reserva.dataInicio),
       dataHoraFinal: new Date(reserva.dataTermino),
+      dataEntrega: reserva.dataEntrega ? new Date(reserva.dataEntrega) : undefined,
+      dataColeta: reserva.dataColeta ? new Date(reserva.dataColeta) : undefined,
     },
     mode: "onChange"
   })
@@ -83,6 +87,8 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
       ...reserva,
       dataInicio: values.dataHoraInicial.toISOString(),
       dataTermino: values.dataHoraFinal.toISOString(),
+      dataEntrega: values.dataEntrega?.toISOString(),
+      dataColeta: values.dataColeta?.toISOString(),
     }))
   }
 
@@ -177,45 +183,89 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
 
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5">
-            <FormField
-              control={form.control}
-              name="dataHoraInicial"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data e Hora de Início</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      minuteStep={1}
-                      disabled={!isEditting}
-                      placeholder="Selecione uma data"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+            <div className="flex items-center gap-2 w-full">
+              <FormField
+                control={form.control}
+                name="dataHoraInicial"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Início</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Selecione uma data"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
 
-            <FormField
-              control={form.control}
-              name="dataHoraFinal"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Data e Hora de Término</FormLabel>
-                  <FormControl>
-                    <DateTimePicker
-                      value={field.value}
-                      onChange={field.onChange}
-                      minuteStep={1}
-                      disabled={!isEditting}
-                      placeholder="Selecione uma data"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+              <FormField
+                control={form.control}
+                name="dataHoraFinal"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Término</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Selecione uma data"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div className="flex items-center gap-2 w-full">
+              <FormField
+                control={form.control}
+                name="dataEntrega"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Entrega</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Não houve entrega"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="dataColeta"
+                render={({ field }) => (
+                  <FormItem className="flex-1">
+                    <FormLabel>Data e Hora de Coleta</FormLabel>
+                    <FormControl>
+                      <DateTimePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        minuteStep={1}
+                        disabled={!isEditting}
+                        placeholder="Não houve coleta"
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
 
             <Dialog.Footer className="block space-y-3">
               {isEditting ? (
@@ -223,7 +273,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
                   Salvar alterações
                 </Button>
               ) : isGerente() && (
-                <div className="w-full flex gap-3 items-center">
+                <div className="w-full flex gap-2 items-center">
                   {reserva.status === "Confirmada" && (
                     <CancelarReservaDialog
                       cliente={clientes[0]}
@@ -244,13 +294,13 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
                 </div>
               )}
 
-              { isSuporte() &&
+              {isSuporte() && tipo && (
                 <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo}>
                   <Button className="w-full h-[2.625rem]">
                     Confirmar {tipo}
                   </Button>
                 </ConfirmarOperacaoDialog>
-              }
+              )}
 
               <Dialog.Close asChild>
                 <Button variant="outline" className="w-full">

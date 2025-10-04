@@ -1,10 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { addReservaAction, deleteReservaAction, updateReservaAction } from "./actions";
-import { clientes, type Cliente } from "@/consts/clientes"
+import { type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
 import type { Pacote } from "../pacotes/slice";
-import { pacotes } from "@/consts/pacotes";
-import { enderecosInitialState } from "../endereco/slice";
 import type { Endereco } from "@/consts/enderecos";
 import { fetchReservas } from "./fetch";
 
@@ -15,20 +13,20 @@ export type Reserva = {
     status: "Confirmada" | "Cancelada" | "Concluída"
     dataInicio: string
     dataTermino: string
+    dataEntrega?: string
+    dataColeta?: string
     endereco: Endereco
     codigoEntrega: string
     codigoColeta: string
     cliente: Cliente
-    
 }
 
 export type NewReserva = Optional<Reserva,"id">
 
-const { enderecos } = enderecosInitialState
-
 const initialState: {reservas: Reserva[] } = {
     reservas: []
 }
+
 const reservasSlice = createSlice( {
     name:'reserva',
     initialState,
@@ -38,7 +36,7 @@ const reservasSlice = createSlice( {
         deleteReserva: (state, action : {payload: number}) => deleteReservaAction(state.reservas, action.payload)
     },
     extraReducers: (builder) => {
-    builder.addCase(fetchReservas.fulfilled, (_, action) => action.payload)
+        builder.addCase(fetchReservas.fulfilled, (_, action) => action.payload)
     }
 })
 

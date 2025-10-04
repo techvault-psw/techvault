@@ -5,9 +5,6 @@ export const addReservaAction = (reservas: Reserva[], newReserva: NewReserva) =>
         ...newReserva,
         id: reservas.length,
     })
-
-    //debug:
-    console.log(newReserva)
 }
 
 export const updateReservaAction = (
