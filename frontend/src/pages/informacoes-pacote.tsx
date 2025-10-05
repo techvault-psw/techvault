@@ -5,33 +5,31 @@ import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency } from "@/lib/format-currency";
+import { fetchPacotes } from "@/redux/pacotes/fetch";
+import { selectAllPacotes, selectPacoteById } from '@/redux/pacotes/slice';
 import type { RootState } from "@/redux/root-reducer";
-import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router";
-import { selectAllPacotes } from '@/redux/pacotes/slice';
-import { useEffect } from "react";
-import { fetchPacote } from "@/redux/pacotes/fetch";
-import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate, useParams } from "react-router";
 
 export default function InformacoesPacotePage() {
   const { id } = useParams<{ id: string }>();
 
   const dispatch = useDispatch<AppDispatch>()
-  const { status } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
+  const { status: statusP, error: errorP } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
 
-    useEffect(() => {
-      if (['not_loaded', 'saved', 'deleted'].includes(status)) {
-        dispatch(fetchPacote())
-      }
-    }, [status, dispatch])
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusP)) {
+      dispatch(fetchPacotes())
+    }
+  }, [statusP, dispatch])
   
   const pacotes = useSelector(selectAllPacotes);
 
   const numberId = Number(id)
 
-  
-  const pacote = pacotes[numberId]
+  const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
   const formattedValue = formatCurrency(pacote?.value ?? 0)
   
   const navigate = useNavigate()
@@ -47,10 +45,27 @@ export default function InformacoesPacotePage() {
       navigate(`/login?redirectTo=${encodeURIComponent(url)}`)
     }
   }
+
   if (isNaN(numberId) || numberId >= pacotes.length) {
     return
   }
-  
+
+  if (['loading', 'saving', 'deleting'].includes(statusP)) {
+    return (
+      <PageContainer.Card>
+        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      </PageContainer.Card>
+    )
+  }
+
+  if (['failed'].includes(statusP)) {
+    return (
+      <PageContainer.Card>
+        <p className="text-lg text-white text-center py-2 w-full">{errorP}</p>
+      </PageContainer.Card>
+    )
+  }
+
   return (
     <PageContainer.Card>
       <div className="flex flex-col items-center gap-3">

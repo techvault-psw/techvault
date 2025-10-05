@@ -1,9 +1,8 @@
-import { API_URL } from "@/lib/api-url"
 import { httpDelete, httpGet, httpPost, httpPut } from "@/lib/fetch-utils"
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import type { Pacote, PacoteServer, NewPacote, NewPacoteServer } from "./slice"
+import type { NewPacote, NewPacoteServer, Pacote, PacoteServer } from "./slice"
 
-export const fetchPacote = createAsyncThunk<Pacote[]>('pacotes/fetchPacotes',
+export const fetchPacotes = createAsyncThunk<Pacote[]>('pacotes/fetchPacotess',
   async () => {
       return await httpGet(`/pacotes`)
   }

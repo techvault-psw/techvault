@@ -1,7 +1,7 @@
-import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
 import { type Optional } from "@/types/optional";
-import type { InitialState, RootState } from "../root-reducer"
-import { addPacoteServer, deletePacoteServer, fetchPacote, updatePacoteServer } from "./fetch"
+import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
+import type { InitialState, RootState } from "../root-reducer";
+import { addPacoteServer, deletePacoteServer, fetchPacotes, updatePacoteServer } from "./fetch";
 
 export type Pacote = {
   id: number
@@ -32,11 +32,11 @@ const pacotesSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(fetchPacote.pending,          (state, action) => { state.status = 'loading' })
-      .addCase(fetchPacote.fulfilled,        (state, action) => { state.status = 'loaded'; pacoteAdapter.setAll(state, action.payload) })
-      .addCase(fetchPacote.rejected,         (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar Pacotes!' })
+      .addCase(fetchPacotes.pending,         (state, action) => { state.status = 'loading' })
+      .addCase(fetchPacotes.fulfilled,       (state, action) => { state.status = 'loaded'; pacoteAdapter.setAll(state, action.payload) })
+      .addCase(fetchPacotes.rejected,        (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar pacotes!' })
       .addCase(addPacoteServer.pending,      (state, action) => { state.status = 'saving' })
-      .addCase(addPacoteServer.fulfilled,    (state, action) => { state.status = 'saved'; })
+      .addCase(addPacoteServer.fulfilled,    (state, action) => { state.status = 'saved'; pacoteAdapter.addOne(state, action.payload) })
       .addCase(addPacoteServer.rejected,     (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar pacote!' })
       .addCase(updatePacoteServer.pending,   (state, action) => { state.status = 'saving' })
       .addCase(updatePacoteServer.fulfilled, (state, action) => { state.status = 'saved';  pacoteAdapter.upsertOne(state, action.payload) })

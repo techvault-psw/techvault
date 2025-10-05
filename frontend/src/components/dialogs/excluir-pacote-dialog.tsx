@@ -5,22 +5,14 @@ import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import type { Pacote } from "@/redux/pacotes/slice";
-import { useDispatch } from "react-redux";
-import { deletePacoteServer } from "@/redux/pacotes/fetch";
-import type { AppDispatch } from "@/redux/store";
 
 interface ExcluirPacoteDialogProps {
-  pacote: Pacote;
-  children: ReactNode;
+  pacote: Pacote
+  children: ReactNode
+  handleDeleteClick: () => void
 }
 
-export const ExcluirPacoteDialog = ({ pacote, children }: ExcluirPacoteDialogProps) => {
-  const dispatch = useDispatch<AppDispatch>();
-
-  const handleDelete = () => {
-    dispatch(deletePacoteServer(pacote));
-  };
-
+export const ExcluirPacoteDialog = ({ pacote, children, handleDeleteClick }: ExcluirPacoteDialogProps) => {
   return (
     <Dialog.Container>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -47,7 +39,7 @@ export const ExcluirPacoteDialog = ({ pacote, children }: ExcluirPacoteDialogPro
           </Dialog.Close>
 
           <Dialog.Close asChild>
-            <Button variant="destructive" onClick={handleDelete}>
+            <Button variant="destructive" onClick={handleDeleteClick}>
               <TrashIcon className="size-5" />
               Excluir
             </Button>

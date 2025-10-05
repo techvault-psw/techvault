@@ -335,11 +335,11 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
                   </Button>
                 ) : (
                   <div className="w-full flex gap-3 items-center">
-                    <ExcluirPacoteDialog pacote={pacote}>
-                        <Button variant="destructive">
-                            <Trash2 className="size-4"/>
-                            Excluir
-                        </Button>
+                    <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={handleDeleteClick}>
+                      <Button variant="destructive">
+                        <Trash2 className="size-4"/>
+                        Excluir
+                      </Button>
                     </ExcluirPacoteDialog>
 
                     <Button variant="outline" onClick={() => setIsEditting(true)}>
