@@ -20,18 +20,27 @@ import { selectAllFeedbacks } from "@/redux/feedbacks/slice";
 import { useEffect } from "react";
 import { type AppDispatch } from "@/redux/store";
 import { fetchFeedbacks } from "@/redux/feedbacks/fetch";
+import { fetchPacote } from "@/redux/pacotes/fetch";
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
 
     const dispatch = useDispatch<AppDispatch>()
-    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
+    const { status: statusF, error } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
 
     useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusF)) {
             dispatch(fetchFeedbacks())
         }
-    }, [status, dispatch])
+    }, [statusF, dispatch])
+
+    const { status: statusP } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
+    
+    useEffect(() => {
+      if (['not_loaded', 'saved', 'deleted'].includes(statusF)) {
+          dispatch(fetchPacote())
+      }
+    }, [statusP, dispatch])
 
     const feedbacks = useSelector(selectAllFeedbacks)
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
@@ -61,9 +70,9 @@ export default function FeedbacksPage() {
 
             <Separator />
         
-            {['loading', 'saving', 'deleting'].includes(status) ? (
+            {['loading', 'saving', 'deleting'].includes(statusF) ? (
                 <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
-            ) : ['failed'].includes(status) ? (
+            ) : ['failed'].includes(statusF) ? (
                 <p className="text-lg text-white text-center py-2 w-full">{error}</p>
             ) : (
                 <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
