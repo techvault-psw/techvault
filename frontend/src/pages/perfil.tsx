@@ -59,7 +59,7 @@ export default function PerfilPage() {
     })
 
     const dispatch = useDispatch<AppDispatch>();
-    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
+    const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
@@ -97,10 +97,10 @@ export default function PerfilPage() {
     }, [])
   
    useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusE)) {
             dispatch(fetchEnderecos())
         }
-    }, [status, dispatch])
+    }, [statusE, dispatch])
  
     const enderecos = useSelector(selectAllEnderecos)
 
@@ -190,16 +190,15 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
-                    {!enderecosCliente.length && (
+
+                    {['loading', 'saving', 'deleting'].includes(statusE) ? (
+                        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+                    ) : ['failed'].includes(statusE) ? (
+                        <p className="text-lg text-white text-center py-2 w-full">{errorE}</p>
+                    ) : enderecosCliente.length === 0 ? (
                         <p className='text-base text-gray text-center'>
                             Você ainda não possui nenhum endereço cadastrado.
                         </p>
-                    )}
-
-                    {['loading', 'saving', 'deleting'].includes(status) ? (
-                        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
-                    ) : ['failed'].includes(status) ? (
-                        <p className="text-lg text-white text-center py-2 w-full">{error}</p>
                     ) : (
                         <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
                             {enderecosCliente.map((endereco) => {
