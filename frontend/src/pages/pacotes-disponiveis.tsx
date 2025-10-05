@@ -5,13 +5,44 @@ import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/format-currency";
-import { Link } from "react-router";
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import type { RootState } from "@/redux/root-reducer";
+import { selectAllPacotes } from "@/redux/pacotes/slice";
+import { fetchPacote } from "@/redux/pacotes/fetch";
+import type { AppDispatch } from "@/redux/store";
 
 export default function PacotesDisponiveisPage() {
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
   const pacotesDisponiveis = pacotes.filter(pacote => pacote.quantity > 0)
+  
+  const dispatch = useDispatch<AppDispatch>()
+  const { status, error } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
+
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+      dispatch(fetchPacote())
+    }
+  }, [status, dispatch])
+
+  if (status === 'loading') {
+    return (
+      <PageContainer.List>
+        <PageTitle>Pacotes Disponíveis</PageTitle>
+          <p className="text-white text-center">Carregando pacotes...</p>
+      </PageContainer.List>
+    );
+  }
+
+    if (status === 'failed') {
+      return (
+        <PageContainer.List>
+          <PageTitle>Pacotes Disponíveis</PageTitle>
+          <p className="text-red-500 text-center">{error}</p>
+        </PageContainer.List>
+      );
+    }
 
   return (
     <PageContainer.List>
