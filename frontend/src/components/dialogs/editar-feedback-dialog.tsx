@@ -30,6 +30,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { updateFeedbackServer } from "@/redux/feedbacks/fetch";
 import { type AppDispatch } from "@/redux/store";
+import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -62,13 +63,13 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
 
   const dispatch = useDispatch<AppDispatch>()
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
   
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
 
-    const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
+    const pacote = useSelector((state: RootState) => selectPacoteById(state, Number(values.pacoteIndex)))
 
     if (!pacote) return
 

@@ -31,6 +31,8 @@ import { CriarEnderecoDialog } from "@/components/dialogs/criar-endereco-dialog"
 import { PlusIcon } from "@/components/icons/plus-icon";
 import { addReservaServer } from "@/redux/reservas/fetch";
 import { type AppDispatch } from "@/redux/store";
+import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
+import { selectAllEnderecos } from "@/redux/endereco/slice";
 
 const metodosPagamento = [
   "Cartão de Crédito",
@@ -60,8 +62,8 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
-  const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
+  const enderecos = useSelector(selectAllEnderecos)
   const reservas = useSelector(selectAllReservas)
 
   const form = useForm<FormData>({
@@ -79,11 +81,12 @@ export default function ConfirmarReservaPage() {
 
   const onSubmit = (data: FormData) => {
     const endereco = enderecos.find(endereco => endereco.name === data.endereco)
+    const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
 
-    if (!clienteAtual || !endereco) return;
+    if (!clienteAtual || !endereco || !pacote) return;
 
     const novaReserva: NewReserva = {
-      pacote: pacotes[numberId],
+      pacote,
       status: "Confirmada" as const,
       dataInicio: data.dataHoraInicial.toISOString(),
       dataTermino: data.dataHoraFinal.toISOString(),
