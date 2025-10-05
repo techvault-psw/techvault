@@ -1,6 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux';
-import { addReserva, type NewReserva, type Reserva } from '@/redux/reservas/slice';
+import { selectAllReservas, type NewReserva, type Reserva } from '@/redux/reservas/slice';
 
 
 
@@ -32,6 +32,8 @@ import { clientes } from "@/consts/clientes";
 import { useEffect } from "react";
 import { CriarEnderecoDialog } from "@/components/dialogs/criar-endereco-dialog";
 import { PlusIcon } from "@/components/icons/plus-icon";
+import { addReservaServer } from "@/redux/reservas/fetch";
+import { type AppDispatch } from "@/redux/store";
 
 const metodosPagamento = [
   "Cartão de Crédito",
@@ -63,7 +65,9 @@ type FormData = z.infer<typeof formSchema>;
 export default function ConfirmarReservaPage() {
   const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
   const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
-  const { reservas } = useSelector((state: RootState) => state.reservasReducer)
+  // const { reservas } = useSelector((state: RootState) => state.reservasReducer)
+  const reservas = useSelector(selectAllReservas)
+  
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -76,7 +80,7 @@ export default function ConfirmarReservaPage() {
     mode: "onChange"
   });
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
 
   const onSubmit = (data: FormData) => {
     const endereco = enderecos.find(endereco => endereco.name === data.endereco)
@@ -92,7 +96,7 @@ export default function ConfirmarReservaPage() {
       cliente: clienteAtual,
     };
     navigate(`/pagamento/${reservas.length}`);
-    dispatch(addReserva(novaReserva));
+    dispatch(addReservaServer(novaReserva));
   };
 
   const navigate = useNavigate();
