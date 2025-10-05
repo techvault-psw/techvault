@@ -13,16 +13,27 @@ import { Table } from "@/components/ui/table";
 import useCargo from '@/hooks/useCargo';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import type { AppDispatch } from '@/redux/store';
+import { fetchClientes } from '@/redux/clientes/fetch';
+import { selectAllClientes } from '@/redux/clientes/slice';
 
 
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
-  const {clientes} = useSelector((state: RootState) => state.clienteReducer);
+  const dispatch = useDispatch<AppDispatch>()
+    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+            dispatch(fetchClientes())
+        }
+    }, [status, dispatch])
+
+    const clientes = useSelector(selectAllClientes)
   const location = useLocation();
 
   const clientesFiltrados = clientes.filter(cliente =>
