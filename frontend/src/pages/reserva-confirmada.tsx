@@ -10,11 +10,13 @@ import { ptBR } from "date-fns/locale";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
+import { selectAllReservas } from "@/redux/reservas/slice";
 
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+    // const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+    const reservas = useSelector(selectAllReservas)
 
     const numberId = Number(id)
     const reserva = reservas.find((reserva) => reserva.id === numberId)
