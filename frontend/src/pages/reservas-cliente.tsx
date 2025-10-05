@@ -83,7 +83,7 @@ export default function ReservasClientePage() {
   const location = useLocation()
   const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
   const dispatch = useDispatch<AppDispatch>()
-  const { status } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
       navigate("/login")
@@ -91,10 +91,10 @@ export default function ReservasClientePage() {
   })
 
   useEffect(() => {
-            if (['not_loaded', 'saved', 'deleted'].includes(status)) {
-                dispatch(fetchReservas())
-            }
-        }, [status, dispatch])
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
+    }
+  }, [statusR, dispatch])
   
   const reservas = useSelector(selectAllReservas)
 
@@ -128,20 +128,24 @@ export default function ReservasClientePage() {
         </Button>
       </div>
 
-      {!filteredReservas.length && (
+      {['loading', 'saving', 'deleting'].includes(statusR) ? (
+          <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusR) ? (
+          <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : filteredReservas.length === 0 ? (
         <>
           <Separator />
           <p className='text-base text-white text-center w-full'>
             O cliente "{cliente.name}" ainda não realizou nenhuma reserva.
           </p>
         </>
+      ): (
+        <section className="w-full flex flex-col gap-4 scrollbar">
+          <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
+          <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} />
+          <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
+        </section>
       )}
-
-      <section className="w-full flex flex-col gap-4 scrollbar">
-        <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
-        <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} />
-        <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
-      </section>
 
       <Button
         variant="outline"

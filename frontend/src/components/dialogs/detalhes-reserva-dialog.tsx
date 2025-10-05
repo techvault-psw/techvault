@@ -20,10 +20,8 @@ import { ConfirmarOperacaoDialog } from "./confirmar-operacao-dialog";
 import { DadosClienteDialog } from "./dados-cliente-dialog";
 import { DadosEnderecoDialog } from "./dados-endereco-dialog";
 import { DadosPacoteDialog } from "./dados-pacote-dialog";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "@/redux/root-reducer";
+import { useDispatch } from "react-redux";
 import { cancelReservaServer, updateReservaServer } from "@/redux/reservas/fetch";
-import { stringifyAddress } from "@/consts/enderecos";
 import { useLocation } from "react-router";
 import { type AppDispatch } from "@/redux/store";
 

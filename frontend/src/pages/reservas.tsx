@@ -13,7 +13,7 @@ import { useNavigate, useLocation } from "react-router";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
+import { selectAllReservas, selectReservaById, type Reserva } from "@/redux/reservas/slice";
 import { stringifyAddress } from "@/consts/enderecos";
 import { agruparReservasPorData } from "@/lib/agrupar-reservas";
 import { type AppDispatch } from "@/redux/store";
@@ -28,13 +28,13 @@ export interface ReservaComTipo {
 export default function ReservasPage() {
   const { isGerente, isSuporte } = useCargo();
   const dispatch = useDispatch<AppDispatch>();
-  const {status, error} = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
   useEffect(() => {
-          if (['not_loaded', 'saved', 'deleted'].includes(status)) {
-              dispatch(fetchReservas())
-          }
-      }, [status, dispatch])
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
+    }
+  }, [statusR, dispatch])
   
   const reservas = useSelector(selectAllReservas)
   const navigate = useNavigate();
@@ -57,12 +57,11 @@ export default function ReservasPage() {
       setClienteToOpen(state.fromClientDialog);
     }
   }, [location]);
-
   
   const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
   const reservasPorData = agruparReservasPorData(reservasConfirmadas)
   
-  const reservaParaAbrir = reservaToOpen !== null ? reservas.find(r => r.id === reservaToOpen) : null;
+  const reservaParaAbrir = useSelector((state: RootState) => selectReservaById(state, reservaToOpen ?? -1)) ?? null
 
   return (
     <PageContainer.List> 
@@ -75,7 +74,11 @@ export default function ReservasPage() {
         </Button>
       </div>
 
-      {reservasPorData.length === 0 ? (
+      {['loading', 'saving', 'deleting'].includes(statusR) ? (
+        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusR) ? (
+        <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : reservasPorData.length === 0 ? (
         <p className="text-base text-white w-full text-center">
           Não há reservas confirmadas no momento.
         </p>

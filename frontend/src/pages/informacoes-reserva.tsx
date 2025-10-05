@@ -11,7 +11,7 @@ import { Separator } from "@/components/ui/separator"
 import { formatCurrency } from "@/lib/format-currency"
 import { cn } from "@/lib/utils"
 import { cancelReservaServer, fetchReservas } from "@/redux/reservas/fetch"
-import { selectAllReservas } from "@/redux/reservas/slice"
+import { selectAllReservas, selectReservaById } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
 import type { AppDispatch } from "@/redux/store"
 import { format } from "date-fns"
@@ -26,9 +26,7 @@ export default function InformacoesReservasPage() {
   const { id } = useParams<{ id: string }>();
 
   const numberId = Number(id)
-  const reserva = reservas.find((reserva) => reserva.id === numberId)
-  
- 
+  const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
   
   const pacote = reserva?.pacote
   const formattedValue = formatCurrency(reserva?.valor ?? 0) 
@@ -50,8 +48,7 @@ export default function InformacoesReservasPage() {
   }
 
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
-  const { status } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
-
+  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
   useEffect(() => {
     if (!clienteAtual) {
@@ -61,10 +58,10 @@ export default function InformacoesReservasPage() {
   }, [])
 
   useEffect(() => {
-    if (['not_loaded', 'saved', 'deleted'].includes(status)) {
-        dispatch(fetchReservas())
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
     }
-}, [status, dispatch])
+  }, [statusR, dispatch])
 
   if (isNaN(numberId) || numberId >= reservas.length || !reserva || !pacote) {
     return
@@ -90,132 +87,140 @@ export default function InformacoesReservasPage() {
 
       <Separator/>
 
-      <div className="flex flex-col gap-5 custom-scrollbar-ver">
-        <div className="flex flex-col gap-4">
-          <h3 className="font-semibold text-white text-lg leading-none">Informações:</h3>
+      {['loading', 'saving', 'deleting'].includes(statusR) ? (
+        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusR) ? (
+        <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : (
+        <>
+          <div className="flex flex-col gap-5 custom-scrollbar-ver">
+            <div className="flex flex-col gap-4">
+              <h3 className="font-semibold text-white text-lg leading-none">Informações:</h3>
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
-            <FormItem>
-              <Label htmlFor="value">
-                Valor total pago:
-              </Label>
+              <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-4">
+                <FormItem>
+                  <Label htmlFor="value">
+                    Valor total pago:
+                  </Label>
 
-              <Input
-                disabled
-                id="value"
-                type="text"
-                value={formattedValue}
-              />
-            </FormItem>
+                  <Input
+                    disabled
+                    id="value"
+                    type="text"
+                    value={formattedValue}
+                  />
+                </FormItem>
 
-            <FormItem>
-              <Label htmlFor="endereco">
-                Endereço de Entrega:
-              </Label>
+                <FormItem>
+                  <Label htmlFor="endereco">
+                    Endereço de Entrega:
+                  </Label>
 
-              <Input
-                disabled
-                id="endereco"
-                type="text"
-                value={reserva.endereco.name}
-              />
-            </FormItem>
+                  <Input
+                    disabled
+                    id="endereco"
+                    type="text"
+                    value={reserva.endereco.name}
+                  />
+                </FormItem>
 
-            <FormItem>
-              <Label htmlFor="inicio">
-                Data e Hora de Início:
-              </Label>
+                <FormItem>
+                  <Label htmlFor="inicio">
+                    Data e Hora de Início:
+                  </Label>
 
-              <Input
-                disabled
-                id="inicio"
-                type="text"
-                value={formattedStartDate}
-              />
-            </FormItem>
+                  <Input
+                    disabled
+                    id="inicio"
+                    type="text"
+                    value={formattedStartDate}
+                  />
+                </FormItem>
 
-            <FormItem>
-              <Label htmlFor="termino">
-                Data e Hora de Término:
-              </Label>
+                <FormItem>
+                  <Label htmlFor="termino">
+                    Data e Hora de Término:
+                  </Label>
 
-              <Input
-                disabled
-                id="termino"
-                type="text"
-                value={formattedEndDate}
-              />
-            </FormItem>
+                  <Input
+                    disabled
+                    id="termino"
+                    type="text"
+                    value={formattedEndDate}
+                  />
+                </FormItem>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="flex flex-col gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
+              <div className="md:flex-1 flex flex-col gap-4">
+                <h3 className="font-semibold text-white text-lg leading-none">Código para entrega:</h3>
+                
+                <HighlightBox>
+                  {reserva.codigoEntrega}
+                </HighlightBox>
+              </div>
+
+              <div className="md:flex-1 flex flex-col gap-4">
+                <h3 className="font-semibold text-white text-lg leading-none">Código para coleta:</h3>
+                
+                <HighlightBox>
+                  {reserva.codigoColeta}
+                </HighlightBox>
+              </div>
+
+              <FormItem className="gap-4">
+                <Label htmlFor="entrega">
+                  Data e Hora de Entrega:
+                </Label>
+
+                <Input
+                  disabled
+                  id="entrega"
+                  type="text"
+                  className="flex-1"
+                  value={formattedDataEntrega ?? "Não houve entrega"}
+                />
+              </FormItem>
+
+              <FormItem className="gap-4">
+                <Label htmlFor="coleta">
+                  Data e Hora de Coleta:
+                </Label>
+
+                <Input
+                  disabled
+                  id="coleta"
+                  type="text"
+                  className="flex-1"
+                  value={formattedDataColeta ?? "Não houve coleta"}
+                />
+              </FormItem>
+            </div>
           </div>
-        </div>
 
-        <Separator />
+          <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
+            {reserva.status === "Confirmada" && (
 
-        <div className="flex flex-col gap-4 md:grid md:grid-cols-2 lg:grid-cols-4">
-          <div className="md:flex-1 flex flex-col gap-4">
-            <h3 className="font-semibold text-white text-lg leading-none">Código para entrega:</h3>
-            
-            <HighlightBox>
-              {reserva.codigoEntrega}
-            </HighlightBox>
-          </div>
+              <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
+                <Button variant="destructive" className="md:order-2 xl:col-start-3">
+                  <X className="size-5 text-red" />
+                  <span className="text-red text-lg font-medium leading-none">Cancelar</span>
+                </Button>
+              </CancelarReservaDialog>
+            ) }
 
-          <div className="md:flex-1 flex flex-col gap-4">
-            <h3 className="font-semibold text-white text-lg leading-none">Código para coleta:</h3>
-            
-            <HighlightBox>
-              {reserva.codigoColeta}
-            </HighlightBox>
-          </div>
-
-          <FormItem className="gap-4">
-            <Label htmlFor="entrega">
-              Data e Hora de Entrega:
-            </Label>
-
-            <Input
-              disabled
-              id="entrega"
-              type="text"
-              className="flex-1"
-              value={formattedDataEntrega ?? "Não houve entrega"}
-            />
-          </FormItem>
-
-          <FormItem className="gap-4">
-            <Label htmlFor="coleta">
-              Data e Hora de Coleta:
-            </Label>
-
-            <Input
-              disabled
-              id="coleta"
-              type="text"
-              className="flex-1"
-              value={formattedDataColeta ?? "Não houve coleta"}
-            />
-          </FormItem>
-        </div>
-      </div>
-
-      <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
-        {reserva.status === "Confirmada" && (
-
-          <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
-            <Button variant="destructive" className="md:order-2 xl:col-start-3">
-              <X className="size-5 text-red" />
-              <span className="text-red text-lg font-medium leading-none">Cancelar</span>
+              <Button variant="outline" className={cn("md:order-1 xl:col-start-2", reserva.status !== "Confirmada" ? "col-span-2" : "")} asChild>
+                <Link to="/minhas-reservas">
+                <ArrowLeftIcon className="size-5" />
+                <span className="text-white text-lg font-medium leading-none">Voltar</span>
+              </Link>
             </Button>
-          </CancelarReservaDialog>
-        ) }
-
-          <Button variant="outline" className={cn("md:order-1 xl:col-start-2", reserva.status !== "Confirmada" ? "col-span-2" : "")} asChild>
-            <Link to="/minhas-reservas">
-            <ArrowLeftIcon className="size-5" />
-            <span className="text-white text-lg font-medium leading-none">Voltar</span>
-          </Link>
-        </Button>
-      </div>
+          </div>
+        </>
+      )}
     </PageContainer.Card>
   )
 }

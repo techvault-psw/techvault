@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency } from "@/lib/format-currency"
 import { fetchReservas } from "@/redux/reservas/fetch"
-import { selectAllReservas } from "@/redux/reservas/slice"
+import { selectReservaById } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
 import type { AppDispatch } from "@/redux/store"
 import { useEffect } from "react"
@@ -15,22 +15,17 @@ import { Link, useLocation, useNavigate, useParams } from "react-router"
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
 
-    // const { reservas } = useSelector((state: RootState) => state.reservasReducer)
-    const reservas = useSelector(selectAllReservas)
-
     const numberId = Number(id)
-    const reserva = reservas.find((reserva) => reserva.id === numberId)
+    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
 
     const dispatch = useDispatch<AppDispatch>()
-    const { status } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+    const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
     useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
             dispatch(fetchReservas())
         }
-    }, [status, dispatch])
-
-    
+    }, [statusR, dispatch])
 
     const pacote = reserva?.pacote
 
@@ -49,7 +44,7 @@ export default function PagamentoReservaPage() {
     const taxaTransporte = 40.00
     const valorTotal = valorReserva + taxaTransporte
 
-    if (isNaN(numberId) || numberId >= reservas.length || !reserva || !pacote) {
+    if (isNaN(numberId) || !reserva || !pacote) {
         return
     }
 

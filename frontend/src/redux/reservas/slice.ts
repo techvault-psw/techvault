@@ -1,10 +1,8 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-// import { addReservaAction, deleteReservaAction, updateReservaAction } from "./actions";
 import { type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
 import type { Pacote } from "../pacotes/slice";
 import type { Endereco } from "@/consts/enderecos";
-// import { fetchReservas } from "./fetch";
 import type { InitialState, RootState } from "../root-reducer";
 
 import {addReservaServer, cancelReservaServer, fetchReservas, updateReservaServer} from "./fetch";
@@ -50,21 +48,11 @@ const reservasInitialState = reservasAdapter.getInitialState<InitialState>({
   error: null
 })
 
-// const initialState: { reservas: Reserva[] } = {
-//   reservas: []
-// }
-
 const reservasSlice = createSlice({
   name: 'reserva',
   initialState: reservasInitialState,
-  // reducers: {
-  //   addReserva: (state, action: { payload: NewReserva }) => addReservaAction(state.reservas, action.payload),
-  //   updateReserva: (state, action: { payload: Reserva }) => updateReservaAction(state.reservas, action.payload),
-  //   deleteReserva: (state, action: { payload: number }) => deleteReservaAction(state.reservas, action.payload)
-  // },
   reducers: {},
   extraReducers: (builder) => {
-    // builder.addCase(fetchReservas.fulfilled, (_, action) => action.payload)
     builder
           .addCase(fetchReservas.pending,         (state, action) => { state.status = 'loading' })
           .addCase(fetchReservas.fulfilled,       (state, action) => { state.status = 'loaded'; reservasAdapter.setAll(state, action.payload) })
@@ -82,10 +70,7 @@ const reservasSlice = createSlice({
   }
 })
 
-// export const { addReserva, deleteReserva, updateReserva } = reservasSlice.actions
-
 export const reservasReducer = reservasSlice.reducer
-
 
 export const {
   selectAll: selectAllReservas,

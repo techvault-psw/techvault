@@ -1,17 +1,8 @@
-// import { API_URL } from "@/lib/api-url"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { type Reserva, type NewReserva, type NewReservaServer, type ReservaServer } from "./slice"
-import { httpDelete, httpGet, httpPost, httpPut } from "@/lib/fetch-utils"
+import { httpGet, httpPost, httpPut } from "@/lib/fetch-utils"
 import { differenceInMilliseconds } from "date-fns"
 import { gerarCodigo } from "@/lib/gerar-codigo"
-
-// export const fetchReservas = createAsyncThunk("reservas/fetchReservas",
-//   async () => {
-//     const response = await fetch(`${API_URL}/reservas?_expand=cliente_clienteexpand=pacote&_expand=endereco`)
-//     const data = await response.json()
-//     return { reservas: data }
-//   }
-// )
 
 export const fetchReservas = createAsyncThunk<Reserva[]>(`reservas/fetchReservas`,
   async () => {
@@ -29,7 +20,6 @@ export const addReservaServer = createAsyncThunk<Reserva, NewReserva>(`reservas/
     const horasReserva = differenceInMilliseconds(dataTermino, dataInicio) / (1000 * 60 * 60)
     const valorReserva = valorHoraPacote * horasReserva
   
-
     const reserva: NewReservaServer = {
       clienteId: newReserva.cliente.id,
       pacoteId: newReserva.pacote.id,
@@ -39,6 +29,7 @@ export const addReservaServer = createAsyncThunk<Reserva, NewReserva>(`reservas/
       codigoEntrega: gerarCodigo(),
       codigoColeta: gerarCodigo(),
     }
+    
     return await httpPost('/reservas', reserva)
   }
 )
@@ -56,6 +47,7 @@ export const updateReservaServer = createAsyncThunk<Reserva, Reserva>('reservas/
     return await httpPut(`/reservas/${reserva.id}`, updatedReserva)
   }
 )
+
 export const cancelReservaServer = createAsyncThunk<Reserva, Reserva>('reservas/cancelReservaServer ',
   async (reserva) => {
     const { cliente, pacote, endereco, ...reservaInfo } = reserva

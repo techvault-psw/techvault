@@ -1,8 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux';
-import { selectAllReservas, type NewReserva, type Reserva } from '@/redux/reservas/slice';
-
-
+import { selectAllReservas, type NewReserva } from '@/redux/reservas/slice';
 
 import * as z from "zod";
 
@@ -28,7 +26,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { clientes } from "@/consts/clientes";
 import { useEffect } from "react";
 import { CriarEnderecoDialog } from "@/components/dialogs/criar-endereco-dialog";
 import { PlusIcon } from "@/components/icons/plus-icon";
@@ -65,9 +62,7 @@ type FormData = z.infer<typeof formSchema>;
 export default function ConfirmarReservaPage() {
   const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
   const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
-  // const { reservas } = useSelector((state: RootState) => state.reservasReducer)
   const reservas = useSelector(selectAllReservas)
-  
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
