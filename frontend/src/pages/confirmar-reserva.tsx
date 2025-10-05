@@ -32,6 +32,7 @@ import { clientes } from "@/consts/clientes";
 import { useEffect } from "react";
 import { CriarEnderecoDialog } from "@/components/dialogs/criar-endereco-dialog";
 import { PlusIcon } from "@/components/icons/plus-icon";
+import { selectAllPacotes } from "@/redux/pacotes/slice";
 
 const metodosPagamento = [
   "Cartão de Crédito",
@@ -62,7 +63,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
   const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
   const { reservas } = useSelector((state: RootState) => state.reservasReducer)
 
   const form = useForm<FormData>({
