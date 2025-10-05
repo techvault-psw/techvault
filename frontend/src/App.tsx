@@ -20,10 +20,8 @@ import PerfilPage from "./pages/perfil";
 import Pacotes from "./pages/pacotes";
 import FeedbacksPage from "./pages/feedbacks";
 import { fetchReservas } from "./redux/reservas/fetch";
-import { fetchPacotes } from "./redux/pacotes/fetch";
 import store from './redux/store.ts'
 
-store.dispatch(fetchPacotes());
 store.dispatch(fetchReservas());
 
 export default function App() {

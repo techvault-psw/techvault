@@ -12,26 +12,35 @@ import { TrashIcon } from "@/components/icons/trash-icon";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
-import { Pen } from "lucide-react";
-import { Link } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "@/redux/root-reducer";
-import { selectAllFeedbacks } from "@/redux/feedbacks/slice";
-import { useEffect } from "react";
-import { type AppDispatch } from "@/redux/store";
 import { fetchFeedbacks } from "@/redux/feedbacks/fetch";
+import { selectAllFeedbacks } from "@/redux/feedbacks/slice";
+import { fetchPacotes } from "@/redux/pacotes/fetch";
+import type { RootState } from "@/redux/root-reducer";
+import { type AppDispatch } from "@/redux/store";
+import { Pen } from "lucide-react";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router";
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
 
     const dispatch = useDispatch<AppDispatch>()
-    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
+    const { status: statusF, error: errorF } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
 
     useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusF)) {
             dispatch(fetchFeedbacks())
         }
-    }, [status, dispatch])
+    }, [statusF, dispatch])
+
+    const { status: statusP } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
+    
+    useEffect(() => {
+      if (['not_loaded', 'saved', 'deleted'].includes(statusF)) {
+          dispatch(fetchPacotes())
+      }
+    }, [statusP, dispatch])
 
     const feedbacks = useSelector(selectAllFeedbacks)
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
@@ -61,10 +70,10 @@ export default function FeedbacksPage() {
 
             <Separator />
         
-            {['loading', 'saving', 'deleting'].includes(status) ? (
+            {['loading', 'saving', 'deleting'].includes(statusF) ? (
                 <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
-            ) : ['failed'].includes(status) ? (
-                <p className="text-lg text-white text-center py-2 w-full">{error}</p>
+            ) : ['failed'].includes(statusF) ? (
+                <p className="text-lg text-white text-center py-2 w-full">{errorF}</p>
             ) : (
                 <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
                     {feedbacks.map((feedback, index) => {

@@ -1,8 +1,6 @@
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux';
-import { addReserva, type NewReserva, type Reserva } from '@/redux/reservas/slice';
-
-
+import { addReserva, type NewReserva } from '@/redux/reservas/slice';
 
 import * as z from "zod";
 
@@ -28,10 +26,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { clientes } from "@/consts/clientes";
 import { useEffect } from "react";
 import { CriarEnderecoDialog } from "@/components/dialogs/criar-endereco-dialog";
 import { PlusIcon } from "@/components/icons/plus-icon";
+import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
 import { selectAllEnderecos } from "@/redux/endereco/slice";
 
 const metodosPagamento = [
@@ -62,8 +60,8 @@ const formSchema = z
 type FormData = z.infer<typeof formSchema>;
 
 export default function ConfirmarReservaPage() {
+  const pacotes = useSelector(selectAllPacotes);
   const enderecos = useSelector(selectAllEnderecos)
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
   const { reservas } = useSelector((state: RootState) => state.reservasReducer)
 
   const form = useForm<FormData>({
@@ -81,11 +79,12 @@ export default function ConfirmarReservaPage() {
 
   const onSubmit = (data: FormData) => {
     const endereco = enderecos.find(endereco => endereco.name === data.endereco)
+    const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
 
-    if (!clienteAtual || !endereco) return;
+    if (!clienteAtual || !endereco || !pacote) return;
 
     const novaReserva: NewReserva = {
-      pacote: pacotes[numberId],
+      pacote,
       status: "Confirmada" as const,
       dataInicio: data.dataHoraInicial.toISOString(),
       dataTermino: data.dataHoraFinal.toISOString(),
