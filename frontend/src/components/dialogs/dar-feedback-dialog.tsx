@@ -28,6 +28,7 @@ import { addFeedbackServer } from "@/redux/feedbacks/fetch";
 import type { RootState } from "@/redux/root-reducer";
 import { useLocation, useNavigate } from "react-router";
 import type { AppDispatch } from "@/redux/store";
+import { selectAllPacotes } from "@/redux/pacotes/slice";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -47,7 +48,7 @@ interface DarFeedbackDialogProps {
 export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
