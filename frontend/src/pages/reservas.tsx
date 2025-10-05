@@ -11,11 +11,13 @@ import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dia
 import useCargo from "@/hooks/useCargo";
 import { useNavigate, useLocation } from "react-router";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import type { Reserva } from "@/redux/reservas/slice";
+import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
 import { stringifyAddress } from "@/consts/enderecos";
 import { agruparReservasPorData } from "@/lib/agrupar-reservas";
+import { type AppDispatch } from "@/redux/store";
+import { fetchReservas } from "@/redux/reservas/fetch";
 
 export interface ReservaComTipo {
   reserva: Reserva;
@@ -25,6 +27,16 @@ export interface ReservaComTipo {
 
 export default function ReservasPage() {
   const { isGerente, isSuporte } = useCargo();
+  const dispatch = useDispatch<AppDispatch>();
+  const {status, error} = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+
+  useEffect(() => {
+          if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+              dispatch(fetchReservas())
+          }
+      }, [status, dispatch])
+  
+  const reservas = useSelector(selectAllReservas)
   const navigate = useNavigate();
   const location = useLocation();
   const [reservaToOpen, setReservaToOpen] = useState<number | null>(null);
@@ -46,7 +58,6 @@ export default function ReservasPage() {
     }
   }, [location]);
 
-  const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer);
   
   const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
   const reservasPorData = agruparReservasPorData(reservasConfirmadas)
