@@ -10,8 +10,10 @@ import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency } from "@/lib/format-currency"
 import { cn } from "@/lib/utils"
-import { deleteReserva } from "@/redux/reservas/slice"
+import { cancelReservaServer, fetchReservas } from "@/redux/reservas/fetch"
+import { selectAllReservas } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
+import type { AppDispatch } from "@/redux/store"
 import { format } from "date-fns"
 import { ptBR } from "date-fns/locale"
 import { X } from "lucide-react"
@@ -20,34 +22,36 @@ import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate, useParams } from "react-router"
 
 export default function InformacoesReservasPage() {
-  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+  const reservas = useSelector(selectAllReservas)
   const { id } = useParams<{ id: string }>();
 
   const numberId = Number(id)
   const reserva = reservas.find((reserva) => reserva.id === numberId)
   
-  if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
-    return
-  }
+ 
   
-  const pacote = reserva.pacote
-  const formattedValue = formatCurrency(reserva.valor)
-  const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
-  const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
-  const formattedDataEntrega = reserva.dataEntrega ? format(reserva.dataEntrega, "dd/MM/yyyy HH:mm", {locale: ptBR}) : undefined
-  const formattedDataColeta = reserva.dataColeta ? format(reserva.dataColeta, "dd/MM/yyyy HH:mm", {locale: ptBR}) : undefined
+  const pacote = reserva?.pacote
+  const formattedValue = formatCurrency(reserva?.valor ?? 0) 
+  const formattedStartDate = format(reserva?.dataInicio ?? new Date(), "dd/MM/yyyy HH:mm", {locale: ptBR})
+  const formattedEndDate = format(reserva?.dataTermino ?? new Date(), "dd/MM/yyyy HH:mm", {locale: ptBR})
+  const formattedDataEntrega = reserva?.dataEntrega ? format(reserva?.dataEntrega, "dd/MM/yyyy HH:mm", {locale: ptBR}) : undefined
+  const formattedDataColeta = reserva?.dataColeta ? format(reserva?.dataColeta, "dd/MM/yyyy HH:mm", {locale: ptBR}) : undefined
   
   const navigate = useNavigate()
   const location = useLocation()
   
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const cancelarReserva = () => {
     navigate("/minhas-reservas")
-    dispatch(deleteReserva(numberId))
+    if (reserva) {
+      dispatch(cancelReservaServer(reserva))
+    }
   }
 
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { status } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+
 
   useEffect(() => {
     if (!clienteAtual) {
@@ -55,6 +59,16 @@ export default function InformacoesReservasPage() {
       navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
     }
   }, [])
+
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        dispatch(fetchReservas())
+    }
+}, [status, dispatch])
+
+  if (isNaN(numberId) || numberId >= reservas.length || !reserva || !pacote) {
+    return
+  }
 
   return (
     <PageContainer.Card>
