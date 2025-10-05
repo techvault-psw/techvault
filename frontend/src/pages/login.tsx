@@ -21,7 +21,10 @@ import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { loginCliente } from "@/redux/clientes/slice";
+import { loginCliente, selectAllClientes } from "@/redux/clientes/slice";
+import { useEffect } from "react";
+import { fetchClientes } from "@/redux/clientes/fetch";
+import type { AppDispatch } from "@/redux/store";
 
 const formSchema = z.object({
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
@@ -41,8 +44,16 @@ export default function LoginPage() {
     },
   })
 
-  const dispatch = useDispatch();
-  const {clientes,clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+  const dispatch = useDispatch<AppDispatch>()
+  const { status, error } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+  useEffect(() => {
+      if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+          dispatch(fetchClientes())
+      }
+  }, [status, dispatch])
+  const clientes = useSelector(selectAllClientes)
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     
     const cliente = clientes.find(cliente => cliente.email === values.email && cliente.password === values.password);
