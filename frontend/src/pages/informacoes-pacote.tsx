@@ -8,35 +8,49 @@ import { formatCurrency } from "@/lib/format-currency";
 import type { RootState } from "@/redux/root-reducer";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
+import { selectAllPacotes } from '@/redux/pacotes/slice';
+import { useEffect } from "react";
+import { fetchPacote } from "@/redux/pacotes/fetch";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
 
 export default function InformacoesPacotePage() {
   const { id } = useParams<{ id: string }>();
+
+  const dispatch = useDispatch<AppDispatch>()
+  const { status } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
+
+    useEffect(() => {
+      if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        dispatch(fetchPacote())
+      }
+    }, [status, dispatch])
   
-  const pacotes = useSelector(((state: RootState) => state.pacotesReducer.pacotes));
+  const pacotes = useSelector(selectAllPacotes);
 
   const numberId = Number(id)
 
-  if (isNaN(numberId) || numberId >= pacotes.length) {
-    return
-  }
-
+  
   const pacote = pacotes[numberId]
-  const formattedValue = formatCurrency(pacote.value)
-
+  const formattedValue = formatCurrency(pacote?.value ?? 0)
+  
   const navigate = useNavigate()
-
+  
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
-
+  
   const handleSolicitarReserva = () => {
     const url = `/confirmar-reserva/${numberId % pacotes.length}`;
-
+    
     if (clienteAtual) {
       navigate(url)
     } else {
       navigate(`/login?redirectTo=${encodeURIComponent(url)}`)
     }
   }
-
+  if (isNaN(numberId) || numberId >= pacotes.length) {
+    return
+  }
+  
   return (
     <PageContainer.Card>
       <div className="flex flex-col items-center gap-3">
@@ -51,8 +65,8 @@ export default function InformacoesPacotePage() {
         <div className="text-white flex flex-col gap-1">
           <span className="font-bold text-xl">Descrição</span>
 
-          {pacote.description.map((paragraph) => (
-            <p className="text-sm lg:text-base">{paragraph}</p>
+          {pacote.description.map((description) => (
+            <p className="text-sm lg:text-base">{description}</p>
           ))}
         </div>
         
