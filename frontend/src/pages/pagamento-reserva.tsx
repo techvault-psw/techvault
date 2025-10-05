@@ -15,9 +15,6 @@ import { Link, useLocation, useNavigate, useParams } from "react-router"
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const numberId = Number(id)
-    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
-
     const dispatch = useDispatch<AppDispatch>()
     const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
@@ -26,6 +23,9 @@ export default function PagamentoReservaPage() {
             dispatch(fetchReservas())
         }
     }, [statusR, dispatch])
+
+    const numberId = Number(id)
+    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
 
     const pacote = reserva?.pacote
 
@@ -99,7 +99,7 @@ export default function PagamentoReservaPage() {
                 
                 {/* TODO: Usar props para definir método de pagamento nessa página */}
                 <Button asChild size="lg" className="flex-none font-bold">
-                    <Link to="/reserva-confirmada">Copiar Código Pix</Link>
+                    <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
                 </Button>
             </section>
 

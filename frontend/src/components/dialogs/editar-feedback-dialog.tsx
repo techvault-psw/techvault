@@ -69,7 +69,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
     setIsOpen(false)
     form.reset()
 
-    const pacote = useSelector((state: RootState) => selectPacoteById(state, Number(values.pacoteIndex)))
+    const pacote = pacotes.find((pacote) => pacote.id === Number(values.pacoteIndex))
 
     if (!pacote) return
 

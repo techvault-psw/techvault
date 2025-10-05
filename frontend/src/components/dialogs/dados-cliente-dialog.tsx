@@ -178,7 +178,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
               )}
 
               <Link 
-                to={`/reservas-cliente/${cliente.id % clientes.length}`} 
+                to={`/reservas-cliente/${cliente.id}`} 
                 state={{ 
                   fromClientDialog: cliente.id,
                   returnTo: location.pathname,
@@ -191,7 +191,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
               </Link>
 
               <Link 
-                to={`/enderecos-cliente/${cliente.id % clientes.length}`} 
+                to={`/enderecos-cliente/${cliente.id}`} 
                 state={{ 
                   fromClientDialog: cliente.id,
                   returnTo: location.pathname,

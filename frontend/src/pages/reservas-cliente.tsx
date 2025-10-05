@@ -73,10 +73,6 @@ export default function ReservasClientePage() {
 
   const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
 
-  if (isNaN(numberId) || !cliente) {
-    return
-  }
-
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
@@ -111,6 +107,10 @@ export default function ReservasClientePage() {
   const reservasAtuais = sortedReservas.filter((r) => r.status === "Confirmada")
   const reservasConcluidas = sortedReservas.filter((r) => r.status === "Concluída")
   const reservasCanceladas = sortedReservas.filter((r) => r.status === "Cancelada")
+
+  if (isNaN(numberId) || !cliente) {
+    return
+  }
 
   return (
     <PageContainer.List>

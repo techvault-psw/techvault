@@ -18,10 +18,6 @@ export default function ReservaConfirmadaPage() {
     const numberId = Number(id)
     const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
 
-    if (isNaN(numberId) || !reserva) {
-        return
-    }
-
     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
@@ -35,6 +31,10 @@ export default function ReservaConfirmadaPage() {
             navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
     })
+
+    if (isNaN(numberId) || !reserva) {
+        return
+    }
 
     return (
         <>

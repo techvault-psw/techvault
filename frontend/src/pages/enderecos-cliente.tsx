@@ -25,10 +25,6 @@ export default function EnderecosClientePage() {
 
   const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
 
-  if (isNaN(numberId) || !cliente) {
-    return
-  }
-
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
@@ -53,6 +49,10 @@ export default function EnderecosClientePage() {
 
   const enderecos = useSelector(selectAllEnderecos)
   const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === numberId)
+
+  if (isNaN(numberId) || !cliente) {
+    return
+  }
 
   return (
     <PageContainer.List>

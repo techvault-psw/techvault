@@ -33,6 +33,7 @@ import { addReservaServer } from "@/redux/reservas/fetch";
 import { type AppDispatch } from "@/redux/store";
 import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
 import { selectAllEnderecos } from "@/redux/endereco/slice";
+import { fetchEnderecos } from "@/redux/endereco/fetch";
 
 const metodosPagamento = [
   "Cartão de Crédito",
@@ -79,9 +80,21 @@ export default function ConfirmarReservaPage() {
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const navigate = useNavigate();
+
+  const { id } = useParams<{ id: string }>();
+
+  const numberId = Number(id)
+
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
+
+  const location = useLocation()
+
+  const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
+
   const onSubmit = (data: FormData) => {
     const endereco = enderecos.find(endereco => endereco.name === data.endereco)
-    const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
 
     if (!clienteAtual || !endereco || !pacote) return;
 
@@ -97,27 +110,24 @@ export default function ConfirmarReservaPage() {
     dispatch(addReservaServer(novaReserva));
   };
 
-  const navigate = useNavigate();
-
-  const { id } = useParams<{ id: string }>();
-
-  const numberId = Number(id)
-
-  if (isNaN(numberId) || numberId >= pacotes.length) {
-    return
-  }
-
-  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
-  const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
-
-  const location = useLocation()
-
   useEffect(() => {
     if (!clienteAtual) {
       const fullPath = location.pathname + location.search + location.hash;
       navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
     }
   }, [])
+
+  const { status: statusE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusE)) {
+      dispatch(fetchEnderecos())
+    }
+  }, [statusE, dispatch])
+
+  if (isNaN(numberId) || numberId >= pacotes.length) {
+    return
+  }
 
   return (
     <PageContainer.Card>

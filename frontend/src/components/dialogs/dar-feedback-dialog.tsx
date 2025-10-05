@@ -28,7 +28,7 @@ import { addFeedbackServer } from "@/redux/feedbacks/fetch";
 import type { RootState } from "@/redux/root-reducer";
 import { useLocation, useNavigate } from "react-router";
 import type { AppDispatch } from "@/redux/store";
-import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
+import { selectAllPacotes } from "@/redux/pacotes/slice";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -66,7 +66,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     setIsOpen(false)
     form.reset()
 
-    const pacote = useSelector((state: RootState) => selectPacoteById(state, Number(values.pacoteIndex)))
+    const pacote = pacotes.find((pacote) => pacote.id === Number(values.pacoteIndex))
 
     if (!pacote || !clienteAtual) return
 

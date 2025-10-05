@@ -175,9 +175,9 @@ export default function PerfilPage() {
                         />
                         
                         {['saving'].includes(statusC) ? (
-                            <p className="text-lg text-white h-[2.625rem] w-full flex items-center justify-center">Salvando...</p>
+                            <p className="text-lg text-white h-[2.625rem] w-full flex items-center justify-center lg:col-start-2">Salvando...</p>
                         ) : ['failed'].includes(statusC) ? (
-                            <div className="h-[2.625rem] rounded-xl bg-red/10 border border-red text-red flex justify-center items-center">
+                            <div className="h-[2.625rem] rounded-xl bg-red/10 border border-red text-red flex justify-center items-center lg:col-start-2">
                                 {errorC}
                             </div>
                         ) :  (
@@ -219,7 +219,7 @@ export default function PerfilPage() {
                         <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
                             {enderecosCliente.map((endereco) => {
                                 return (
-                                    <DadosEnderecoDialog endereco={endereco}>
+                                    <DadosEnderecoDialog endereco={endereco} key={endereco.id}>
                                         <Card.Container>
                                             <Card.TextContainer className='overflow-x-hidden'>
                                                 <Card.Title className='truncate'>{endereco.name}</Card.Title>
