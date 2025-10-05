@@ -31,7 +31,8 @@ import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
+import { deleteClienteServer, fetchClientes, updateClienteServer } from '@/redux/clientes/fetch';
+import { logoutCliente } from '@/redux/clientes/slice';
 import { selectAllEnderecos } from '@/redux/endereco/slice';
 import { fetchEnderecos } from '@/redux/endereco/fetch';
 import type { AppDispatch } from '@/redux/store';
@@ -48,7 +49,16 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
 
-    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+    const dispatch = useDispatch<AppDispatch>();
+    const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
+    const { status: statusC, error: errorC, clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
+            dispatch(fetchClientes())
+        }
+    }, [statusC, dispatch])
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -58,13 +68,10 @@ export default function PerfilPage() {
         }
     })
 
-    const dispatch = useDispatch<AppDispatch>();
-    const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
-
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
-        dispatch(updateCliente({
+        dispatch(updateClienteServer({
             ...clienteAtual,
             ...values,
         }))
@@ -77,7 +84,7 @@ export default function PerfilPage() {
     const handleDeleteClick = () => {
         navigate("/cadastro");
         if(clienteAtual){
-            dispatch(deleteCliente(clienteAtual.id));
+            dispatch(deleteClienteServer(clienteAtual));
         }
     }
     const handleLogoutClick = () => {
@@ -116,6 +123,7 @@ export default function PerfilPage() {
 
             <div className="flex flex-col gap-4 overflow-y-hidden">
                 <h3 className="font-semibold text-white text-lg leading-none">Dados Pessoais</h3>
+
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid lg:grid-cols-3 gap-3">
                         <FormField
@@ -165,15 +173,23 @@ export default function PerfilPage() {
                                 </FormItem>
                             )}
                         />
-
-                        <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
-                            <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
-                                Editar informações
-                            </Button>
-                            <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
-                                Salvar alterações
-                            </Button>
-                        </div>
+                        
+                        {['saving'].includes(statusC) ? (
+                            <p className="text-lg text-white h-[2.625rem] w-full flex items-center justify-center">Salvando...</p>
+                        ) : ['failed'].includes(statusC) ? (
+                            <div className="h-[2.625rem] rounded-xl bg-red/10 border border-red text-red flex justify-center items-center">
+                                {errorC}
+                            </div>
+                        ) :  (
+                            <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
+                                <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
+                                    Editar informações
+                                </Button>
+                                <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
+                                    Salvar alterações
+                                </Button>
+                            </div>
+                        )}
                     </form>
                 </Form>
 

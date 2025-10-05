@@ -13,6 +13,7 @@ import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog"
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import { selectClienteById } from "@/redux/clientes/slice";
 import { selectAllEnderecos } from "@/redux/endereco/slice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
@@ -21,14 +22,12 @@ import { fetchEnderecos } from "@/redux/endereco/fetch";
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
   const numberId = Number(id)
-  const { clientes } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
-  if (isNaN(numberId) || numberId >= clientes.length) {
+  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
+
+  if (isNaN(numberId) || !cliente) {
     return
   }
-
-  const clienteIndex = clientes.findIndex((cliente) => cliente.id == numberId)
-  const cliente = clientes[clienteIndex]
 
   const {isGerente, isSuporte} = useCargo()
 
