@@ -9,7 +9,6 @@ import { useState, useEffect, type ReactNode } from "react";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input, Label } from "../ui/input";
 import { Card } from "../ui/card";
-import { pacotes } from "@/consts/pacotes";
 import z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -21,11 +20,10 @@ import { ConfirmarOperacaoDialog } from "./confirmar-operacao-dialog";
 import { DadosClienteDialog } from "./dados-cliente-dialog";
 import { DadosEnderecoDialog } from "./dados-endereco-dialog";
 import { DadosPacoteDialog } from "./dados-pacote-dialog";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "@/redux/root-reducer";
-import { deleteReserva, updateReserva } from "@/redux/reservas/slice";
-import { stringifyAddress } from "@/consts/enderecos";
+import { useDispatch } from "react-redux";
+import { cancelReservaServer, updateReservaServer } from "@/redux/reservas/fetch";
 import { useLocation } from "react-router";
+import { type AppDispatch } from "@/redux/store";
 
 interface DetalhesReservaDialogProps {
   reserva: Reserva
@@ -79,11 +77,12 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
     },
     mode: "onChange"
   })
+  
+  const dispatch = useDispatch<AppDispatch>()
 
   const onSubmit = (values: FormData) => {
     setIsEditting(false)
-    
-    dispatch(updateReserva({
+    dispatch(updateReservaServer({
       ...reserva,
       dataInicio: values.dataHoraInicial.toISOString(),
       dataTermino: values.dataHoraFinal.toISOString(),
@@ -92,7 +91,6 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
     }))
   }
 
-  const dispatch = useDispatch()
 
   const handleOpenChange = (open: boolean) => {
     if (!isControlled) {
@@ -103,7 +101,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
 
   const cancelarReserva = () => {
     handleOpenChange(false)
-    dispatch(deleteReserva(reserva.id))
+    dispatch(cancelReservaServer(reserva))
   }
 
   const isClientePage = location.pathname.startsWith('/reservas-cliente')

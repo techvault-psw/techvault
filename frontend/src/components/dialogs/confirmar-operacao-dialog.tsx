@@ -7,10 +7,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { updateReserva, type Reserva } from "@/redux/reservas/slice";
+import { type Reserva } from "@/redux/reservas/slice";
 import { OperacaoConfirmadaDialog } from "./operacao-confirmada-dialog";
-import { useDispatch } from "react-redux";
-
+    
 interface ConfirmarOperacaoDialogProps {
     children: ReactNode,
     reserva: Reserva,
@@ -38,8 +37,6 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
             code: ""
         }
     })
-
-    const dispatch = useDispatch()
 
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (

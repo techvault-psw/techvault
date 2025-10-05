@@ -4,24 +4,30 @@ import { PageTitle } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency } from "@/lib/format-currency"
+import { fetchReservas } from "@/redux/reservas/fetch"
+import { selectReservaById } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
+import type { AppDispatch } from "@/redux/store"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate, useParams } from "react-router"
 
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const { reservas } = useSelector((state: RootState) => state.reservasReducer)
-
     const numberId = Number(id)
-    const reserva = reservas.find((reserva) => reserva.id === numberId)
+    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
 
-    if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
-        return
-    }
+    const dispatch = useDispatch<AppDispatch>()
+    const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
-    const pacote = reserva.pacote
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+            dispatch(fetchReservas())
+        }
+    }, [statusR, dispatch])
+
+    const pacote = reserva?.pacote
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -34,9 +40,13 @@ export default function PagamentoReservaPage() {
         }
     })
 
-    const valorReserva = reserva.valor
+    const valorReserva = reserva?.valor ?? 0
     const taxaTransporte = 40.00
-    const valorTotal = reserva.valor + taxaTransporte
+    const valorTotal = valorReserva + taxaTransporte
+
+    if (isNaN(numberId) || !reserva || !pacote) {
+        return
+    }
 
     return (
         <PageContainer.Card>

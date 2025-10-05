@@ -6,17 +6,19 @@ import { PageTitle } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { type Reserva } from "@/redux/reservas/slice"
+import { selectAllReservas, type Reserva } from "@/redux/reservas/slice"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { useNavigate, useParams, useLocation } from "react-router"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
 import { Separator } from "@/components/ui/separator"
 import { stringifyAddress } from "@/consts/enderecos"
-import { selectAllClientes, selectClienteById } from "@/redux/clientes/slice"
+import type { AppDispatch } from "@/redux/store"
+import { fetchReservas } from "@/redux/reservas/fetch"
+import { selectClienteById } from "@/redux/clientes/slice"
 
 interface ReservaSectionProps {
   titulo: string
@@ -80,14 +82,21 @@ export default function ReservasClientePage() {
   const navigate = useNavigate()
   const location = useLocation()
   const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
-
+  const dispatch = useDispatch<AppDispatch>()
+  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
       navigate("/login")
     }
   })
 
-  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
+    }
+  }, [statusR, dispatch])
+  
+  const reservas = useSelector(selectAllReservas)
 
   const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === numberId)
 
@@ -119,20 +128,24 @@ export default function ReservasClientePage() {
         </Button>
       </div>
 
-      {!filteredReservas.length && (
+      {['loading', 'saving', 'deleting'].includes(statusR) ? (
+          <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusR) ? (
+          <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : filteredReservas.length === 0 ? (
         <>
           <Separator />
           <p className='text-base text-white text-center w-full'>
             O cliente "{cliente.name}" ainda não realizou nenhuma reserva.
           </p>
         </>
+      ): (
+        <section className="w-full flex flex-col gap-4 scrollbar">
+          <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
+          <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} />
+          <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
+        </section>
       )}
-
-      <section className="w-full flex flex-col gap-4 scrollbar">
-        <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
-        <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} />
-        <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
-      </section>
 
       <Button
         variant="outline"
