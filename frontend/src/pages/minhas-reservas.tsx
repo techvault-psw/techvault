@@ -11,24 +11,35 @@ import { ptBR } from "date-fns/locale";
 
 import { PacoteImage } from "@/components/pacote-image";
 import { Link, useLocation, useNavigate } from "react-router";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { selectAllReservas } from "@/redux/reservas/slice";
+import { fetchReservas } from "@/redux/reservas/fetch";
+import type { AppDispatch } from "@/redux/store";
 
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
-    const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+    const { status } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+    const reservas = useSelector(selectAllReservas)
 
     const location = useLocation()
 
+    const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
         if (!clienteAtual) {
             navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])
+
+    useEffect(() => {
+              if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+                  dispatch(fetchReservas())
+              }
+          }, [status, dispatch])
 
     const reservasFiltradas = reservas
         .filter(reserva => reserva.cliente.id === clienteAtual?.id)
