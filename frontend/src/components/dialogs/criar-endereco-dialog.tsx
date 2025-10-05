@@ -9,10 +9,10 @@ import z from 'zod';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { addAddress } from '@/redux/endereco/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { clientes } from '@/consts/clientes';
+import type { AppDispatch } from '@/redux/store';
+import { addEnderecoServer } from '@/redux/endereco/fetch';
 
 interface DadosClienteDialogProps {
     children: ReactNode
@@ -38,7 +38,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
 
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -56,7 +56,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     const onSubmit = (endereco: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
-        dispatch(addAddress({
+        dispatch(addEnderecoServer({
             ...endereco,
             cliente: clienteAtual
         }))

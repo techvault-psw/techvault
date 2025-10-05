@@ -32,6 +32,9 @@ import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog'
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
 import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
+import { selectAllEnderecos } from '@/redux/endereco/slice';
+import { fetchEnderecos } from '@/redux/endereco/fetch';
+import type { AppDispatch } from '@/redux/store';
 
 const formSchema = z
     .object({
@@ -55,7 +58,9 @@ export default function PerfilPage() {
         }
     })
 
-    const dispatch = useDispatch();
+    const dispatch = useDispatch<AppDispatch>();
+    const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
+
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
@@ -90,8 +95,14 @@ export default function PerfilPage() {
             navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])
-
-    const { enderecos } = useSelector((state: RootState) => state.enderecosReducer);
+  
+   useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusE)) {
+            dispatch(fetchEnderecos())
+        }
+    }, [statusE, dispatch])
+ 
+    const enderecos = useSelector(selectAllEnderecos)
 
     const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
@@ -179,26 +190,31 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
-                    {!enderecosCliente.length && (
+
+                    {['loading', 'saving', 'deleting'].includes(statusE) ? (
+                        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+                    ) : ['failed'].includes(statusE) ? (
+                        <p className="text-lg text-white text-center py-2 w-full">{errorE}</p>
+                    ) : enderecosCliente.length === 0 ? (
                         <p className='text-base text-gray text-center'>
                             Você ainda não possui nenhum endereço cadastrado.
                         </p>
+                    ) : (
+                        <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
+                            {enderecosCliente.map((endereco) => {
+                                return (
+                                    <DadosEnderecoDialog endereco={endereco}>
+                                        <Card.Container>
+                                            <Card.TextContainer className='overflow-x-hidden'>
+                                                <Card.Title className='truncate'>{endereco.name}</Card.Title>
+                                                <Card.Description>{stringifyAddress(endereco)}</Card.Description>
+                                            </Card.TextContainer>
+                                        </Card.Container>
+                                    </DadosEnderecoDialog>
+                                )
+                            })}
+                        </div>
                     )}
-
-                    <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
-                        {enderecosCliente.map((endereco) => {
-                            return (
-                                <DadosEnderecoDialog endereco={endereco}>
-                                    <Card.Container>
-                                        <Card.TextContainer className='overflow-x-hidden'>
-                                            <Card.Title className='truncate'>{endereco.name}</Card.Title>
-                                            <Card.Description>{stringifyAddress(endereco)}</Card.Description>
-                                        </Card.TextContainer>
-                                    </Card.Container>
-                                </DadosEnderecoDialog>
-                            )
-                        })}
-                    </div>
                 </div>
                 <CriarEnderecoDialog>
                     <Button variant="outline" className='hidden lg:flex lg:w-80 m-auto'>
