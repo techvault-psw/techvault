@@ -13,16 +13,27 @@ import { Table } from "@/components/ui/table";
 import useCargo from '@/hooks/useCargo';
 import { useEffect, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
-
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import type { AppDispatch } from '@/redux/store';
+import { fetchClientes } from '@/redux/clientes/fetch';
+import { selectAllClientes } from '@/redux/clientes/slice';
 
 
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
-  const {clientes} = useSelector((state: RootState) => state.clienteReducer);
+  const dispatch = useDispatch<AppDispatch>()
+    const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
+            dispatch(fetchClientes())
+        }
+    }, [statusC, dispatch])
+
+    const clientes = useSelector(selectAllClientes)
   const location = useLocation();
 
   const clientesFiltrados = clientes.filter(cliente =>
@@ -78,13 +89,15 @@ export default function ClientesPage() {
         
         <Separator />
 
-        {clientesFiltrados.length === 0 && searchTerm && (
+        {['loading', 'saving', 'deleting'].includes(status) ? (
+            <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+        ) : ['failed'].includes(status) ? (
+            <p className="text-lg text-white text-center py-2 w-full">{errorC}</p>
+        ) : clientesFiltrados.length === 0 && searchTerm ? (
           <div className="w-full text-center text-white">
             Nenhum cliente encontrado para "{searchTerm}"
           </div>
-        )}
-
-        {clientesFiltrados.length !== 0 && (
+        ) : clientesFiltrados.length !== 0 && (
           <>
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
               {clientesFiltrados.map((cliente) => (

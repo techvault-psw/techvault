@@ -22,7 +22,9 @@ import { TrashIcon } from '../icons/trash-icon';
 import { ExcluirClienteDialog } from './excluir-cliente-dialog';
 import useCargo from '@/hooks/useCargo';
 import { useDispatch } from 'react-redux';
-import { updateCliente } from '@/redux/clientes/slice';
+import { updateClienteServer } from '@/redux/clientes/fetch';
+import type { AppDispatch } from '@/redux/store';
+
 
 interface DadosClienteDialogProps {
   cliente: Cliente;
@@ -65,10 +67,10 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
     setIsEditting(true)
   }
 
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsEditting(false)
-    dispatch(updateCliente({
+    dispatch(updateClienteServer({
       ...cliente,
       ...values
     }));

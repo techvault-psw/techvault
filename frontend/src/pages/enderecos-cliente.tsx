@@ -13,18 +13,21 @@ import { DadosEnderecoDialog } from "@/components/dialogs/dados-endereco-dialog"
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import { selectClienteById } from "@/redux/clientes/slice";
+import { selectAllEnderecos } from "@/redux/endereco/slice";
+import { useDispatch } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
+import { fetchEnderecos } from "@/redux/endereco/fetch";
 
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
   const numberId = Number(id)
-  const { clientes } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
-  if (isNaN(numberId) || numberId >= clientes.length) {
+  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
+
+  if (isNaN(numberId) || !cliente) {
     return
   }
-
-  const clienteIndex = clientes.findIndex((cliente) => cliente.id == numberId)
-  const cliente = clientes[clienteIndex]
 
   const {isGerente, isSuporte} = useCargo()
 
@@ -38,7 +41,17 @@ export default function EnderecosClientePage() {
     }
   }, [])
 
-  const { enderecos } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer)
+  const dispatch = useDispatch<AppDispatch>()
+  const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
+
+  useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusE)) {
+            dispatch(fetchEnderecos())
+        }
+    }, [statusE, dispatch])
+
+
+  const enderecos = useSelector(selectAllEnderecos)
   const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === numberId)
 
   return (
@@ -47,13 +60,15 @@ export default function EnderecosClientePage() {
 
       <Separator />
 
-      {enderecosCliente.length === 0 && (
+      {['loading', 'saving', 'deleting'].includes(statusE) ? (
+        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusE) ? (
+        <p className="text-lg text-white text-center py-2 w-full">{errorE}</p>
+      ) : enderecosCliente.length === 0 ? (
         <div className="w-full text-center text-white">
           Nenhum endereço encontrado para o cliente "{cliente.name}"
         </div>
-      )}
-
-      {enderecosCliente.length !== 0 && (
+      ) : (
         <>
           <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
             {enderecosCliente.map((endereco: Endereco, i) => {

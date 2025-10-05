@@ -16,6 +16,7 @@ import { useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
 import { Separator } from "@/components/ui/separator"
 import { stringifyAddress } from "@/consts/enderecos"
+import { selectAllClientes, selectClienteById } from "@/redux/clientes/slice"
 
 interface ReservaSectionProps {
   titulo: string
@@ -67,11 +68,10 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
 export default function ReservasClientePage() {
   const { id } = useParams<{ id: string }>();
   const numberId = Number(id)
-  const { clientes } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
-  const cliente = clientes.find((cliente) => cliente.id === numberId)
+  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
 
-  if (isNaN(numberId) || numberId >= clientes.length || !cliente) {
+  if (isNaN(numberId) || !cliente) {
     return
   }
 

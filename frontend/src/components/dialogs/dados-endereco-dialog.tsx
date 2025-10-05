@@ -14,9 +14,9 @@ import { type MouseEvent } from "react";
 import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
 import { useLocation, useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
-
+import { updateEnderecoServer, deleteEnderecoServer } from "@/redux/endereco/fetch";
 import { useDispatch } from "react-redux";
-import { deleteAddress, updateAddress } from "@/redux/endereco/slice";
+import type { AppDispatch } from "@/redux/store";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
@@ -42,7 +42,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     const [disabled, setDisabled] = useState(true)
     const { isGerente } = useCargo()
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     const location = useLocation();
     const fullPath = location.pathname;
@@ -62,12 +62,13 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     })
 
     const onSubmit = (newEndereco: z.infer<typeof formSchema>) => {
-        dispatch(updateAddress({
-            ...endereco,
-            ...newEndereco
-        }))
-        setDisabled(true)
-        form.reset(newEndereco)
+      dispatch(updateEnderecoServer({
+        ...newEndereco,
+        id: endereco.id,
+        cliente: endereco.cliente
+      }))
+      setDisabled(true)
+      form.reset(newEndereco)
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -122,7 +123,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     }
 
     const handleDeleteClick = () => {
-        dispatch(deleteAddress(endereco.id))
+        dispatch(deleteEnderecoServer(endereco))
         setIsOpen(false)
     }
 
