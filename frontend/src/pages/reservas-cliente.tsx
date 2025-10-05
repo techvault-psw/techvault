@@ -6,16 +6,18 @@ import { PageTitle } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { type Reserva } from "@/redux/reservas/slice"
+import { selectAllReservas, type Reserva } from "@/redux/reservas/slice"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
 import { useNavigate, useParams, useLocation } from "react-router"
-import { useSelector } from "react-redux"
+import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
 import { Separator } from "@/components/ui/separator"
 import { stringifyAddress } from "@/consts/enderecos"
+import type { AppDispatch } from "@/redux/store"
+import { fetchReservas } from "@/redux/reservas/fetch"
 
 interface ReservaSectionProps {
   titulo: string
@@ -80,14 +82,21 @@ export default function ReservasClientePage() {
   const navigate = useNavigate()
   const location = useLocation()
   const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
-
+  const dispatch = useDispatch<AppDispatch>()
+  const { status } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
       navigate("/login")
     }
   })
 
-  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+  useEffect(() => {
+            if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+                dispatch(fetchReservas())
+            }
+        }, [status, dispatch])
+  
+  const reservas = useSelector(selectAllReservas)
 
   const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === numberId)
 
