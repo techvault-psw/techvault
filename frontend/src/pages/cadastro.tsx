@@ -21,9 +21,12 @@ import { Separator } from "@/components/ui/separator";
 import { useHookFormMask } from 'use-mask-input';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addCliente, loginCliente } from "@/redux/clientes/slice";
+import { loginCliente, selectAllClientes } from "@/redux/clientes/slice";
 import type { Cliente } from "@/consts/clientes";
 import type { RootState } from "@/redux/root-reducer";
+import { addClienteServer, fetchClientes } from "@/redux/clientes/fetch";
+import { useEffect } from "react";
+import type { AppDispatch } from "@/redux/store";
 
 
 const formSchema = z.object({
@@ -37,7 +40,6 @@ export default function CadastroPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
-  const dispatch = useDispatch();
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -48,7 +50,16 @@ export default function CadastroPage() {
     },
   })
 
-  const {clientes,clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+    const dispatch = useDispatch<AppDispatch>()
+    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+            dispatch(fetchClientes())
+        }
+    }, [status, dispatch])
+    const clientes = useSelector(selectAllClientes)
+  
   function onSubmit(values: z.infer<typeof formSchema>) {
     const novoCliente: Cliente = {
       id: Date.now(), // gera um ID 
@@ -65,7 +76,7 @@ export default function CadastroPage() {
       return;
     }
 
-    dispatch(addCliente(novoCliente));
+    dispatch(addClienteServer(novoCliente));
     dispatch(loginCliente(values));
     if (redirectTo) {
       navigate(redirectTo, { replace: true })
