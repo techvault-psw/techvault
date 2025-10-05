@@ -47,14 +47,12 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
     const dispatch = useDispatch<AppDispatch>();
-    const { status, clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
-
+    const { status: statusC, error: errorC, clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
         useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
             dispatch(fetchClientes())
         }
-    }, [status, dispatch])
-    const clientes = useSelector(selectAllClientes)
+    }, [statusC, dispatch])
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -114,6 +112,7 @@ export default function PerfilPage() {
 
             <div className="flex flex-col gap-4 overflow-y-hidden">
                 <h3 className="font-semibold text-white text-lg leading-none">Dados Pessoais</h3>
+
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid lg:grid-cols-3 gap-3">
                         <FormField
@@ -163,15 +162,23 @@ export default function PerfilPage() {
                                 </FormItem>
                             )}
                         />
-
-                        <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
-                            <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
-                                Editar informações
-                            </Button>
-                            <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
-                                Salvar alterações
-                            </Button>
-                        </div>
+                        
+                        {['saving'].includes(statusC) ? (
+                            <p className="text-lg text-white h-[2.625rem] w-full flex items-center justify-center">Salvando...</p>
+                        ) : ['failed'].includes(statusC) ? (
+                            <div className="h-[2.625rem] rounded-xl bg-red/10 border border-red text-red flex justify-center items-center">
+                                {errorC}
+                            </div>
+                        ) :  (
+                            <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
+                                <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
+                                    Editar informações
+                                </Button>
+                                <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
+                                    Salvar alterações
+                                </Button>
+                            </div>
+                        )}
                     </form>
                 </Form>
 

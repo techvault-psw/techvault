@@ -1,4 +1,3 @@
-import { API_URL } from "@/lib/api-url"
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import type { ClienteServer, NewClienteServer, Cliente, NewCliente } from "./slice"
 import { httpDelete, httpGet, httpPost, httpPut } from "@/lib/fetch-utils"
@@ -20,19 +19,19 @@ export const addClienteServer = createAsyncThunk<Cliente, NewCliente>('clientes/
 )
 
 export const deleteClienteServer = createAsyncThunk<number , Cliente>('clientes/deleteClienteServer ',
-  async (Cliente) => {
-    await httpDelete(`/clientes/${Cliente.id}`)
-    return Cliente.id;
+  async (cliente) => {
+    await httpDelete(`/clientes/${cliente.id}`)
+    return cliente.id;
   }
 )
 
 export const updateClienteServer = createAsyncThunk<Cliente, Cliente>('clientes/updateClienteServer ',
-  async (Cliente) => {
+  async (cliente) => {
     const updatedCliente: ClienteServer = {
-      ...Cliente
+      ...cliente
     }
 
-    return await httpPut(`/clientes/${Cliente.id}`, updatedCliente)
+    return await httpPut(`/clientes/${cliente.id}`, updatedCliente)
   }
 )
 

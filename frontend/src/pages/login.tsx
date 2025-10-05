@@ -45,13 +45,13 @@ export default function LoginPage() {
   })
 
   const dispatch = useDispatch<AppDispatch>()
-  const { status, error } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   useEffect(() => {
-      if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+      if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
           dispatch(fetchClientes())
       }
-  }, [status, dispatch])
+  }, [statusC, dispatch])
   const clientes = useSelector(selectAllClientes)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
@@ -82,6 +82,12 @@ export default function LoginPage() {
       <PageTitle className="text-center">Login</PageTitle>
 
       <Separator/>
+
+      {statusC === 'failed' && (
+        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+          Estamos enfrentando um problema, tente novamente mais tarde.
+        </div>
+      )}
 
       <Form {...form2}>
         <form onSubmit={form2.handleSubmit(onSubmit)} className="space-y-6 max-w-sm" noValidate>

@@ -21,7 +21,7 @@ import { Separator } from "@/components/ui/separator";
 import { useHookFormMask } from 'use-mask-input';
 
 import { useDispatch, useSelector } from "react-redux";
-import { loginCliente, selectAllClientes } from "@/redux/clientes/slice";
+import { loginCliente, selectAllClientes, type NewCliente } from "@/redux/clientes/slice";
 import type { Cliente } from "@/consts/clientes";
 import type { RootState } from "@/redux/root-reducer";
 import { addClienteServer, fetchClientes } from "@/redux/clientes/fetch";
@@ -51,18 +51,17 @@ export default function CadastroPage() {
   })
 
     const dispatch = useDispatch<AppDispatch>()
-    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   
     useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
             dispatch(fetchClientes())
         }
-    }, [status, dispatch])
+    }, [statusC, dispatch])
     const clientes = useSelector(selectAllClientes)
   
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const novoCliente: Cliente = {
-      id: Date.now(), // gera um ID 
+    const novoCliente: NewCliente = {
       name: values.name,
       email: values.email,
       phone: values.phone,
@@ -93,6 +92,12 @@ export default function CadastroPage() {
       <PageTitle className="text-center">Cadastro</PageTitle>
 
       <Separator/>
+
+      {statusC === 'failed' && (
+        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+          Estamos enfrentando um problema, tente novamente mais tarde.
+        </div>
+      )}
 
       <Form {...form2}>
         <form onSubmit={form2.handleSubmit(onSubmit)} className="space-y-6 max-w-sm" noValidate>

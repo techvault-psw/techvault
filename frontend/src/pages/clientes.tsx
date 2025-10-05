@@ -25,13 +25,13 @@ export default function ClientesPage() {
   const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
-    const { status, error } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
-        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
             dispatch(fetchClientes())
         }
-    }, [status, dispatch])
+    }, [statusC, dispatch])
 
     const clientes = useSelector(selectAllClientes)
   const location = useLocation();
@@ -89,13 +89,15 @@ export default function ClientesPage() {
         
         <Separator />
 
-        {clientesFiltrados.length === 0 && searchTerm && (
+        {['loading', 'saving', 'deleting'].includes(status) ? (
+            <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+        ) : ['failed'].includes(status) ? (
+            <p className="text-lg text-white text-center py-2 w-full">{errorC}</p>
+        ) : clientesFiltrados.length === 0 && searchTerm ? (
           <div className="w-full text-center text-white">
             Nenhum cliente encontrado para "{searchTerm}"
           </div>
-        )}
-
-        {clientesFiltrados.length !== 0 && (
+        ) : clientesFiltrados.length !== 0 && (
           <>
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
               {clientesFiltrados.map((cliente) => (

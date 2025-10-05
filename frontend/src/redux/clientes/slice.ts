@@ -14,12 +14,14 @@ export type Cliente = {
   role: "Cliente" | "Gerente" | "Suporte"; 
 }
 export type NewCliente = Optional<Cliente, 'id'>
+
 export type ClienteServer = Cliente
 
 export type NewClienteServer = Optional<ClienteServer, 'id'>
+
 const clientesAdapter = createEntityAdapter<Cliente>()
 
-const ClienteInitialState = clientesAdapter.getInitialState<InitialState & { clienteAtual?: Cliente}>({
+const clienteInitialState = clientesAdapter.getInitialState<InitialState & { clienteAtual?: Cliente}>({
   status: 'not_loaded',
   error: null,
   clienteAtual: undefined
@@ -27,9 +29,8 @@ const ClienteInitialState = clientesAdapter.getInitialState<InitialState & { cli
 
 const clienteSlice = createSlice({
   name: "cliente",
-  initialState: ClienteInitialState,
+  initialState: clienteInitialState,
   reducers: {
-
     loginCliente: (state, action: PayloadAction<Pick<Cliente, "email" | "password">>) => {
       const clientePayload = action.payload
       const { email, password } = clientePayload
@@ -48,16 +49,16 @@ const clienteSlice = createSlice({
     builder
       .addCase(fetchClientes.pending,         (state, action) => { state.status = 'loading' })
       .addCase(fetchClientes.fulfilled,       (state, action) => { state.status = 'loaded'; clientesAdapter.setAll(state, action.payload) })
-      .addCase(fetchClientes.rejected,        (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar Clientes!' })
+      .addCase(fetchClientes.rejected,        (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar clientes!' })
       .addCase(addClienteServer.pending,      (state, action) => { state.status = 'saving' })
       .addCase(addClienteServer.fulfilled,    (state, action) => { state.status = 'saved';  clientesAdapter.addOne(state, action.payload) })
-      .addCase(addClienteServer.rejected,     (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar feedback!' })
+      .addCase(addClienteServer.rejected,     (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar cliente!' })
       .addCase(updateClienteServer.pending,   (state, action) => { state.status = 'saving' })
       .addCase(updateClienteServer.fulfilled, (state, action) => { state.status = 'saved';  clientesAdapter.upsertOne(state, action.payload) })
-      .addCase(updateClienteServer.rejected,  (state, action) => { state.status = 'failed'; state.error = 'Falha ao atualizar feedback!' })
+      .addCase(updateClienteServer.rejected,  (state, action) => { state.status = 'failed'; state.error = 'Falha ao atualizar cliente!' })
       .addCase(deleteClienteServer.pending,   (state, action) => { state.status = 'deleting' })
       .addCase(deleteClienteServer.fulfilled, (state, action) => { state.status = 'deleted'; clientesAdapter.removeOne(state, action.payload) })
-      .addCase(deleteClienteServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao excluir feedback!' })
+      .addCase(deleteClienteServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao excluir cliente!' })
   } 
 });
 
@@ -66,6 +67,6 @@ export const clienteReducer = clienteSlice.reducer;
 
 export const {
   selectAll: selectAllClientes,
-  selectById: selectClientesById,
+  selectById: selectClienteById,
   selectIds: selectClientesIds,
 } = clientesAdapter.getSelectors((reducer: RootState) => reducer.clienteReducer)
