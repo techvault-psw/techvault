@@ -31,7 +31,9 @@ import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
+import {logoutCliente, selectAllClientes} from '@/redux/clientes/slice';
+import { deleteClienteServer, fetchClientes, updateClienteServer } from '@/redux/clientes/fetch';
+import type { AppDispatch } from '@/redux/store';
 
 const formSchema = z
     .object({
@@ -44,8 +46,16 @@ const formSchema = z
 
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
+    const dispatch = useDispatch<AppDispatch>();
+    const { status, clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
-    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+        useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(status)) {
+            dispatch(fetchClientes())
+        }
+    }, [status, dispatch])
+    const clientes = useSelector(selectAllClientes)
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -55,11 +65,10 @@ export default function PerfilPage() {
         }
     })
 
-    const dispatch = useDispatch();
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
-        dispatch(updateCliente({
+        dispatch(updateClienteServer({
             ...clienteAtual,
             ...values,
         }))
@@ -72,7 +81,7 @@ export default function PerfilPage() {
     const handleDeleteClick = () => {
         navigate("/cadastro");
         if(clienteAtual){
-            dispatch(deleteCliente(clienteAtual.id));
+            dispatch(deleteClienteServer(clienteAtual));
         }
     }
     const handleLogoutClick = () => {
