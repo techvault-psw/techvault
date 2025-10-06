@@ -94,7 +94,7 @@ export default function ConfirmarReservaPage() {
   const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
 
   const onSubmit = async (data: FormData) => {
-    const endereco = enderecos.find(endereco => endereco.name === data.endereco)
+    const endereco = enderecos.find(endereco => endereco.id === Number(data.endereco))
 
     if (!clienteAtual || !endereco || !pacote) return;
 
@@ -213,7 +213,7 @@ export default function ConfirmarReservaPage() {
                           </div>
                         ) : (
                           enderecosCliente.map((endereco, index) => (
-                            <SelectItem key={index} value={endereco.name}>
+                            <SelectItem key={index} value={String(endereco.id)}>
                               {endereco.name}
                             </SelectItem>
                           ))

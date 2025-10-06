@@ -21,6 +21,50 @@ async function parseBody(req) {
   });
 }
 
+function deleteCascade(data, resource, itemId) {
+  const deletedItems = {
+    [resource]: [itemId]
+  };
+  
+  const foreignKey = resource.endsWith('s') 
+    ? resource.slice(0, -1) + 'Id' 
+    : resource + 'Id';
+  
+  for (const [relatedResource, items] of Object.entries(data)) {
+    if (relatedResource === resource || !Array.isArray(items)) continue;
+    
+    const itemsToDelete = items.filter(item => item[foreignKey] === itemId);
+    
+    if (itemsToDelete.length > 0) {
+      if (!deletedItems[relatedResource]) {
+        deletedItems[relatedResource] = [];
+      }
+      
+      itemsToDelete.forEach(item => {
+        deletedItems[relatedResource].push(item.id);
+        
+        const index = data[relatedResource].findIndex(i => i.id === item.id);
+        if (index !== -1) {
+          data[relatedResource].splice(index, 1);
+        }
+        
+        const cascadeResult = deleteCascade(data, relatedResource, item.id);
+        
+        for (const [cascadeResource, cascadeIds] of Object.entries(cascadeResult)) {
+          if (cascadeResource !== relatedResource) {
+            if (!deletedItems[cascadeResource]) {
+              deletedItems[cascadeResource] = [];
+            }
+            deletedItems[cascadeResource].push(...cascadeIds);
+          }
+        }
+      });
+    }
+  }
+  
+  return deletedItems;
+}
+
 export default async function handler(req, res) {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS');
@@ -131,10 +175,18 @@ export default async function handler(req, res) {
       }
       
       const deletedItem = data[resource][index];
+      const itemIdToDelete = data[resource][index].id;
+      
       data[resource].splice(index, 1);
+      
+      const cascadeResult = deleteCascade(data, resource, itemIdToDelete);
+      
       writeFileSync(dataPath, JSON.stringify(data, null, 2), 'utf-8');
       
-      return res.status(200).json(deletedItem);
+      return res.status(200).json({
+        deleted: deletedItem,
+        cascade: cascadeResult
+      });
     }
     
     // GET
