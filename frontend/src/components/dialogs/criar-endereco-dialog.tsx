@@ -15,6 +15,7 @@ import type { AppDispatch } from '@/redux/store';
 import { addEnderecoServer } from '@/redux/endereco/fetch';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
 import { estados } from '@/consts/estados';
+import { selectAllEnderecos } from '@/redux/endereco/slice';
 
 interface DadosClienteDialogProps {
     children: ReactNode
@@ -40,6 +41,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     const [disabled, setDisabled] = useState(true);
 
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const enderecos  = useSelector(selectAllEnderecos);
 
     const dispatch = useDispatch<AppDispatch>()
 
@@ -59,6 +61,15 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
 
     const onSubmit = (endereco: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
+
+        const addressFound = enderecos.findIndex((e) => clienteAtual.id == e.cliente.id && endereco.name == e.name);
+        if(addressFound != -1) {
+            form.setError("name", { 
+                type: "custom",
+                message: "Um endereço com este nome já existe"
+            })
+            return
+        }
 
         dispatch(addEnderecoServer({
             ...endereco,

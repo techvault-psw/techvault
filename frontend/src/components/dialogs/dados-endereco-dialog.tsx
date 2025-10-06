@@ -15,10 +15,11 @@ import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
 import { useLocation, useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
 import { updateEnderecoServer, deleteEnderecoServer } from "@/redux/endereco/fetch";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { estados } from "@/consts/estados";
+import { selectAllEnderecos } from "@/redux/endereco/slice";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
@@ -45,6 +46,8 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     const [disabled, setDisabled] = useState(true)
     const { isGerente } = useCargo()
 
+    const enderecos = useSelector(selectAllEnderecos)
+
     const dispatch = useDispatch<AppDispatch>()
 
     const location = useLocation();
@@ -66,6 +69,15 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     })
 
     const onSubmit = (newEndereco: z.infer<typeof formSchema>) => {
+      const addressFound = enderecos.findIndex((e) => endereco.cliente.id == e.cliente.id && endereco.name == e.name);
+      if(endereco.name != newEndereco.name && addressFound != -1) {
+          form.setError("name", { 
+              type: "custom",
+              message: isProfilePage ? "Um endereço com este nome já existe" : `Esse cliente já possui um endereço com este nome`
+          })
+          return
+      }
+
       dispatch(updateEnderecoServer({
         ...newEndereco,
         id: endereco.id,
