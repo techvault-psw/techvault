@@ -32,6 +32,7 @@ const formSchema = z
             .min(1, { message: "O número é obrigatório" })
             .trim()
             .regex(/^\d{1,6}[A-Za-z]?$/, "Número inválido"),
+        description: z.string(),
         neighborhood: z.string().min(1, { message: "O bairro é obrigatório" }),
         city: z.string().min(1, { message: "A cidade é obrigatória" }),
         state: z.string().min(1, { message: "O estado é obrigatório" })
@@ -54,7 +55,8 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
             name: endereco.name || "",
             cep: endereco.cep || "",
             street: endereco.street || "",
-            number: endereco.number.toString() || "",
+            number: endereco.number || "",
+            description: endereco.description || "",
             neighborhood: endereco.neighborhood || "",
             city: endereco.city || "",
             state: endereco.state || ""
@@ -88,7 +90,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                     form.clearErrors("cep")
                     setDisabled(false)
                 } else {
-                        form.setError("cep", { 
+                    form.setError("cep", { 
                         type: "custom",
                         message: "CEP não encontrado" 
                     })
@@ -198,6 +200,19 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                                 )}
                             />
                         </div>
+                        <FormField
+                            control={form.control}
+                            name="description"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Complemento</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={disabled} placeholder="Fundos" type="text" {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
                         <FormField
                             control={form.control}
                             name="neighborhood"
