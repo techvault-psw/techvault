@@ -6,6 +6,7 @@ export type Endereco = {
     name: string
     cep: string
     street: string
+    description?: string
     number: string
     neighborhood: string
     city: string
@@ -13,5 +14,10 @@ export type Endereco = {
 }
 
 export const stringifyAddress = (x: Endereco) => {
-    return x.street + ", " + x.number + " - " + x.neighborhood + ", " + x.city + ", " + x.state
+    let desc = ""
+    if(x.description) {
+        desc = x.description + " - "
+    }
+
+    return x.street + ", " + x.number + " - " + desc + x.neighborhood + ", " + x.city + ", " + x.state
 }
