@@ -108,7 +108,7 @@ export default function EnderecosClientePage() {
                         <Table.Cell>{endereco.cep}</Table.Cell>
                         <Table.Cell>{endereco.state}</Table.Cell>
                         <Table.Cell>{endereco.city}</Table.Cell>
-                        <Table.Cell>{endereco.street}, {endereco.number} - {endereco.neighborhood}</Table.Cell>
+                        <Table.Cell>{endereco.street}, {endereco.number} - {endereco.description && `${endereco.description} - `} {endereco.neighborhood}</Table.Cell>
                         <Table.Cell>
                           <ArrowRightIcon className="size-6" />
                         </Table.Cell>
