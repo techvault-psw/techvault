@@ -55,8 +55,16 @@ const formSchema = z
       ),
 
   })
+  .refine((data) => data.dataHoraInicial > new Date(), {
+    message: "A data inicial não pode ser no passado",
+    path: ["dataHoraInicial"],
+  })
   .refine((data) => data.dataHoraInicial <= data.dataHoraFinal, {
     message: "Data final não pode ser antes que a data inicial",
+    path: ["dataHoraFinal"],
+  })
+  .refine((data) => data.dataHoraInicial < data.dataHoraFinal, {
+    message: "A reserva deve ter duração mínima de 15 minutos",
     path: ["dataHoraFinal"],
   });
 
@@ -169,6 +177,7 @@ export default function ConfirmarReservaPage() {
                       onChange={field.onChange}
                       minuteStep={15}
                       placeholder="Selecione uma data"
+                      minHoursFromNow={12}
                     />
                   </FormControl>
                   <FormMessage />
@@ -188,6 +197,7 @@ export default function ConfirmarReservaPage() {
                       onChange={field.onChange}
                       minuteStep={15}
                       placeholder="Selecione uma data"
+                      minHoursFromNow={12}
                     />
                   </FormControl>
                   <FormMessage />
