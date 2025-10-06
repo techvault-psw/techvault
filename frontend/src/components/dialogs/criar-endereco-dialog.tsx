@@ -13,6 +13,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
 import type { AppDispatch } from '@/redux/store';
 import { addEnderecoServer } from '@/redux/endereco/fetch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { estados } from '@/consts/estados';
 
 interface DadosClienteDialogProps {
     children: ReactNode
@@ -30,7 +32,7 @@ const formSchema = z
         description: z.string(),
         neighborhood: z.string().min(1, { message: "O bairro é obrigatório" }),
         city: z.string().min(1, { message: "A cidade é obrigatória" }),
-        state: z.string().min(1, { message: "O estado é obrigatório" })
+        state: z.enum(estados, { message: "Selecione um estado válido" })
     })
 
 export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
@@ -232,11 +234,20 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                             <FormField
                                 control={form.control}
                                 name="state"
-                                render={({field}) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem>
                                         <FormLabel>Estado</FormLabel>
                                         <FormControl>
-                                            <Input disabled={disabled} type="text" placeholder="RJ" {...field}/>
+                                            <Select disabled={disabled} onValueChange={field.onChange} value={field.value}>
+                                                <SelectTrigger className="w-full rounded-lg disabled:opacity-100" aria-invalid={fieldState.invalid}>
+                                                    <SelectValue placeholder="RJ" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {estados.map((estado, index) =>
+                                                        <SelectItem key={index} value={estado}>{estado}</SelectItem>
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
