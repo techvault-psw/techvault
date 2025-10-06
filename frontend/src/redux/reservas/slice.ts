@@ -2,7 +2,7 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import { type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
 import type { Pacote } from "../pacotes/slice";
-import type { Endereco } from "@/consts/enderecos";
+import type { Endereco } from "@/redux/endereco/slice";
 import type { InitialState, RootState } from "../root-reducer";
 
 import {addReservaServer, cancelReservaServer, fetchReservas, updateReservaServer} from "./fetch";

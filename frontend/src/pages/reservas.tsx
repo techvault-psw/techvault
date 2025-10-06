@@ -14,7 +14,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { selectAllReservas, selectReservaById, type Reserva } from "@/redux/reservas/slice";
-import { stringifyAddress } from "@/consts/enderecos";
+import { stringifyAddress } from "@/lib/stringify-address";
 import { agruparReservasPorData } from "@/lib/agrupar-reservas";
 import { type AppDispatch } from "@/redux/store";
 import { fetchReservas } from "@/redux/reservas/fetch";

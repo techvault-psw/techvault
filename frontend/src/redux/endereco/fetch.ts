@@ -1,6 +1,6 @@
 import { httpGet, httpPost, httpDelete, httpPut } from '@/lib/fetch-utils'
 import { createAsyncThunk } from '@reduxjs/toolkit'
-import type { Endereco } from '@/consts/enderecos'
+import type { Endereco } from '@/redux/endereco/slice'
 import type { NewEndereco, NewEnderecoServer, EnderecoServer } from './slice'
 
 export const fetchEnderecos = createAsyncThunk<Endereco[]>(`enderecos/fetchEnderecos`, 

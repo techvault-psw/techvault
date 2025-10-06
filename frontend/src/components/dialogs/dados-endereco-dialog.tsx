@@ -1,4 +1,3 @@
-import { type Endereco } from "@/consts/enderecos";
 import { useEffect, useState, type ReactNode } from "react";
 import { Dialog } from "../ui/dialog";
 import z from "zod";
@@ -19,7 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { estados } from "@/consts/estados";
-import { selectAllEnderecos } from "@/redux/endereco/slice";
+import { selectAllEnderecos, type Endereco } from "@/redux/endereco/slice";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
