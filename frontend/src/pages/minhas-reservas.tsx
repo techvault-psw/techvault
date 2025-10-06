@@ -128,7 +128,7 @@ export default function MinhasReservasPage() {
                                         ) : reserva.status === "Concluída" ? (
                                             <Badge className="py-0" variant="purple">{reserva.status}</Badge>
                                         ) : reserva.status === "Cancelada" && (
-                                            <Badge className="py-0" variant="dark-red">{reserva.status}</Badge>
+                                            <Badge className="py-0" variant="red">{reserva.status}</Badge>
                                         )}
                                     </p>
                                     <p>Data e Hora de Início:</p><p className="text-right">{formattedStartDate}</p>

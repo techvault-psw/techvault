@@ -49,7 +49,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
                 <Card.TextContainer className="text-white truncate">
                   <div className="flex items-center justify-between gap-2 font-semibold">
                     <Card.Title className="truncate">{pacote.name}</Card.Title>
-                    {reserva.status === "Cancelada" && <Badge variant="dark-red">Cancelada</Badge>}
+                    {reserva.status === "Cancelada" && <Badge variant="red">Cancelada</Badge>}
                   </div>
                   <Card.Description className="leading-[120%]">
                     <span className="font-medium">Endereço:</span> {stringifyAddress(reserva.endereco)}
