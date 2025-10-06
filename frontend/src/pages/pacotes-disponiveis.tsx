@@ -52,7 +52,7 @@ export default function PacotesDisponiveisPage() {
             const formattedValue = formatCurrency(pacote.value)
 
             return (
-              <Link key={pacote.name} to={`/informacoes-pacote/${i % pacotesDisponiveis.length}`} className="w-80 md:w-full max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
+              <Link key={pacote.name} to={`/informacoes-pacote/${pacote.id}`} className="w-80 md:w-full max-h-108 px-3.5 py-4 flex flex-col gap-3 border border-gray/50 bg-white/5 hover:bg-white/10 rounded-xl flex-shrink-0 backdrop-blur-md cursor-pointer transition-colors duration-200">
                 <PacoteImage
                   pacote={pacote}
                   className="w-full"
