@@ -114,8 +114,12 @@ export default function Pacotes() {
                       <PacoteImage pacote={pacote} className="h-20 rounded-lg border-gray/50"/>
                       <Card.TextContainer className="truncate">
                         <Card.Title className="truncate font-semibold leading-[110%]">{pacote.name}</Card.Title>
-                        <Card.Description className="leading-[110%]">Valor (hora): {formatCurrency(pacote.value)}</Card.Description>
-                        <Card.Description className="leading-[110%]">Quantidade: {pacote.quantity}</Card.Description>
+                        <Card.Description className="leading-[110%]">
+                          <span className="font-medium">Valor (hora): </span>{formatCurrency(pacote.value)}
+                        </Card.Description>
+                        <Card.Description className="leading-[110%]">
+                          <span className="font-medium">Quantidade: </span>{pacote.quantity}
+                        </Card.Description>
                       </Card.TextContainer>
                     </div>
                   </Card.Container>

@@ -84,9 +84,9 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
 
                 {clienteAtual ? (
                     <div className="flex justify-between items-center gap-2">
-                        <div className="flex flex-col gap-2">
-                            <h3 className="text-white font-semibold text-xl">{clienteAtual.name}</h3>
-                            <p className="text-gray text-base leading-none">{clienteAtual.email}</p>
+                        <div className="flex flex-col gap-2 truncate">
+                            <h3 className="text-white font-semibold text-xl truncate" title={clienteAtual.name}>{clienteAtual.name}</h3>
+                            <p className="text-gray text-base leading-none truncate" title={clienteAtual.email}>{clienteAtual.email}</p>
                         </div>
                         <SairDialog handleCloseClick = {handleLogoutClick}> 
                             <Button variant="destructive" size="icon">

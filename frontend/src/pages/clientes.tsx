@@ -114,7 +114,7 @@ export default function ClientesPage() {
                   }}
                 >
                   <Card.Container>
-                    <Card.TextContainer>
+                    <Card.TextContainer className="truncate">
                       <Card.Title>{cliente.name}</Card.Title>
                       <Card.Description className='truncate leading-[120%]'>
                         <span className="font-medium">E-mail: </span>{cliente.email}
@@ -133,8 +133,8 @@ export default function ClientesPage() {
                 <Table.Header>
                   <Table.Row>
                     <Table.Head className="w-4/16 ">Nome</Table.Head>
-                    <Table.Head className="w-4/16 ">E-mail</Table.Head>
-                    <Table.Head className="w-4/16 ">Telefone</Table.Head>
+                    <Table.Head className="w-5/16 ">E-mail</Table.Head>
+                    <Table.Head className="w-3/16 ">Telefone</Table.Head>
                     <Table.Head className="w-3/16 ">Data de cadastro</Table.Head>
                     <Table.Head className="w-1/16 text-right"></Table.Head> 
                   </Table.Row>
@@ -154,8 +154,8 @@ export default function ClientesPage() {
                       }}
                     >
                       <Table.Row>
-                        <Table.Cell className="text-white font-medium">{cliente.name}</Table.Cell>
-                        <Table.Cell>{cliente.email}</Table.Cell>
+                        <Table.Cell className="text-white font-medium truncate">{cliente.name}</Table.Cell>
+                        <Table.Cell className="truncate">{cliente.email}</Table.Cell>
                         <Table.Cell>{cliente.phone}</Table.Cell>
                         <Table.Cell>{cliente.registrationDate}</Table.Cell>
                         <Table.Cell className="text-right">
