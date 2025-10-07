@@ -27,6 +27,7 @@ export type EnderecoServer = {
   cep: string,
   street: string,
   number: string,
+  description?: string;
   neighborhood: string,
   city: string,
   state: string

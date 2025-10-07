@@ -68,7 +68,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     })
 
     const onSubmit = (newEndereco: z.infer<typeof formSchema>) => {
-      const addressFound = enderecos.findIndex((e) => endereco.cliente.id == e.cliente.id && endereco.name == e.name);
+      const addressFound = enderecos.findIndex((e) => endereco.cliente.id == e.cliente.id && newEndereco.name == e.name);
       if(endereco.name != newEndereco.name && addressFound != -1) {
           form.setError("name", { 
               type: "custom",
