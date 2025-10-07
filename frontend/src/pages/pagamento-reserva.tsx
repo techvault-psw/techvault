@@ -3,33 +3,50 @@ import { PageContainer } from "@/components/page-container"
 import { PageTitle } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import { formatCurrency } from "@/lib/format-currency"
+import { fetchReservas } from "@/redux/reservas/fetch"
+import { selectReservaById } from "@/redux/reservas/slice"
 import type { RootState } from "@/redux/root-reducer"
+import type { AppDispatch } from "@/redux/store"
 import { useEffect } from "react"
-import { useSelector } from "react-redux"
-import { Link, useNavigate, useParams } from "react-router"
+import { useDispatch, useSelector } from "react-redux"
+import { Link, useLocation, useNavigate, useParams } from "react-router"
 
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const { reservas } = useSelector((state: RootState) => state.reservasReducer)
+    const dispatch = useDispatch<AppDispatch>()
+    const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+            dispatch(fetchReservas())
+        }
+    }, [statusR, dispatch])
 
     const numberId = Number(id)
-    const reserva = reservas.find((reserva) => reserva.id === numberId)
+    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
 
-    if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
-        return
-    }
-
-    const pacote = reserva.pacote
+    const pacote = reserva?.pacote
 
     const navigate = useNavigate()
+    const location = useLocation()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            const fullPath = location.pathname + location.search + location.hash;
+            navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
     })
+
+    const valorReserva = reserva?.valor ?? 0
+    const taxaTransporte = 40.00
+    const valorTotal = valorReserva + taxaTransporte
+
+    if (isNaN(numberId) || !reserva || !pacote) {
+        return
+    }
 
     return (
         <PageContainer.Card>
@@ -55,19 +72,19 @@ export default function PagamentoReservaPage() {
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
-                            <span>R$ 660,00</span>
+                            <span>{formatCurrency(valorReserva)}</span>
                         </div>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Taxa de Transporte:</span>
-                            <span>R$ 40,00</span>
+                            <span>{formatCurrency(taxaTransporte)}</span>
                         </div>
 
                         <Separator/>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Total:</span>
-                            <span className="font-semibold">R$ 700,00</span>
+                            <span className="font-semibold">{formatCurrency(valorTotal)}</span>
                         </div>
                     </div>
 
@@ -82,7 +99,7 @@ export default function PagamentoReservaPage() {
                 
                 {/* TODO: Usar props para definir método de pagamento nessa página */}
                 <Button asChild size="lg" className="flex-none font-bold">
-                    <Link to="/reserva-confirmada">Copiar Código Pix</Link>
+                    <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
                 </Button>
             </section>
 
@@ -102,19 +119,19 @@ export default function PagamentoReservaPage() {
                     <div className="flex flex-col gap-1.5">
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
-                            <span>R$ 660,00</span>
+                            <span>{formatCurrency(valorReserva)}</span>
                         </div>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Taxa de Transporte:</span>
-                            <span>R$ 40,00</span>
+                            <span>{formatCurrency(taxaTransporte)}</span>
                         </div>
 
                         <Separator/>
 
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Total:</span>
-                            <span className="font-semibold">R$ 700,00</span>
+                            <span className="font-semibold">{formatCurrency(valorTotal)}</span>
                         </div>
                     </div>
                 </div>

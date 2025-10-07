@@ -6,8 +6,6 @@ import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import type { Reserva } from "@/redux/reservas/slice";
 import type { Cliente } from "@/consts/clientes";
-import { useSelector } from "react-redux";
-import type { RootState } from "@/redux/root-reducer";
 
 interface CancelarReservaDialogProps {
   reserva: Reserva
@@ -17,7 +15,6 @@ interface CancelarReservaDialogProps {
 }
 
 export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, children }: CancelarReservaDialogProps) => {
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
   return (
     <Dialog.Container>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>

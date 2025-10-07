@@ -1,7 +1,7 @@
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router';
+import { useLocation, useNavigate } from 'react-router';
 
 import { PageContainer } from "@/components/page-container";
 import { PageTitle } from "@/components/page-title";
@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
 
-import { stringifyAddress } from '@/consts/enderecos';
+import { stringifyAddress } from '@/lib/stringify-address';
 import { Card } from '@/components/ui/card';
 import { LogOutIcon } from '@/components/icons/log-out-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';
@@ -31,7 +31,11 @@ import { SairDialog } from '@/components/dialogs/sair-dialog';
 import { DadosEnderecoDialog } from '@/components/dialogs/dados-endereco-dialog';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { deleteCliente, logoutCliente, updateCliente } from '@/redux/clientes/slice';
+import { deleteClienteServer, fetchClientes, updateClienteServer } from '@/redux/clientes/fetch';
+import { logoutCliente } from '@/redux/clientes/slice';
+import { selectAllEnderecos } from '@/redux/endereco/slice';
+import { fetchEnderecos } from '@/redux/endereco/fetch';
+import type { AppDispatch } from '@/redux/store';
 
 const formSchema = z
     .object({
@@ -45,7 +49,16 @@ const formSchema = z
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
 
-    const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+    const dispatch = useDispatch<AppDispatch>();
+    const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
+    const { status: statusC, error: errorC, clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
+            dispatch(fetchClientes())
+        }
+    }, [statusC, dispatch])
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -55,11 +68,10 @@ export default function PerfilPage() {
         }
     })
 
-    const dispatch = useDispatch();
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
-        dispatch(updateCliente({
+        dispatch(updateClienteServer({
             ...clienteAtual,
             ...values,
         }))
@@ -72,7 +84,7 @@ export default function PerfilPage() {
     const handleDeleteClick = () => {
         navigate("/cadastro");
         if(clienteAtual){
-            dispatch(deleteCliente(clienteAtual.id));
+            dispatch(deleteClienteServer(clienteAtual));
         }
     }
     const handleLogoutClick = () => {
@@ -83,14 +95,21 @@ export default function PerfilPage() {
     const registerWithMask = useHookFormMask(form.register)
 
     const navigate = useNavigate()
+    const location = useLocation()
     
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])
-
-    const { enderecos } = useSelector((state: RootState) => state.enderecosReducer);
+  
+   useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusE)) {
+            dispatch(fetchEnderecos())
+        }
+    }, [statusE, dispatch])
+ 
+    const enderecos = useSelector(selectAllEnderecos)
 
     const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
@@ -104,6 +123,7 @@ export default function PerfilPage() {
 
             <div className="flex flex-col gap-4 overflow-y-hidden">
                 <h3 className="font-semibold text-white text-lg leading-none">Dados Pessoais</h3>
+
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="grid lg:grid-cols-3 gap-3">
                         <FormField
@@ -153,15 +173,23 @@ export default function PerfilPage() {
                                 </FormItem>
                             )}
                         />
-
-                        <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
-                            <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
-                                Editar informações
-                            </Button>
-                            <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
-                                Salvar alterações
-                            </Button>
-                        </div>
+                        
+                        {['saving'].includes(statusC) ? (
+                            <p className="text-lg text-white h-[2.625rem] w-full flex items-center justify-center lg:col-start-2">Salvando...</p>
+                        ) : ['failed'].includes(statusC) ? (
+                            <div className="h-[2.625rem] rounded-xl bg-red/10 border border-red text-red flex justify-center items-center lg:col-start-2">
+                                {errorC}
+                            </div>
+                        ) :  (
+                            <div className="flex items-center justify-center lg:w-80 lg:m-auto lg:col-2">
+                                <Button type="button" variant="outline" onClick={toggleEditProfileInfo} hidden={!formDisabled}>
+                                    Editar informações
+                                </Button>
+                                <Button className="h-[2.625rem]" type="submit" hidden={formDisabled}>
+                                    Salvar alterações
+                                </Button>
+                            </div>
+                        )}
                     </form>
                 </Form>
 
@@ -178,26 +206,31 @@ export default function PerfilPage() {
                         </CriarEnderecoDialog>
                     </div>
 
-                    {!enderecosCliente.length && (
+
+                    {['loading', 'saving', 'deleting'].includes(statusE) ? (
+                        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+                    ) : ['failed'].includes(statusE) ? (
+                        <p className="text-lg text-white text-center py-2 w-full">{errorE}</p>
+                    ) : enderecosCliente.length === 0 ? (
                         <p className='text-base text-gray text-center'>
                             Você ainda não possui nenhum endereço cadastrado.
                         </p>
+                    ) : (
+                        <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
+                            {enderecosCliente.map((endereco) => {
+                                return (
+                                    <DadosEnderecoDialog endereco={endereco} key={endereco.id}>
+                                        <Card.Container>
+                                            <Card.TextContainer className='overflow-x-hidden'>
+                                                <Card.Title className='truncate'>{endereco.name}</Card.Title>
+                                                <Card.Description>{stringifyAddress(endereco)}</Card.Description>
+                                            </Card.TextContainer>
+                                        </Card.Container>
+                                    </DadosEnderecoDialog>
+                                )
+                            })}
+                        </div>
                     )}
-
-                    <div className="lg:grid lg:grid-cols-2 xl:grid-cols-3 flex flex-col gap-3 scrollbar">
-                        {enderecosCliente.map((endereco) => {
-                            return (
-                                <DadosEnderecoDialog endereco={endereco}>
-                                    <Card.Container>
-                                        <Card.TextContainer className='overflow-x-hidden'>
-                                            <Card.Title className='truncate'>{endereco.name}</Card.Title>
-                                            <Card.Description>{stringifyAddress(endereco)}</Card.Description>
-                                        </Card.TextContainer>
-                                    </Card.Container>
-                                </DadosEnderecoDialog>
-                            )
-                        })}
-                    </div>
                 </div>
                 <CriarEnderecoDialog>
                     <Button variant="outline" className='hidden lg:flex lg:w-80 m-auto'>

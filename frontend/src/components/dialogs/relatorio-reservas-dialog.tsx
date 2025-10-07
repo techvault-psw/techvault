@@ -3,6 +3,9 @@ import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { format } from "date-fns";
 import { Badge } from "../ui/badge";
+import { useSelector } from "react-redux";
+import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
+import { formatCurrency } from "@/lib/format-currency";
 
 interface RelatorioReservasDialogProps extends DialogProps {
   open: boolean;
@@ -26,42 +29,45 @@ const resumo = [
   },
 ]
 
-const reservas = [
-  {
-    pacote: 'Setup Gamer Duplo',
-    cliente: 'João Silva',
-    data: '25/08/2025',
-    confirmada: true,
-    valor: '350,00',
-  },
-  {
-    pacote: 'Setup Gamer Squad',
-    cliente: 'João Silva',
-    data: '26/08/2025',
-    confirmada: false,
-    valor: '100,00',
-  },
-  {
-    pacote: 'Setup de Trabalho Profissional',
-    cliente: 'João Silva',
-    data: '27/08/2025',
-    confirmada: true,
-    valor: '200,00',
-  },
-  {
-    pacote: 'Setup Gamer Squad',
-    cliente: 'João Silva',
-    data: '28/08/2025',
-    confirmada: false,
-    valor: '100,00',
-  },
-]
+const getResumo: (reservas: Reserva[]) => {
+  name: string
+  count: string
+}[] = (reservas) => {
+  const qtdReservas = reservas.length
+  const reservasConfirmadas = reservas.filter((reserva) => reserva.status === 'Confirmada')
+  const reservasConfirmadasPercent = Math.floor((reservasConfirmadas.length / qtdReservas) * 100)
+  const reservasCanceladas = reservas.filter((reserva) => reserva.status === 'Cancelada')
+  const reservasCanceladasPercent = Math.floor((reservasCanceladas.length / qtdReservas) * 100)
+
+  return [
+    {
+      name: "Reservas confirmadas",
+      count: `${reservasConfirmadas.length} (${isNaN(reservasConfirmadasPercent) ? 0 : reservasConfirmadasPercent}%)`,
+    },
+    {
+      name: "Reservas canceladas",
+      count: `${reservasCanceladas.length} (${isNaN(reservasCanceladasPercent) ? 0 : reservasCanceladasPercent}%)`,
+    },
+    {
+      name: "Reservas totais",
+      count: qtdReservas.toString(),
+    },
+  ]
+}
 
 export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...props }: RelatorioReservasDialogProps) => {
   if (!startDate || !endDate) return null
 
   const formattedStartDate = format(startDate, "dd/MM/yyyy")
   const formattedEndDate = format(endDate, "dd/MM/yyyy")
+
+  const reservas = useSelector(selectAllReservas)
+  const reservasDoPeriodo = reservas.filter((reserva) => {
+    const dataReserva = new Date(reserva.dataInicio)
+    return dataReserva >= startDate && dataReserva <= endDate
+  })
+  const reservasFinalizadas = reservasDoPeriodo.filter((reserva) => reserva.status === 'Concluída' || reserva.status === 'Cancelada')
+  const resumo = getResumo(reservasFinalizadas)
 
   return (
     <Dialog.Container open={open} onOpenChange={setOpen} {...props}>
@@ -87,29 +93,36 @@ export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...
           })}
         </section>
 
-        <section className="flex flex-col gap-2 overflow-y-hidden">
-          <h3 className="font-semibold text-xl text-white mb-1.5">Detalhes</h3>
+        {reservasFinalizadas.length !== 0 && (
+          <section className="flex flex-col gap-2 overflow-y-hidden">
+            <h3 className="font-semibold text-xl text-white mb-1.5">Detalhes</h3>
 
-          <div className="flex flex-col gap-2 scrollbar">
-            {reservas.map((reserva) => (
-              <div className="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray/50 rounded-lg backdrop-blur-sm transition-colors duration-200">
-                <div className="text-white text-sm truncate">
-                  <p><span className="font-semibold">Pacote:</span> {reserva.pacote}</p>
-                  <p><span className="font-semibold">Cliente:</span> {reserva.cliente}</p>
-                  <p><span className="font-semibold">Data:</span> {reserva.data}</p>
-                </div>
-                <div className="flex flex-col justify-between leading-none text-white text-sm font-semibold">
-                  {reserva.confirmada ? (
-                    <Badge>Confirmada</Badge>
-                  ) : (
-                    <Badge variant="red">Cancelada</Badge>
-                  )}
-                  <p className="text-right">R$ {reserva.valor}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </section>
+            <div className="flex flex-col gap-2 scrollbar">
+              {reservasFinalizadas.map((reserva) => {
+                const formattedReservaStartDate = format(new Date(reserva.dataInicio), "dd/MM/yyyy HH:mm")
+                const formattedReservaEndDate = format(new Date(reserva.dataTermino), "dd/MM/yyyy HH:mm")
+
+                return (
+                  <div className="w-full p-2 flex justify-between gap-1 bg-white/5 border border-gray/50 rounded-lg backdrop-blur-sm transition-colors duration-200">
+                    <div className="text-white text-sm truncate flex flex-col gap-2">
+                      <p className="leading-none"><span className="font-semibold">Pacote:</span> {reserva.pacote.name}</p>
+                      <p className="leading-none"><span className="font-semibold">Cliente:</span> {reserva.cliente.name}</p>
+                      <p className="leading-none"><span className="font-semibold">Data:</span> {formattedReservaStartDate} - {formattedReservaEndDate}</p>
+                    </div>
+                    <div className="flex flex-col justify-between leading-none text-white text-sm font-semibold">
+                      {reserva.status === 'Cancelada' ? (
+                        <Badge className="py-0.5" variant="red">Cancelada</Badge>
+                      ) : (
+                        <Badge className="py-0.5" variant="purple">Concluída</Badge>
+                      )}
+                      <p className="text-right mt-auto">{formatCurrency(reserva.valor)}</p>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          </section>
+        )}
       </Dialog.Content>
     </Dialog.Container>
   );

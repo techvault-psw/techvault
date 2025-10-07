@@ -1,4 +1,3 @@
-import { type Endereco } from "@/consts/enderecos";
 import { useEffect, useState, type ReactNode } from "react";
 import { Dialog } from "../ui/dialog";
 import z from "zod";
@@ -14,9 +13,12 @@ import { type MouseEvent } from "react";
 import { ExcluirEnderecoDialog } from "./excluir-endereco-dialog";
 import { useLocation, useNavigate } from "react-router";
 import useCargo from "@/hooks/useCargo";
-
-import { useDispatch } from "react-redux";
-import { deleteAddress, updateAddress } from "@/redux/endereco/slice";
+import { updateEnderecoServer, deleteEnderecoServer } from "@/redux/endereco/fetch";
+import { useDispatch, useSelector } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { estados } from "@/consts/estados";
+import { selectAllEnderecos, type Endereco } from "@/redux/endereco/slice";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
@@ -32,9 +34,10 @@ const formSchema = z
             .min(1, { message: "O número é obrigatório" })
             .trim()
             .regex(/^\d{1,6}[A-Za-z]?$/, "Número inválido"),
+        description: z.string(),
         neighborhood: z.string().min(1, { message: "O bairro é obrigatório" }),
         city: z.string().min(1, { message: "A cidade é obrigatória" }),
-        state: z.string().min(1, { message: "O estado é obrigatório" })
+        state: z.enum(estados, { message: "Selecione um estado válido" })
     })
 
 export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogProps) => {
@@ -42,7 +45,9 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     const [disabled, setDisabled] = useState(true)
     const { isGerente } = useCargo()
 
-    const dispatch = useDispatch()
+    const enderecos = useSelector(selectAllEnderecos)
+
+    const dispatch = useDispatch<AppDispatch>()
 
     const location = useLocation();
     const fullPath = location.pathname;
@@ -54,7 +59,8 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
             name: endereco.name || "",
             cep: endereco.cep || "",
             street: endereco.street || "",
-            number: endereco.number.toString() || "",
+            number: endereco.number || "",
+            description: endereco.description || "",
             neighborhood: endereco.neighborhood || "",
             city: endereco.city || "",
             state: endereco.state || ""
@@ -62,12 +68,22 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     })
 
     const onSubmit = (newEndereco: z.infer<typeof formSchema>) => {
-        dispatch(updateAddress({
-            ...endereco,
-            ...newEndereco
-        }))
-        setDisabled(true)
-        form.reset(newEndereco)
+      const addressFound = enderecos.findIndex((e) => endereco.cliente.id == e.cliente.id && newEndereco.name == e.name);
+      if(endereco.name != newEndereco.name && addressFound != -1) {
+          form.setError("name", { 
+              type: "custom",
+              message: isProfilePage ? "Um endereço com este nome já existe" : `Esse cliente já possui um endereço com este nome`
+          })
+          return
+      }
+
+      dispatch(updateEnderecoServer({
+        ...newEndereco,
+        id: endereco.id,
+        cliente: endereco.cliente
+      }))
+      setDisabled(true)
+      form.reset(newEndereco)
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -87,7 +103,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                     form.clearErrors("cep")
                     setDisabled(false)
                 } else {
-                        form.setError("cep", { 
+                    form.setError("cep", { 
                         type: "custom",
                         message: "CEP não encontrado" 
                     })
@@ -122,7 +138,7 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
     }
 
     const handleDeleteClick = () => {
-        dispatch(deleteAddress(endereco.id))
+        dispatch(deleteEnderecoServer(endereco))
         setIsOpen(false)
     }
 
@@ -199,6 +215,19 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                         </div>
                         <FormField
                             control={form.control}
+                            name="description"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Complemento</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={disabled} placeholder="Fundos" type="text" {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="neighborhood"
                             render={({field}) => (
                                 <FormItem>
@@ -227,11 +256,20 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
                             <FormField
                                 control={form.control}
                                 name="state"
-                                render={({field}) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem>
                                         <FormLabel>Estado</FormLabel>
                                         <FormControl>
-                                            <Input disabled={disabled} type="text" placeholder="RJ" {...field}/>
+                                            <Select disabled={disabled} onValueChange={field.onChange} value={field.value}>
+                                                <SelectTrigger className="w-full rounded-lg disabled:opacity-100" aria-invalid={fieldState.invalid}>
+                                                    <SelectValue placeholder="RJ" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {estados.map((estado, index) =>
+                                                        <SelectItem key={index} value={estado}>{estado}</SelectItem>
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>

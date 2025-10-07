@@ -9,10 +9,13 @@ import z from 'zod';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '../ui/form';
 import { Input } from '../ui/input';
 import { Button } from '../ui/button';
-import { addAddress } from '@/redux/endereco/slice';
 import { useDispatch, useSelector } from 'react-redux';
 import type { RootState } from '@/redux/root-reducer';
-import { clientes } from '@/consts/clientes';
+import type { AppDispatch } from '@/redux/store';
+import { addEnderecoServer } from '@/redux/endereco/fetch';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select';
+import { estados } from '@/consts/estados';
+import { selectAllEnderecos } from '@/redux/endereco/slice';
 
 interface DadosClienteDialogProps {
     children: ReactNode
@@ -27,9 +30,10 @@ const formSchema = z
             .min(1, { message: "O número é obrigatório" })
             .trim()
             .regex(/^\d{1,6}[A-Za-z]?$/, "Número inválido"),
+        description: z.string(),
         neighborhood: z.string().min(1, { message: "O bairro é obrigatório" }),
         city: z.string().min(1, { message: "A cidade é obrigatória" }),
-        state: z.string().min(1, { message: "O estado é obrigatório" })
+        state: z.enum(estados, { message: "Selecione um estado válido" })
     })
 
 export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
@@ -37,8 +41,9 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     const [disabled, setDisabled] = useState(true);
 
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const enderecos  = useSelector(selectAllEnderecos);
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch<AppDispatch>()
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -47,6 +52,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
             cep: "",
             street: "",
             number: "",
+            description: "",
             neighborhood: "",
             city: "",
             state: ""
@@ -56,11 +62,26 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     const onSubmit = (endereco: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
-        dispatch(addAddress({
+        const addressFound = enderecos.findIndex((e) => clienteAtual.id == e.cliente.id && endereco.name == e.name);
+        if(addressFound != -1) {
+            form.setError("name", { 
+                type: "custom",
+                message: "Um endereço com este nome já existe"
+            })
+            return
+        }
+
+        dispatch(addEnderecoServer({
             ...endereco,
             cliente: clienteAtual
         }))
         setOpen(false);
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        e.stopPropagation();
+        form.handleSubmit(onSubmit)(e);
     }
 
     const registerWithMask = useHookFormMask(form.register)
@@ -80,7 +101,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                     form.clearErrors("cep")
                     setDisabled(false)
                 } else {
-                        form.setError("cep", { 
+                    form.setError("cep", { 
                         type: "custom",
                         message: "CEP não encontrado" 
                     })
@@ -119,7 +140,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                 <Separator/>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-5'>
+                    <form onSubmit={handleSubmit} className='flex flex-col gap-5'>
                         <FormField
                             control={form.control}
                             name="name"
@@ -183,6 +204,19 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                         </div>
                         <FormField
                             control={form.control}
+                            name="description"
+                            render={({field}) => (
+                                <FormItem>
+                                    <FormLabel>Complemento</FormLabel>
+                                    <FormControl>
+                                        <Input disabled={disabled} placeholder="Fundos" type="text" {...field}/>
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
                             name="neighborhood"
                             render={({field}) => (
                                 <FormItem>
@@ -211,11 +245,20 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                             <FormField
                                 control={form.control}
                                 name="state"
-                                render={({field}) => (
+                                render={({ field, fieldState }) => (
                                     <FormItem>
                                         <FormLabel>Estado</FormLabel>
                                         <FormControl>
-                                            <Input disabled={disabled} type="text" placeholder="RJ" {...field}/>
+                                            <Select disabled={disabled} onValueChange={field.onChange} value={field.value}>
+                                                <SelectTrigger className="w-full rounded-lg disabled:opacity-100" aria-invalid={fieldState.invalid}>
+                                                    <SelectValue placeholder="RJ" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    {estados.map((estado, index) =>
+                                                        <SelectItem key={index} value={estado}>{estado}</SelectItem>
+                                                    )}
+                                                </SelectContent>
+                                            </Select>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -228,7 +271,7 @@ export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
                                 Criar
                             </Button>
                             <Dialog.Close asChild>
-                                <Button variant="outline">
+                                <Button variant="outline" type="button">
                                     Cancelar
                                 </Button>
                             </Dialog.Close>

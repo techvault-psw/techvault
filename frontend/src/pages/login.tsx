@@ -21,7 +21,10 @@ import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { loginCliente } from "@/redux/clientes/slice";
+import { loginCliente, selectAllClientes } from "@/redux/clientes/slice";
+import { useEffect } from "react";
+import { fetchClientes } from "@/redux/clientes/fetch";
+import type { AppDispatch } from "@/redux/store";
 
 const formSchema = z.object({
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
@@ -41,8 +44,16 @@ export default function LoginPage() {
     },
   })
 
-  const dispatch = useDispatch();
-  const {clientes,clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+  const dispatch = useDispatch<AppDispatch>()
+  const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+  useEffect(() => {
+      if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
+          dispatch(fetchClientes())
+      }
+  }, [statusC, dispatch])
+  const clientes = useSelector(selectAllClientes)
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     
     const cliente = clientes.find(cliente => cliente.email === values.email && cliente.password === values.password);
@@ -71,6 +82,12 @@ export default function LoginPage() {
       <PageTitle className="text-center">Login</PageTitle>
 
       <Separator/>
+
+      {statusC === 'failed' && (
+        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+          Estamos enfrentando um problema, tente novamente mais tarde.
+        </div>
+      )}
 
       <Form {...form2}>
         <form onSubmit={form2.handleSubmit(onSubmit)} className="space-y-6 max-w-sm" noValidate>
@@ -109,7 +126,7 @@ export default function LoginPage() {
       </Form>
 
       <p className="text-base text-center">
-        Não possui uma conta? <Link to="/cadastro" className="font-semibold underline">Cadastrar-se</Link>
+        Não possui uma conta? <Link to={redirectTo ? `/cadastro?redirectTo=${redirectTo}` : "/cadastro"} className="font-semibold underline">Cadastrar-se</Link>
       </p>
     </PageContainer.Auth>
   );

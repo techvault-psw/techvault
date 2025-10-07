@@ -12,16 +12,29 @@ import { Separator } from '@/components/ui/separator';
 import { Table } from "@/components/ui/table";
 import useCargo from '@/hooks/useCargo';
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
-
-import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from 'react-router';
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import type { AppDispatch } from '@/redux/store';
+import { fetchClientes } from '@/redux/clientes/fetch';
+import { selectAllClientes } from '@/redux/clientes/slice';
 
 
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
+  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
-  const {clientes} = useSelector((state: RootState) => state.clienteReducer);
+  const dispatch = useDispatch<AppDispatch>()
+    const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
+            dispatch(fetchClientes())
+        }
+    }, [statusC, dispatch])
+
+    const clientes = useSelector(selectAllClientes)
+  const location = useLocation();
 
   const clientesFiltrados = clientes.filter(cliente =>
     cliente.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -37,6 +50,13 @@ export default function ClientesPage() {
       navigate("/login")
     }
   }, [])
+
+  useEffect(() => {
+    const state = location.state as { fromClientDialog?: number };
+    if (state?.fromClientDialog !== undefined) {
+      setClienteToOpen(state.fromClientDialog);
+    }
+  }, [location])
 
   return (
     <div className="flex flex-col h-full"> 
@@ -69,19 +89,32 @@ export default function ClientesPage() {
         
         <Separator />
 
-        {clientesFiltrados.length === 0 && searchTerm && (
+        {['loading', 'saving', 'deleting'].includes(status) ? (
+            <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+        ) : ['failed'].includes(status) ? (
+            <p className="text-lg text-white text-center py-2 w-full">{errorC}</p>
+        ) : clientesFiltrados.length === 0 && searchTerm ? (
           <div className="w-full text-center text-white">
             Nenhum cliente encontrado para "{searchTerm}"
           </div>
-        )}
-
-        {clientesFiltrados.length !== 0 && (
+        ) : clientesFiltrados.length !== 0 && (
           <>
             <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid md:grid-cols-2 xl:grid-cols-3 lg:hidden">
               {clientesFiltrados.map((cliente) => (
-                <DadosClienteDialog cliente={cliente} key={cliente.id}>
+                <DadosClienteDialog 
+                  cliente={cliente} 
+                  key={cliente.id}
+                  open={clienteToOpen === cliente.id}
+                  onOpenChange={(open) => {
+                    if (!open) {
+                      setClienteToOpen(null);
+                    } else {
+                      setClienteToOpen(cliente.id);
+                    }
+                  }}
+                >
                   <Card.Container>
-                    <Card.TextContainer>
+                    <Card.TextContainer className="truncate">
                       <Card.Title>{cliente.name}</Card.Title>
                       <Card.Description className='truncate leading-[120%]'>
                         <span className="font-medium">E-mail: </span>{cliente.email}
@@ -100,18 +133,29 @@ export default function ClientesPage() {
                 <Table.Header>
                   <Table.Row>
                     <Table.Head className="w-4/16 ">Nome</Table.Head>
-                    <Table.Head className="w-4/16 ">E-mail</Table.Head>
-                    <Table.Head className="w-4/16 ">Telefone</Table.Head>
+                    <Table.Head className="w-5/16 ">E-mail</Table.Head>
+                    <Table.Head className="w-3/16 ">Telefone</Table.Head>
                     <Table.Head className="w-3/16 ">Data de cadastro</Table.Head>
                     <Table.Head className="w-1/16 text-right"></Table.Head> 
                   </Table.Row>
                 </Table.Header>
                 <Table.Body>
                   {clientesFiltrados.map((cliente) => (
-                    <DadosClienteDialog cliente={cliente} key={cliente.id}>
+                    <DadosClienteDialog 
+                      cliente={cliente} 
+                      key={cliente.id}
+                      open={clienteToOpen === cliente.id}
+                      onOpenChange={(open) => {
+                        if (!open) {
+                          setClienteToOpen(null);
+                        } else {
+                          setClienteToOpen(cliente.id);
+                        }
+                      }}
+                    >
                       <Table.Row>
-                        <Table.Cell className="text-white font-medium">{cliente.name}</Table.Cell>
-                        <Table.Cell>{cliente.email}</Table.Cell>
+                        <Table.Cell className="text-white font-medium truncate">{cliente.name}</Table.Cell>
+                        <Table.Cell className="truncate">{cliente.email}</Table.Cell>
                         <Table.Cell>{cliente.phone}</Table.Cell>
                         <Table.Cell>{cliente.registrationDate}</Table.Cell>
                         <Table.Cell className="text-right">

@@ -4,36 +4,37 @@ import { PageTitle } from "@/components/page-title";
 import { Separator } from "@/components/ui/separator";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
+import { selectReservaById } from "@/redux/reservas/slice";
 
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
-
     const numberId = Number(id)
-    const reserva = reservas.find((reserva) => reserva.id === numberId)
-
-    if (isNaN(numberId) || numberId >= reservas.length || !reserva) {
-        return
-    }
+    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
 
     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
 
     const navigate = useNavigate()
+    const location = useLocation()
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
         if (!clienteAtual) {
-            navigate("/login")
+            const fullPath = location.pathname + location.search + location.hash;
+            navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
     })
+
+    if (isNaN(numberId) || !reserva) {
+        return
+    }
 
     return (
         <>

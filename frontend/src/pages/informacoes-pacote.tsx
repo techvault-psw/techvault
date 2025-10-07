@@ -5,36 +5,65 @@ import { PageTitle } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { formatCurrency } from "@/lib/format-currency";
+import { fetchPacotes } from "@/redux/pacotes/fetch";
+import { selectAllPacotes, selectPacoteById } from '@/redux/pacotes/slice';
 import type { RootState } from "@/redux/root-reducer";
-import { useSelector } from "react-redux";
+import type { AppDispatch } from "@/redux/store";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 
 export default function InformacoesPacotePage() {
   const { id } = useParams<{ id: string }>();
+
+  const dispatch = useDispatch<AppDispatch>()
+  const { status: statusP, error: errorP } = useSelector((rootReducer: RootState) => rootReducer.pacotesReducer)
+
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusP)) {
+      dispatch(fetchPacotes())
+    }
+  }, [statusP, dispatch])
   
-  const pacotes = useSelector(((state: RootState) => state.pacotesReducer.pacotes));
+  const pacotes = useSelector(selectAllPacotes);
 
   const numberId = Number(id)
 
-  if (isNaN(numberId) || numberId >= pacotes.length) {
-    return
-  }
-
-  const pacote = pacotes[numberId]
-  const formattedValue = formatCurrency(pacote.value)
-
+  const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
+  const formattedValue = formatCurrency(pacote?.value ?? 0)
+  
   const navigate = useNavigate()
-
+  
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
-
+  
   const handleSolicitarReserva = () => {
-    const url = `/confirmar-reserva/${numberId % pacotes.length}`;
-
+    const url = `/confirmar-reserva/${numberId}`;
+    
     if (clienteAtual) {
       navigate(url)
     } else {
       navigate(`/login?redirectTo=${encodeURIComponent(url)}`)
     }
+  }
+
+  if (isNaN(numberId) || numberId >= pacotes.length) {
+    return
+  }
+
+  if (['loading', 'saving', 'deleting'].includes(statusP)) {
+    return (
+      <PageContainer.Card>
+        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      </PageContainer.Card>
+    )
+  }
+
+  if (['failed'].includes(statusP)) {
+    return (
+      <PageContainer.Card>
+        <p className="text-lg text-white text-center py-2 w-full">{errorP}</p>
+      </PageContainer.Card>
+    )
   }
 
   return (
@@ -51,8 +80,8 @@ export default function InformacoesPacotePage() {
         <div className="text-white flex flex-col gap-1">
           <span className="font-bold text-xl">Descrição</span>
 
-          {pacote.description.map((paragraph) => (
-            <p className="text-sm lg:text-base">{paragraph}</p>
+          {pacote.description.map((description) => (
+            <p className="text-sm lg:text-base">{description}</p>
           ))}
         </div>
         

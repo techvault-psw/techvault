@@ -1,4 +1,4 @@
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -21,9 +21,12 @@ import { Separator } from "@/components/ui/separator";
 import { useHookFormMask } from 'use-mask-input';
 
 import { useDispatch, useSelector } from "react-redux";
-import { addCliente, loginCliente } from "@/redux/clientes/slice";
+import { loginCliente, selectAllClientes, type NewCliente } from "@/redux/clientes/slice";
 import type { Cliente } from "@/consts/clientes";
 import type { RootState } from "@/redux/root-reducer";
+import { addClienteServer, fetchClientes } from "@/redux/clientes/fetch";
+import { useEffect } from "react";
+import type { AppDispatch } from "@/redux/store";
 
 
 const formSchema = z.object({
@@ -35,7 +38,8 @@ const formSchema = z.object({
 
 export default function CadastroPage() {
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const [searchParams] = useSearchParams();
+  const redirectTo = searchParams.get("redirectTo");
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -46,10 +50,18 @@ export default function CadastroPage() {
     },
   })
 
-  const {clientes,clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
+    const dispatch = useDispatch<AppDispatch>()
+    const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  
+    useEffect(() => {
+        if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
+            dispatch(fetchClientes())
+        }
+    }, [statusC, dispatch])
+    const clientes = useSelector(selectAllClientes)
+  
   function onSubmit(values: z.infer<typeof formSchema>) {
-    const novoCliente: Cliente = {
-      id: Date.now(), // gera um ID 
+    const novoCliente: NewCliente = {
       name: values.name,
       email: values.email,
       phone: values.phone,
@@ -63,9 +75,13 @@ export default function CadastroPage() {
       return;
     }
 
-    dispatch(addCliente(novoCliente));
+    dispatch(addClienteServer(novoCliente));
     dispatch(loginCliente(values));
-    navigate("/");
+    if (redirectTo) {
+      navigate(redirectTo, { replace: true })
+    } else {
+      navigate("/");
+    }
 
   }
 
@@ -76,6 +92,12 @@ export default function CadastroPage() {
       <PageTitle className="text-center">Cadastro</PageTitle>
 
       <Separator/>
+
+      {statusC === 'failed' && (
+        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+          Estamos enfrentando um problema, tente novamente mais tarde.
+        </div>
+      )}
 
       <Form {...form2}>
         <form onSubmit={form2.handleSubmit(onSubmit)} className="space-y-6 max-w-sm" noValidate>
@@ -149,7 +171,7 @@ export default function CadastroPage() {
       </Form>
 
       <p className="text-base text-center">
-        Já possui uma conta? <Link to="/login" className="font-semibold underline">Entrar</Link>
+        Já possui uma conta? <Link to={redirectTo ? `/login?redirectTo=${redirectTo}` : "/login"} className="font-semibold underline">Entrar</Link>
       </p>
     </PageContainer.Auth>
   );

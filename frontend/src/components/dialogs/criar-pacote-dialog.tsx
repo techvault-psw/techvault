@@ -20,7 +20,8 @@ import { Separator } from "../ui/separator";
 import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
 import { useDispatch } from 'react-redux';
-import { addPackage } from '@/redux/pacotes/slice';
+import { addPacoteServer } from '@/redux/pacotes/fetch';
+import type { AppDispatch } from '@/redux/store';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -71,12 +72,12 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
     },
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     if (!previewUrl) return
     
-    dispatch(addPackage({
+    dispatch(addPacoteServer({
       ...values,
       image: previewUrl,
       value: currencyMask.parseCurrency(values.value),

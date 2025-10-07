@@ -21,9 +21,10 @@ import { Textarea } from "../ui/textarea";
 import { cn } from '@/lib/utils';
 import { ExcluirPacoteDialog } from './excluir-pacote-dialog';
 import useCargo from '@/hooks/useCargo';
-import { deletePackage, type Pacote } from '@/redux/pacotes/slice';
+import { type Pacote } from '@/redux/pacotes/slice';
 import { useDispatch } from 'react-redux';
-import { updatePackage } from '@/redux/pacotes/slice';
+import { updatePacoteServer, deletePacoteServer } from '@/redux/pacotes/fetch';
+import type { AppDispatch } from '@/redux/store';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -64,7 +65,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   const [previewUrl, setPreviewUrl] = useState<string | null>(pacote.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isGerente } = useCargo()
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,7 +90,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       image: previewUrl || pacote.image,
     };
     
-    dispatch(updatePackage(updatedPacote))
+    dispatch(updatePacoteServer(updatedPacote))
     setIsEditting(false)
   }
 
@@ -137,7 +138,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
   };
 
   const handleDeleteClick = () => {
-    dispatch(deletePackage(pacote.id))
+    dispatch(deletePacoteServer(pacote))
     setIsOpen(false)
   }
 

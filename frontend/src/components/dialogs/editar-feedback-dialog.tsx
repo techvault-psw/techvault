@@ -1,4 +1,4 @@
-import { useEffect, useState, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -13,7 +13,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-//import { pacotes } from "@/consts/pacotes";
 import { StarRating } from "../ui/star-rating";
 import { 
   Form,
@@ -25,10 +24,13 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import useCargo from "@/hooks/useCargo";
-import { updateFeedback, type Feedback } from "@/redux/feedbacks/slice";
+import { type Feedback } from "@/redux/feedbacks/slice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
+import { updateFeedbackServer } from "@/redux/feedbacks/fetch";
+import { type AppDispatch } from "@/redux/store";
+import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -59,22 +61,23 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
     },
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
   
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
-    
 
-    const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
+    const pacote = pacotes.find((pacote) => pacote.id === Number(values.pacoteIndex))
 
     if (!pacote) return
 
-    dispatch(updateFeedback({
-      ...feedback,
-      ...values,
+    dispatch(updateFeedbackServer({
+      id: feedback.id,
+      cliente: feedback.cliente,
+      comentario: values.comment,
+      rating: values.rating,
       pacote,
     }))
 
@@ -110,7 +113,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
                     </FormControl>
                     <SelectContent>
                       {pacotes.map((pacote, index) => (
-                        <SelectItem key={index} value={String(index)}>
+                        <SelectItem key={index} value={String(pacote.id)}>
                           {pacote.name}
                         </SelectItem>
                       ))}

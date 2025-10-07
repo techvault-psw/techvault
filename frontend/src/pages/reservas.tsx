@@ -9,13 +9,15 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
 import useCargo from "@/hooks/useCargo";
-import { useNavigate } from "react-router";
-import { useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useNavigate, useLocation } from "react-router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import type { Reserva } from "@/redux/reservas/slice";
-import { stringifyAddress } from "@/consts/enderecos";
+import { selectAllReservas, selectReservaById, type Reserva } from "@/redux/reservas/slice";
+import { stringifyAddress } from "@/lib/stringify-address";
 import { agruparReservasPorData } from "@/lib/agrupar-reservas";
+import { type AppDispatch } from "@/redux/store";
+import { fetchReservas } from "@/redux/reservas/fetch";
 
 export interface ReservaComTipo {
   reserva: Reserva;
@@ -25,7 +27,20 @@ export interface ReservaComTipo {
 
 export default function ReservasPage() {
   const { isGerente, isSuporte } = useCargo();
+  const dispatch = useDispatch<AppDispatch>();
+  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
+    }
+  }, [statusR, dispatch])
+  
+  const reservas = useSelector(selectAllReservas)
   const navigate = useNavigate();
+  const location = useLocation();
+  const [reservaToOpen, setReservaToOpen] = useState<number | null>(null);
+  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
 
   useEffect(() => {
     if (!isGerente() && !isSuporte()) {
@@ -33,10 +48,20 @@ export default function ReservasPage() {
     }
   }, []);
 
-  const { reservas } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer);
+  useEffect(() => {
+    const state = location.state as { fromClientDialog?: number; fromReservaId?: number } | null;
+    if (state?.fromReservaId !== undefined) {
+      setReservaToOpen(state.fromReservaId);
+    }
+    if (state?.fromClientDialog !== undefined) {
+      setClienteToOpen(state.fromClientDialog);
+    }
+  }, [location]);
   
   const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
   const reservasPorData = agruparReservasPorData(reservasConfirmadas)
+  
+  const reservaParaAbrir = useSelector((state: RootState) => selectReservaById(state, reservaToOpen ?? -1)) ?? null
 
   return (
     <PageContainer.List> 
@@ -49,7 +74,11 @@ export default function ReservasPage() {
         </Button>
       </div>
 
-      {reservasPorData.length === 0 ? (
+      {['loading', 'saving', 'deleting'].includes(statusR) ? (
+        <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusR) ? (
+        <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : reservasPorData.length === 0 ? (
         <p className="text-base text-white w-full text-center">
           Não há reservas confirmadas no momento.
         </p>
@@ -115,6 +144,22 @@ export default function ReservasPage() {
             )
           })}
         </section>
+      )}
+
+      {reservaParaAbrir && (
+        <DetalhesReservaDialog
+          reserva={reservaParaAbrir}
+          open={true}
+          onOpenChange={(open) => {
+            if (!open) {
+              setReservaToOpen(null);
+              setClienteToOpen(null);
+            }
+          }}
+          openClientDialog={clienteToOpen === reservaParaAbrir.cliente.id}
+        >
+          <div style={{ display: 'none' }} />
+        </DetalhesReservaDialog>
       )}
     </PageContainer.List>
   );

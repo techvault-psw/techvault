@@ -6,16 +6,19 @@ import { PageTitle } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { type Reserva } from "@/redux/reservas/slice"
+import { selectAllReservas, type Reserva } from "@/redux/reservas/slice"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
 import { useEffect, useMemo } from "react"
-import { useNavigate, useParams } from "react-router"
-import { useSelector } from "react-redux"
+import { useNavigate, useParams, useLocation } from "react-router"
+import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
 import { Separator } from "@/components/ui/separator"
-import { stringifyAddress } from "@/consts/enderecos"
+import { stringifyAddress } from "@/lib/stringify-address"
+import type { AppDispatch } from "@/redux/store"
+import { fetchReservas } from "@/redux/reservas/fetch"
+import { selectClienteById } from "@/redux/clientes/slice"
 
 interface ReservaSectionProps {
   titulo: string
@@ -46,7 +49,7 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
                 <Card.TextContainer className="text-white truncate">
                   <div className="flex items-center justify-between gap-2 font-semibold">
                     <Card.Title className="truncate">{pacote.name}</Card.Title>
-                    {reserva.status === "Cancelada" && <Badge variant="dark-red">Cancelada</Badge>}
+                    {reserva.status === "Cancelada" && <Badge variant="red">Cancelada</Badge>}
                   </div>
                   <Card.Description className="leading-[120%]">
                     <span className="font-medium">Endereço:</span> {stringifyAddress(reserva.endereco)}
@@ -67,25 +70,29 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
 export default function ReservasClientePage() {
   const { id } = useParams<{ id: string }>();
   const numberId = Number(id)
-  const { clientes } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
-  const cliente = clientes.find((cliente) => cliente.id === numberId)
-
-  if (isNaN(numberId) || numberId >= clientes.length || !cliente) {
-    return
-  }
+  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
 
   const {isGerente, isSuporte} = useCargo()
 
   const navigate = useNavigate()
-
+  const location = useLocation()
+  const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
+  const dispatch = useDispatch<AppDispatch>()
+  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
       navigate("/login")
     }
   })
 
-  const { reservas } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
+    }
+  }, [statusR, dispatch])
+  
+  const reservas = useSelector(selectAllReservas)
 
   const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === numberId)
 
@@ -100,6 +107,10 @@ export default function ReservasClientePage() {
   const reservasAtuais = sortedReservas.filter((r) => r.status === "Confirmada")
   const reservasConcluidas = sortedReservas.filter((r) => r.status === "Concluída")
   const reservasCanceladas = sortedReservas.filter((r) => r.status === "Cancelada")
+
+  if (isNaN(numberId) || !cliente) {
+    return
+  }
 
   return (
     <PageContainer.List>
@@ -117,24 +128,36 @@ export default function ReservasClientePage() {
         </Button>
       </div>
 
-      {!filteredReservas.length && (
+      {['loading', 'saving', 'deleting'].includes(statusR) ? (
+          <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
+      ) : ['failed'].includes(statusR) ? (
+          <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : filteredReservas.length === 0 ? (
         <>
           <Separator />
           <p className='text-base text-white text-center w-full'>
             O cliente "{cliente.name}" ainda não realizou nenhuma reserva.
           </p>
         </>
+      ): (
+        <section className="w-full flex flex-col gap-4 scrollbar">
+          <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
+          <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} />
+          <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
+        </section>
       )}
-
-      <section className="w-full flex flex-col gap-4 scrollbar">
-        <ReservaSection titulo="Atuais" reservas={reservasAtuais} />
-        <ReservaSection titulo="Concluídas" reservas={reservasConcluidas} />
-        <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
-      </section>
 
       <Button
         variant="outline"
-        onClick={() => history.back()}
+        onClick={() => {
+          const returnTo = state?.returnTo || "/clientes";
+          navigate(returnTo, { 
+            state: { 
+              fromClientDialog: numberId,
+              fromReservaId: state?.fromReservaId
+            } 
+          });
+        }}
         className="w-full max-w-100 mx-auto mt-auto flex-none"
       >
         <ArrowLeft size={16} className="mr-2" />

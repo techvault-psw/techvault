@@ -13,7 +13,6 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
-import { pacotes } from "@/consts/pacotes";
 import { StarRating } from "../ui/star-rating";
 import { 
   Form,
@@ -25,9 +24,12 @@ import {
 } from "../ui/form";
 import { Textarea } from "../ui/textarea";
 import { useDispatch, useSelector } from "react-redux";
-import { addFeedback } from "@/redux/feedbacks/slice";
-import { clientes } from "@/consts/clientes";
+import { addFeedbackServer } from "@/redux/feedbacks/fetch";
 import type { RootState } from "@/redux/root-reducer";
+import { useLocation, useNavigate } from "react-router";
+import type { AppDispatch } from "@/redux/store";
+import { selectAllPacotes } from "@/redux/pacotes/slice";
+import { selectAllReservas } from "@/redux/reservas/slice";
 
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
@@ -47,7 +49,7 @@ interface DarFeedbackDialogProps {
 export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
-  const { pacotes } = useSelector((state: RootState) => state.pacotesReducer)
+  const pacotes = useSelector(selectAllPacotes);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -58,18 +60,18 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     },
   });
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch<AppDispatch>()
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
     form.reset()
 
-    const pacote = pacotes.find(pacote => String(pacote.id) === values.pacoteIndex)
+    const pacote = pacotes.find((pacote) => pacote.id === Number(values.pacoteIndex))
 
     if (!pacote || !clienteAtual) return
 
-    dispatch(addFeedback({
+    dispatch(addFeedbackServer({
       rating: values.rating,
       comentario: values.comment,
       cliente: clienteAtual,
@@ -77,8 +79,26 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
     }))
   }
 
+  const navigate = useNavigate()
+  const location = useLocation()
+
+  const handleOpenChange = (isOpen: boolean) => {
+    if (!clienteAtual) {
+      navigate(`/login?redirectTo=${location.pathname}`)
+      return
+    }
+
+    setIsOpen(isOpen)
+  }
+
+  const reservas = useSelector(selectAllReservas);
+  const reservasCliente = reservas.filter((reserva) => reserva.cliente.id === clienteAtual?.id)
+  const reservasConcluidas = reservasCliente.filter((reserva) => reserva.status === 'Concluída')
+  const pacotesReservadosIds = reservasConcluidas.map((reserva) => reserva.pacote.id)
+  const pacotesPossiveis = pacotes.filter((pacote) => pacotesReservadosIds.includes(pacote.id))
+
   return (
-    <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog.Container open={isOpen} onOpenChange={handleOpenChange}>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
@@ -101,11 +121,17 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {pacotes.map((pacote, index) => (
-                        <SelectItem key={index} value={String(index)}>
-                          {pacote.name}
-                        </SelectItem>
-                      ))}
+                      {pacotesPossiveis.length === 0 ? (
+                        <div className="p-2 text-sm text-gray">
+                          Você ainda não possui nenhuma reserva concluída
+                        </div>
+                      ) : (
+                        pacotesPossiveis.map((pacote, index) => (
+                          <SelectItem key={index} value={String(pacote.id)}>
+                            {pacote.name}
+                          </SelectItem>
+                        ))
+                      )}
                     </SelectContent>
                   </Select>
                   <FormMessage />
