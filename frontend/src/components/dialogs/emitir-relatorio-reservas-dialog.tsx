@@ -24,6 +24,7 @@ const relatorioSchema = z
 type RelatorioFormData = z.infer<typeof relatorioSchema>;
 
 export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNode }) => {
+  const [isOpen, setIsOpen] = useState(false)
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [successDialogOpen, setSuccessDialogOpen] = useState(false)
@@ -33,6 +34,7 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
     setValue,
     watch,
     formState: { errors },
+    reset,
   } = useForm<RelatorioFormData>({
     resolver: zodResolver(relatorioSchema),
     mode: "onChange",
@@ -55,9 +57,17 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
 
   const errorMessage = errors.dataInicial?.message || errors.dataFinal?.message
 
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+
+    if (!open) {
+      reset()
+    }
+  }
+
   return (
     <>
-      <Dialog.Container>
+      <Dialog.Container open={isOpen} onOpenChange={handleOpenChange}>
         <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
         <Dialog.Content>

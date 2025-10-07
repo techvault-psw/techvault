@@ -21,6 +21,7 @@ import { Pen } from "lucide-react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
+import { fetchReservas } from "@/redux/reservas/fetch";
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
@@ -41,6 +42,14 @@ export default function FeedbacksPage() {
           dispatch(fetchPacotes())
       }
     }, [statusP, dispatch])
+
+    const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+    
+    useEffect(() => {
+      if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+          dispatch(fetchReservas())
+      }
+    }, [statusR, dispatch])
 
     const feedbacks = useSelector(selectAllFeedbacks)
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)

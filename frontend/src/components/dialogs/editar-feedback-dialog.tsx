@@ -113,7 +113,7 @@ export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialo
                     </FormControl>
                     <SelectContent>
                       {pacotes.map((pacote, index) => (
-                        <SelectItem key={index} value={String(index)}>
+                        <SelectItem key={index} value={String(pacote.id)}>
                           {pacote.name}
                         </SelectItem>
                       ))}

@@ -55,8 +55,16 @@ const formSchema = z
       ),
 
   })
+  .refine((data) => data.dataHoraInicial > new Date(), {
+    message: "A data inicial não pode ser no passado",
+    path: ["dataHoraInicial"],
+  })
   .refine((data) => data.dataHoraInicial <= data.dataHoraFinal, {
     message: "Data final não pode ser antes que a data inicial",
+    path: ["dataHoraFinal"],
+  })
+  .refine((data) => data.dataHoraInicial < data.dataHoraFinal, {
+    message: "A reserva deve ter duração mínima de 15 minutos",
     path: ["dataHoraFinal"],
   });
 
@@ -93,8 +101,8 @@ export default function ConfirmarReservaPage() {
 
   const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
 
-  const onSubmit = (data: FormData) => {
-    const endereco = enderecos.find(endereco => endereco.name === data.endereco)
+  const onSubmit = async (data: FormData) => {
+    const endereco = enderecos.find(endereco => endereco.id === Number(data.endereco))
 
     if (!clienteAtual || !endereco || !pacote) return;
 
@@ -106,9 +114,14 @@ export default function ConfirmarReservaPage() {
       endereco,
       cliente: clienteAtual,
     };
-    navigate(`/pagamento/${reservas.length}`);
-    dispatch(addReservaServer(novaReserva));
-  };
+
+    const result = await dispatch(addReservaServer(novaReserva));
+
+    if (addReservaServer.fulfilled.match(result)) {
+      console.log(result.payload)
+      navigate(`/pagamento/${result.payload.id}`);
+    }
+  }
 
   useEffect(() => {
     if (!clienteAtual) {
@@ -139,10 +152,10 @@ export default function ConfirmarReservaPage() {
 
       <div className="flex md:flex-col items-center gap-3">
         <PacoteImage
-          pacote={pacotes[numberId]}
+          pacote={pacote}
           className="h-22 md:h-66 xl:h-77"
         />
-        <span className="text-white font-medium text-xl sm:text-2xl sm:font-semibold">{pacotes[numberId].name}</span>
+        <span className="text-white font-medium text-xl sm:text-2xl sm:font-semibold">{pacote.name}</span>
       </div>
 
       <Separator />
@@ -164,6 +177,7 @@ export default function ConfirmarReservaPage() {
                       onChange={field.onChange}
                       minuteStep={15}
                       placeholder="Selecione uma data"
+                      minHoursFromNow={12}
                     />
                   </FormControl>
                   <FormMessage />
@@ -183,6 +197,7 @@ export default function ConfirmarReservaPage() {
                       onChange={field.onChange}
                       minuteStep={15}
                       placeholder="Selecione uma data"
+                      minHoursFromNow={12}
                     />
                   </FormControl>
                   <FormMessage />
@@ -208,7 +223,7 @@ export default function ConfirmarReservaPage() {
                           </div>
                         ) : (
                           enderecosCliente.map((endereco, index) => (
-                            <SelectItem key={index} value={endereco.name}>
+                            <SelectItem key={index} value={String(endereco.id)}>
                               {endereco.name}
                             </SelectItem>
                           ))
@@ -261,7 +276,7 @@ export default function ConfirmarReservaPage() {
           </div>
           <div className="flex flex-col mt-auto md:flex-row gap-4">
             <HighlightBox className="md:max-w-1/2 min-[880px]:max-w-1/3 min-[880px]:text-center">
-              Valor (hora): {formatCurrency(pacotes[numberId].value)}
+              Valor (hora): {formatCurrency(pacote.value)}
             </HighlightBox>
 
             <Button type="submit" size="lg" className="flex-none md:max-w-1/2 min-[880px]:!max-w-2/3">

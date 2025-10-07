@@ -37,7 +37,7 @@ export default function InformacoesPacotePage() {
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   
   const handleSolicitarReserva = () => {
-    const url = `/confirmar-reserva/${numberId % pacotes.length}`;
+    const url = `/confirmar-reserva/${numberId}`;
     
     if (clienteAtual) {
       navigate(url)

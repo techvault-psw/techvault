@@ -5,7 +5,11 @@ import { PageTitle } from "@/components/page-title";
 import { Card } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
+import { fetchReservas } from "@/redux/reservas/fetch";
+import type { RootState } from "@/redux/root-reducer";
+import type { AppDispatch } from "@/redux/store";
 import { useEffect, type ComponentType, type ReactNode } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 
 import { useNavigate } from 'react-router'
@@ -82,6 +86,15 @@ export default function DashboardPage() {
       navigate("/login")
     }
   }, [])
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+
+  useEffect(() => {
+    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+      dispatch(fetchReservas())
+    }
+  }, [statusR, dispatch])
 
   return (
     <PageContainer.Card>
