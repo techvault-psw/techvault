@@ -1,9 +1,22 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { type Endereco } from '@/consts/enderecos'
 import { type Optional } from "@/types/optional";
 import { fetchEnderecos, addEnderecoServer, updateEnderecoServer, deleteEnderecoServer } from './fetch.ts'
 import type { InitialState } from "../root-reducer.ts";
 import type { RootState } from "../root-reducer.ts";
+import type { Cliente } from "../clientes/slice.ts";
+
+export type Endereco = {
+    id: number
+    cliente: Cliente
+    name: string
+    cep: string
+    street: string
+    description?: string
+    number: string
+    neighborhood: string
+    city: string
+    state: string
+}
 
 export type NewEndereco = Optional<Endereco, 'id'>
 
@@ -14,6 +27,7 @@ export type EnderecoServer = {
   cep: string,
   street: string,
   number: string,
+  description?: string;
   neighborhood: string,
   city: string,
   state: string

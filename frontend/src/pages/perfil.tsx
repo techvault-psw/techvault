@@ -19,7 +19,7 @@ import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { useHookFormMask } from 'use-mask-input';
 
-import { stringifyAddress } from '@/consts/enderecos';
+import { stringifyAddress } from '@/lib/stringify-address';
 import { Card } from '@/components/ui/card';
 import { LogOutIcon } from '@/components/icons/log-out-icon';
 import { TrashIcon } from '@/components/icons/trash-icon';

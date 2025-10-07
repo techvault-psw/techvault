@@ -4,7 +4,7 @@ import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
-import type { Endereco } from "@/consts/enderecos";
+import type { Endereco } from "@/redux/endereco/slice";
 
 interface ExcluirEnderecoDialogProps {
   children: ReactNode,
