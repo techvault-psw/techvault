@@ -1,6 +1,6 @@
 import { createAsyncThunk } from "@reduxjs/toolkit"
 import { type Reserva, type NewReserva, type NewReservaServer, type ReservaServer } from "./slice"
-import { httpGet, httpPost, httpPut } from "@/lib/fetch-utils"
+import { httpGet, httpPatch, httpPost, httpPut } from "@/lib/fetch-utils"
 import { differenceInMilliseconds } from "date-fns"
 import { gerarCodigo } from "@/lib/gerar-codigo"
 
@@ -45,6 +45,43 @@ export const updateReservaServer = createAsyncThunk<Reserva, Reserva>('reservas/
     }
 
     return await httpPut(`/reservas/${reserva.id}`, updatedReserva)
+  }
+)
+
+export const entregarReservaServer = createAsyncThunk<Reserva, { reserva: Reserva; codigoEntrega: string }>('reservas/entregarReservaServer ',
+  async ({ reserva, codigoEntrega }) => {
+    const { cliente, pacote, endereco, ...reservaInfo } = reserva
+    const updatedReserva: ReservaServer = {
+      clienteId: reserva.cliente.id,
+      pacoteId: reserva.pacote.id,
+      enderecoId: reserva.endereco.id,
+      ...reservaInfo,
+      dataEntrega: new Date().toISOString(),
+    }
+
+    return await httpPatch(`/reservas/${reserva.id}`, updatedReserva)
+
+    // TODO: Quando tiver backend remover tudo acima e manter apenas:
+    // return await httpPatch(`/reservas/${reserva.id}/confirmar-entrega`, { codigoEntrega })
+  }
+)
+
+export const coletarReservaServer = createAsyncThunk<Reserva, { reserva: Reserva; codigoColeta: string }>('reservas/coletarReservaServer ',
+  async ({ reserva, codigoColeta }) => {
+    const { cliente, pacote, endereco, ...reservaInfo } = reserva
+    const updatedReserva: ReservaServer = {
+      clienteId: reserva.cliente.id,
+      pacoteId: reserva.pacote.id,
+      enderecoId: reserva.endereco.id,
+      ...reservaInfo,
+      dataColeta: new Date().toISOString(),
+      status: 'Concluída',
+    }
+
+    return await httpPatch(`/reservas/${reserva.id}`, updatedReserva)
+
+    // TODO: Quando tiver backend remover tudo acima e manter apenas:
+    // return await httpPatch(`/reservas/${reserva.id}/confirmar-coleta`, { codigoColeta })
   }
 )
 

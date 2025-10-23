@@ -32,6 +32,7 @@ interface DetalhesReservaDialogProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   openClientDialog?: boolean
+  onOperacaoSucesso?: (reserva: Reserva, tipo: "Entrega" | "Coleta") => void
 }
 
 const formSchema = z
@@ -54,7 +55,7 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
-export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog }: DetalhesReservaDialogProps) => {
+export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog, onOperacaoSucesso }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
   const [internalOpen, setInternalOpen] = useState(false)
   const [clientDialogOpen, setClientDialogOpen] = useState(false)
@@ -319,7 +320,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
 
             <Dialog.Footer className="block space-y-3">
               {(isSuporte() || isGerente()) && tipo && (
-                <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo}>
+                <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo} onSuccess={onOperacaoSucesso}>
                   <Button className="w-full h-[2.625rem]">
                     Confirmar {tipo}
                   </Button>

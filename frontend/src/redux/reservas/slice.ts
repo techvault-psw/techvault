@@ -5,7 +5,7 @@ import type { Pacote } from "../pacotes/slice";
 import type { Endereco } from "@/redux/endereco/slice";
 import type { InitialState, RootState } from "../root-reducer";
 
-import {addReservaServer, cancelReservaServer, fetchReservas, updateReservaServer} from "./fetch";
+import {addReservaServer, cancelReservaServer, coletarReservaServer, entregarReservaServer, fetchReservas, updateReservaServer} from "./fetch";
 
 export type Reserva = {
   id: number
@@ -54,18 +54,24 @@ const reservasSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-          .addCase(fetchReservas.pending,         (state, action) => { state.status = 'loading' })
-          .addCase(fetchReservas.fulfilled,       (state, action) => { state.status = 'loaded'; reservasAdapter.setAll(state, action.payload) })
-          .addCase(fetchReservas.rejected,        (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar reservas!' })
-          .addCase(addReservaServer.pending,      (state, action) => { state.status = 'saving' })
-          .addCase(addReservaServer.fulfilled,    (state, action) => { state.status = 'saved'; })
-          .addCase(addReservaServer.rejected,     (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar reserva!' })
-          .addCase(updateReservaServer.pending,   (state, action) => { state.status = 'saving' })
-          .addCase(updateReservaServer.fulfilled, (state, action) => { state.status = 'saved';  reservasAdapter.upsertOne(state, action.payload) })
-          .addCase(updateReservaServer.rejected,  (state, action) => { state.status = 'failed'; state.error = 'Falha ao atualizar reserva!' })
-          .addCase(cancelReservaServer.pending,   (state, action) => { state.status = 'deleting' })
-          .addCase(cancelReservaServer.fulfilled, (state, action) => { state.status = 'deleted'; reservasAdapter.upsertOne(state, action.payload) })
-          .addCase(cancelReservaServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao cancelar reserva!' })
+          .addCase(fetchReservas.pending,           (state, action) => { state.status = 'loading' })
+          .addCase(fetchReservas.fulfilled,         (state, action) => { state.status = 'loaded'; reservasAdapter.setAll(state, action.payload) })
+          .addCase(fetchReservas.rejected,          (state, action) => { state.status = 'failed'; state.error = 'Falha ao buscar reservas!' })
+          .addCase(addReservaServer.pending,        (state, action) => { state.status = 'saving' })
+          .addCase(addReservaServer.fulfilled,      (state, action) => { state.status = 'saved'; })
+          .addCase(addReservaServer.rejected,       (state, action) => { state.status = 'failed'; state.error = 'Falha ao adicionar reserva!' })
+          .addCase(updateReservaServer.pending,     (state, action) => { state.status = 'saving' })
+          .addCase(updateReservaServer.fulfilled,   (state, action) => { state.status = 'saved';  reservasAdapter.upsertOne(state, action.payload) })
+          .addCase(updateReservaServer.rejected,    (state, action) => { state.status = 'failed'; state.error = 'Falha ao atualizar reserva!' })
+          .addCase(entregarReservaServer.pending,   (state, action) => { state.status = 'saving' })
+          .addCase(entregarReservaServer.fulfilled, (state, action) => { state.status = 'saved';  reservasAdapter.upsertOne(state, action.payload) })
+          .addCase(entregarReservaServer.rejected,  (state, action) => { state.status = 'failed'; state.error = 'Falha ao confirmar entrega da reserva!' })
+          .addCase(coletarReservaServer.pending,    (state, action) => { state.status = 'saving' })
+          .addCase(coletarReservaServer.fulfilled,  (state, action) => { state.status = 'saved';  reservasAdapter.upsertOne(state, action.payload) })
+          .addCase(coletarReservaServer.rejected,   (state, action) => { state.status = 'failed'; state.error = 'Falha ao confirmar coleta da reserva!' })
+          .addCase(cancelReservaServer.pending,     (state, action) => { state.status = 'deleting' })
+          .addCase(cancelReservaServer.fulfilled,   (state, action) => { state.status = 'deleted'; reservasAdapter.upsertOne(state, action.payload) })
+          .addCase(cancelReservaServer.rejected,    (state, action) => { state.status = 'failed';  state.error = 'Falha ao cancelar reserva!' })
     
   }
 })
