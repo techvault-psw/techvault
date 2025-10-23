@@ -10,3 +10,13 @@ export const PageTitle = ({ children, className, ...props }: PageTitleProps) => 
     </h2>
   );
 }
+
+interface PageTitleContainerProps extends ComponentProps<'div'> {}
+
+export const PageTitleContainer = ({ children, className, ...props }: PageTitleContainerProps) => {
+  return (
+    <div className={cn("flex items-center gap-1", className)} {...props}>
+      {children}
+    </div>
+  );
+}
