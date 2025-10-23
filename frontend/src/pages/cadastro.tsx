@@ -60,7 +60,7 @@ export default function CadastroPage() {
     }, [statusC, dispatch])
     const clientes = useSelector(selectAllClientes)
   
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     const novoCliente: NewCliente = {
       name: values.name,
       email: values.email,
@@ -75,8 +75,8 @@ export default function CadastroPage() {
       return;
     }
 
-    dispatch(addClienteServer(novoCliente));
-    dispatch(loginCliente(values));
+    await dispatch(addClienteServer(novoCliente))
+    await dispatch(loginCliente(values));
     if (redirectTo) {
       navigate(redirectTo, { replace: true })
     } else {
