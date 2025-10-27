@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { 
     Form,
     FormField, 
@@ -36,6 +36,7 @@ import { logoutCliente } from '@/redux/clientes/slice';
 import { selectAllEnderecos } from '@/redux/endereco/slice';
 import { fetchEnderecos } from '@/redux/endereco/fetch';
 import type { AppDispatch } from '@/redux/store';
+import { GoBackButton } from '@/components/go-back-button';
 
 const formSchema = z
     .object({
@@ -115,9 +116,10 @@ export default function PerfilPage() {
 
     return (
         <PageContainer.Card>
-            <PageTitle>
-                Perfil
-            </PageTitle>
+            <PageTitleContainer>
+                <GoBackButton />
+                <PageTitle> Perfil </PageTitle>
+            </PageTitleContainer>
 
             <Separator/>
 
