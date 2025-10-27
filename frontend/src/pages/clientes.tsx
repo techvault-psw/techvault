@@ -4,7 +4,7 @@ import { FilterIcon } from "@/components/icons/filter-icon";
 import { SearchIcon } from '@/components/icons/search-icon';
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -18,6 +18,7 @@ import type { RootState } from "@/redux/root-reducer";
 import type { AppDispatch } from '@/redux/store';
 import { fetchClientes } from '@/redux/clientes/fetch';
 import { selectAllClientes } from '@/redux/clientes/slice';
+import { GoBackButton } from '@/components/go-back-button';
 
 
 export default function ClientesPage() {
@@ -61,7 +62,10 @@ export default function ClientesPage() {
   return (
     <div className="flex flex-col h-full"> 
       <PageContainer.List>
-        <PageTitle>Lista de Clientes</PageTitle>
+        <PageTitleContainer>
+          <GoBackButton />
+          <PageTitle> Lista de Clientes </PageTitle>
+        </PageTitleContainer>
 
         <div className="flex items-center gap-4 flex-shrink-0">
           <Button className="w-40 md:w-52" variant="secondary" size="sm">
