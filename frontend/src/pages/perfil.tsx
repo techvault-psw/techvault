@@ -241,7 +241,7 @@ export default function PerfilPage() {
                 </CriarEnderecoDialog>
             </div>
 
-            <div className="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
+            <div className="grid grid-cols-2 w-full lg:w-120 gap-3 mt-auto mx-auto">
                 <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
                     <Button variant="destructive">
                         <TrashIcon/>
@@ -254,10 +254,6 @@ export default function PerfilPage() {
                         Sair
                     </Button>
                 </SairDialog>
-                <Button variant="outline" className='col-span-2' onClick={() => history.back()}>
-                    <ArrowLeftIcon/>
-                    Voltar
-                </Button>
             </div>
         </PageContainer.Card>
     )
