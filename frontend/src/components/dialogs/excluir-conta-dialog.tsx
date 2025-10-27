@@ -54,10 +54,14 @@ export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirConta
 
         <Separator />
 
-        <Dialog.Description>
-          A exclusão da sua conta é uma ação irreversível e todos os seus dados serão perdidos.
-        </Dialog.Description>
-
+        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+          A exclusão da sua conta é uma <strong>ação irreversível</strong> e vai acarretar na perda de: <br/>
+          • Todos os seus dados cadastrais; <br/>
+          • Todos os seus endereços; <br/>
+          • Todo seu histórico de reservas; <br/>
+          • Todos os seus feedbacks. <br/>
+        </div>
+    
         <Dialog.Description>
           Para confirmar esta operação, digite sua senha:
         </Dialog.Description>
