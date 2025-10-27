@@ -63,7 +63,7 @@ export default function ClientesPage() {
     <div className="flex flex-col h-full"> 
       <PageContainer.List>
         <PageTitleContainer>
-          <GoBackButton />
+          <GoBackButton to='/dashboard' />
           <PageTitle> Lista de Clientes </PageTitle>
         </PageTitleContainer>
 

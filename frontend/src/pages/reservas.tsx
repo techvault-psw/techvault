@@ -67,7 +67,7 @@ export default function ReservasPage() {
   return (
     <PageContainer.List> 
       <PageTitleContainer>
-        <GoBackButton />
+        <GoBackButton to='/dashboard' />
         <PageTitle>Reservas</PageTitle>
       </PageTitleContainer>
 

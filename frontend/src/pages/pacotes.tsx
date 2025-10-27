@@ -59,7 +59,7 @@ export default function Pacotes() {
   return (
     <PageContainer.List>
       <PageTitleContainer>
-        <GoBackButton />
+        <GoBackButton to='/dashboard' />
         <PageTitle>Pacotes</PageTitle>
       </PageTitleContainer>
 
