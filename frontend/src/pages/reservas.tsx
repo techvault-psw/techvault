@@ -8,6 +8,7 @@ import { Separator } from "@/components/ui/separator";
 import { format, isToday, isTomorrow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
+import { OperacaoConfirmadaDialog } from "@/components/dialogs/operacao-confirmada-dialog";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate, useLocation } from "react-router";
 import { useEffect, useState } from "react";
@@ -32,7 +33,7 @@ export default function ReservasPage() {
   const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
   useEffect(() => {
-    if (['not_loaded', 'saved', 'deleted'].includes(statusR)) {
+    if (['not_loaded', 'deleted'].includes(statusR)) {
       dispatch(fetchReservas())
     }
   }, [statusR, dispatch])
@@ -42,6 +43,7 @@ export default function ReservasPage() {
   const location = useLocation();
   const [reservaToOpen, setReservaToOpen] = useState<number | null>(null);
   const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
+  const [operacaoSucesso, setOperacaoSucesso] = useState<{ reserva: Reserva; tipo: "Entrega" | "Coleta" } | null>(null);
 
   useEffect(() => {
     if (!isGerente() && !isSuporte()) {
@@ -116,6 +118,7 @@ export default function ReservasPage() {
                         key={`${reserva.id}-${tipo}-${hora.getTime()}`} 
                         reserva={reserva} 
                         tipo={tipo}
+                        onOperacaoSucesso={(reserva, tipo) => setOperacaoSucesso({ reserva, tipo })}
                       >
                         <Card.Container>
                           <Card.TextContainer className="flex-1 truncate">
@@ -161,9 +164,19 @@ export default function ReservasPage() {
             }
           }}
           openClientDialog={clienteToOpen === reservaParaAbrir.cliente.id}
+          onOperacaoSucesso={(reserva, tipo) => setOperacaoSucesso({ reserva, tipo })}
         >
           <div style={{ display: 'none' }} />
         </DetalhesReservaDialog>
+      )}
+
+      {operacaoSucesso && (
+        <OperacaoConfirmadaDialog
+          reserva={operacaoSucesso.reserva}
+          tipo={operacaoSucesso.tipo}
+          open={true}
+          setOpen={(open) => !open && setOperacaoSucesso(null)}
+        />
       )}
     </PageContainer.List>
   );

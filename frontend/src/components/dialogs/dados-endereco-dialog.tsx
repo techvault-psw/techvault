@@ -19,6 +19,7 @@ import type { AppDispatch } from "@/redux/store";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { estados } from "@/consts/estados";
 import { selectAllEnderecos, type Endereco } from "@/redux/endereco/slice";
+import { Pen } from "lucide-react";
 
 interface DadosEnderecoDialogProps {
     children: ReactNode
@@ -279,16 +280,19 @@ export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogP
 
                         {(isProfilePage || isGerente()) && (
                             <Dialog.Footer className="block text-center space-y-3 items-center">
+                                {disabled ? (
+                                  <div className="w-full flex gap-3 itens-center">
                                 <ExcluirEnderecoDialog endereco={endereco} handleDeleteClick={handleDeleteClick}>
                                     <Button type="button" variant="destructive" className="w-full">
                                         <TrashIcon/>
-                                        Excluir endereço
+                                        Excluir
                                     </Button>
                                 </ExcluirEnderecoDialog>
-                                {disabled ? (
                                     <Button type="button" variant="outline" className="w-full" onClick={toggleEditAddressInfo}>
-                                        Editar informações
+                                      <Pen className="size-4"/>
+                                        Editar
                                     </Button>
+                                  </div>
                                 ) : (
                                     <Button type="submit" className="w-full h-[2.625rem]">
                                         Salvar alterações

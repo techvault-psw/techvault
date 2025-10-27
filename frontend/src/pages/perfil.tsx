@@ -242,18 +242,19 @@ export default function PerfilPage() {
             </div>
 
             <div className="grid grid-cols-2 w-full lg:w-120 gap-3 mt-auto mx-auto">
-                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
-                    <Button variant="destructive">
-                        <TrashIcon/>
-                        Excluir
-                    </Button>
-                </ExcluirContaDialog>
                 <SairDialog handleCloseClick={handleLogoutClick}>
                     <Button variant="destructive">
                         <LogOutIcon/>
                         Sair
                     </Button>
                 </SairDialog>
+              
+                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
+                    <Button variant="destructive">
+                        <TrashIcon/>
+                        Excluir
+                    </Button>
+                </ExcluirContaDialog>
             </div>
         </PageContainer.Card>
     )
