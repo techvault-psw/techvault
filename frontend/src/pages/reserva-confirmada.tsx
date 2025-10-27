@@ -1,6 +1,6 @@
 import { HighlightBox } from "@/components/highlight-box";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Separator } from "@/components/ui/separator";
 import { Input, Label } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
 import { selectReservaById } from "@/redux/reservas/slice";
+import { GoBackButton } from "@/components/go-back-button";
 
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
@@ -39,9 +40,10 @@ export default function ReservaConfirmadaPage() {
     return (
         <>
         <PageContainer.Card>
-            <PageTitle>
-                Reserva confirmada
-            </PageTitle>
+            <PageTitleContainer>
+                <GoBackButton />
+                <PageTitle> Reserva confirmada </PageTitle>
+            </PageTitleContainer>
 
             <Separator/>
             
