@@ -4,13 +4,47 @@ import { TrashIcon } from "../icons/trash-icon";
 import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
+import z from "zod";
+import { useForm } from "react-hook-form";
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "../ui/form";
+import InputPassword from "../ui/input-password";
+import { useSelector } from "react-redux";
+import type { RootState } from "@/redux/root-reducer";
+import { zodResolver } from "@hookform/resolvers/zod";
 
 interface ExcluirContaDialogProps {
   children: ReactNode
   handleDeleteClick: () => void
 }
 
+const formSchema = z
+  .object({
+    password: z.string()
+      .min(1, "A senha é obrigatória")
+})
+
 export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirContaDialogProps) => {
+  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      password: ""
+    }
+  })
+
+  const onSubmit = (values: z.infer<typeof formSchema>) => {
+    if(!clienteAtual) return
+
+    if(clienteAtual.password == values.password) {
+      handleDeleteClick()
+    } else {
+      form.setError("password", { 
+          message: "Senha inválida" 
+      })
+    }
+  }
+
   return (
     <Dialog.Container>
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
@@ -21,28 +55,43 @@ export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirConta
         <Separator />
 
         <Dialog.Description>
-          Tem certeza de que deseja excluir permanentemente a sua conta?
+          A exclusão da sua conta é uma ação irreversível e todos os seus dados serão perdidos.
         </Dialog.Description>
 
         <Dialog.Description>
-          Essa ação não poderá ser desfeita e todos os seus dados serão removidos de forma definitiva.
+          Para confirmar esta operação, digite sua senha:
         </Dialog.Description>
 
-        <Dialog.Footer>
-          <Dialog.Close asChild>
-            <Button variant="outline">
-              <ArrowLeftIcon className="size-5" />
-              Voltar
-            </Button>
-          </Dialog.Close>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Senha</FormLabel>
+                  <FormControl>
+                    <InputPassword {...field}/>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+          />
 
-          <Dialog.Close asChild>
-            <Button variant="destructive" onClick={handleDeleteClick}>
+          <Dialog.Footer>
+            <Dialog.Close asChild>
+              <Button type="button" variant="outline">
+                <ArrowLeftIcon className="size-5" />
+                Voltar
+              </Button>
+            </Dialog.Close>
+            <Button variant="destructive">
               <TrashIcon className="size-5" />
               Excluir
             </Button>
-          </Dialog.Close>
-        </Dialog.Footer>
+          </Dialog.Footer>
+          </form>
+        </Form>
       </Dialog.Content>
     </Dialog.Container>
   );
