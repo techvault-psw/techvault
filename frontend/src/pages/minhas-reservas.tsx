@@ -1,7 +1,7 @@
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -19,6 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { selectAllReservas } from "@/redux/reservas/slice";
 import { fetchReservas } from "@/redux/reservas/fetch";
 import type { AppDispatch } from "@/redux/store";
+import { GoBackButton } from "@/components/go-back-button";
 
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
@@ -62,7 +63,10 @@ export default function MinhasReservasPage() {
 
     return (
         <PageContainer.List>
-            <PageTitle>Minhas Reservas</PageTitle>
+            <PageTitleContainer>
+                <GoBackButton />
+                <PageTitle>Minhas Reservas</PageTitle>
+            </PageTitleContainer>
 
             <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-4 flex-shrink-0">

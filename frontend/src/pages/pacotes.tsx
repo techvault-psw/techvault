@@ -1,5 +1,6 @@
 import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
 import { DadosPacoteDialog } from "@/components/dialogs/dados-pacote-dialog";
+import { GoBackButton } from "@/components/go-back-button";
 import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { PlusIcon } from "@/components/icons/plus-icon";
@@ -7,7 +8,7 @@ import { SearchIcon } from "@/components/icons/search-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
@@ -20,6 +21,7 @@ import type { Pacote } from "@/redux/pacotes/slice";
 import { selectAllPacotes } from "@/redux/pacotes/slice";
 import type { RootState } from "@/redux/root-reducer";
 import { type AppDispatch } from "@/redux/store";
+import { ArrowLeftIcon } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
@@ -56,7 +58,10 @@ export default function Pacotes() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Pacotes</PageTitle>
+      <PageTitleContainer>
+        <GoBackButton to='/dashboard' />
+        <PageTitle>Pacotes</PageTitle>
+      </PageTitleContainer>
 
       <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center md:flex-row">
         <div className="flex items-center gap-4 flex-shrink-0">

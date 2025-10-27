@@ -1,5 +1,5 @@
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Card } from "@/components/ui/card"; 
 import { Button } from "@/components/ui/button";
 import { FilterIcon } from "@/components/icons/filter-icon";
@@ -19,6 +19,7 @@ import { stringifyAddress } from "@/lib/stringify-address";
 import { agruparReservasPorData } from "@/lib/agrupar-reservas";
 import { type AppDispatch } from "@/redux/store";
 import { fetchReservas } from "@/redux/reservas/fetch";
+import { GoBackButton } from "@/components/go-back-button";
 
 export interface ReservaComTipo {
   reserva: Reserva;
@@ -67,7 +68,10 @@ export default function ReservasPage() {
 
   return (
     <PageContainer.List> 
-      <PageTitle>Reservas</PageTitle>
+      <PageTitleContainer>
+        <GoBackButton to='/dashboard' />
+        <PageTitle>Reservas</PageTitle>
+      </PageTitleContainer>
 
       <div className="w-40 md:w-52 py-1 gap-4 items-center justify-center">
         <Button className="w-40 md:w-52" variant="secondary" size="sm">

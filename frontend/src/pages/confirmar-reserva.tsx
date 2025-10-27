@@ -7,7 +7,7 @@ import * as z from "zod";
 import { HighlightBox } from "@/components/highlight-box";
 import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
@@ -34,6 +34,7 @@ import { type AppDispatch } from "@/redux/store";
 import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
 import { selectAllEnderecos } from "@/redux/endereco/slice";
 import { fetchEnderecos } from "@/redux/endereco/fetch";
+import { GoBackButton } from "@/components/go-back-button";
 
 const metodosPagamento = [
   "Cartão de Crédito",
@@ -144,9 +145,10 @@ export default function ConfirmarReservaPage() {
 
   return (
     <PageContainer.Card>
-      <PageTitle>
-        Confirmar Reserva
-      </PageTitle>
+      <PageTitleContainer>
+        <GoBackButton />
+        <PageTitle>Confirmar Reserva</PageTitle>
+      </PageTitleContainer>
 
       <Separator />
 

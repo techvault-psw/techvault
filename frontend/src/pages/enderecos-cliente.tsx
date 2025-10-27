@@ -1,5 +1,5 @@
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Card } from "@/components/ui/card"; 
 import { Table } from "@/components/ui/table";
 import { ArrowLeftIcon } from "@/components/icons/arrow-left-icon";
@@ -18,6 +18,7 @@ import { selectAllEnderecos, type Endereco } from "@/redux/endereco/slice";
 import { useDispatch } from "react-redux";
 import type { AppDispatch } from "@/redux/store";
 import { fetchEnderecos } from "@/redux/endereco/fetch";
+import { GoBackButton } from "@/components/go-back-button";
 
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
@@ -56,7 +57,21 @@ export default function EnderecosClientePage() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Endereços de {cliente.name}</PageTitle>
+      <PageTitleContainer>
+        <GoBackButton
+          onClick={() => {
+            const returnTo = state?.returnTo || "/clientes";
+            navigate(returnTo, { 
+              state: { 
+                fromClientDialog: numberId,
+                fromReservaId: state?.fromReservaId
+              } 
+            });
+          }}
+        />
+
+        <PageTitle>Endereços de {cliente.name}</PageTitle>
+      </PageTitleContainer>
 
       <Separator />
 
@@ -121,22 +136,6 @@ export default function EnderecosClientePage() {
           </section>
         </>
       )}
-
-      <Button
-        onClick={() => {
-          const returnTo = state?.returnTo || "/clientes";
-          navigate(returnTo, { 
-            state: { 
-              fromClientDialog: numberId,
-              fromReservaId: state?.fromReservaId
-            } 
-          });
-        }}
-        className="w-full max-w-100 mx-auto mt-auto flex-none" variant="outline"
-      >
-        <ArrowLeftIcon className="size-5" />
-        Voltar
-      </Button>
     </PageContainer.List>
   );
 }
