@@ -11,6 +11,7 @@ import InputPassword from "../ui/input-password";
 import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { HighlightBox } from "../highlight-box";
 
 interface ExcluirContaDialogProps {
   children: ReactNode
@@ -40,7 +41,7 @@ export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirConta
       handleDeleteClick()
     } else {
       form.setError("password", { 
-          message: "Senha inválida" 
+          message: "Senha incorreta" 
       })
     }
   }
@@ -54,13 +55,13 @@ export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirConta
 
         <Separator />
 
-        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+        <HighlightBox variant="destructive">
           A exclusão da sua conta é uma <strong>ação irreversível</strong> e vai acarretar na perda de: <br/>
           • Todos os seus dados cadastrais; <br/>
           • Todos os seus endereços; <br/>
           • Todo seu histórico de reservas; <br/>
           • Todos os seus feedbacks. <br/>
-        </div>
+        </HighlightBox>
     
         <Dialog.Description>
           Para confirmar esta operação, digite sua senha:
