@@ -62,9 +62,9 @@ export default function LoginPage() {
       if (redirectTo) {
         navigate(redirectTo, { replace: true })
       } else if (cliente.role === "Gerente" || cliente.role === "Suporte") {
-        navigate("/dashboard")
+        navigate("/dashboard", { replace: true })
       } else {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     }
     else{
