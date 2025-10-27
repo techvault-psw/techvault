@@ -24,6 +24,7 @@ import useCargo from '@/hooks/useCargo';
 import { useDispatch } from 'react-redux';
 import { updateClienteServer } from '@/redux/clientes/fetch';
 import type { AppDispatch } from '@/redux/store';
+import { Pen } from 'lucide-react';
 
 
 interface DadosClienteDialogProps {
@@ -93,7 +94,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
         <Dialog.Title>Dados do Cliente</Dialog.Title>
 
         <Separator />
-        
+
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-5" noValidate>
             <FormField
@@ -172,14 +173,24 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
                   Salvar alterações
                 </Button>
               ) : isGerente() && (
-                <Button type="button" onClick={handleEditClick} variant="outline">
-                  Editar informações
-                </Button>
+                <div className="w-full flex gap-3 itens-center">
+                  <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={(open) => handleOpenChange(open)}>
+                    <Button variant="destructive">
+                      <TrashIcon className="size-5" />
+                      Excluir
+                    </Button>
+                  </ExcluirClienteDialog>
+                  <Button type="button" onClick={handleEditClick} variant="outline">
+                    <Pen className="size-4" />
+                    Editar
+                  </Button>
+
+                </div>
               )}
 
-              <Link 
-                to={`/reservas-cliente/${cliente.id}`} 
-                state={{ 
+              <Link
+                to={`/reservas-cliente/${cliente.id}`}
+                state={{
                   fromClientDialog: cliente.id,
                   returnTo: location.pathname,
                   fromReservaId
@@ -190,9 +201,9 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
                 </Card.Container>
               </Link>
 
-              <Link 
-                to={`/enderecos-cliente/${cliente.id}`} 
-                state={{ 
+              <Link
+                to={`/enderecos-cliente/${cliente.id}`}
+                state={{
                   fromClientDialog: cliente.id,
                   returnTo: location.pathname,
                   fromReservaId
@@ -203,14 +214,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
                 </Card.Container>
               </Link>
 
-              { isGerente() && 
-                <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={(open) => handleOpenChange(open)}>
-                  <Button variant="destructive">
-                    <TrashIcon className="size-5" />
-                    Excluir
-                  </Button>
-                </ExcluirClienteDialog>
-              }
+
             </div>
           </form>
         </Form>
