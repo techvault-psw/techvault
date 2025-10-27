@@ -69,3 +69,11 @@ export async function httpDelete<T = unknown>(
 ): Promise<T> {
   return fetchWrapper<T>(endpoint, { ...customConfig, method: 'DELETE' })
 }
+
+export async function httpPatch<T = unknown>(
+  endpoint: string,
+  body: unknown,
+  customConfig: Omit<FetchConfig, 'body' | 'method'> = {}
+): Promise<T> {
+  return fetchWrapper<T>(endpoint, { body, ...customConfig, method: 'PATCH' })
+}

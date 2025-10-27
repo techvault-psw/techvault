@@ -32,6 +32,7 @@ interface DetalhesReservaDialogProps {
   open?: boolean
   onOpenChange?: (open: boolean) => void
   openClientDialog?: boolean
+  onOperacaoSucesso?: (reserva: Reserva, tipo: "Entrega" | "Coleta") => void
 }
 
 const formSchema = z
@@ -40,6 +41,12 @@ const formSchema = z
         dataHoraFinal: z.date({message: "Por favor, preencha a data final"}),
         dataEntrega: z.date().optional(),
         dataColeta: z.date().optional(),
+        codigoEntrega: z.string()
+            .min(1, { message: "Insira um código válido" })
+            .length(7, { message: "O código deve ter exatamente 7 caracteres" }),
+        codigoColeta: z.string()
+            .min(1, { message: "Insira um código válido" })
+            .length(7, { message: "O código deve ter exatamente 7 caracteres" })
     })
     .refine((data) => data.dataHoraInicial <= data.dataHoraFinal, {
         message: "Data final não pode ser antes que a data inicial",
@@ -48,7 +55,7 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
-export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog }: DetalhesReservaDialogProps) => {
+export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog, onOperacaoSucesso }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
   const [internalOpen, setInternalOpen] = useState(false)
   const [clientDialogOpen, setClientDialogOpen] = useState(false)
@@ -74,6 +81,8 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
       dataHoraFinal: new Date(reserva.dataTermino),
       dataEntrega: reserva.dataEntrega ? new Date(reserva.dataEntrega) : undefined,
       dataColeta: reserva.dataColeta ? new Date(reserva.dataColeta) : undefined,
+      codigoColeta: reserva.codigoColeta,
+      codigoEntrega: reserva.codigoEntrega,
     },
     mode: "onChange"
   })
@@ -88,6 +97,8 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
       dataTermino: values.dataHoraFinal.toISOString(),
       dataEntrega: values.dataEntrega?.toISOString(),
       dataColeta: values.dataColeta?.toISOString(),
+      codigoColeta: values.codigoColeta,
+      codigoEntrega: values.codigoEntrega,
     }))
   }
 
@@ -265,7 +276,57 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
               />
             </div>
 
+            {isGerente() && (
+              <div className="flex items-center gap-2 w-full">
+                <FormField
+                  control={form.control}
+                  name="codigoEntrega"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Código de Entrega</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="A1B2C3D"
+                          disabled={!isEditting}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="codigoColeta"
+                  render={({ field }) => (
+                    <FormItem className="flex-1">
+                      <FormLabel>Código de Coleta</FormLabel>
+                      <FormControl>
+                        <Input
+                          type="text"
+                          placeholder="E4F5G6H"
+                          disabled={!isEditting}
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
+            )}
+
             <Dialog.Footer className="block space-y-3">
+              {(isSuporte() || isGerente()) && tipo && (
+                <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo} onSuccess={onOperacaoSucesso}>
+                  <Button className="w-full h-[2.625rem]">
+                    Confirmar {tipo}
+                  </Button>
+                </ConfirmarOperacaoDialog>
+              )}
+
               {isEditting ? (
                 <Button type="submit" className="h-[2.625rem] w-full">
                   Salvar alterações
@@ -290,14 +351,6 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
                     Editar
                   </Button>
                 </div>
-              )}
-
-              {isSuporte() && tipo && (
-                <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo}>
-                  <Button className="w-full h-[2.625rem]">
-                    Confirmar {tipo}
-                  </Button>
-                </ConfirmarOperacaoDialog>
               )}
 
               <Dialog.Close asChild>
