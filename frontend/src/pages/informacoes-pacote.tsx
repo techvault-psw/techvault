@@ -1,3 +1,4 @@
+import { GoBackButton } from "@/components/go-back-button";
 import { HighlightBox } from "@/components/highlight-box";
 import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
@@ -68,6 +69,7 @@ export default function InformacoesPacotePage() {
 
   return (
     <PageContainer.Card>
+      <GoBackButton className="absolute top-5 left-5" />
       <div className="flex flex-col items-center gap-3">
         <PacoteImage pacote={pacote} className="max-w-full h-55 md:h-66 xl:h-77 rounded-lg md:rounded-xl border-gray/30" />
 

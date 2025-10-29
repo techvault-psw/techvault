@@ -1,7 +1,7 @@
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { StarRating } from "@/components/ui/star-rating";
 
@@ -22,6 +22,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import { fetchReservas } from "@/redux/reservas/fetch";
+import { GoBackButton } from "@/components/go-back-button";
 
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
@@ -56,7 +57,10 @@ export default function FeedbacksPage() {
 
     return (
         <PageContainer.List>
-            <PageTitle>Feedbacks</PageTitle>
+            <PageTitleContainer>
+                <GoBackButton />
+                <PageTitle> Feedbacks </PageTitle>
+            </PageTitleContainer>
 
             <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-4 flex-shrink-0">

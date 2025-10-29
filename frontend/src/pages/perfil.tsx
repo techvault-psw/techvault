@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router';
 
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { 
     Form,
     FormField, 
@@ -36,6 +36,7 @@ import { logoutCliente } from '@/redux/clientes/slice';
 import { selectAllEnderecos } from '@/redux/endereco/slice';
 import { fetchEnderecos } from '@/redux/endereco/fetch';
 import type { AppDispatch } from '@/redux/store';
+import { GoBackButton } from '@/components/go-back-button';
 
 const formSchema = z
     .object({
@@ -115,9 +116,10 @@ export default function PerfilPage() {
 
     return (
         <PageContainer.Card>
-            <PageTitle>
-                Perfil
-            </PageTitle>
+            <PageTitleContainer>
+                <GoBackButton />
+                <PageTitle> Perfil </PageTitle>
+            </PageTitleContainer>
 
             <Separator/>
 
@@ -239,23 +241,20 @@ export default function PerfilPage() {
                 </CriarEnderecoDialog>
             </div>
 
-            <div className="grid grid-cols-2 grid-rows-2 w-full lg:grid-rows-1 lg:grid-cols-2 lg:w-120 gap-3 mt-auto mx-auto">
-                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
-                    <Button variant="destructive">
-                        <TrashIcon/>
-                        Excluir
-                    </Button>
-                </ExcluirContaDialog>
+            <div className="grid grid-cols-2 w-full lg:w-120 gap-3 mt-auto mx-auto">
                 <SairDialog handleCloseClick={handleLogoutClick}>
                     <Button variant="destructive">
                         <LogOutIcon/>
                         Sair
                     </Button>
                 </SairDialog>
-                <Button variant="outline" className='col-span-2' onClick={() => history.back()}>
-                    <ArrowLeftIcon/>
-                    Voltar
-                </Button>
+              
+                <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
+                    <Button variant="destructive">
+                        <TrashIcon/>
+                        Excluir
+                    </Button>
+                </ExcluirContaDialog>
             </div>
         </PageContainer.Card>
     )

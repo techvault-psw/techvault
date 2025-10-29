@@ -1,6 +1,7 @@
+import { GoBackButton } from "@/components/go-back-button"
 import { PacoteImage } from "@/components/pacote-image"
 import { PageContainer } from "@/components/page-container"
-import { PageTitle } from "@/components/page-title"
+import { PageTitle, PageTitleContainer } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
 import { formatCurrency } from "@/lib/format-currency"
@@ -50,9 +51,11 @@ export default function PagamentoReservaPage() {
 
     return (
         <PageContainer.Card>
-            <PageTitle>
-                Finalizar Pagamento
-            </PageTitle>
+            <PageTitleContainer>
+                <GoBackButton />
+                <PageTitle> Finalizar Pagamento </PageTitle>
+            </PageTitleContainer>
+            
 
             <Separator/>
 

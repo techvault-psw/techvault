@@ -8,12 +8,15 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
 import { type Reserva } from "@/redux/reservas/slice";
-import { OperacaoConfirmadaDialog } from "./operacao-confirmada-dialog";
+import { coletarReservaServer, entregarReservaServer } from "@/redux/reservas/fetch";
+import { useDispatch } from "react-redux";
+import { type AppDispatch } from "@/redux/store";
     
 interface ConfirmarOperacaoDialogProps {
     children: ReactNode,
     reserva: Reserva,
     tipo: "Entrega" | "Coleta"
+    onSuccess?: (reserva: Reserva, tipo: "Entrega" | "Coleta") => void
 }
 
 const formSchema = z
@@ -27,9 +30,8 @@ const formSchema = z
             )
 })
 
-export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOperacaoDialogProps) => {
+export const ConfirmarOperacaoDialog = ({ children, reserva, tipo, onSuccess }: ConfirmarOperacaoDialogProps) => {
     const [isOpen, setOpen] = useState(false)
-    const [isConfirmedOpen, setConfirmedOpen] = useState(false)
     
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
@@ -38,7 +40,9 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
         }
     })
 
-    const onSubmit = (values: z.infer<typeof formSchema>) => {
+    const dispatch = useDispatch<AppDispatch>()
+
+    const onSubmit = async (values: z.infer<typeof formSchema>) => {
         if (
             (reserva.dataEntrega && tipo === "Entrega") ||
             (reserva.dataColeta && tipo === "Coleta")
@@ -60,8 +64,14 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
             return
         }
 
+        if (tipo === 'Entrega') {
+            await dispatch(entregarReservaServer({ reserva, codigoEntrega: values.code }))
+        } else if (tipo === 'Coleta') {
+            await dispatch(coletarReservaServer({ reserva, codigoColeta: values.code }))
+        }
+
         form.reset()
-        setConfirmedOpen(true)
+        onSuccess?.(reserva, tipo)
         setOpen(false)
     }
 
@@ -111,13 +121,6 @@ export const ConfirmarOperacaoDialog = ({ children, reserva, tipo }: ConfirmarOp
                 </Form>
             </Dialog.Content>
         </Dialog.Container>
-
-        <OperacaoConfirmadaDialog
-            reserva={reserva}
-            tipo={tipo}
-            open={isConfirmedOpen}
-            setOpen={setConfirmedOpen}
-        />
         </>
     );
 }

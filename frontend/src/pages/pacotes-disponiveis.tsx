@@ -1,8 +1,9 @@
+import { GoBackButton } from "@/components/go-back-button";
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { PacoteImage } from "@/components/pacote-image";
 import { PageContainer } from "@/components/page-container";
-import { PageTitle } from "@/components/page-title";
+import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
 import { formatCurrency } from "@/lib/format-currency";
 import { fetchPacotes } from "@/redux/pacotes/fetch";
@@ -28,7 +29,11 @@ export default function PacotesDisponiveisPage() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Pacotes Disponíveis</PageTitle>
+       <PageTitleContainer>
+        <GoBackButton />
+        <PageTitle>Pacotes Disponíveis</PageTitle>
+       </PageTitleContainer>
+      
 
       <div className="flex items-center gap-4 flex-shrink-0">
         <Button className="w-40 md:w-52" variant="secondary" size="sm">

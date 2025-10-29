@@ -27,6 +27,7 @@ import type { RootState } from "@/redux/root-reducer";
 import { addClienteServer, fetchClientes } from "@/redux/clientes/fetch";
 import { useEffect } from "react";
 import type { AppDispatch } from "@/redux/store";
+import { HighlightBox } from "@/components/highlight-box";
 
 
 const formSchema = z.object({
@@ -60,7 +61,7 @@ export default function CadastroPage() {
     }, [statusC, dispatch])
     const clientes = useSelector(selectAllClientes)
   
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     const novoCliente: NewCliente = {
       name: values.name,
       email: values.email,
@@ -75,8 +76,8 @@ export default function CadastroPage() {
       return;
     }
 
-    dispatch(addClienteServer(novoCliente));
-    dispatch(loginCliente(values));
+    await dispatch(addClienteServer(novoCliente))
+    await dispatch(loginCliente(values));
     if (redirectTo) {
       navigate(redirectTo, { replace: true })
     } else {
@@ -94,9 +95,9 @@ export default function CadastroPage() {
       <Separator/>
 
       {statusC === 'failed' && (
-        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+        <HighlightBox variant="destructive">
           Estamos enfrentando um problema, tente novamente mais tarde.
-        </div>
+        </HighlightBox>
       )}
 
       <Form {...form2}>

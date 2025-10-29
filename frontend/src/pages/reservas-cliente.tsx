@@ -2,7 +2,7 @@ import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dia
 import { FilterIcon } from "@/components/icons/filter-icon"
 import { SlidersIcon } from "@/components/icons/sliders-icon"
 import { PageContainer } from "@/components/page-container"
-import { PageTitle } from "@/components/page-title"
+import { PageTitle, PageTitleContainer } from "@/components/page-title"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -19,6 +19,7 @@ import { stringifyAddress } from "@/lib/stringify-address"
 import type { AppDispatch } from "@/redux/store"
 import { fetchReservas } from "@/redux/reservas/fetch"
 import { selectClienteById } from "@/redux/clientes/slice"
+import { GoBackButton } from "@/components/go-back-button"
 
 interface ReservaSectionProps {
   titulo: string
@@ -114,7 +115,21 @@ export default function ReservasClientePage() {
 
   return (
     <PageContainer.List>
-      <PageTitle>Reservas de {cliente.name}</PageTitle>
+      <PageTitleContainer>
+        <GoBackButton
+          onClick={() => {
+            const returnTo = state?.returnTo || "/clientes";
+            navigate(returnTo, { 
+              state: { 
+                fromClientDialog: numberId,
+                fromReservaId: state?.fromReservaId
+              } 
+            });
+          }}
+        />
+
+        <PageTitle>Reservas de {cliente.name}</PageTitle>
+      </PageTitleContainer>
 
       <div className="flex items-center gap-4">
         <Button variant="secondary" className="w-40 md:w-52" size="sm">
@@ -146,23 +161,6 @@ export default function ReservasClientePage() {
           <ReservaSection titulo="Canceladas" reservas={reservasCanceladas} />
         </section>
       )}
-
-      <Button
-        variant="outline"
-        onClick={() => {
-          const returnTo = state?.returnTo || "/clientes";
-          navigate(returnTo, { 
-            state: { 
-              fromClientDialog: numberId,
-              fromReservaId: state?.fromReservaId
-            } 
-          });
-        }}
-        className="w-full max-w-100 mx-auto mt-auto flex-none"
-      >
-        <ArrowLeft size={16} className="mr-2" />
-        Voltar
-      </Button>
     </PageContainer.List>
   );
 };

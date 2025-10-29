@@ -1,9 +1,10 @@
 import { CancelarReservaDialog } from "@/components/dialogs/cancelar-reserva-dialog"
+import { GoBackButton } from "@/components/go-back-button"
 import { HighlightBox } from "@/components/highlight-box"
 import { ArrowLeftIcon } from "@/components/icons/arrow-left-icon"
 import { PacoteImage } from "@/components/pacote-image"
 import { PageContainer } from "@/components/page-container"
-import { PageTitle } from "@/components/page-title"
+import { PageTitle, PageTitleContainer } from "@/components/page-title"
 import { Button } from "@/components/ui/button"
 import { FormItem } from "@/components/ui/form"
 import { Input, Label } from "@/components/ui/input"
@@ -69,9 +70,10 @@ export default function InformacoesReservasPage() {
 
   return (
     <PageContainer.Card>
-      <PageTitle>
-        Reserva
-      </PageTitle>
+      <PageTitleContainer>
+        <GoBackButton />
+        <PageTitle> Reserva </PageTitle>
+      </PageTitleContainer>
 
       <Separator/>
 
@@ -205,19 +207,12 @@ export default function InformacoesReservasPage() {
             {reserva.status === "Confirmada" && (
 
               <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
-                <Button variant="destructive" className="md:order-2 xl:col-start-3">
+                <Button variant="destructive" className="md:col-start-2 xl:col-start-4">
                   <X className="size-5 text-red" />
                   <span className="text-red text-lg font-medium leading-none">Cancelar</span>
                 </Button>
               </CancelarReservaDialog>
             ) }
-
-              <Button variant="outline" className={cn("md:order-1 xl:col-start-2", reserva.status !== "Confirmada" ? "col-span-2" : "")} asChild>
-                <Link to="/minhas-reservas">
-                <ArrowLeftIcon className="size-5" />
-                <span className="text-white text-lg font-medium leading-none">Voltar</span>
-              </Link>
-            </Button>
           </div>
         </>
       )}

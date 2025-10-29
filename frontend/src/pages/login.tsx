@@ -25,6 +25,7 @@ import { loginCliente, selectAllClientes } from "@/redux/clientes/slice";
 import { useEffect } from "react";
 import { fetchClientes } from "@/redux/clientes/fetch";
 import type { AppDispatch } from "@/redux/store";
+import { HighlightBox } from "@/components/highlight-box";
 
 const formSchema = z.object({
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
@@ -62,9 +63,9 @@ export default function LoginPage() {
       if (redirectTo) {
         navigate(redirectTo, { replace: true })
       } else if (cliente.role === "Gerente" || cliente.role === "Suporte") {
-        navigate("/dashboard")
+        navigate("/dashboard", { replace: true })
       } else {
-        navigate("/");
+        navigate("/", { replace: true });
       }
     }
     else{
@@ -84,9 +85,9 @@ export default function LoginPage() {
       <Separator/>
 
       {statusC === 'failed' && (
-        <div className="px-4 py-3 rounded-xl bg-red/10 border border-red text-red text-left">
+        <HighlightBox variant="destructive">
           Estamos enfrentando um problema, tente novamente mais tarde.
-        </div>
+        </HighlightBox>
       )}
 
       <Form {...form2}>
