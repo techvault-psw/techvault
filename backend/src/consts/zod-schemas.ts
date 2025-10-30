@@ -8,7 +8,7 @@ export const clienteZodSchema = z.object({
   email: z.string().email(),
   phone: z.string(),
   registrationDate: z.string(),
-  passwordHash: z.string(),
+  password: z.string(),
   role: roleZodSchema,
 })
 
