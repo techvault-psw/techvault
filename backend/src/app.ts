@@ -1,7 +1,8 @@
 import express from 'express'
 import router from './routes'
 import swaggerUi from 'swagger-ui-express';
-import { generateOpenAPISpec, RequestValidationError, ResponseValidationError, setGlobalErrorHandler } from 'express-zod-openapi-typed';
+import { generateOpenAPISpec, RequestValidationError, ResponseValidationError, setDefaultResponses, setGlobalErrorHandler } from 'express-zod-openapi-typed';
+import { z } from 'zod'
 
 const app = express()
 
@@ -11,6 +12,18 @@ app.use(router)
 
 app.get('/', (req, res) => {
   return res.json({ success: true })
+})
+
+setDefaultResponses({
+  422: z.object({
+    success: z.boolean(),
+    message: z.string(),
+    errors: z.record(z.string(), z.array(z.string())),
+  }),
+  500: z.object({
+    success: z.boolean(),
+    message: z.string(),
+  }),
 })
 
 const swaggerSpec = generateOpenAPISpec({
