@@ -6,7 +6,7 @@ import { pacoteZodSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
-router.get('/pacote', {
+router.get('/pacotes', {
   schema: {
     summary: 'Get Pacotes',
     tags: ['Pacotes'],
@@ -17,15 +17,9 @@ router.get('/pacote', {
     },
   },
 }, async (req, res) => {
-  const pacote: Pacote[] = pacotes.map((pacotes) => {
-    
-    return {
-      ...pacotes,
-    }
-  }).filter((f) => !!f)
 
   return res.status(200).send({
-    pacotes: pacote,
+    pacotes,
   })
 })
 
