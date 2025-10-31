@@ -31,12 +31,12 @@ export const enderecoExtendedZodSchema = enderecoZodSchema.extend({
 
 export const pacoteZodSchema = z.object({
   id: z.string().uuid(),
-  name: z.string(),
+  name: z.string().trim(),
   image: z.string().url(),
-  description: z.array(z.string()),
-  components: z.array(z.string()),
-  value: z.number(),
-  quantity: z.number(),
+  description: z.array(z.string().trim().min(15)),
+  components: z.array(z.string().trim()).min(3),
+  value: z.number().positive(),
+  quantity: z.number().int().min(0),
 })
 
 export const statusZodSchema = z.enum(["Confirmada", "Cancelada", "Concluída"])
