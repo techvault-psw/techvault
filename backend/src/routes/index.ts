@@ -7,6 +7,7 @@ import { getPacotes } from "./pacotes/get-pacotes";
 import { createPacote } from "./pacotes/create-pacote";
 import { deletePacote } from "./pacotes/delete-pacote";
 import { updatePacote } from "./pacotes/update-pacote";
+import { uploadPacoteImageRouter } from "./pacotes/upload-pacote-image";
 
 const router = Router()
 
@@ -19,5 +20,6 @@ router.use(getPacotes)
 router.use(createPacote)
 router.use(updatePacote)
 router.use(deletePacote)
+router.use(uploadPacoteImageRouter)
 
 export default router
