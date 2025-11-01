@@ -183,7 +183,59 @@ export const pacotes: Pacote[] = [
   },
 ]
 
-export const reservas: Reserva[] = []
+export const reservas: Reserva[] = [
+  {
+    id: "6c6d8f98-6101-482a-bf73-5243a529d6a6",
+    pacoteId: "669186d6-1224-474a-8092-2ddedfb268ee",
+    valor: 500.0,
+    status: "Confirmada",
+    dataInicio: "2025-10-08T10:00:00",
+    dataTermino: "2025-10-09T10:00:00",
+    enderecoId: "65e07a1e-32fd-478d-afb5-b1429714dec0",
+    codigoEntrega: "A7F3K2Z",
+    codigoColeta: "9M2XQ8B",
+    clienteId: "de2ca0ae-23e5-445c-965c-47c4aa69802d",
+  },
+  {
+    id: "55625ba1-5e1a-44ae-a1c8-c4a463cc6c24",
+    pacoteId: "0348dba9-264f-40d1-aa63-22310eb3b62a",
+    valor: 300.0,
+    status: "Cancelada",
+    dataInicio: "2025-10-10T12:00:00",
+    dataTermino: "2025-10-12T12:00:00",
+    enderecoId: "cd6477e4-3b68-4b8b-9537-c3acbfa73a27",
+    codigoEntrega: "L4P7R1T",
+    codigoColeta: "C6Z8V5Y",
+    clienteId: "de2ca0ae-23e5-445c-965c-47c4aa69802d",
+  },
+  {
+    id: "ce7e0be3-a0ec-490e-8241-9daef9c7dfa6",
+    pacoteId: "dcd6e301-2560-48a1-9135-92bd3f0c2401",
+    valor: 700.0,
+    status: "Concluída",
+    dataInicio: "2025-09-20T08:00:00",
+    dataTermino: "2025-09-25T08:00:00",
+    dataEntrega: "2025-09-20T08:00:00",
+    dataColeta: "2025-09-25T08:00:00",
+    enderecoId: "d3711e94-e8c9-446c-8286-e1ccb0ba7270",
+    codigoEntrega: "Q3N9W0K",
+    codigoColeta: "H2B7D6M",
+    clienteId: "de2ca0ae-23e5-445c-965c-47c4aa69802d",
+  },
+  {
+    id: "69cd7608-f708-4149-b1e4-acadb16c5c32",
+    pacoteId: "ab27b2cb-5d3a-431f-919d-e3f873580226",
+    valor: 600.0,
+    status: "Confirmada",
+    dataInicio: "2025-10-07T10:00:00",
+    dataTermino: "2025-10-12T10:00:00",
+    dataEntrega: "2025-10-07T08:54:34",
+    enderecoId: "f668746c-6350-484f-b223-ae9c93601356",
+    codigoEntrega: "B8G8J4",
+    codigoColeta: "314BCCA",
+    clienteId: "f0da4a6a-cbf2-4544-9032-ebf8056ccd10",
+  },
+]
 
 export const feedbacks: Feedback[] = [
   {
