@@ -12,7 +12,10 @@ router.put('/enderecos/:id', {
     params: z.object({
       id: z.string().uuid(),
     }),
-    body: enderecoZodSchema.omit({ id: true }),
+    body: enderecoZodSchema.omit({ 
+      id: true,
+      clienteId: true, 
+    }),
     response: {
       200: enderecoZodSchema,
       400: z.object({
@@ -34,9 +37,12 @@ router.put('/enderecos/:id', {
     })
   }
 
+  const clienteId = enderecos[enderecoIndex].clienteId
+
   enderecos[enderecoIndex] = {
     ...newEndereco,
-    id: id
+    id: id,
+    clienteId: clienteId
   }
 
   return res.status(200).send({
