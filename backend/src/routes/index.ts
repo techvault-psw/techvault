@@ -8,6 +8,10 @@ import { createPacote } from "./pacotes/create-pacote";
 import { deletePacote } from "./pacotes/delete-pacote";
 import { updatePacote } from "./pacotes/update-pacote";
 import { uploadPacoteImageRouter } from "./pacotes/upload-pacote-image";
+import { createEndereco } from "./enderecos/create-endereco";
+import { deleteEndereco } from "./enderecos/delete-endereco";
+import { getEnderecos } from "./enderecos/get-enderecos";
+import { updateEndereco } from "./enderecos/update-endereco";
 
 const router = Router()
 
@@ -21,5 +25,10 @@ router.use(createPacote)
 router.use(updatePacote)
 router.use(deletePacote)
 router.use(uploadPacoteImageRouter)
+
+router.use(createEndereco)
+router.use(deleteEndereco)
+router.use(getEnderecos)
+router.use(updateEndereco)
 
 export default router
