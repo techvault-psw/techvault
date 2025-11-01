@@ -20,7 +20,7 @@ router.post('/enderecos', {
     },
   },
 }, async (req, res) => {
-  const { clienteId } = req.body
+  const { clienteId, ...rest } = req.body
 
   const cliente = clientes.find((cliente) => cliente.id === clienteId)
 
@@ -32,9 +32,9 @@ router.post('/enderecos', {
   }
 
   const endereco = {
-    ...req.body,
     id: randomUUID(),
     clienteId,
+    ...rest
   }
 
   enderecos.push(endereco)
