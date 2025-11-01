@@ -40,9 +40,9 @@ router.put('/enderecos/:id', {
   const clienteId = enderecos[enderecoIndex].clienteId
 
   enderecos[enderecoIndex] = {
-    ...newEndereco,
-    id: id,
-    clienteId: clienteId
+    id,
+    clienteId,
+    ...newEndereco
   }
 
   return res.status(200).send({
