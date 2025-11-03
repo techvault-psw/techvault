@@ -25,6 +25,8 @@ import { useDispatch } from 'react-redux';
 import { updateClienteServer } from '@/redux/clientes/fetch';
 import type { AppDispatch } from '@/redux/store';
 import { Pen } from 'lucide-react';
+import { Select, SelectContent, SelectTrigger, SelectValue } from '../ui/select';
+import { SelectItem } from '../ui/select';
 
 
 interface DadosClienteDialogProps {
@@ -35,12 +37,15 @@ interface DadosClienteDialogProps {
   fromReservaId?: number;
 }
 
+const roleSchema = z.enum(['Cliente', 'Suporte', 'Gerente'])
+
 const formSchema = z.object({
   name: z.string().min(1, "O cliente deve possuir um nome"),
   email: z.string().min(1, "O cliente deve possuir um e-mail").email("Digite um e-mail válido"),
   phone: z.string()
     .min(1, "O cliente deve possuir um telefone")
-    .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX")
+    .regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX"),
+  role: roleSchema
 })
 
 export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, onOpenChange, fromReservaId }: DadosClienteDialogProps) => {
@@ -59,6 +64,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
       name: cliente.name,
       email: cliente.email,
       phone: cliente.phone,
+      role: cliente.role
     },
   })
 
@@ -151,6 +157,33 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
                       placeholder="(__) _____-____"
                       type="tel"
                     />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="role"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Cargo</FormLabel>
+                  <FormControl>
+                    <Select onValueChange={field.onChange} value={field.value} disabled={cliente.role === 'Gerente' ? true : !isEditting}>
+                      <SelectTrigger className="w-full !opacity-100 [&:has([data-disabled])]:!opacity-60">
+                        <SelectValue/>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {cliente.role === 'Gerente' ? (
+                          <SelectItem value={'Gerente'}>Gerente</SelectItem>
+                        ) : (
+                          <>
+                          <SelectItem value={'Cliente'}>Cliente</SelectItem>
+                          <SelectItem value={'Suporte'}>Suporte</SelectItem>
+                          </>
+                        )}
+                      </SelectContent>
+                    </Select>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
