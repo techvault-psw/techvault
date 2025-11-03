@@ -37,6 +37,7 @@ import { selectAllEnderecos } from '@/redux/endereco/slice';
 import { fetchEnderecos } from '@/redux/endereco/fetch';
 import type { AppDispatch } from '@/redux/store';
 import { GoBackButton } from '@/components/go-back-button';
+import useCargo from '@/hooks/useCargo';
 
 const formSchema = z
     .object({
@@ -49,6 +50,7 @@ const formSchema = z
 
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
+    const {isGerente} = useCargo()
 
     const dispatch = useDispatch<AppDispatch>();
     const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
@@ -243,14 +245,14 @@ export default function PerfilPage() {
 
             <div className="grid grid-cols-2 w-full lg:w-120 gap-3 mt-auto mx-auto">
                 <SairDialog handleCloseClick={handleLogoutClick}>
-                    <Button variant="destructive">
+                    <Button variant="destructive" className={isGerente() ? "w-full sm:w-80 mx-auto col-span-2" : ""}>
                         <LogOutIcon/>
                         Sair
                     </Button>
                 </SairDialog>
               
                 <ExcluirContaDialog handleDeleteClick={handleDeleteClick}>
-                    <Button variant="destructive">
+                    <Button variant="destructive" hidden={isGerente()}>
                         <TrashIcon/>
                         Excluir
                     </Button>
