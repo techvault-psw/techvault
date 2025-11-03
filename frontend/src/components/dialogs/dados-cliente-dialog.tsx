@@ -208,7 +208,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
               ) : isGerente() && (
                 <div className="w-full flex gap-3 itens-center">
                   <ExcluirClienteDialog cliente={cliente} setIsClientDialogOpen={(open) => handleOpenChange(open)}>
-                    <Button variant="destructive">
+                    <Button variant="destructive" hidden={cliente.role === "Gerente"}>
                       <TrashIcon className="size-5" />
                       Excluir
                     </Button>
