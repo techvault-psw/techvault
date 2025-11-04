@@ -14,6 +14,10 @@ import { updateReserva } from "./reservas/update-reserva";
 import { confirmEntrega } from "./reservas/confirm-entrega";
 import { confirmColeta } from "./reservas/confirm-coleta";
 import { uploadPacoteImageRouter } from "./pacotes/upload-pacote-image";
+import { createEndereco } from "./enderecos/create-endereco";
+import { deleteEndereco } from "./enderecos/delete-endereco";
+import { getEnderecos } from "./enderecos/get-enderecos";
+import { updateEndereco } from "./enderecos/update-endereco";
 
 const router = Router()
 
@@ -34,5 +38,10 @@ router.use(updateReserva)
 router.use(deleteReserva)
 router.use(confirmColeta)
 router.use(confirmEntrega)
+
+router.use(getEnderecos)
+router.use(createEndereco)
+router.use(updateEndereco)
+router.use(deleteEndereco)
 
 export default router
