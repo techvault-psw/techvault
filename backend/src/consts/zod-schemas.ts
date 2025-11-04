@@ -7,7 +7,7 @@ export const clienteZodSchema = z.object({
   name: z.string(),
   email: z.string().email(),
   phone: z.string(),
-  registrationDate: z.string(),
+  registrationDate: z.iso.datetime(),
   password: z.string(),
   role: roleZodSchema,
 })
@@ -48,10 +48,10 @@ export const reservaZodSchema = z.object({
   enderecoId: z.string().uuid(),
   valor: z.number(),
   status: statusZodSchema,
-  dataInicio: z.iso.date(),
-  dataTermino: z.iso.date(),
-  dataEntrega: z.iso.date().nullish(),
-  dataColeta: z.iso.date().nullish(),
+  dataInicio: z.iso.datetime(),
+  dataTermino: z.iso.datetime(),
+  dataEntrega: z.iso.datetime().nullish(),
+  dataColeta: z.iso.datetime().nullish(),
   codigoEntrega: z.string().length(7),
   codigoColeta: z.string().length(7),
 })
