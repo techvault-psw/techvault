@@ -29,7 +29,7 @@ router.put('/reservas/:id', {
   },
 }, async (req, res) => {
   const { id } = req.params
-  const {dataEntrega, dataColeta, dataInicio, dataTermino } = req.body // agora pode registrar coleta e entrega
+  const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status } = req.body
 
   const reservaIndex = reservas.findIndex((reserva) => reserva.id === id)
 
@@ -44,6 +44,9 @@ router.put('/reservas/:id', {
   reservas[reservaIndex].dataColeta = dataColeta
   reservas[reservaIndex].dataInicio = dataInicio
   reservas[reservaIndex].dataTermino = dataTermino
+  reservas[reservaIndex].codigoColeta = codigoColeta
+  reservas[reservaIndex].codigoEntrega = codigoEntrega
+  reservas[reservaIndex].status = status
 
   return res.status(200).send({
     ...reservas[reservaIndex],

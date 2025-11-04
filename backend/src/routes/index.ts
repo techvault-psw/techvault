@@ -14,6 +14,7 @@ import { updateReserva } from "./reservas/update-reserva";
 import { confirmEntrega } from "./reservas/confirm-entrega";
 import { confirmColeta } from "./reservas/confirm-coleta";
 import { uploadPacoteImageRouter } from "./pacotes/upload-pacote-image";
+import { cancelReserva } from "./reservas/cancel-reserva";
 
 const router = Router()
 
@@ -34,5 +35,6 @@ router.use(updateReserva)
 router.use(deleteReserva)
 router.use(confirmColeta)
 router.use(confirmEntrega)
+router.use(cancelReserva)
 
 export default router

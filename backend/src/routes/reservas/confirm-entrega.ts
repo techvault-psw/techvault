@@ -25,7 +25,7 @@ router.patch('/reservas/:id/confirmar-entrega', {
   },
 }, async (req, res) => {
   const { id } = req.params
-  const {codigoEntrega } = req.body // agora pode registrar coleta e entrega
+  const { codigoEntrega } = req.body
 
   const reservaIndex = reservas.findIndex((reserva) => reserva.id === id)
 
@@ -36,7 +36,7 @@ router.patch('/reservas/:id/confirmar-entrega', {
     })
   }
   
-  if(!reservas[reservaIndex].dataEntrega){
+  if(reservas[reservaIndex].dataEntrega){
     return res.status(400).send({
       success: false,
       message: 'Já foi registrada a entrega para esta reserva'
@@ -49,8 +49,6 @@ router.patch('/reservas/:id/confirmar-entrega', {
       message: 'Código de entrega inválido'
     })
   }
-
-  
 
   reservas[reservaIndex].dataEntrega = new Date().toISOString()
 

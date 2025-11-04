@@ -25,7 +25,7 @@ router.patch('/reservas/:id/confirmar-coleta', {
   },
 }, async (req, res) => {
   const { id } = req.params
-  const {codigoColeta } = req.body // agora pode registrar coleta e entrega
+  const { codigoColeta } = req.body
 
   const reservaIndex = reservas.findIndex((reserva) => reserva.id === id)
 
@@ -33,6 +33,13 @@ router.patch('/reservas/:id/confirmar-coleta', {
     return res.status(400).send({
       success: false,
       message: 'Reserva não encontrada'
+    })
+  }
+
+  if (!reservas[reservaIndex].dataEntrega){
+    return res.status(400).send({
+      success: false,
+      message: 'Ainda não foi registrada a entrega desta reserva'
     })
   }
 
@@ -51,6 +58,7 @@ router.patch('/reservas/:id/confirmar-coleta', {
   }
 
   reservas[reservaIndex].dataColeta = new Date().toISOString()
+  reservas[reservaIndex].status = "Concluída"
 
   return res.status(200).send({
     ...reservas[reservaIndex],

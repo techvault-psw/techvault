@@ -33,7 +33,7 @@ router.delete('/reservas/:id', {
     })
   }
 
-  reservas[reservaIndex].status = "Cancelada"
+  reservas.splice(reservaIndex, 1)
 
   return res.status(200).send({
     reservaId: id,
