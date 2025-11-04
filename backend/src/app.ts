@@ -29,14 +29,23 @@ setDefaultResponses({
   }),
 })
 
+const BASE_URL = process.env.BASE_URL || `http://localhost:${process.env.PORT || 3000}`;
+
 const swaggerSpec = generateOpenAPISpec({
   info: {
     title: 'TechVault API',
     version: '1.0.0',
   },
+  servers: [{ url: BASE_URL }]
 });
 
-app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {
+  customCssUrl: 'https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui.css',
+  customJs: [
+    'https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui-bundle.js',
+    'https://unpkg.com/swagger-ui-dist@5.0.0/swagger-ui-standalone-preset.js'
+  ]
+}));
 
 setGlobalErrorHandler((err, req, res, next) => {
   if (err instanceof RequestValidationError) {
