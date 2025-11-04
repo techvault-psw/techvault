@@ -7,6 +7,12 @@ import { getPacotes } from "./pacotes/get-pacotes";
 import { createPacote } from "./pacotes/create-pacote";
 import { deletePacote } from "./pacotes/delete-pacote";
 import { updatePacote } from "./pacotes/update-pacote";
+import { getReservas }  from "./reservas/get-reservas";
+import { createReserva } from "./reservas/create-reserva";
+import { deleteReserva } from "./reservas/delete-reserva";
+import { updateReserva } from "./reservas/update-reserva";  
+import { confirmEntrega } from "./reservas/confirm-entrega";
+import { confirmColeta } from "./reservas/confirm-coleta";
 import { uploadPacoteImageRouter } from "./pacotes/upload-pacote-image";
 
 const router = Router()
@@ -21,5 +27,12 @@ router.use(createPacote)
 router.use(updatePacote)
 router.use(deletePacote)
 router.use(uploadPacoteImageRouter)
+
+router.use(getReservas)
+router.use(createReserva)
+router.use(updateReserva)
+router.use(deleteReserva)
+router.use(confirmColeta)
+router.use(confirmEntrega)
 
 export default router
