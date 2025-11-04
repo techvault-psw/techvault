@@ -12,6 +12,10 @@ import { createEndereco } from "./enderecos/create-endereco";
 import { deleteEndereco } from "./enderecos/delete-endereco";
 import { getEnderecos } from "./enderecos/get-enderecos";
 import { updateEndereco } from "./enderecos/update-endereco";
+import { getCliente } from "./cliente/get-cliente";
+import { createCliente } from "./cliente/create-cliente";
+import { deleteCliente } from "./cliente/delete-cliente";
+import { updateCliente } from "./cliente/update-cliente";
 
 const router = Router()
 
@@ -30,5 +34,10 @@ router.use(createEndereco)
 router.use(deleteEndereco)
 router.use(getEnderecos)
 router.use(updateEndereco)
+
+router.use(getCliente)
+router.use(createCliente)
+router.use(updateCliente)
+router.use(deleteCliente)
 
 export default router
