@@ -1,9 +1,10 @@
+import 'dotenv/config'
 import mongoose from 'mongoose';
 import { clientes, enderecos, pacotes, reservas, feedbacks } from '../consts/db-mock';
 
 // import { clientes as ClienteModel } from '../models/cliente';
 // import { enderecos as EnderecoModel } from '../models/endereco';
-// import { pacotes as PacoteModel } from '../models/pacote';
+import { pacotes as PacoteModel } from '../models/pacote';
 // import { reservas as ReservaModel } from '../models/reserva';
 // import { feedbacks as FeedbackModel } from '../models/feedback';
 
@@ -14,7 +15,7 @@ async function seed() {
 
     // await ClienteModel.collection.drop().catch(() => {});
     // await EnderecoModel.collection.drop().catch(() => {});
-    // await PacoteModel.collection.drop().catch(() => {});
+    await PacoteModel.collection.drop().catch(() => {});
     // await ReservaModel.collection.drop().catch(() => {});
     // await FeedbackModel.collection.drop().catch(() => {});
 
@@ -36,8 +37,8 @@ async function seed() {
       _id: id,
       ...pacote,
     }));
-    // await PacoteModel.insertMany(pacoteDocs);
-    // console.log('📦 Pacotes inseridos');
+     await PacoteModel.insertMany(pacoteDocs);
+     console.log('📦 Pacotes inseridos');
 
     const reservaDocs = reservas.map(({ id, ...reserva }) => ({
       _id: id,
