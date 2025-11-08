@@ -2,7 +2,7 @@ import 'dotenv/config'
 import mongoose from 'mongoose';
 import { clientes, enderecos, pacotes, reservas, feedbacks } from '../consts/db-mock';
 
-// import { clientes as ClienteModel } from '../models/cliente';
+import { clientes as ClienteModel } from '../models/cliente';
 // import { enderecos as EnderecoModel } from '../models/endereco';
 import { pacotes as PacoteModel } from '../models/pacote';
 // import { reservas as ReservaModel } from '../models/reserva';
@@ -13,7 +13,7 @@ async function seed() {
     await mongoose.connect(process.env.DB_URL || 'mongodb://localhost:27017/techvault');
     console.log('🔗 Conectado ao MongoDB');
 
-    // await ClienteModel.collection.drop().catch(() => {});
+    await ClienteModel.collection.drop().catch(() => {});
     // await EnderecoModel.collection.drop().catch(() => {});
     await PacoteModel.collection.drop().catch(() => {});
     // await ReservaModel.collection.drop().catch(() => {});
@@ -23,8 +23,8 @@ async function seed() {
       _id: id,
       ...cliente,
     }));
-    // await ClienteModel.insertMany(clienteDocs);
-    // console.log('👥 Clientes inseridos');
+    await ClienteModel.insertMany(clienteDocs);
+    console.log('👥 Clientes inseridos');
 
     const enderecoDocs = enderecos.map(({ id, ...endereco }) => ({
       _id: id,
