@@ -5,7 +5,7 @@ import { clientes, enderecos, pacotes, reservas, feedbacks } from '../consts/db-
 import { clientes as ClienteModel } from '../models/cliente';
 import { enderecos as EnderecoModel } from '../models/endereco';
 import { pacotes as PacoteModel } from '../models/pacote';
-// import { reservas as ReservaModel } from '../models/reserva';
+import { reservas as ReservaModel } from '../models/reserva';
 import { feedbacks as FeedbackModel } from '../models/feedback';
 
 async function seed() {
@@ -16,7 +16,7 @@ async function seed() {
     await ClienteModel.collection.drop().catch(() => {});
     await EnderecoModel.collection.drop().catch(() => {});
     await PacoteModel.collection.drop().catch(() => {});
-    // await ReservaModel.collection.drop().catch(() => {});
+    await ReservaModel.collection.drop().catch(() => {});
     await FeedbackModel.collection.drop().catch(() => {});
 
     const clienteDocs = clientes.map(({ id, ...cliente }) => ({
@@ -44,8 +44,8 @@ async function seed() {
       _id: id,
       ...reserva,
     }));
-    // await ReservaModel.insertMany(reservaDocs);
-    // console.log('📅 Reservas inseridas');
+    await ReservaModel.insertMany(reservaDocs);
+    console.log('📅 Reservas inseridas');
 
     const feedbackDocs = feedbacks.map(({ id, ...feedback }) => ({
       _id: id,
