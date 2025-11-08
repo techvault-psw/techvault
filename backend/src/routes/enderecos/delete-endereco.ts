@@ -25,7 +25,7 @@ router.delete('/enderecos/:id', {
 }, async(req, res) => {
   const { id } = req.params
 
-  const endereco = enderecos.findById(id)
+  const endereco = await enderecos.findById(id)
 
   if(!endereco) {
     return res.status(400).send({
@@ -34,7 +34,7 @@ router.delete('/enderecos/:id', {
     })
   }
 
-  await enderecos.deleteOne(endereco)
+  await enderecos.findByIdAndDelete(id)
 
   return res.status(200).send({
     enderecoId: id,

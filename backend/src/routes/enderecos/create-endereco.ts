@@ -23,7 +23,7 @@ router.post('/enderecos', {
 }, async (req, res) => {
   const { clienteId, ...rest } = req.body
 
-  const cliente = clientes.findById(clienteId)
+  const cliente = await clientes.findById(clienteId)
 
   if(!cliente) {
     return res.status(400).send({
@@ -37,9 +37,9 @@ router.post('/enderecos', {
     ...rest
   })
 
-  return res.status(201).send({
-    ...EnderecoFormatter(endereco)
-  })
+  const formattedEndereco = EnderecoFormatter(endereco)
+
+  return res.status(201).send(formattedEndereco)
 })
 
 export const createEndereco = router

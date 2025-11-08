@@ -9,6 +9,7 @@ import { createEndereco } from "./enderecos/create-endereco";
 import { updateEndereco } from "./enderecos/update-endereco";
 import { deleteEndereco } from "./enderecos/delete-endereco";
 import { getPacotes } from "./pacotes/get-pacotes";
+import { getPacote } from "./pacotes/get-pacote";
 import { createPacote } from "./pacotes/create-pacote";
 import { updatePacote } from "./pacotes/update-pacote";
 import { deletePacote } from "./pacotes/delete-pacote";
@@ -38,6 +39,7 @@ router.use(createEndereco)
 router.use(updateEndereco)
 router.use(deleteEndereco)
 
+router.use(getPacote)
 router.use(getPacotes)
 router.use(createPacote)
 router.use(updatePacote)

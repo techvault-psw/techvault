@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { pacotes } from "../../consts/db-mock";
 import { objectIdSchema } from "../../consts/zod-schemas";
+import { pacotes } from "../../models/pacote";
 
 const router = CreateTypedRouter()
 
@@ -25,16 +25,16 @@ router.delete('/pacotes/:id', {
 }, async (req, res) => {
   const { id } = req.params
 
-  const pacoteIndex = pacotes.findIndex((pacote) => pacote.id === id)
+  const pacote = await pacotes.findById(id)
 
-  if (pacoteIndex < 0) {
+  if(!pacote) {
     return res.status(400).send({
       success: false,
       message: 'Pacote não encontrado'
     })
   }
 
-  pacotes.splice(pacoteIndex, 1)
+  await pacotes.findByIdAndDelete(id)
 
   return res.status(200).send({
     pacoteId: id,

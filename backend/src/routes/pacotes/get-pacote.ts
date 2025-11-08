@@ -6,15 +6,12 @@ import { PacoteFormatter } from "../../formatters/pacote-formatter";
 
 const router = CreateTypedRouter()
 
-router.put('/pacotes/:id', {
+router.get('/pacotes/:id', {
   schema: {
-    summary: 'Update Pacote',
+    summary: 'Get Pacote',
     tags: ['Pacotes'],
     params: z.object({
       id: objectIdSchema,
-    }),
-    body: pacoteZodSchema.omit({
-      id: true,
     }),
     response: {
       200: pacoteZodSchema,
@@ -26,7 +23,6 @@ router.put('/pacotes/:id', {
   },
 }, async (req, res) => {
   const { id } = req.params
-  const { name, image, description, components, value, quantity } = req.body
 
   const pacote = await pacotes.findById(id)
 
@@ -37,16 +33,9 @@ router.put('/pacotes/:id', {
     })
   }
 
-  const updatedPacote = await pacotes.findByIdAndUpdate(
-    id,
-    { name, image, description, components, value, quantity },
-    {new: true}
-  )
-
-  const formattedPacote = PacoteFormatter(updatedPacote!)
+  const formattedPacote = PacoteFormatter(pacote)
 
   return res.status(200).send(formattedPacote)
-
 })
 
-export const updatePacote = router
+export const getPacote = router
