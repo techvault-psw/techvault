@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod"
-import { enderecoZodSchema } from "../../consts/zod-schemas";
-import { enderecos } from "../../consts/db-mock";
+import { enderecoZodSchema, objectIdSchema } from "../../consts/zod-schemas";
+import { enderecos } from "../../models/endereco";
+import { EnderecoFormatter } from "../../formatters/endereco-formatter";
 
 const router = CreateTypedRouter()
 
@@ -10,7 +11,7 @@ router.put('/enderecos/:id', {
     summary: 'Update Address',
     tags: ['Endereços'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema
     }),
     body: enderecoZodSchema.omit({ 
       id: true,
@@ -28,26 +29,24 @@ router.put('/enderecos/:id', {
   const { id } = req.params
   const newEndereco = req.body
 
-  const enderecoIndex = enderecos.findIndex((endereco) => endereco.id === id)
+  const endereco = enderecos.findById(id)
 
-  if(enderecoIndex < 0) {
+  if(!endereco) {
     return res.status(400).send({
       success: false,
       message: 'Endereço não encontrado'
     })
   }
 
-  const clienteId = enderecos[enderecoIndex].clienteId
-
-  enderecos[enderecoIndex] = {
+  const updatedEndereco = await enderecos.findByIdAndUpdate(
     id,
-    clienteId,
-    ...newEndereco
-  }
+    newEndereco,
+    {new: true}
+  )
 
-  return res.status(200).send({
-    ...enderecos[enderecoIndex],
-  })
+  const formattedEndereco = EnderecoFormatter(updatedEndereco!)
+
+  return res.status(200).send(formattedEndereco)
 })
 
 export const updateEndereco = router
