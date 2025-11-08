@@ -10,11 +10,11 @@ router.delete('/enderecos/:id', {
     summary: 'Delete Address',
     tags: ['Endereços'],
     params: z.object({
-      id: objectIdSchema
+      id: objectIdSchema,
     }),
     response: {
       200: z.object({
-        enderecoId: objectIdSchema
+        enderecoId: objectIdSchema,
       }),
       400: z.object({
         success: z.boolean(),

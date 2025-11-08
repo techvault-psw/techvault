@@ -11,7 +11,7 @@ router.put('/enderecos/:id', {
     summary: 'Update Address',
     tags: ['Endereços'],
     params: z.object({
-      id: objectIdSchema
+      id: objectIdSchema,
     }),
     body: enderecoZodSchema.omit({ 
       id: true,

@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { pacotes } from "../../consts/db-mock";
-import { pacoteZodSchema } from "../../consts/zod-schemas";
+import { objectIdSchema, pacoteZodSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -10,7 +10,7 @@ router.put('/pacotes/:id', {
     summary: 'Update Pacote',
     tags: ['Pacotes'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     body: pacoteZodSchema.omit({
       id: true,

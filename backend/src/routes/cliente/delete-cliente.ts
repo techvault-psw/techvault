@@ -1,6 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { clientes } from "../../consts/db-mock";
+import { objectIdSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -9,11 +10,11 @@ router.delete('/clientes/:id', {
     summary: 'Delete cliente',
     tags: ['Clientes'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     response: {
       200: z.object({
-        clienteId: z.string().uuid(),
+        clienteId: objectIdSchema,
       }),
       400: z.object({
         success: z.boolean(),
