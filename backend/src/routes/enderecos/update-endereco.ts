@@ -29,7 +29,7 @@ router.put('/enderecos/:id', {
   const { id } = req.params
   const newEndereco = req.body
 
-  const endereco = enderecos.findById(id)
+  const endereco = await enderecos.findById(id)
 
   if(!endereco) {
     return res.status(400).send({

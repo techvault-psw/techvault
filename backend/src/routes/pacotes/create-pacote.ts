@@ -23,7 +23,7 @@ router.post('/pacotes', {
 }, async (req, res) => {
   const { name, image, description, components, value, quantity } = req.body
 
-  const pacoteExiste = await pacotes.find({name})
+  const pacoteExiste = await pacotes.findOne({name})
 
   if (pacoteExiste) {
     return res.status(400).send({
@@ -32,7 +32,7 @@ router.post('/pacotes', {
     })
   }
 
-  const imageExiste = await pacotes.find({image})
+  const imageExiste = await pacotes.findOne({image})
 
   if (imageExiste) {
     return res.status(400).send({
