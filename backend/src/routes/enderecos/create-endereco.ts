@@ -32,7 +32,7 @@ router.post('/enderecos', {
     })
   }
 
-  const endereco = await enderecos.insertOne({
+  const endereco = await enderecos.create({
     clienteId,
     ...rest
   })

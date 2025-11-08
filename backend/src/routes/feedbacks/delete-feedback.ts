@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { feedbacks } from "../../consts/db-mock";
 import { objectIdSchema } from "../../consts/zod-schemas";
+import { feedbacks } from "../../models/feedback";
 
 const router = CreateTypedRouter()
 
@@ -25,16 +25,16 @@ router.delete('/feedbacks/:id', {
 }, async (req, res) => {
   const { id } = req.params
 
-  const feedbackIndex = feedbacks.findIndex((feedback) => feedback.id === id)
+  const feedback = await feedbacks.findById(id)
 
-  if (feedbackIndex < 0) {
+  if (!feedback) {
     return res.status(400).send({
       success: false,
       message: 'Feedback não encontrado'
     })
   }
 
-  feedbacks.splice(feedbackIndex, 1)
+  await feedbacks.findByIdAndDelete(id)
 
   return res.status(200).send({
     feedbackId: id,

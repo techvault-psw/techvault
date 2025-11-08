@@ -1,8 +1,11 @@
-import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes, feedbacks, pacotes, reservas } from "../../consts/db-mock";
 import { feedbackZodSchema } from "../../consts/zod-schemas";
+import { clientes } from "../../models/cliente";
+import { pacotes } from "../../models/pacote";
+import { reservas } from "../../models/reserva";
+import { feedbacks } from "../../models/feedback";
+import { FeedbackFormatter } from "../../formatters/feedback-formatter";
 
 const router = CreateTypedRouter()
 
@@ -22,7 +25,7 @@ router.post('/feedbacks', {
 }, async (req, res) => {
   const { clienteId, pacoteId, rating, comentario } = req.body
 
-  const cliente = clientes.find((cliente) => cliente.id === clienteId)
+  const cliente = await clientes.findById(clienteId)
 
   if (!cliente) {
     return res.status(400).send({
@@ -31,7 +34,7 @@ router.post('/feedbacks', {
     })
   }
 
-  const pacote = pacotes.find((pacote) => pacote.id === pacoteId)
+  const pacote = await pacotes.findById(pacoteId)
 
   if (!pacote) {
     return res.status(400).send({
@@ -40,11 +43,11 @@ router.post('/feedbacks', {
     })
   }
 
-  const reserva = reservas.find((reserva) => (
-    reserva.clienteId === clienteId &&
-    reserva.pacoteId === pacoteId &&
-    reserva.status === 'Concluída'
-  ))
+  const reserva = await reservas.findOne({
+    clienteId,
+    pacoteId,
+    status: 'Concluída'
+  })
 
   if (!reserva) {
     return res.status(400).send({
@@ -53,19 +56,16 @@ router.post('/feedbacks', {
     })
   }
 
-  const feedback = {
-    id: randomUUID(),
+  const feedback = await feedbacks.create({
     clienteId,
     pacoteId,
     rating,
     comentario,
-  }
-
-  feedbacks.push(feedback)
-
-  return res.status(201).send({
-    ...feedback,
   })
+
+  const formattedFeedback = FeedbackFormatter(feedback)
+
+  return res.status(201).send(formattedFeedback)
 })
 
 export const createFeedback = router
