@@ -1,6 +1,6 @@
 import z from "zod";
 
-const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, {
+export const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, {
   message: "ID inválido. Deve ser um ObjectId do MongoDB"
 })
 

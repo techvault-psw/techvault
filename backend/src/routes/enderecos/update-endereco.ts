@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import z from "zod"
-import { enderecoZodSchema } from "../../consts/zod-schemas";
+import z from "zod";
 import { enderecos } from "../../consts/db-mock";
+import { enderecoZodSchema, objectIdSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -10,7 +10,7 @@ router.put('/enderecos/:id', {
     summary: 'Update Address',
     tags: ['Endereços'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     body: enderecoZodSchema.omit({ 
       id: true,

@@ -1,6 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import z from 'zod'
+import z from 'zod';
 import { enderecos } from "../../consts/db-mock";
+import { objectIdSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -9,11 +10,11 @@ router.delete('/enderecos/:id', {
     summary: 'Delete Address',
     tags: ['Endereços'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     response: {
       200: z.object({
-        enderecoId: z.string().uuid(),
+        enderecoId: objectIdSchema,
       }),
       400: z.object({
         success: z.boolean(),

@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { reservas } from "../../consts/db-mock";
-import { reservaZodSchema } from "../../consts/zod-schemas";
+import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -10,7 +10,7 @@ router.patch('/reservas/:id/confirmar-entrega', {
     summary: 'Confirmar Entrega da Reserva',
     tags: ['Reservas'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     body: reservaZodSchema.pick({
       codigoEntrega: true,
