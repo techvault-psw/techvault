@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 import { clientes, enderecos, pacotes, reservas, feedbacks } from '../consts/db-mock';
 
 import { clientes as ClienteModel } from '../models/cliente';
-// import { enderecos as EnderecoModel } from '../models/endereco';
+import { enderecos as EnderecoModel } from '../models/endereco';
 import { pacotes as PacoteModel } from '../models/pacote';
 // import { reservas as ReservaModel } from '../models/reserva';
 import { feedbacks as FeedbackModel } from '../models/feedback';
@@ -14,7 +14,7 @@ async function seed() {
     console.log('🔗 Conectado ao MongoDB');
 
     await ClienteModel.collection.drop().catch(() => {});
-    // await EnderecoModel.collection.drop().catch(() => {});
+    await EnderecoModel.collection.drop().catch(() => {});
     await PacoteModel.collection.drop().catch(() => {});
     // await ReservaModel.collection.drop().catch(() => {});
     await FeedbackModel.collection.drop().catch(() => {});
@@ -30,8 +30,8 @@ async function seed() {
       _id: id,
       ...endereco,
     }));
-    // await EnderecoModel.insertMany(enderecoDocs);
-    // console.log('🏠 Enderecos inseridos');
+    await EnderecoModel.insertMany(enderecoDocs);
+    console.log('🏠 Enderecos inseridos');
 
     const pacoteDocs = pacotes.map(({ id, ...pacote }) => ({
       _id: id,
