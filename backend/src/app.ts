@@ -7,7 +7,7 @@ import { z } from 'zod'
 import mongoose from 'mongoose';
 import './models/cliente';
 // import './models/endereco';
-// import './models/feedback';
+import './models/feedback';
 import './models/pacote';
 // import './models/reserva';
 

@@ -6,7 +6,7 @@ import { clientes as ClienteModel } from '../models/cliente';
 // import { enderecos as EnderecoModel } from '../models/endereco';
 import { pacotes as PacoteModel } from '../models/pacote';
 // import { reservas as ReservaModel } from '../models/reserva';
-// import { feedbacks as FeedbackModel } from '../models/feedback';
+import { feedbacks as FeedbackModel } from '../models/feedback';
 
 async function seed() {
   try {
@@ -17,7 +17,7 @@ async function seed() {
     // await EnderecoModel.collection.drop().catch(() => {});
     await PacoteModel.collection.drop().catch(() => {});
     // await ReservaModel.collection.drop().catch(() => {});
-    // await FeedbackModel.collection.drop().catch(() => {});
+    await FeedbackModel.collection.drop().catch(() => {});
 
     const clienteDocs = clientes.map(({ id, ...cliente }) => ({
       _id: id,
@@ -51,8 +51,8 @@ async function seed() {
       _id: id,
       ...feedback,
     }));
-    // await FeedbackModel.insertMany(feedbackDocs);
-    // console.log('💬 Feedbacks inseridos');
+    await FeedbackModel.insertMany(feedbackDocs);
+    console.log('💬 Feedbacks inseridos');
 
     console.log('🌱 Seed no banco de dados completo!');
   } catch (error) {
