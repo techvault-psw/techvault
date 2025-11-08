@@ -3,6 +3,7 @@ import { getCliente } from "./cliente/get-cliente";
 import { createCliente } from "./cliente/create-cliente";
 import { updateCliente } from "./cliente/update-cliente";
 import { deleteCliente } from "./cliente/delete-cliente";
+import { getEndereco } from "./enderecos/get-endereco";
 import { getEnderecos } from "./enderecos/get-enderecos";
 import { createEndereco } from "./enderecos/create-endereco";
 import { updateEndereco } from "./enderecos/update-endereco";
@@ -31,6 +32,7 @@ router.use(createCliente)
 router.use(updateCliente)
 router.use(deleteCliente)
 
+router.use(getEndereco)
 router.use(getEnderecos)
 router.use(createEndereco)
 router.use(updateEndereco)

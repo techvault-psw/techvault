@@ -1,8 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import { enderecoExtendedZodSchema } from "../../consts/zod-schemas";
 import z from "zod"
-import { EnderecoExtended } from "../../consts/types";
-import { clientes, enderecos } from "../../consts/db-mock";
+import { enderecos, PopulatedEnderecoSchema } from "../../models/endereco";
+import { PopulatedEnderecoFormatter } from "../../formatters/endereco-formatter";
 
 const router = CreateTypedRouter()
 
@@ -11,26 +11,15 @@ router.get('/enderecos', {
     summary: 'Get Addresses',
     tags: ['Endereços'],
     response: {
-      200: z.object({
-        enderecos: z.array(enderecoExtendedZodSchema)
-      }),
-    }
+      200: z.array(enderecoExtendedZodSchema)
+    },
   }
 }, async(req, res) => {
-  const extendedEnderecos: EnderecoExtended[] = enderecos.map((endereco) => {
-    const cliente = clientes.find((cliente) => cliente.id === endereco.clienteId)
+  const dbEnderecos = await enderecos.find({}).populate("clienteId") as PopulatedEnderecoSchema[]
 
-    if(!cliente) return undefined
+  const formattedEnderecos = dbEnderecos.map(PopulatedEnderecoFormatter)
 
-    return {
-      ...endereco,
-      cliente
-    }
-  }).filter((f) => !!f)
-
-  return res.status(200).send({
-    enderecos: extendedEnderecos
-  })
+  return res.status(200).send(formattedEnderecos)
 })
 
 export const getEnderecos = router
