@@ -9,7 +9,7 @@ import './models/cliente';
 import './models/endereco';
 import './models/feedback';
 import './models/pacote';
-// import './models/reserva';
+import './models/reserva';
 
 mongoose
   .connect(process.env.DB_URL || "mongodb://localhost:27017/techvault")
