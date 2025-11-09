@@ -41,7 +41,7 @@ router.post('/pacotes', {
     })
   }
 
-  const pacote = await pacotes.insertOne({
+  const pacote = await pacotes.create({
     name, 
     image, 
     description, 

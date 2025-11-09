@@ -21,6 +21,7 @@ import { confirmEntrega } from "./reservas/confirm-entrega";
 import { confirmColeta } from "./reservas/confirm-coleta";
 import { cancelReserva } from "./reservas/cancel-reserva";
 import { uploadPacoteImageRouter } from "./pacotes/upload-pacote-image";
+import { getFeedback } from "./feedbacks/get-feedback";
 import { getFeedbacks } from "./feedbacks/get-feedbacks";
 import { createFeedback } from "./feedbacks/create-feedback";
 import { updateFeedback } from "./feedbacks/update-feedback";
@@ -54,6 +55,7 @@ router.use(confirmColeta)
 router.use(confirmEntrega)
 router.use(cancelReserva)
 
+router.use(getFeedback)
 router.use(getFeedbacks)
 router.use(createFeedback)
 router.use(updateFeedback)
