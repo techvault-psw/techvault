@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { reservas } from "../../consts/db-mock";
+import { reservas } from "../../models/reserva";
 import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
+import { ReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter()
 
@@ -30,27 +31,30 @@ router.put('/reservas/:id', {
 }, async (req, res) => {
   const { id } = req.params
   const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status } = req.body
+  
+  const reserva = await reservas.findById(id)
 
-  const reservaIndex = reservas.findIndex((reserva) => reserva.id === id)
-
-  if (reservaIndex < 0) {
+  if (!reserva) {
     return res.status(400).send({
       success: false,
       message: 'Reserva não encontrada'
     })
   }
-  
-  reservas[reservaIndex].dataEntrega = dataEntrega
-  reservas[reservaIndex].dataColeta = dataColeta
-  reservas[reservaIndex].dataInicio = dataInicio
-  reservas[reservaIndex].dataTermino = dataTermino
-  reservas[reservaIndex].codigoColeta = codigoColeta
-  reservas[reservaIndex].codigoEntrega = codigoEntrega
-  reservas[reservaIndex].status = status
 
-  return res.status(200).send({
-    ...reservas[reservaIndex],
-  })
+
+  const updatedReserva = await reservas.findByIdAndUpdate(id, {
+    dataEntrega,
+    dataColeta,
+    dataInicio,
+    dataTermino,
+    codigoColeta,
+    codigoEntrega,
+    status,
+  }, { new: true })
+
+  const formattedReserva = ReservaFormatter(updatedReserva!)
+
+  return res.status(200).send(formattedReserva)
 
 })
 

@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { reservas } from "../../consts/db-mock";
+import { reservas } from "../../models/reserva";
 import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
+import { ReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter()
 
@@ -27,42 +28,45 @@ router.patch('/reservas/:id/confirmar-coleta', {
   const { id } = req.params
   const { codigoColeta } = req.body
 
-  const reservaIndex = reservas.findIndex((reserva) => reserva.id === id)
+  const reserva = await reservas.findById(id)
 
-  if (reservaIndex < 0) {
+  if (!reserva) {
     return res.status(400).send({
       success: false,
       message: 'Reserva não encontrada'
     })
   }
 
-  if (!reservas[reservaIndex].dataEntrega){
+  if (!reserva.dataEntrega){
     return res.status(400).send({
       success: false,
       message: 'Ainda não foi registrada a entrega desta reserva'
     })
   }
 
-  if (reservas[reservaIndex].dataColeta){
+  if (reserva.dataColeta){
     return res.status(400).send({
       success: false,
       message: 'Já foi registrada a coleta para esta reserva'
     })
   }
 
-  if(codigoColeta !== reservas[reservaIndex].codigoColeta){
+
+  if(codigoColeta !== reserva.codigoColeta){
     return res.status(400).send({
       success: false,
       message: 'Código de coleta inválido'
     })
   }
 
-  reservas[reservaIndex].dataColeta = new Date().toISOString()
-  reservas[reservaIndex].status = "Concluída"
+  reserva.dataColeta = new Date()
+  
+  reserva.status = "Concluída"
 
-  return res.status(200).send({
-    ...reservas[reservaIndex],
-  })
+  const updatedReserva = await reservas.findByIdAndUpdate(reserva.id, reserva, { new: true })
+  const formattedReserva = ReservaFormatter(updatedReserva!)
+  return res.status(200).send(formattedReserva)
+
 
 })
 
