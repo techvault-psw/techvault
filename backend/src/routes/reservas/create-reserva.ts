@@ -18,6 +18,10 @@ router.post('/reservas', {
     tags: ['Reservas'],
     body: reservaZodSchema.omit({
       id: true,
+      valor: true,
+      status: true,
+      dataEntrega: true,
+      dataColeta: true,
       codigoColeta: true,
       codigoEntrega: true,
     }),
@@ -30,7 +34,7 @@ router.post('/reservas', {
     },
   },
 }, async (req, res) => {
-  const { clienteId, pacoteId, enderecoId, valor, dataInicio, dataTermino } = req.body
+  const { clienteId, pacoteId, enderecoId, dataInicio, dataTermino } = req.body
 
   const cliente = await clientes.findById(clienteId)
 
@@ -85,6 +89,9 @@ router.post('/reservas', {
       message: 'A reserva deve ter duração mínima de 15 minutos',
     })
   }
+
+  const horasReserva = diffMs / (1000 * 60 * 60)
+  const valor = pacote.value * horasReserva
 
   const reserva = await reservas.insertOne({
     clienteId,

@@ -31,7 +31,8 @@ router.put('/reservas/:id', {
 }, async (req, res) => {
   const { id } = req.params
   const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status } = req.body
-  const reserva = reservas.findById(id)
+  
+  const reserva = await reservas.findById(id)
 
   if (!reserva) {
     return res.status(400).send({
