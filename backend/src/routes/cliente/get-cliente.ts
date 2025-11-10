@@ -1,32 +1,41 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes } from "../../consts/db-mock";
-import type { Cliente } from "../../consts/types";
-import { clienteZodSchema } from "../../consts/zod-schemas";
+import { clienteZodSchema, objectIdSchema } from "../../consts/zod-schemas";
+import { clientes } from "../../models/cliente";
+import { ClienteFormatter } from "../../formatters/cliente-formatter";
 
 const router = CreateTypedRouter()
 
-router.get('/clientes', {
+router.get('/clientes/:id', {
   schema: {
-    summary: 'Get clientes',
+    summary: 'Get cliente',
     tags: ['Clientes'],
+    params: z.object({
+      id: objectIdSchema,
+    }),
     response: {
-      200: z.object({
-        clientes: z.array(clienteZodSchema)
+      200: clienteZodSchema, 
+      400: z.object({
+        success: z.boolean(),
+        message: z.string(),
       }),
     },
   },
 }, async (req, res) => {
-  const cliente: Cliente[] = clientes.map((clientes) => {
-    
-    return {
-      ...clientes,
-    }
-  }).filter((f) => !!f)
+  const { id } = req.params
 
-  return res.status(200).send({
-    clientes: cliente,
-  })
+  const cliente = await clientes.findById(id)
+
+  if (!cliente) {
+    return res.status(400).send({
+      success: false,
+      message: 'Cliente não encontrado'
+    })
+  }
+
+  const formattedCliente = ClienteFormatter(cliente)
+  
+  return res.status(200).send(formattedCliente)
 })
 
 export const getCliente = router

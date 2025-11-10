@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { getCliente } from "./cliente/get-cliente";
+import { getClientes } from "./cliente/get-clientes";
 import { createCliente } from "./cliente/create-cliente";
 import { updateCliente } from "./cliente/update-cliente";
 import { deleteCliente } from "./cliente/delete-cliente";
@@ -30,6 +31,7 @@ import { getReserva } from "./reservas/get-reserva";
 
 const router = Router()
 
+router.use(getClientes)
 router.use(getCliente)
 router.use(createCliente)
 router.use(updateCliente)
