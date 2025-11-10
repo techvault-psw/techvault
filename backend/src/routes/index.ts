@@ -26,6 +26,7 @@ import { getFeedbacks } from "./feedbacks/get-feedbacks";
 import { createFeedback } from "./feedbacks/create-feedback";
 import { updateFeedback } from "./feedbacks/update-feedback";
 import { deleteFeedback } from "./feedbacks/delete-feedback";
+import { getReserva } from "./reservas/get-reserva";
 
 const router = Router()
 
@@ -47,6 +48,7 @@ router.use(updatePacote)
 router.use(deletePacote)
 router.use(uploadPacoteImageRouter)
 
+router.use(getReserva)
 router.use(getReservas)
 router.use(createReserva)
 router.use(updateReserva)
