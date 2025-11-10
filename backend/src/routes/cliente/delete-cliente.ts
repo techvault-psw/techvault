@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes } from "../../consts/db-mock";
 import { objectIdSchema } from "../../consts/zod-schemas";
+import { clientes } from "../../models/cliente";
 
 const router = CreateTypedRouter()
 
@@ -25,16 +25,16 @@ router.delete('/clientes/:id', {
 }, async (req, res) => {
   const { id } = req.params
 
-  const clienteIndex = clientes.findIndex((cliente) => cliente.id === id)
+  const cliente = await clientes.findById(id)
 
-  if (clienteIndex < 0) {
+  if (!cliente) {
     return res.status(400).send({
       success: false,
       message: 'Cliente não encontrado'
     })
   }
 
-  clientes.splice(clienteIndex, 1)
+  await clientes.findByIdAndDelete(id)
 
   return res.status(200).send({
     clienteId: id,
