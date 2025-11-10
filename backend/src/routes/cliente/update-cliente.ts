@@ -8,13 +8,14 @@ const router = CreateTypedRouter()
 
 router.put('/clientes/:id', {
   schema: {
-    summary: 'Update cliente',
+    summary: 'Update Cliente',
     tags: ['Clientes'],
     params: z.object({
       id: objectIdSchema,
     }),
     body: clienteZodSchema.omit({
       id: true,
+      registrationDate: true,
     }),
     response: {
       200: clienteZodSchema,
@@ -26,7 +27,7 @@ router.put('/clientes/:id', {
   },
 }, async (req, res) => {
   const { id } = req.params
-  const { name, email, phone, registrationDate, password, role } = req.body
+  const { name, email, phone, password, role } = req.body
 
   const cliente = await clientes.findById(id)
 
@@ -39,7 +40,7 @@ router.put('/clientes/:id', {
 
   const updateCliente = await clientes.findByIdAndUpdate(
     id,
-    {name, email, phone, registrationDate, password, role},
+    {name, email, phone, password, role},
     {new : true}
   )
 

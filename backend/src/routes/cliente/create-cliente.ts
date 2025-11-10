@@ -8,9 +8,12 @@ const router = CreateTypedRouter()
 
 router.post('/clientes', {
   schema: {
-    summary: 'Create cliente',
+    summary: 'Create Cliente',
     tags: ['Clientes'],
-    body: clienteZodSchema.omit({ id: true }),
+    body: clienteZodSchema.omit({
+      id: true,
+      registrationDate: true,
+    }),
     response: {
       201: clienteZodSchema,
       400: z.object({
@@ -20,10 +23,10 @@ router.post('/clientes', {
     },
   },
 }, async (req, res) => {
-  const { name, email, phone, registrationDate, password, role } = req.body
+  const { name, email, phone, password, role } = req.body
 
   const clienteExisteEmail = await clientes.findOne({email})
-  const clienteExistePhone = await clientes.findOne({email})
+  const clienteExistePhone = await clientes.findOne({phone})
 
   if (clienteExisteEmail) {
     return res.status(400).send({
@@ -43,7 +46,7 @@ router.post('/clientes', {
     name,
     email,
     phone,
-    registrationDate,
+    registrationDate: new Date(),
     password,
     role,
   })

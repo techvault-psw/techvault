@@ -9,7 +9,7 @@ const router = CreateTypedRouter()
 
 router.get('/clientes', {
   schema: {
-    summary: 'Get clientes',
+    summary: 'Get Clientes',
     tags: ['Clientes'],
     response: {
       200: z.array(clienteZodSchema)

@@ -7,7 +7,7 @@ const router = CreateTypedRouter()
 
 router.delete('/clientes/:id', {
   schema: {
-    summary: 'Delete cliente',
+    summary: 'Delete Cliente',
     tags: ['Clientes'],
     params: z.object({
       id: objectIdSchema,
