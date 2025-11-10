@@ -28,9 +28,7 @@ export default function InformacoesPacotePage() {
   
   const pacotes = useSelector(selectAllPacotes);
 
-  const numberId = Number(id)
-
-  const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
+  const pacote = useSelector((state: RootState) => selectPacoteById(state, id ?? ''))
   const formattedValue = formatCurrency(pacote?.value ?? 0)
   
   const navigate = useNavigate()
@@ -38,7 +36,7 @@ export default function InformacoesPacotePage() {
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   
   const handleSolicitarReserva = () => {
-    const url = `/confirmar-reserva/${numberId}`;
+    const url = `/confirmar-reserva/${id}`;
     
     if (clienteAtual) {
       navigate(url)
@@ -47,7 +45,7 @@ export default function InformacoesPacotePage() {
     }
   }
 
-  if (isNaN(numberId) || numberId >= pacotes.length) {
+  if (!id) {
     return
   }
 

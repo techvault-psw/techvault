@@ -5,7 +5,7 @@ import type { Optional } from "@/types/optional";
 import type { InitialState, RootState } from "../root-reducer";
 
 export type Cliente = {
-  id: number
+  id: string
   name: string
   email: string
   phone: string

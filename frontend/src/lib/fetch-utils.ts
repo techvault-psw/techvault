@@ -32,7 +32,7 @@ async function fetchWrapper<T = unknown>(
       const data = await response.json()
       return data as T
     }
-
+    console.log(await response.json())
     throw new Error("Ocorreu um erro inesperado, aguarde e tente novamente.")
   } catch (err) {
     const error = err as Error;

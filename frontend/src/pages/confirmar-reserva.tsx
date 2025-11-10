@@ -93,17 +93,15 @@ export default function ConfirmarReservaPage() {
 
   const { id } = useParams<{ id: string }>();
 
-  const numberId = Number(id)
-
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
   const location = useLocation()
 
-  const pacote = useSelector((state: RootState) => selectPacoteById(state, numberId))
+  const pacote = useSelector((state: RootState) => selectPacoteById(state, id ?? ''))
 
   const onSubmit = async (data: FormData) => {
-    const endereco = enderecos.find(endereco => endereco.id === Number(data.endereco))
+    const endereco = enderecos.find(endereco => endereco.id === data.endereco)
 
     if (!clienteAtual || !endereco || !pacote) return;
 
@@ -139,7 +137,7 @@ export default function ConfirmarReservaPage() {
     }
   }, [statusE, dispatch])
 
-  if (isNaN(numberId) || numberId >= pacotes.length) {
+  if (!id) {
     return
   }
 

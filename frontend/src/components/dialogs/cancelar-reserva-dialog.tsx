@@ -5,7 +5,7 @@ import { Button } from "../ui/button";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import type { Reserva } from "@/redux/reservas/slice";
-import type { Cliente } from "@/consts/clientes";
+import type { Cliente } from "@/redux/clientes/slice";
 
 interface CancelarReservaDialogProps {
   reserva: Reserva
@@ -30,7 +30,7 @@ export const CancelarReservaDialog = ({ reserva, cliente, handleCancelClick, chi
           </Dialog.Description>
         ) : (
           <Dialog.Description>
-            Tem certeza que deseja cancelar sua a reserva do "{reserva.pacote.name}"?
+            Tem certeza que deseja cancelar a sua reserva do "{reserva.pacote.name}"?
           </Dialog.Description>
         )}
 

@@ -10,15 +10,11 @@ export const fetchClientes = createAsyncThunk<Cliente[]>(`clientes/fetchClientes
 
 export const addClienteServer = createAsyncThunk<Cliente, NewCliente>('clientes/addClienteServer ',
   async (newCliente) => {
-    const cliente: NewClienteServer = {
-      ...newCliente
-    }
-
-    return await httpPost('/clientes', cliente)
+    return await httpPost('/clientes', newCliente)
   }
 )
 
-export const deleteClienteServer = createAsyncThunk<number , Cliente>('clientes/deleteClienteServer ',
+export const deleteClienteServer = createAsyncThunk<string , Cliente>('clientes/deleteClienteServer ',
   async (cliente) => {
     await httpDelete(`/clientes/${cliente.id}`)
     return cliente.id;
@@ -27,9 +23,7 @@ export const deleteClienteServer = createAsyncThunk<number , Cliente>('clientes/
 
 export const updateClienteServer = createAsyncThunk<Cliente, Cliente>('clientes/updateClienteServer ',
   async (cliente) => {
-    const updatedCliente: ClienteServer = {
-      ...cliente
-    }
+    const { id, ...updatedCliente } = cliente
 
     return await httpPut(`/clientes/${cliente.id}`, updatedCliente)
   }

@@ -19,11 +19,12 @@ import type { AppDispatch } from '@/redux/store';
 import { fetchClientes } from '@/redux/clientes/fetch';
 import { selectAllClientes } from '@/redux/clientes/slice';
 import { GoBackButton } from '@/components/go-back-button';
+import { format } from 'date-fns';
 
 
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
+  const [clienteToOpen, setClienteToOpen] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>()
     const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
@@ -53,7 +54,7 @@ export default function ClientesPage() {
   }, [])
 
   useEffect(() => {
-    const state = location.state as { fromClientDialog?: number };
+    const state = location.state as { fromClientDialog?: string };
     if (state?.fromClientDialog !== undefined) {
       setClienteToOpen(state.fromClientDialog);
     }
@@ -161,7 +162,7 @@ export default function ClientesPage() {
                         <Table.Cell className="text-white font-medium truncate">{cliente.name}</Table.Cell>
                         <Table.Cell className="truncate">{cliente.email}</Table.Cell>
                         <Table.Cell>{cliente.phone}</Table.Cell>
-                        <Table.Cell>{cliente.registrationDate}</Table.Cell>
+                        <Table.Cell>{format(cliente.registrationDate, "dd/MM/yyyy")}</Table.Cell>
                         <Table.Cell className="text-right">
                           <ArrowRightIcon className="size-6" />
                         </Table.Cell>

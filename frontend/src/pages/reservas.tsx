@@ -41,8 +41,8 @@ export default function ReservasPage() {
   const reservas = useSelector(selectAllReservas)
   const navigate = useNavigate();
   const location = useLocation();
-  const [reservaToOpen, setReservaToOpen] = useState<number | null>(null);
-  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
+  const [reservaToOpen, setReservaToOpen] = useState<string | null>(null);
+  const [clienteToOpen, setClienteToOpen] = useState<string | null>(null);
   const [operacaoSucesso, setOperacaoSucesso] = useState<{ reserva: Reserva; tipo: "Entrega" | "Coleta" } | null>(null);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ export default function ReservasPage() {
   }, []);
 
   useEffect(() => {
-    const state = location.state as { fromClientDialog?: number; fromReservaId?: number } | null;
+    const state = location.state as { fromClientDialog?: string; fromReservaId?: string } | null;
     if (state?.fromReservaId !== undefined) {
       setReservaToOpen(state.fromReservaId);
     }
@@ -64,7 +64,7 @@ export default function ReservasPage() {
   const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
   const reservasPorData = agruparReservasPorData(reservasConfirmadas)
   
-  const reservaParaAbrir = useSelector((state: RootState) => selectReservaById(state, reservaToOpen ?? -1)) ?? null
+  const reservaParaAbrir = reservaToOpen ? useSelector((state: RootState) => selectReservaById(state, reservaToOpen)) : null
 
   return (
     <PageContainer.List> 

@@ -25,6 +25,7 @@ import { type Pacote } from '@/redux/pacotes/slice';
 import { useDispatch } from 'react-redux';
 import { updatePacoteServer, deletePacoteServer } from '@/redux/pacotes/fetch';
 import type { AppDispatch } from '@/redux/store';
+import { uploadPacoteImage } from '@/lib/upload-pacote-image';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -79,7 +80,17 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    let image = pacote.image
+
+    if (previewUrl) {
+      const { url } = await uploadPacoteImage(previewUrl)
+
+      if (url) {
+        image = url
+      }
+    }
+
     const updatedPacote: Pacote = {
       ...pacote,
       name: values.name,
@@ -87,7 +98,7 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       components: values.components.split('\n').filter(comp => comp.trim()),
       value: currencyMask.parseCurrency(values.value),
       quantity: parseInt(values.quantity),
-      image: previewUrl || pacote.image,
+      image,
     };
     
     dispatch(updatePacoteServer(updatedPacote))

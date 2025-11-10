@@ -5,13 +5,13 @@ import type { NewEndereco, NewEnderecoServer, EnderecoServer } from './slice'
 
 export const fetchEnderecos = createAsyncThunk<Endereco[]>(`enderecos/fetchEnderecos`, 
   async () => {
-    return await httpGet(`/enderecos?_expand=cliente`)
+    return await httpGet(`/enderecos`)
   }
 )
 
 export const addEnderecoServer = createAsyncThunk<Endereco, NewEndereco>('enderecos/addEnderecoServer', 
   async (newEndereco) => {
-    const { cliente, ...enderecoInfo } = newEndereco
+    const { cliente, id, ...enderecoInfo } = newEndereco
 
     const endereco: NewEnderecoServer = {
       ...enderecoInfo,
@@ -24,17 +24,13 @@ export const addEnderecoServer = createAsyncThunk<Endereco, NewEndereco>('endere
 
 export const updateEnderecoServer = createAsyncThunk<Endereco, Endereco>('enderecos/updateEnderecoServer', 
   async (endereco) => {
-    const { cliente, ...enderecoInfo } = endereco
+    const { cliente, id, ...enderecoInfo } = endereco
 
-    const updatedEndereco: EnderecoServer = {
-      ...enderecoInfo,
-      clienteId: cliente.id
-    }
-    return await httpPut(`/enderecos/${endereco.id}`, updatedEndereco)
+    return await httpPut(`/enderecos/${endereco.id}`, enderecoInfo)
   }
 )
 
-export const deleteEnderecoServer = createAsyncThunk<number, Endereco>('enderecos/deleteEnderecoServer',
+export const deleteEnderecoServer = createAsyncThunk<string, Endereco>('enderecos/deleteEnderecoServer',
   async (endereco) => {
     await httpDelete(`/enderecos/${endereco.id}`)
     return endereco.id

@@ -70,9 +70,8 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
 
 export default function ReservasClientePage() {
   const { id } = useParams<{ id: string }>();
-  const numberId = Number(id)
 
-  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
+  const cliente = useSelector((state: RootState) => selectClienteById(state, id ?? ''))
 
   const {isGerente, isSuporte} = useCargo()
 
@@ -95,7 +94,7 @@ export default function ReservasClientePage() {
   
   const reservas = useSelector(selectAllReservas)
 
-  const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === numberId)
+  const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === id)
 
   const sortedReservas = useMemo(() => {
     return [...filteredReservas].sort((a, b) => {
@@ -109,7 +108,7 @@ export default function ReservasClientePage() {
   const reservasConcluidas = sortedReservas.filter((r) => r.status === "Concluída")
   const reservasCanceladas = sortedReservas.filter((r) => r.status === "Cancelada")
 
-  if (isNaN(numberId) || !cliente) {
+  if (!id || !cliente) {
     return
   }
 
@@ -121,7 +120,7 @@ export default function ReservasClientePage() {
             const returnTo = state?.returnTo || "/clientes";
             navigate(returnTo, { 
               state: { 
-                fromClientDialog: numberId,
+                fromClientDialog: id,
                 fromReservaId: state?.fromReservaId
               } 
             });

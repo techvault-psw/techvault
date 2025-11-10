@@ -7,7 +7,6 @@ import {
   FormMessage
 } from '@/components/ui/form';
 import { Input, Label } from "@/components/ui/input";
-import { clientes, type Cliente } from "@/consts/clientes";
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useEffect, type MouseEvent, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -27,6 +26,8 @@ import type { AppDispatch } from '@/redux/store';
 import { Pen } from 'lucide-react';
 import { Select, SelectContent, SelectTrigger, SelectValue } from '../ui/select';
 import { SelectItem } from '../ui/select';
+import type { Cliente } from '@/redux/clientes/slice';
+import { format } from 'date-fns';
 
 
 interface DadosClienteDialogProps {
@@ -34,7 +35,7 @@ interface DadosClienteDialogProps {
   children: ReactNode;
   open?: boolean;
   onOpenChange?: (open: boolean) => void;
-  fromReservaId?: number;
+  fromReservaId?: string;
 }
 
 const roleSchema = z.enum(['Cliente', 'Suporte', 'Gerente'])
@@ -196,7 +197,7 @@ export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, on
                 disabled
                 id="registration-date"
                 type="text"
-                value={cliente.registrationDate}
+                value={format(cliente.registrationDate, "dd/MM/yyyy")}
               />
             </FormItem>
 

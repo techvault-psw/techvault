@@ -25,8 +25,7 @@ export default function PagamentoReservaPage() {
         }
     }, [statusR, dispatch])
 
-    const numberId = Number(id)
-    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
+    const reserva = useSelector((state: RootState) => selectReservaById(state, id ?? ''))
 
     const pacote = reserva?.pacote
 
@@ -45,7 +44,7 @@ export default function PagamentoReservaPage() {
     const taxaTransporte = 40.00
     const valorTotal = valorReserva + taxaTransporte
 
-    if (isNaN(numberId) || !reserva || !pacote) {
+    if (!id || !reserva || !pacote) {
         return
     }
 

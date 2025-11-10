@@ -16,8 +16,7 @@ import { GoBackButton } from "@/components/go-back-button";
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
 
-    const numberId = Number(id)
-    const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
+    const reserva = useSelector((state: RootState) => selectReservaById(state, id ?? ''))
 
     const formattedStartDate = format(reserva.dataInicio, "dd/MM/yyyy HH:mm", {locale: ptBR})
     const formattedEndDate = format(reserva.dataTermino, "dd/MM/yyyy HH:mm", {locale: ptBR})
@@ -33,7 +32,7 @@ export default function ReservaConfirmadaPage() {
         }
     })
 
-    if (isNaN(numberId) || !reserva) {
+    if (!id || !reserva) {
         return
     }
 

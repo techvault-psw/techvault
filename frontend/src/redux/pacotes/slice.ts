@@ -4,7 +4,7 @@ import type { InitialState, RootState } from "../root-reducer";
 import { addPacoteServer, deletePacoteServer, fetchPacotes, updatePacoteServer } from "./fetch";
 
 export type Pacote = {
-  id: number
+  id: string
   name: string
   image: string
   description: string[]
