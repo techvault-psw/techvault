@@ -1,10 +1,14 @@
 import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes, enderecos, feedbacks, pacotes, reservas } from "../../consts/db-mock";
 import { reservaZodSchema } from "../../consts/zod-schemas";
 import { da } from "zod/v4/locales";
 import { gerarCodigo } from "../../utils/gerar-codigo";
+import { clientes } from "../../models/cliente";
+import { pacotes } from "../../models/pacote";
+import { enderecos } from "../../models/endereco";
+import { reservas } from "../../models/reserva";
+import { ReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter()
 
@@ -28,7 +32,7 @@ router.post('/reservas', {
 }, async (req, res) => {
   const { clienteId, pacoteId, enderecoId, valor, dataInicio, dataTermino } = req.body
 
-  const cliente = clientes.find((cliente) => cliente.id === clienteId)
+  const cliente = await clientes.findById(clienteId)
 
   if (!cliente) {
     return res.status(400).send({
@@ -37,7 +41,7 @@ router.post('/reservas', {
     })
   }
 
-  const pacote = pacotes.find((pacote) => pacote.id === pacoteId)
+  const pacote = await pacotes.findById(pacoteId)
 
   if (!pacote) {
     return res.status(400).send({
@@ -46,7 +50,7 @@ router.post('/reservas', {
     })
   }
 
-  const endereco = enderecos.find((endereco) => endereco.id === enderecoId)
+  const endereco = await enderecos.findById(enderecoId)
 
   if (!endereco) {
     return res.status(400).send({
@@ -82,26 +86,23 @@ router.post('/reservas', {
     })
   }
 
-  const reserva = {
-    id: randomUUID(),
+  const reserva = await reservas.insertOne({
     clienteId,
     pacoteId,
     enderecoId,
     valor,
     dataInicio,
-    dataTermino,
+    dataTermino,  
     dataEntrega: null,
     dataColeta: null,
     codigoEntrega: gerarCodigo(),
     codigoColeta: gerarCodigo(),
     status: "Confirmada" as "Confirmada",
-  }
-
-  reservas.push(reserva)
-
-  return res.status(201).send({
-    ...reserva,
   })
+
+  const formattedReserva = ReservaFormatter(reserva)
+
+  return res.status(201).send(formattedReserva)
 })
 
 export const createReserva = router
