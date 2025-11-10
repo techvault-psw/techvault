@@ -14,7 +14,7 @@ const pacoteSchema = new Schema({
     type: String,
     required: true,
     trim: true,
-    minlength: 15,
+    minlength: 10,
   }],
   components: [{
     type: String,

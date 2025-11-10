@@ -37,8 +37,8 @@ export const pacoteZodSchema = z.object({
   id: objectIdSchema,
   name: z.string().trim(),
   image: z.string().url(),
-  description: z.array(z.string().trim().min(15)).min(1),
-  components: z.array(z.string().trim()).min(3),
+  description: z.array(z.string().trim().min(10)).min(1),
+  components: z.array(z.string().trim()),
   value: z.number().positive(),
   quantity: z.number().int().min(0),
 })
