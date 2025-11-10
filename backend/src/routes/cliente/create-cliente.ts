@@ -1,8 +1,8 @@
-import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes } from "../../consts/db-mock";
 import { clienteZodSchema } from "../../consts/zod-schemas";
+import { clientes } from "../../models/cliente";
+import { ClienteFormatter } from "../../formatters/cliente-formatter";
 
 const router = CreateTypedRouter()
 
@@ -22,8 +22,8 @@ router.post('/clientes', {
 }, async (req, res) => {
   const { name, email, phone, registrationDate, password, role } = req.body
 
-  const clienteExisteEmail = clientes.find((cliente) => cliente.email === email)
-  const clienteExistePhone = clientes.find((cliente) => cliente.phone === phone)
+  const clienteExisteEmail = await clientes.findOne({email})
+  const clienteExistePhone = await clientes.findOne({email})
 
   if (clienteExisteEmail) {
     return res.status(400).send({
@@ -39,21 +39,18 @@ router.post('/clientes', {
     })
   }
 
-  const cliente = {
-    id: randomUUID(),
+  const cliente = await clientes.insertOne({
     name,
     email,
     phone,
     registrationDate,
     password,
     role,
-  }
-
-  clientes.push(cliente)
-
-  return res.status(201).send({
-    ...cliente,
   })
+
+  const formattedCliente = ClienteFormatter(cliente)
+
+  return res.status(201).send(formattedCliente)
 })
 
 export const createCliente= router
