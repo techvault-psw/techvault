@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes } from "../../consts/db-mock";
 import { clienteZodSchema, objectIdSchema } from "../../consts/zod-schemas";
+import { clientes } from "../../models/cliente";
+import { ClienteFormatter } from "../../formatters/cliente-formatter";
 
 const router = CreateTypedRouter()
 
@@ -27,26 +28,24 @@ router.put('/clientes/:id', {
   const { id } = req.params
   const { name, email, phone, registrationDate, password, role } = req.body
 
-  const clienteIndex = clientes.findIndex((cliente) => cliente.id === id)
+  const cliente = await clientes.findById(id)
 
-  if (clienteIndex < 0) {
+  if (!cliente) {
     return res.status(400).send({
       success: false,
       message: 'Cliente não encontrado'
     })
   }
 
-  clientes[clienteIndex].name = name
-  clientes[clienteIndex].email= email
-  clientes[clienteIndex].phone = phone
-  clientes[clienteIndex].registrationDate = registrationDate
-  clientes[clienteIndex].password = password 
-  clientes[clienteIndex].role = role 
+  const updateCliente = await clientes.findByIdAndUpdate(
+    id,
+    {name, email, phone, registrationDate, password, role},
+    {new : true}
+  )
 
-  return res.status(200).send({
-    ...clientes[clienteIndex],
-  })
+  const formattedCliente = ClienteFormatter(updateCliente!)
 
+  return res.status(200).send(formattedCliente)
 })
 
 export const updateCliente = router
