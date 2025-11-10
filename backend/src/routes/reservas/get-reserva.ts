@@ -1,0 +1,41 @@
+import { CreateTypedRouter } from "express-zod-openapi-typed";
+import z from "zod";
+import { objectIdSchema, reservaExtendedZodSchema } from "../../consts/zod-schemas";
+import { PopulatedReservaSchema, reservas } from "../../models/reserva";
+import { PopulatedReservaFormatter, ReservaFormatter } from "../../formatters/reserva-formatter";
+
+const router = CreateTypedRouter()
+
+router.get('/reservas/:id', {
+  schema: {
+    summary: 'Get Reserva',
+    tags: ['Reservas'],
+    params: z.object({
+      id: objectIdSchema,
+    }),
+    response: {
+      200: reservaExtendedZodSchema,
+      400: z.object({
+        success: z.boolean(),
+        message: z.string(),
+      }),
+    },
+  },
+}, async (req, res) => {
+  const { id } = req.params
+
+  const reserva = await reservas.findById(id).populate("clienteId pacoteId enderecoId") as PopulatedReservaSchema
+
+  if (!reserva) {
+    return res.status(400).send({
+      success: false,
+      message: 'Reserva não encontrada'
+    })
+  }
+
+  const formattedReserva = PopulatedReservaFormatter(reserva)
+
+  return res.status(200).send(formattedReserva)
+})
+
+export const getReserva = router
