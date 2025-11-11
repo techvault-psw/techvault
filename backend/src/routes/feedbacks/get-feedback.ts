@@ -26,7 +26,7 @@ router.get('/feedbacks/:id', {
 
   const feedback = await feedbacks.findById(id).populate("clienteId pacoteId") as PopulatedFeedbackSchema
 
-  if (!feedback) {
+  if (!feedback || !feedback.clienteId || !feedback.pacoteId) {
     return res.status(400).send({
       success: false,
       message: 'Feedback não encontrado'

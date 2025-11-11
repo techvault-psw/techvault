@@ -17,7 +17,9 @@ router.get('/reservas', {
   },
 }, async (req, res) => {
   const dbReservas = await reservas.find({}).populate("clienteId pacoteId enderecoId") as PopulatedReservaSchema[]
-  const formattedReservas = dbReservas.map(PopulatedReservaFormatter)
+  const formattedReservas = dbReservas
+    .filter(r => r.clienteId && r.pacoteId && r.enderecoId)
+    .map(PopulatedReservaFormatter)
 
   return res.status(200).send(formattedReservas)
 })
