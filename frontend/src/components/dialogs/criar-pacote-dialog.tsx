@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useRef, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Upload } from "lucide-react";
+import { LoaderCircle, Upload } from "lucide-react";
 
 import { currencyMask } from "@/lib/currency-input-mask";
 import { Button } from "../ui/button";
@@ -58,6 +58,7 @@ interface CriarPacoteDialogProps {
 
 export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -77,10 +78,14 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!previewUrl) return
+    setIsSubmitting(true)
 
     const { url } = await uploadPacoteImage(previewUrl)
 
-    if (!url) return
+    if (!url) {
+      setIsSubmitting(false)
+      return
+    }
     
     dispatch(addPacoteServer({
       ...values,
@@ -94,6 +99,7 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
     setIsOpen(false)
     form.reset()
     setPreviewUrl(null)
+    setIsSubmitting(false)
   }
 
   const handleValueChange = (value: string, onChange: (value: string) => void) => {
@@ -308,8 +314,15 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
                 </Button>
               </Dialog.Close>
 
-              <Button type="submit" className="h-[2.625rem]">
-                Criar
+              <Button type="submit" className="h-[2.625rem]" disabled={isSubmitting}>
+                {isSubmitting ? 
+                  <div className='flex gap-2'>
+                    <LoaderCircle className='animate-spin mt-0.25'/>
+                    <span>Criando...</span> 
+                  </div>
+                  : 
+                  <span>Criar</span> 
+                }
               </Button>
             </Dialog.Footer>
           </form>
