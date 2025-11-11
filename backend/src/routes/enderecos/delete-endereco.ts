@@ -1,6 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from 'zod'
-import { enderecos } from "../../consts/db-mock";
+import { enderecos } from "../../models/endereco"
+import { objectIdSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -9,11 +10,11 @@ router.delete('/enderecos/:id', {
     summary: 'Delete Address',
     tags: ['Endereços'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     response: {
       200: z.object({
-        enderecoId: z.string().uuid(),
+        enderecoId: objectIdSchema,
       }),
       400: z.object({
         success: z.boolean(),
@@ -24,16 +25,16 @@ router.delete('/enderecos/:id', {
 }, async(req, res) => {
   const { id } = req.params
 
-  const enderecoIndex = enderecos.findIndex((endereco) => endereco.id === id)
+  const endereco = await enderecos.findById(id)
 
-  if(enderecoIndex < 0) {
+  if(!endereco) {
     return res.status(400).send({
       success: false,
       message: 'Endereco não encontrado'
     })
   }
 
-  enderecos.splice(enderecoIndex, 1)
+  await enderecos.findByIdAndDelete(id)
 
   return res.status(200).send({
     enderecoId: id,

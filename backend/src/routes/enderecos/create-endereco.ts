@@ -1,8 +1,9 @@
 import z from "zod"
-import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import { enderecoZodSchema } from "../../consts/zod-schemas";
-import { clientes, enderecos } from "../../consts/db-mock";
+import { clientes } from "../../models/cliente";
+import { enderecos } from "../../models/endereco";
+import { EnderecoFormatter } from "../../formatters/endereco-formatter";
 
 const router = CreateTypedRouter()
 
@@ -22,7 +23,7 @@ router.post('/enderecos', {
 }, async (req, res) => {
   const { clienteId, ...rest } = req.body
 
-  const cliente = clientes.find((cliente) => cliente.id === clienteId)
+  const cliente = await clientes.findById(clienteId)
 
   if(!cliente) {
     return res.status(400).send({
@@ -31,17 +32,14 @@ router.post('/enderecos', {
     })
   }
 
-  const endereco = {
-    id: randomUUID(),
+  const endereco = await enderecos.create({
     clienteId,
     ...rest
-  }
-
-  enderecos.push(endereco)
-
-  return res.status(201).send({
-    ...endereco
   })
+
+  const formattedEndereco = EnderecoFormatter(endereco)
+
+  return res.status(201).send(formattedEndereco)
 })
 
 export const createEndereco = router

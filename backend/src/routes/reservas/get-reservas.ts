@@ -1,8 +1,9 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes, enderecos, pacotes, reservas } from "../../consts/db-mock";
 import type { ReservaExtended } from "../../consts/types";
 import { reservaExtendedZodSchema } from "../../consts/zod-schemas";
+import { PopulatedReservaSchema, reservas } from "../../models/reserva";
+import { PopulatedReservaFormatter, ReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter()
 
@@ -11,30 +12,16 @@ router.get('/reservas', {
     summary: 'Get Reservas',
     tags: ['Reservas'],
     response: {
-      200: z.object({
-        reservas: z.array(reservaExtendedZodSchema)
-      }),
+      200: z.array(reservaExtendedZodSchema)
     },
   },
 }, async (req, res) => {
-  const extendedReservas: ReservaExtended[] = reservas.map((reserva) => {
-    const cliente = clientes.find((cliente) => cliente.id === reserva.clienteId)
-    const pacote = pacotes.find((pacote) => pacote.id === reserva.pacoteId)
-    const endereco = enderecos.find((endereco) => endereco.id === reserva.enderecoId)
+  const dbReservas = await reservas.find({}).populate("clienteId pacoteId enderecoId") as PopulatedReservaSchema[]
+  const formattedReservas = dbReservas
+    .filter(r => r.clienteId && r.pacoteId && r.enderecoId)
+    .map(PopulatedReservaFormatter)
 
-    if (!cliente || !pacote || !endereco) return undefined;
-    
-    return {
-      ...reserva,
-      cliente,
-      endereco,
-      pacote,
-    }
-  }).filter((f) => !!f)
-
-  return res.status(200).send({
-    reservas: extendedReservas,
-  })
+  return res.status(200).send(formattedReservas)
 })
 
 export const getReservas = router

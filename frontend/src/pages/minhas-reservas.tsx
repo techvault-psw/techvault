@@ -1,5 +1,7 @@
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
+import { FiltrosReservasDialog } from "@/components/dialogs/filtros-reservas-dialog";
+import { OrdenarReservasDialog } from "@/components/dialogs/ordenar-reservas-dialog";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
@@ -13,7 +15,7 @@ import { PacoteImage } from "@/components/pacote-image";
 import { Link, useLocation, useNavigate } from "react-router";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { selectAllReservas } from "@/redux/reservas/slice";
@@ -26,6 +28,8 @@ export default function MinhasReservasPage() {
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const { status: statusR, error: errorR } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
     const reservas = useSelector(selectAllReservas)
+    const [filtros, setFiltros] = useState<any>({});
+    const [ordenacao, setOrdenacao] = useState<any>({ campo: "dataInicio", ordem: "asc" });
 
     const location = useLocation()
 
@@ -42,24 +46,61 @@ export default function MinhasReservasPage() {
         }
     }, [statusR, dispatch])
 
-    const reservasFiltradas = reservas
-        .filter(reserva => reserva.cliente.id === clienteAtual?.id)
-        .sort((a, b) => {
-            const statusOrder: Record<string, number> = {
-                "Confirmada": 1,
-                "Concluída": 2,
-                "Cancelada": 3
-            };
+    const reservasFiltradas = useMemo(() => {
+        let resultado = reservas.filter(reserva => reserva.cliente.id === clienteAtual?.id);
 
-            const statusA = statusOrder[a.status] ?? 99
-            const statusB = statusOrder[b.status] ?? 99
+        if (filtros.status && filtros.status !== "Todas") {
+            resultado = resultado.filter(r => r.status === filtros.status);
+        }
 
-            if (statusA !== statusB) {
-                return statusA - statusB
+        if (filtros.dataInicio) {
+            resultado = resultado.filter(r => new Date(r.dataInicio) >= new Date(filtros.dataInicio));
+        }
+
+        if (filtros.dataTermino) {
+            resultado = resultado.filter(r => new Date(r.dataTermino) <= new Date(filtros.dataTermino));
+        }
+
+        return resultado.sort((a, b) => {
+            let valorA: any, valorB: any;
+
+            switch (ordenacao.campo) {
+                case "dataInicio":
+                    valorA = new Date(a.dataInicio).getTime();
+                    valorB = new Date(b.dataInicio).getTime();
+                    break;
+                case "dataTermino":
+                    valorA = new Date(a.dataTermino).getTime();
+                    valorB = new Date(b.dataTermino).getTime();
+                    break;
+                case "valor":
+                    valorA = a.valor;
+                    valorB = b.valor;
+                    break;
+                case "status":
+                    const statusOrder: Record<string, number> = {
+                        "Confirmada": 1,
+                        "Concluída": 2,
+                        "Cancelada": 3
+                    };
+                    valorA = statusOrder[a.status] ?? 99;
+                    valorB = statusOrder[b.status] ?? 99;
+                    break;
+                case "pacote":
+                    valorA = a.pacote?.name || "";
+                    valorB = b.pacote?.name || "";
+                    break;
+                default:
+                    return 0;
             }
 
-            return new Date(a.dataInicio).getTime() - new Date(b.dataInicio).getTime()
-        })
+            if (ordenacao.ordem === "asc") {
+                return valorA > valorB ? 1 : -1;
+            } else {
+                return valorA < valorB ? 1 : -1;
+            }
+        });
+    }, [reservas, clienteAtual, filtros, ordenacao])
 
     return (
         <PageContainer.List>
@@ -70,15 +111,19 @@ export default function MinhasReservasPage() {
 
             <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-4 flex-shrink-0">
-                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                        <FilterIcon className="size-4.5" />
-                        Filtros
-                    </Button>
+                    <FiltrosReservasDialog onApplyFilters={setFiltros}>
+                        <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                            <FilterIcon className="size-4.5" />
+                            Filtros
+                        </Button>
+                    </FiltrosReservasDialog>
 
-                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                        <SlidersIcon className="size-4.5" />
-                        Ordenar por
-                    </Button>
+                    <OrdenarReservasDialog onApplySort={setOrdenacao}>
+                        <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                            <SlidersIcon className="size-4.5" />
+                            Ordenar por
+                        </Button>
+                    </OrdenarReservasDialog>
                 </div>
                 {clienteAtual && (
                     <Link to="/pacotes-disponiveis" className="w-full max-w-120 lg:flex lg:justify-end">
@@ -93,6 +138,10 @@ export default function MinhasReservasPage() {
                 <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
             ) : ['failed'].includes(statusR) ? (
                 <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+            ) : reservasFiltradas.length === 0 && (filtros.status || filtros.dataInicio || filtros.dataTermino) ? (
+                <p className='text-base text-white text-center w-full'>
+                    Nenhuma reserva encontrada com os filtros aplicados.
+                </p>
             ) : reservasFiltradas.length === 0 ? (
                 <p className='text-base text-white text-center w-full'>
                     Você ainda não realizou nenhuma reserva.

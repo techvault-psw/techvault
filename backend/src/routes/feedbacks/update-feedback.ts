@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { feedbacks } from "../../consts/db-mock";
-import { feedbackZodSchema } from "../../consts/zod-schemas";
+import { feedbackZodSchema, objectIdSchema } from "../../consts/zod-schemas";
+import { feedbacks } from "../../models/feedback";
+import { FeedbackFormatter } from "../../formatters/feedback-formatter";
 
 const router = CreateTypedRouter()
 
@@ -10,7 +11,7 @@ router.put('/feedbacks/:id', {
     summary: 'Update Feedback',
     tags: ['Feedbacks'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     body: feedbackZodSchema.omit({
       id: true,
@@ -29,21 +30,24 @@ router.put('/feedbacks/:id', {
   const { id } = req.params
   const { rating, comentario } = req.body
 
-  const feedbackIndex = feedbacks.findIndex((feedback) => feedback.id === id)
+  const feedback = await feedbacks.findById(id)
 
-  if (feedbackIndex < 0) {
+  if (!feedback) {
     return res.status(400).send({
       success: false,
       message: 'Feedback não encontrado'
     })
   }
 
-  feedbacks[feedbackIndex].rating = rating
-  feedbacks[feedbackIndex].comentario = comentario
+  const updatedFeedback = await feedbacks.findByIdAndUpdate(
+    id,
+    { rating, comentario },
+    { new: true }
+  )
 
-  return res.status(200).send({
-    ...feedbacks[feedbackIndex],
-  })
+  const formattedFeedback = FeedbackFormatter(updatedFeedback!)
+
+  return res.status(200).send(formattedFeedback)
 })
 
 export const updateFeedback = router

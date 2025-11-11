@@ -1,10 +1,10 @@
 import { httpDelete, httpGet, httpPost, httpPut } from "@/lib/fetch-utils"
 import { createAsyncThunk } from "@reduxjs/toolkit"
-import type { Feedback, FeedbackServer, NewFeedback, NewFeedbackServer } from "./slice"
+import type { Feedback, NewFeedback, NewFeedbackServer } from "./slice"
 
 export const fetchFeedbacks = createAsyncThunk<Feedback[]>(`feedbacks/fetchFeedbacks`,
   async () => {
-    return await httpGet('/feedbacks?_expand=cliente&_expand=pacote')
+    return await httpGet('/feedbacks')
   }
 )
 
@@ -23,19 +23,14 @@ export const addFeedbackServer = createAsyncThunk<Feedback, NewFeedback>('feedba
 
 export const updateFeedbackServer = createAsyncThunk<Feedback, Feedback>('feedbacks/updateFeedbackServer ',
   async (feedback) => {
-    const updatedFeedback: FeedbackServer = {
-      id: feedback.id,
-      clienteId: feedback.cliente.id,
+    return await httpPut(`/feedbacks/${feedback.id}`, {
       comentario: feedback.comentario,
-      pacoteId: feedback.pacote.id,
       rating: feedback.rating,
-    }
-
-    return await httpPut(`/feedbacks/${feedback.id}`, updatedFeedback)
+    })
   }
 )
 
-export const deleteFeedbackServer = createAsyncThunk<number, Feedback>('feedbacks/deleteFeedbackServer ',
+export const deleteFeedbackServer = createAsyncThunk<string, Feedback>('feedbacks/deleteFeedbackServer ',
   async (feedback) => {
     await httpDelete(`/feedbacks/${feedback.id}`)
     return feedback.id

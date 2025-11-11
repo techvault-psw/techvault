@@ -25,8 +25,7 @@ export const addPacoteServer = createAsyncThunk<Pacote, NewPacote>('pacotes/addP
 
 export const updatePacoteServer = createAsyncThunk<Pacote, Pacote>('pacotes/updatePacoteServer ',
   async (pacote) => {
-    const updatedPacote: PacoteServer = {
-      id: pacote.id,
+    const updatedPacote = {
       name: pacote.name,
       image: pacote.image,
       description: pacote.description,
@@ -39,7 +38,7 @@ export const updatePacoteServer = createAsyncThunk<Pacote, Pacote>('pacotes/upda
   }
 )
 
-export const deletePacoteServer = createAsyncThunk<number, Pacote>('pacotes/deletePacoteServer ',
+export const deletePacoteServer = createAsyncThunk<string, Pacote>('pacotes/deletePacoteServer ',
   async (pacote) => {
     await httpDelete(`/pacotes/${pacote.id}`)
     return pacote.id

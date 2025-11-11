@@ -1,5 +1,7 @@
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
+import { FiltrosFeedbacksDialog } from "@/components/dialogs/filtros-feedbacks-dialog";
+import { OrdenarFeedbacksDialog } from "@/components/dialogs/ordenar-feedbacks-dialog";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Button } from "@/components/ui/button";
@@ -18,7 +20,7 @@ import { fetchPacotes } from "@/redux/pacotes/fetch";
 import type { RootState } from "@/redux/root-reducer";
 import { type AppDispatch } from "@/redux/store";
 import { Pen } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router";
 import { fetchReservas } from "@/redux/reservas/fetch";
@@ -29,6 +31,8 @@ export default function FeedbacksPage() {
 
     const dispatch = useDispatch<AppDispatch>()
     const { status: statusF, error: errorF } = useSelector((rootReducer: RootState) => rootReducer.feedbacksReducer)
+    const [filtros, setFiltros] = useState<any>({});
+    const [ordenacao, setOrdenacao] = useState<any>({ campo: "rating", ordem: "desc" });
 
     useEffect(() => {
         if (['not_loaded', 'saved', 'deleted'].includes(statusF)) {
@@ -52,8 +56,49 @@ export default function FeedbacksPage() {
       }
     }, [statusR, dispatch])
 
-    const feedbacks = useSelector(selectAllFeedbacks)
+    const allFeedbacks = useSelector(selectAllFeedbacks)
     const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+
+    const feedbacks = useMemo(() => {
+        let resultado = [...allFeedbacks];
+
+        if (filtros.ratingMin) {
+            resultado = resultado.filter(f => f.rating >= Number(filtros.ratingMin));
+        }
+
+        if (filtros.ratingMax) {
+            resultado = resultado.filter(f => f.rating <= Number(filtros.ratingMax));
+        }
+
+        resultado.sort((a, b) => {
+            let valorA: any, valorB: any;
+
+            switch (ordenacao.campo) {
+                case "rating":
+                    valorA = a.rating;
+                    valorB = b.rating;
+                    break;
+                case "cliente":
+                    valorA = a.cliente.name.toLowerCase();
+                    valorB = b.cliente.name.toLowerCase();
+                    break;
+                case "pacote":
+                    valorA = a.pacote.name.toLowerCase();
+                    valorB = b.pacote.name.toLowerCase();
+                    break;
+                default:
+                    return 0;
+            }
+
+            if (ordenacao.ordem === "asc") {
+                return valorA > valorB ? 1 : -1;
+            } else {
+                return valorA < valorB ? 1 : -1;
+            }
+        });
+
+        return resultado;
+    }, [allFeedbacks, filtros, ordenacao])
 
     return (
         <PageContainer.List>
@@ -64,15 +109,19 @@ export default function FeedbacksPage() {
 
             <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center lg:flex-row lg:justify-between">
                 <div className="flex items-center gap-4 flex-shrink-0">
-                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                        <FilterIcon className="size-4.5" />
-                        Filtros
-                    </Button>
+                    <FiltrosFeedbacksDialog onApplyFilters={setFiltros}>
+                        <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                            <FilterIcon className="size-4.5" />
+                            Filtros
+                        </Button>
+                    </FiltrosFeedbacksDialog>
 
-                    <Button className="w-40 md:w-52" variant="secondary" size="sm">
-                        <SlidersIcon className="size-4.5" />
-                        Ordenar por
-                    </Button>
+                    <OrdenarFeedbacksDialog onApplySort={setOrdenacao}>
+                        <Button className="w-40 md:w-52" variant="secondary" size="sm">
+                            <SlidersIcon className="size-4.5" />
+                            Ordenar por
+                        </Button>
+                    </OrdenarFeedbacksDialog>
                 </div>
                 <DarFeedbackDialog>
                     <Card.Container className="w-full max-w-120 lg:w-88 bg-black hover:bg-slate-900">
@@ -87,6 +136,14 @@ export default function FeedbacksPage() {
                 <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
             ) : ['failed'].includes(statusF) ? (
                 <p className="text-lg text-white text-center py-2 w-full">{errorF}</p>
+            ) : feedbacks.length === 0 && (filtros.ratingMin || filtros.ratingMax) ? (
+                <p className="text-base text-white text-center py-2 w-full">
+                    Nenhum feedback encontrado com os filtros aplicados.
+                </p>
+            ) : feedbacks.length === 0 ? (
+                <p className="text-base text-white text-center py-2 w-full">
+                    Nenhum feedback cadastrado ainda.
+                </p>
             ) : (
                 <section className="w-full flex flex-col items-center gap-4 scrollbar md:grid lg:grid-cols-2 xl:grid-cols-3">
                     {feedbacks.map((feedback, index) => {

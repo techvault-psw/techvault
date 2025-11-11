@@ -1,8 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { clientes, feedbacks, pacotes } from "../../consts/db-mock";
-import type { FeedbackExtended } from "../../consts/types";
 import { feedbackExtendedZodSchema } from "../../consts/zod-schemas";
+import { feedbacks, type PopulatedFeedbackSchema } from "../../models/feedback";
+import { PopulatedFeedbackFormatter } from "../../formatters/feedback-formatter";
 
 const router = CreateTypedRouter()
 
@@ -11,28 +11,17 @@ router.get('/feedbacks', {
     summary: 'Get Feedbacks',
     tags: ['Feedbacks'],
     response: {
-      200: z.object({
-        feedbacks: z.array(feedbackExtendedZodSchema)
-      }),
+      200: z.array(feedbackExtendedZodSchema),
     },
   },
 }, async (req, res) => {
-  const extendedFeedbacks: FeedbackExtended[] = feedbacks.map((feedback) => {
-    const cliente = clientes.find((cliente) => cliente.id === feedback.clienteId)
-    const pacote = pacotes.find((pacote) => pacote.id === feedback.pacoteId)
+  const dbFeedbacks = await feedbacks.find({}).populate("clienteId pacoteId") as PopulatedFeedbackSchema[]
 
-    if (!cliente || !pacote) return undefined;
-    
-    return {
-      ...feedback,
-      cliente,
-      pacote,
-    }
-  }).filter((f) => !!f)
+  const formattedFeedbacks = dbFeedbacks
+    .filter(f => f.clienteId && f.pacoteId)
+    .map(PopulatedFeedbackFormatter)
 
-  return res.status(200).send({
-    feedbacks: extendedFeedbacks,
-  })
+  return res.status(200).send(formattedFeedbacks)
 })
 
 export const getFeedbacks = router

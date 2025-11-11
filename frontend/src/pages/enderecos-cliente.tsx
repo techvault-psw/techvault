@@ -22,9 +22,8 @@ import { GoBackButton } from "@/components/go-back-button";
 
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
-  const numberId = Number(id)
 
-  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
+  const cliente = useSelector((state: RootState) => selectClienteById(state, id ?? ''))
 
   const {isGerente, isSuporte} = useCargo()
 
@@ -49,9 +48,9 @@ export default function EnderecosClientePage() {
 
 
   const enderecos = useSelector(selectAllEnderecos)
-  const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === numberId)
+  const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === id)
 
-  if (isNaN(numberId) || !cliente) {
+  if (!id || !cliente) {
     return
   }
 
@@ -63,7 +62,7 @@ export default function EnderecosClientePage() {
             const returnTo = state?.returnTo || "/clientes";
             navigate(returnTo, { 
               state: { 
-                fromClientDialog: numberId,
+                fromClientDialog: id,
                 fromReservaId: state?.fromReservaId
               } 
             });

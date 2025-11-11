@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { reservas } from "../../consts/db-mock";
-import { reservaZodSchema } from "../../consts/zod-schemas";
+import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
+import { reservas } from "../../models/reserva";
+import { ReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter()
 
@@ -10,7 +11,7 @@ router.patch('/reservas/:id/cancelar-reserva', {
     summary: 'Cancelar Reserva',
     tags: ['Reservas'],
     params: z.object({
-      id: z.string().uuid(),
+      id: objectIdSchema,
     }),
     response: {
       200: reservaZodSchema,
@@ -23,9 +24,9 @@ router.patch('/reservas/:id/cancelar-reserva', {
 }, async (req, res) => {
   const { id } = req.params
 
-  const reservaIndex = reservas.findIndex((reserva) => reserva.id === id)
+  const reserva = await reservas.findById(id)
 
-  if (reservaIndex < 0) {
+  if (!reserva) {
     return res.status(400).send({
       success: false,
       message: 'Reserva não encontrada'
@@ -33,9 +34,9 @@ router.patch('/reservas/:id/cancelar-reserva', {
   }
 
   if (
-    reservas[reservaIndex].dataEntrega ||
-    reservas[reservaIndex].dataColeta ||
-    reservas[reservaIndex].status === 'Concluída'
+    reserva.dataEntrega ||
+    reserva.dataColeta ||
+    reserva.status === 'Concluída'
   ){
     return res.status(400).send({
       success: false,
@@ -43,12 +44,11 @@ router.patch('/reservas/:id/cancelar-reserva', {
     })
   }
 
-  reservas[reservaIndex].status = "Cancelada"
+  reserva.status = "Cancelada"
 
-  return res.status(200).send({
-    ...reservas[reservaIndex],
-  })
-
+  const updatedReserva = await reservas.findByIdAndUpdate(reserva.id, reserva, { new: true })
+  const formattedReserva = ReservaFormatter(updatedReserva!)
+  return res.status(200).send(formattedReserva)
 })
 
 export const cancelReserva = router

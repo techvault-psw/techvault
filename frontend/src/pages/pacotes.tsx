@@ -1,5 +1,7 @@
 import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
 import { DadosPacoteDialog } from "@/components/dialogs/dados-pacote-dialog";
+import { FiltrosPacotesDialog } from "@/components/dialogs/filtros-pacotes-dialog";
+import { OrdenarPacotesDialog } from "@/components/dialogs/ordenar-pacotes-dialog";
 import { GoBackButton } from "@/components/go-back-button";
 import { ArrowRightIcon } from "@/components/icons/arrow-right-icon";
 import { FilterIcon } from "@/components/icons/filter-icon";
@@ -22,7 +24,7 @@ import { selectAllPacotes } from "@/redux/pacotes/slice";
 import type { RootState } from "@/redux/root-reducer";
 import { type AppDispatch } from "@/redux/store";
 import { ArrowLeftIcon } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
@@ -49,12 +51,61 @@ export default function Pacotes() {
   }, [])
 
   const [searchTerm, setSearchTerm] = useState('')
+  const [filtros, setFiltros] = useState<any>({});
+  const [ordenacao, setOrdenacao] = useState<any>({ campo: "name", ordem: "asc" });
 
-  const pacotesFiltrados = pacotes.filter(pacote =>
-    pacote.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    pacote.description.some((paragraph) => paragraph.toLocaleLowerCase().includes(searchTerm.toLowerCase())) ||
-    pacote.value.toString().toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const pacotesFiltrados = useMemo(() => {
+    let resultado = pacotes.filter(pacote =>
+      pacote.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      pacote.description.some((paragraph) => paragraph.toLocaleLowerCase().includes(searchTerm.toLowerCase())) ||
+      pacote.value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (filtros.valorMin) {
+      resultado = resultado.filter(p => p.value >= Number(filtros.valorMin));
+    }
+
+    if (filtros.valorMax) {
+      resultado = resultado.filter(p => p.value <= Number(filtros.valorMax));
+    }
+
+    if (filtros.quantidadeMin) {
+      resultado = resultado.filter(p => p.quantity >= Number(filtros.quantidadeMin));
+    }
+
+    if (filtros.quantidadeMax) {
+      resultado = resultado.filter(p => p.quantity <= Number(filtros.quantidadeMax));
+    }
+
+    resultado.sort((a, b) => {
+      let valorA: any, valorB: any;
+
+      switch (ordenacao.campo) {
+        case "name":
+          valorA = a.name.toLowerCase();
+          valorB = b.name.toLowerCase();
+          break;
+        case "value":
+          valorA = a.value;
+          valorB = b.value;
+          break;
+        case "quantity":
+          valorA = a.quantity;
+          valorB = b.quantity;
+          break;
+        default:
+          return 0;
+      }
+
+      if (ordenacao.ordem === "asc") {
+        return valorA > valorB ? 1 : -1;
+      } else {
+        return valorA < valorB ? 1 : -1;
+      }
+    });
+
+    return resultado;
+  }, [pacotes, searchTerm, filtros, ordenacao])
 
   return (
     <PageContainer.List>
@@ -65,14 +116,18 @@ export default function Pacotes() {
 
       <div className="w-full flex flex-col items-center gap-4 md:items-start lg:items-center md:flex-row">
         <div className="flex items-center gap-4 flex-shrink-0">
-          <Button className="w-40 md:w-52" variant="secondary" size="sm">
-            <FilterIcon className="size-4.5" />
-            Filtros
-          </Button>
-          <Button className="w-40 md:w-52" variant="secondary" size="sm">
-            <SlidersIcon className="size-4.5" />
-            Ordenar Por
-          </Button>
+          <FiltrosPacotesDialog onApplyFilters={setFiltros}>
+            <Button className="w-40 md:w-52" variant="secondary" size="sm">
+              <FilterIcon className="size-4.5" />
+              Filtros
+            </Button>
+          </FiltrosPacotesDialog>
+          <OrdenarPacotesDialog onApplySort={setOrdenacao}>
+            <Button className="w-40 md:w-52" variant="secondary" size="sm">
+              <SlidersIcon className="size-4.5" />
+              Ordenar Por
+            </Button>
+          </OrdenarPacotesDialog>
         </div>
 
         <CriarPacoteDialog>
@@ -102,6 +157,10 @@ export default function Pacotes() {
           <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
       ) : ['failed'].includes(statusP) ? (
           <p className="text-lg text-white text-center py-2 w-full">{errorP}</p>
+      ) : pacotesFiltrados.length === 0 && (filtros.valorMin || filtros.valorMax) ? (
+        <div className="w-full text-center text-white py-4">
+          Nenhum pacote encontrado com os filtros aplicados.
+        </div>
       ) : pacotesFiltrados.length === 0 ? (
         <div className="w-full text-center text-white py-4">
           {searchTerm

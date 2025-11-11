@@ -1,8 +1,9 @@
 import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { pacotes } from "../../consts/db-mock";
 import { pacoteZodSchema } from "../../consts/zod-schemas";
+import { pacotes } from "../../models/pacote";
+import { PacoteFormatter } from "../../formatters/pacote-formatter";
 
 const router = CreateTypedRouter()
 
@@ -22,7 +23,7 @@ router.post('/pacotes', {
 }, async (req, res) => {
   const { name, image, description, components, value, quantity } = req.body
 
-  const pacoteExiste = pacotes.find((pacote) => pacote.name === name)
+  const pacoteExiste = await pacotes.findOne({name})
 
   if (pacoteExiste) {
     return res.status(400).send({
@@ -31,7 +32,7 @@ router.post('/pacotes', {
     })
   }
 
-  const imageExiste = pacotes.find((pacote) => pacote.image === image)
+  const imageExiste = await pacotes.findOne({image})
 
   if (imageExiste) {
     return res.status(400).send({
@@ -40,21 +41,16 @@ router.post('/pacotes', {
     })
   }
 
-  const pacote = {
-    id: randomUUID(),
+  const pacote = await pacotes.create({
     name, 
     image, 
     description, 
     components, 
     value, 
     quantity,
-  }
-
-  pacotes.push(pacote)
-
-  return res.status(201).send({
-    ...pacote,
   })
+
+  return res.status(201).send(PacoteFormatter(pacote))
 })
 
 export const createPacote = router

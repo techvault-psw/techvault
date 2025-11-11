@@ -1,4 +1,3 @@
-import { clientes, type Cliente } from "@/consts/clientes";
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { TrashIcon } from "../icons/trash-icon";
@@ -10,13 +9,14 @@ import type { RootState } from "@/redux/root-reducer";
 import { useNavigate } from "react-router";
 import { deleteClienteServer } from "@/redux/clientes/fetch";
 import type { AppDispatch } from "@/redux/store";
-
+import type { Cliente } from "@/redux/clientes/slice";
 
 interface ExcluirClienteDialogProps {
   cliente: Cliente
   children: ReactNode
   setIsClientDialogOpen: (isOpen: boolean) => void
 }
+
 export const ExcluirClienteDialog = ({ cliente, children, setIsClientDialogOpen }: ExcluirClienteDialogProps) => {
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   const navigate = useNavigate()

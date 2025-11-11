@@ -1,4 +1,6 @@
 import { DadosClienteDialog } from '@/components/dialogs/dados-cliente-dialog';
+import { FiltrosClientesDialog } from '@/components/dialogs/filtros-clientes-dialog';
+import { OrdenarClientesDialog } from '@/components/dialogs/ordenar-clientes-dialog';
 import { ArrowRightIcon } from '@/components/icons/arrow-right-icon';
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SearchIcon } from '@/components/icons/search-icon';
@@ -11,7 +13,7 @@ import { Input } from "@/components/ui/input";
 import { Separator } from '@/components/ui/separator';
 import { Table } from "@/components/ui/table";
 import useCargo from '@/hooks/useCargo';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
@@ -19,11 +21,14 @@ import type { AppDispatch } from '@/redux/store';
 import { fetchClientes } from '@/redux/clientes/fetch';
 import { selectAllClientes } from '@/redux/clientes/slice';
 import { GoBackButton } from '@/components/go-back-button';
+import { format } from 'date-fns';
 
 
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
-  const [clienteToOpen, setClienteToOpen] = useState<number | null>(null);
+  const [clienteToOpen, setClienteToOpen] = useState<string | null>(null);
+  const [filtros, setFiltros] = useState<any>({});
+  const [ordenacao, setOrdenacao] = useState<any>({ campo: "name", ordem: "asc" });
 
   const dispatch = useDispatch<AppDispatch>()
     const { status: statusC, error: errorC } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
@@ -37,11 +42,62 @@ export default function ClientesPage() {
     const clientes = useSelector(selectAllClientes)
   const location = useLocation();
 
-  const clientesFiltrados = clientes.filter(cliente =>
-    cliente.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cliente.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    cliente.phone.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const clientesFiltrados = useMemo(() => {
+    let resultado = clientes.filter(cliente =>
+      cliente.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cliente.email.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      cliente.phone.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (filtros.role && filtros.role !== "Todos") {
+      resultado = resultado.filter(c => c.role === filtros.role);
+    }
+
+    if (filtros.dataRegistroInicio) {
+      resultado = resultado.filter(c => new Date(c.registrationDate) >= new Date(filtros.dataRegistroInicio));
+    }
+
+    if (filtros.dataRegistroFim) {
+      resultado = resultado.filter(c => new Date(c.registrationDate) <= new Date(filtros.dataRegistroFim));
+    }
+
+    resultado.sort((a, b) => {
+      let valorA: any, valorB: any;
+
+      switch (ordenacao.campo) {
+        case "name":
+          valorA = a.name.toLowerCase();
+          valorB = b.name.toLowerCase();
+          break;
+        case "email":
+          valorA = a.email.toLowerCase();
+          valorB = b.email.toLowerCase();
+          break;
+        case "phone":
+          valorA = a.phone;
+          valorB = b.phone;
+          break;
+        case "registrationDate":
+          valorA = new Date(a.registrationDate).getTime();
+          valorB = new Date(b.registrationDate).getTime();
+          break;
+        case "role":
+          valorA = a.role;
+          valorB = b.role;
+          break;
+        default:
+          return 0;
+      }
+
+      if (ordenacao.ordem === "asc") {
+        return valorA > valorB ? 1 : -1;
+      } else {
+        return valorA < valorB ? 1 : -1;
+      }
+    });
+
+    return resultado;
+  }, [clientes, searchTerm, filtros, ordenacao]);
 
   const { isGerente } = useCargo();
   const navigate = useNavigate();
@@ -53,7 +109,7 @@ export default function ClientesPage() {
   }, [])
 
   useEffect(() => {
-    const state = location.state as { fromClientDialog?: number };
+    const state = location.state as { fromClientDialog?: string };
     if (state?.fromClientDialog !== undefined) {
       setClienteToOpen(state.fromClientDialog);
     }
@@ -68,14 +124,18 @@ export default function ClientesPage() {
         </PageTitleContainer>
 
         <div className="flex items-center gap-4 flex-shrink-0">
-          <Button className="w-40 md:w-52" variant="secondary" size="sm">
-            <FilterIcon className="size-4.5" />
-            Filtros
-          </Button>
-          <Button className="w-40 md:w-52" variant="secondary" size="sm">
-            <SlidersIcon className="size-4.5" />
-            Ordenar por
-          </Button>
+          <FiltrosClientesDialog onApplyFilters={setFiltros}>
+            <Button className="w-40 md:w-52" variant="secondary" size="sm">
+              <FilterIcon className="size-4.5" />
+              Filtros
+            </Button>
+          </FiltrosClientesDialog>
+          <OrdenarClientesDialog onApplySort={setOrdenacao}>
+            <Button className="w-40 md:w-52" variant="secondary" size="sm">
+              <SlidersIcon className="size-4.5" />
+              Ordenar por
+            </Button>
+          </OrdenarClientesDialog>
         </div>
 
         <div className="relative flex-shrink-0 w-full">
@@ -93,13 +153,21 @@ export default function ClientesPage() {
         
         <Separator />
 
-        {['loading', 'saving', 'deleting'].includes(status) ? (
+        {['loading', 'saving', 'deleting'].includes(statusC) ? (
             <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
-        ) : ['failed'].includes(status) ? (
+        ) : ['failed'].includes(statusC) ? (
             <p className="text-lg text-white text-center py-2 w-full">{errorC}</p>
+        ) : clientesFiltrados.length === 0 && (filtros.role || filtros.dataRegistroInicio || filtros.dataRegistroFim) ? (
+          <div className="w-full text-center text-white">
+            Nenhum cliente encontrado com os filtros aplicados.
+          </div>
         ) : clientesFiltrados.length === 0 && searchTerm ? (
           <div className="w-full text-center text-white">
             Nenhum cliente encontrado para "{searchTerm}"
+          </div>
+        ) : clientesFiltrados.length === 0 ? (
+          <div className="w-full text-center text-white">
+            Nenhum cliente cadastrado ainda.
           </div>
         ) : clientesFiltrados.length !== 0 && (
           <>
@@ -126,6 +194,9 @@ export default function ClientesPage() {
                       <Card.Description className='truncate leading-[120%]'>
                         <span className="font-medium">Telefone: </span>{cliente.phone}
                       </Card.Description>
+                      <Card.Description className='truncate leading-[120%]'>
+                        <span className="font-medium">Cargo: </span>{cliente.role}
+                      </Card.Description>
                     </Card.TextContainer>
                   </Card.Container>
                 </DadosClienteDialog>
@@ -136,10 +207,11 @@ export default function ClientesPage() {
               <Table.Container className="w-full table-fixed">
                 <Table.Header>
                   <Table.Row>
-                    <Table.Head className="w-4/16 ">Nome</Table.Head>
-                    <Table.Head className="w-5/16 ">E-mail</Table.Head>
-                    <Table.Head className="w-3/16 ">Telefone</Table.Head>
-                    <Table.Head className="w-3/16 ">Data de cadastro</Table.Head>
+                    <Table.Head className="w-3/16 ">Nome</Table.Head>
+                    <Table.Head className="w-4/16 ">E-mail</Table.Head>
+                    <Table.Head className="w-3/16 xl:w-2/16 ">Telefone</Table.Head>
+                    <Table.Head className="w-2/16 xl:w-1/16 ">Cargo</Table.Head>
+                    <Table.Head className="w-3/16 xl:w-2/16 ">Data de cadastro</Table.Head>
                     <Table.Head className="w-1/16 text-right"></Table.Head> 
                   </Table.Row>
                 </Table.Header>
@@ -161,7 +233,8 @@ export default function ClientesPage() {
                         <Table.Cell className="text-white font-medium truncate">{cliente.name}</Table.Cell>
                         <Table.Cell className="truncate">{cliente.email}</Table.Cell>
                         <Table.Cell>{cliente.phone}</Table.Cell>
-                        <Table.Cell>{cliente.registrationDate}</Table.Cell>
+                        <Table.Cell>{cliente.role}</Table.Cell>
+                        <Table.Cell>{format(cliente.registrationDate, "dd/MM/yyyy")}</Table.Cell>
                         <Table.Cell className="text-right">
                           <ArrowRightIcon className="size-6" />
                         </Table.Cell>

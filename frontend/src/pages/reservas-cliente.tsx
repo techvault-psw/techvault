@@ -1,4 +1,6 @@
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog"
+import { FiltrosReservasDialog } from "@/components/dialogs/filtros-reservas-dialog"
+import { OrdenarReservasDialog } from "@/components/dialogs/ordenar-reservas-dialog"
 import { FilterIcon } from "@/components/icons/filter-icon"
 import { SlidersIcon } from "@/components/icons/sliders-icon"
 import { PageContainer } from "@/components/page-container"
@@ -10,7 +12,7 @@ import { selectAllReservas, type Reserva } from "@/redux/reservas/slice"
 import useCargo from "@/hooks/useCargo"
 import { format } from "date-fns"
 import { ArrowLeft } from "lucide-react"
-import { useEffect, useMemo } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useNavigate, useParams, useLocation } from "react-router"
 import { useDispatch, useSelector } from "react-redux"
 import type { RootState } from "@/redux/root-reducer"
@@ -70,9 +72,8 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
 
 export default function ReservasClientePage() {
   const { id } = useParams<{ id: string }>();
-  const numberId = Number(id)
 
-  const cliente = useSelector((state: RootState) => selectClienteById(state, numberId))
+  const cliente = useSelector((state: RootState) => selectClienteById(state, id ?? ''))
 
   const {isGerente, isSuporte} = useCargo()
 
@@ -81,6 +82,9 @@ export default function ReservasClientePage() {
   const state = location.state as { fromClientDialog?: number; returnTo?: string; fromReservaId?: number } | null
   const dispatch = useDispatch<AppDispatch>()
   const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+  const [filtros, setFiltros] = useState<any>({});
+  const [ordenacao, setOrdenacao] = useState<any>({ campo: "dataInicio", ordem: "desc" });
+
   useEffect(() => {
     if(!isGerente() && !isSuporte()) {
       navigate("/login")
@@ -95,21 +99,64 @@ export default function ReservasClientePage() {
   
   const reservas = useSelector(selectAllReservas)
 
-  const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === numberId)
+  const filteredReservas = reservas.filter((reserva) => reserva.cliente.id === id)
 
   const sortedReservas = useMemo(() => {
-    return [...filteredReservas].sort((a, b) => {
-        const dateA = new Date(a.dataInicio).getTime();
-        const dateB = new Date(b.dataInicio).getTime();
-        return dateB - dateA;
-    })
-  }, [filteredReservas])
+    let resultado = [...filteredReservas];
+
+    if (filtros.status && filtros.status !== "Todas") {
+      resultado = resultado.filter(r => r.status === filtros.status);
+    }
+
+    if (filtros.dataInicio) {
+      resultado = resultado.filter(r => new Date(r.dataInicio) >= new Date(filtros.dataInicio));
+    }
+
+    if (filtros.dataTermino) {
+      resultado = resultado.filter(r => new Date(r.dataTermino) <= new Date(filtros.dataTermino));
+    }
+
+    return resultado.sort((a, b) => {
+      let valorA: any, valorB: any;
+
+      switch (ordenacao.campo) {
+        case "dataInicio":
+          valorA = new Date(a.dataInicio).getTime();
+          valorB = new Date(b.dataInicio).getTime();
+          break;
+        case "dataTermino":
+          valorA = new Date(a.dataTermino).getTime();
+          valorB = new Date(b.dataTermino).getTime();
+          break;
+        case "valor":
+          valorA = a.valor;
+          valorB = b.valor;
+          break;
+        case "status":
+          valorA = a.status;
+          valorB = b.status;
+          break;
+        case "pacote":
+          valorA = a.pacote?.name || "";
+          valorB = b.pacote?.name || "";
+          break;
+        default:
+          return 0;
+      }
+
+      if (ordenacao.ordem === "asc") {
+        return valorA > valorB ? 1 : -1;
+      } else {
+        return valorA < valorB ? 1 : -1;
+      }
+    });
+  }, [filteredReservas, filtros, ordenacao])
 
   const reservasAtuais = sortedReservas.filter((r) => r.status === "Confirmada")
   const reservasConcluidas = sortedReservas.filter((r) => r.status === "Concluída")
   const reservasCanceladas = sortedReservas.filter((r) => r.status === "Cancelada")
 
-  if (isNaN(numberId) || !cliente) {
+  if (!id || !cliente) {
     return
   }
 
@@ -121,7 +168,7 @@ export default function ReservasClientePage() {
             const returnTo = state?.returnTo || "/clientes";
             navigate(returnTo, { 
               state: { 
-                fromClientDialog: numberId,
+                fromClientDialog: id,
                 fromReservaId: state?.fromReservaId
               } 
             });
@@ -132,21 +179,32 @@ export default function ReservasClientePage() {
       </PageTitleContainer>
 
       <div className="flex items-center gap-4">
-        <Button variant="secondary" className="w-40 md:w-52" size="sm">
-          <FilterIcon className="size-4.5" />
-          Filtros
-        </Button>
+        <FiltrosReservasDialog onApplyFilters={setFiltros}>
+          <Button variant="secondary" className="w-40 md:w-52" size="sm">
+            <FilterIcon className="size-4.5" />
+            Filtros
+          </Button>
+        </FiltrosReservasDialog>
 
-        <Button variant="secondary" className="w-40 md:w-52" size="sm">
-          <SlidersIcon className="size-4.5" />
-          Ordenar por
-        </Button>
+        <OrdenarReservasDialog onApplySort={setOrdenacao}>
+          <Button variant="secondary" className="w-40 md:w-52" size="sm">
+            <SlidersIcon className="size-4.5" />
+            Ordenar por
+          </Button>
+        </OrdenarReservasDialog>
       </div>
 
       {['loading', 'saving', 'deleting'].includes(statusR) ? (
           <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
       ) : ['failed'].includes(statusR) ? (
           <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : sortedReservas.length === 0 && (filtros.status || filtros.dataInicio || filtros.dataTermino) ? (
+        <>
+          <Separator />
+          <p className='text-base text-white text-center w-full'>
+            Nenhuma reserva encontrada com os filtros aplicados.
+          </p>
+        </>
       ) : filteredReservas.length === 0 ? (
         <>
           <Separator />

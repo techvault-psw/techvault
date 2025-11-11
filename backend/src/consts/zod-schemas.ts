@@ -1,9 +1,13 @@
 import z from "zod";
 
+export const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, {
+  message: "ID inválido. Deve ser um ObjectId do MongoDB"
+})
+
 export const roleZodSchema = z.enum(["Cliente", "Gerente", "Suporte"])
 
 export const clienteZodSchema = z.object({
-  id: z.string().uuid(),
+  id: objectIdSchema,
   name: z.string(),
   email: z.string().email(),
   phone: z.string(),
@@ -13,8 +17,8 @@ export const clienteZodSchema = z.object({
 })
 
 export const enderecoZodSchema = z.object({
-  id: z.string().uuid(),
-  clienteId: z.string().uuid(),
+  id: objectIdSchema,
+  clienteId: objectIdSchema,
   name: z.string(),
   cep: z.string(),
   street: z.string(),
@@ -30,11 +34,11 @@ export const enderecoExtendedZodSchema = enderecoZodSchema.extend({
 })
 
 export const pacoteZodSchema = z.object({
-  id: z.string().uuid(),
+  id: objectIdSchema,
   name: z.string().trim(),
   image: z.string().url(),
-  description: z.array(z.string().trim().min(15)),
-  components: z.array(z.string().trim()).min(3),
+  description: z.array(z.string().trim().min(10)).min(1),
+  components: z.array(z.string().trim()),
   value: z.number().positive(),
   quantity: z.number().int().min(0),
 })
@@ -42,10 +46,10 @@ export const pacoteZodSchema = z.object({
 export const statusZodSchema = z.enum(["Confirmada", "Cancelada", "Concluída"])
 
 export const reservaZodSchema = z.object({
-  id: z.string().uuid(),
-  clienteId: z.string().uuid(),
-  pacoteId: z.string().uuid(),
-  enderecoId: z.string().uuid(),
+  id: objectIdSchema,
+  clienteId: objectIdSchema,
+  pacoteId: objectIdSchema,
+  enderecoId: objectIdSchema,
   valor: z.number(),
   status: statusZodSchema,
   dataInicio: z.iso.datetime(),
@@ -63,9 +67,9 @@ export const reservaExtendedZodSchema = reservaZodSchema.extend({
 })
 
 export const feedbackZodSchema = z.object({
-  id: z.string().uuid(),
-  clienteId: z.string().uuid(),
-  pacoteId: z.string().uuid(),
+  id: objectIdSchema,
+  clienteId: objectIdSchema,
+  pacoteId: objectIdSchema,
   rating: z.number().min(1).max(5),
   comentario: z.string().min(10),
 })

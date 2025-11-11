@@ -22,7 +22,6 @@ import { useHookFormMask } from 'use-mask-input';
 
 import { useDispatch, useSelector } from "react-redux";
 import { loginCliente, selectAllClientes, type NewCliente } from "@/redux/clientes/slice";
-import type { Cliente } from "@/consts/clientes";
 import type { RootState } from "@/redux/root-reducer";
 import { addClienteServer, fetchClientes } from "@/redux/clientes/fetch";
 import { useEffect } from "react";

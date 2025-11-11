@@ -23,7 +23,7 @@ export default function HomePage() {
 
           <Link
             to="pacotes-disponiveis"
-            className="mb-24 py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) hover:brightness-109 transition-[filter] duration-200hover:brightness-109 transition-[filter] duration-200 rounded-lg leading-none cursor-pointer lg:text-[1.75rem]"
+            className="mb-24 py-4 px-9 text-white text-2xl font-bold bg-linear-(--gradient-primary-b) hover:brightness-109 transition-[filter] duration-200hover:brightness-109 duration-200 rounded-lg leading-none cursor-pointer lg:text-[1.75rem]"
             >
             Buscar pacotes
           </Link>
