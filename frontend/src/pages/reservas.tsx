@@ -9,9 +9,11 @@ import { format, isToday, isTomorrow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
 import { OperacaoConfirmadaDialog } from "@/components/dialogs/operacao-confirmada-dialog";
+import { FiltrosReservasDialog } from "@/components/dialogs/filtros-reservas-dialog";
+import { OrdenarReservasDialog } from "@/components/dialogs/ordenar-reservas-dialog";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate, useLocation } from "react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { selectAllReservas, selectReservaById, type Reserva } from "@/redux/reservas/slice";
@@ -44,6 +46,8 @@ export default function ReservasPage() {
   const [reservaToOpen, setReservaToOpen] = useState<string | null>(null);
   const [clienteToOpen, setClienteToOpen] = useState<string | null>(null);
   const [operacaoSucesso, setOperacaoSucesso] = useState<{ reserva: Reserva; tipo: "Entrega" | "Coleta" } | null>(null);
+  const [filtros, setFiltros] = useState<any>({});
+  const [ordenacao, setOrdenacao] = useState<any>({ campo: "dataInicio", ordem: "asc" });
 
   useEffect(() => {
     if (!isGerente() && !isSuporte()) {
@@ -61,8 +65,60 @@ export default function ReservasPage() {
     }
   }, [location]);
   
-  const reservasConfirmadas = reservas.filter((reserva) =>  reserva.status === "Confirmada");
-  const reservasPorData = agruparReservasPorData(reservasConfirmadas)
+  const reservasFiltradas = useMemo(() => {
+    let resultado = reservas.filter((reserva) => reserva.status === "Confirmada");
+
+    if (filtros.status && filtros.status !== "Todas") {
+      resultado = resultado.filter(r => r.status === filtros.status);
+    }
+
+    if (filtros.dataInicio) {
+      resultado = resultado.filter(r => new Date(r.dataInicio) >= new Date(filtros.dataInicio));
+    }
+
+    if (filtros.dataTermino) {
+      resultado = resultado.filter(r => new Date(r.dataTermino) <= new Date(filtros.dataTermino));
+    }
+
+    resultado.sort((a, b) => {
+      let valorA: any, valorB: any;
+
+      switch (ordenacao.campo) {
+        case "dataInicio":
+          valorA = new Date(a.dataInicio).getTime();
+          valorB = new Date(b.dataInicio).getTime();
+          break;
+        case "dataTermino":
+          valorA = new Date(a.dataTermino).getTime();
+          valorB = new Date(b.dataTermino).getTime();
+          break;
+        case "valor":
+          valorA = a.valor;
+          valorB = b.valor;
+          break;
+        case "status":
+          valorA = a.status;
+          valorB = b.status;
+          break;
+        case "pacote":
+          valorA = a.pacote?.name || "";
+          valorB = b.pacote?.name || "";
+          break;
+        default:
+          return 0;
+      }
+
+      if (ordenacao.ordem === "asc") {
+        return valorA > valorB ? 1 : -1;
+      } else {
+        return valorA < valorB ? 1 : -1;
+      }
+    });
+
+    return resultado;
+  }, [reservas, filtros, ordenacao]);
+
+  const reservasPorData = agruparReservasPorData(reservasFiltradas)
   
   const reservaParaAbrir = reservaToOpen ? useSelector((state: RootState) => selectReservaById(state, reservaToOpen)) : null
 
@@ -74,16 +130,22 @@ export default function ReservasPage() {
       </PageTitleContainer>
 
       <div className="w-40 md:w-52 py-1 gap-4 items-center justify-center">
-        <Button className="w-40 md:w-52" variant="secondary" size="sm">
-          <FilterIcon className="size-4.5" />
-          Filtros
-        </Button>
+        <FiltrosReservasDialog onApplyFilters={setFiltros}>
+          <Button className="w-40 md:w-52" variant="secondary" size="sm">
+            <FilterIcon className="size-4.5" />
+            Filtros
+          </Button>
+        </FiltrosReservasDialog>
       </div>
 
       {['loading', 'saving', 'deleting'].includes(statusR) ? (
         <p className="text-lg text-white text-center py-2 w-full">Carregando...</p>
       ) : ['failed'].includes(statusR) ? (
         <p className="text-lg text-white text-center py-2 w-full">{errorR}</p>
+      ) : reservasFiltradas.length === 0 && (filtros.status || filtros.dataInicio || filtros.dataTermino) ? (
+        <p className="text-base text-white w-full text-center">
+          Nenhuma reserva encontrada com os filtros aplicados.
+        </p>
       ) : reservasPorData.length === 0 ? (
         <p className="text-base text-white w-full text-center">
           Não há reservas confirmadas no momento.
