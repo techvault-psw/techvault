@@ -26,7 +26,7 @@ router.get('/enderecos/:id', {
 
   const endereco = await enderecos.findById(id).populate("clienteId") as PopulatedEnderecoSchema
 
-  if(!endereco) {
+  if(!endereco || !endereco.clienteId) {
     return res.status(400).send({
       success: false,
       message: 'Endereco não encontrado'

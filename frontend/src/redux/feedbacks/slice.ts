@@ -1,4 +1,4 @@
-import { type Cliente } from "@/consts/clientes"
+import type { Cliente } from "../clientes/slice"
 import type { Optional } from "@/types/optional"
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
 import type { Pacote } from "../pacotes/slice"
@@ -6,7 +6,7 @@ import type { InitialState, RootState } from "../root-reducer"
 import { addFeedbackServer, deleteFeedbackServer, fetchFeedbacks, updateFeedbackServer } from "./fetch"
 
 export type Feedback = {
-  id: number
+  id: string
   cliente: Cliente
   pacote: Pacote
   rating: number
@@ -16,9 +16,9 @@ export type Feedback = {
 export type NewFeedback = Optional<Feedback, 'id'>
 
 export type FeedbackServer = {
-  id: number
-  clienteId: number
-  pacoteId: number
+  id: string
+  clienteId: string
+  pacoteId: string
   rating: number
   comentario: string
 }

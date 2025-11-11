@@ -26,7 +26,7 @@ router.get('/reservas/:id', {
 
   const reserva = await reservas.findById(id).populate("clienteId pacoteId enderecoId") as PopulatedReservaSchema
 
-  if (!reserva) {
+  if (!reserva || !reserva.clienteId || !reserva.pacoteId || !reserva.enderecoId) {
     return res.status(400).send({
       success: false,
       message: 'Reserva não encontrada'

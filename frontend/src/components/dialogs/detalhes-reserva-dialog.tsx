@@ -14,7 +14,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { DateTimePicker } from "../ui/datetime-picker";
 import { CancelarReservaDialog } from "./cancelar-reserva-dialog";
-import { clientes } from "@/consts/clientes";
 import useCargo from "@/hooks/useCargo";
 import { ConfirmarOperacaoDialog } from "./confirmar-operacao-dialog";
 import { DadosClienteDialog } from "./dados-cliente-dialog";
@@ -335,7 +334,7 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
                 <div className="w-full flex gap-2 items-center">
                   {reserva.status === "Confirmada" && (
                     <CancelarReservaDialog
-                      cliente={clientes[0]}
+                      cliente={reserva.cliente}
                       handleCancelClick={cancelarReserva}
                       reserva={reserva}
                     >

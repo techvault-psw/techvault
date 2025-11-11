@@ -22,6 +22,7 @@ import { cn } from '@/lib/utils';
 import { useDispatch } from 'react-redux';
 import { addPacoteServer } from '@/redux/pacotes/fetch';
 import type { AppDispatch } from '@/redux/store';
+import { uploadPacoteImage } from '@/lib/upload-pacote-image';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -74,12 +75,16 @@ export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
 
   const dispatch = useDispatch<AppDispatch>()
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     if (!previewUrl) return
+
+    const { url } = await uploadPacoteImage(previewUrl)
+
+    if (!url) return
     
     dispatch(addPacoteServer({
       ...values,
-      image: previewUrl,
+      image: url,
       value: currencyMask.parseCurrency(values.value),
       quantity: parseInt(values.quantity),
       description: values.description.split('\n\n').filter(desc => desc.trim()),

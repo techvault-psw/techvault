@@ -17,7 +17,9 @@ router.get('/feedbacks', {
 }, async (req, res) => {
   const dbFeedbacks = await feedbacks.find({}).populate("clienteId pacoteId") as PopulatedFeedbackSchema[]
 
-  const formattedFeedbacks = dbFeedbacks.map(PopulatedFeedbackFormatter)
+  const formattedFeedbacks = dbFeedbacks
+    .filter(f => f.clienteId && f.pacoteId)
+    .map(PopulatedFeedbackFormatter)
 
   return res.status(200).send(formattedFeedbacks)
 })

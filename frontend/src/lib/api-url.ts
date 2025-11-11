@@ -1,1 +1,1 @@
-export const API_URL = import.meta.env.DEV ? 'http://localhost:3000' : '/api'
+export const API_URL = import.meta.env.DEV ? 'http://localhost:3000' : 'https://techvault-back-end.vercel.app'

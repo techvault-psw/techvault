@@ -26,8 +26,7 @@ export default function InformacoesReservasPage() {
   const reservas = useSelector(selectAllReservas)
   const { id } = useParams<{ id: string }>();
 
-  const numberId = Number(id)
-  const reserva = useSelector((state: RootState) => selectReservaById(state, numberId))
+  const reserva = useSelector((state: RootState) => selectReservaById(state, id ?? ''))
   
   const pacote = reserva?.pacote
   const formattedValue = formatCurrency(reserva?.valor ?? 0) 
@@ -64,7 +63,7 @@ export default function InformacoesReservasPage() {
     }
   }, [statusR, dispatch])
 
-  if (isNaN(numberId) || numberId >= reservas.length || !reserva || !pacote) {
+  if (!id || !reserva || !pacote) {
     return
   }
 

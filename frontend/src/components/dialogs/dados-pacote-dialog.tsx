@@ -2,7 +2,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useRef, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Upload, Pen, Trash2, ArrowLeft } from "lucide-react";
+import { Upload, Pen, Trash2, ArrowLeft, LoaderCircle, Loader } from "lucide-react";
 
 import { currencyMask } from "@/lib/currency-input-mask";
 import { Button } from "../ui/button";
@@ -25,6 +25,7 @@ import { type Pacote } from '@/redux/pacotes/slice';
 import { useDispatch } from 'react-redux';
 import { updatePacoteServer, deletePacoteServer } from '@/redux/pacotes/fetch';
 import type { AppDispatch } from '@/redux/store';
+import { uploadPacoteImage } from '@/lib/upload-pacote-image';
 
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
@@ -62,6 +63,7 @@ interface DadosPacoteDialogProps {
 export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(pacote.image);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const { isGerente } = useCargo()
@@ -79,7 +81,18 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true)
+    let image = pacote.image
+
+    if (previewUrl) {
+      const { url } = await uploadPacoteImage(previewUrl)
+
+      if (url) {
+        image = url
+      }
+    }
+
     const updatedPacote: Pacote = {
       ...pacote,
       name: values.name,
@@ -87,11 +100,12 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
       components: values.components.split('\n').filter(comp => comp.trim()),
       value: currencyMask.parseCurrency(values.value),
       quantity: parseInt(values.quantity),
-      image: previewUrl || pacote.image,
+      image,
     };
     
     dispatch(updatePacoteServer(updatedPacote))
     setIsEditting(false)
+    setIsSubmitting(false)
   }
 
   const handleValueChange = (value: string, onChange: (value: string) => void) => {
@@ -330,8 +344,15 @@ export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) 
             {isGerente() && (
               <Dialog.Footer className="block space-y-3">
                 {isEditting ? (
-                  <Button type="submit" className="h-[2.625rem] w-full">
-                    Salvar alterações
+                  <Button type="submit" className="h-[2.625rem] w-full" disabled={isSubmitting}>
+                    {isSubmitting ? 
+                      <div className='flex gap-2'>
+                        <LoaderCircle className='animate-spin mt-0.25'/>
+                        <p>Salvando...</p> 
+                      </div>
+                      : 
+                      <p>Salvar alterações</p> 
+                    }
                   </Button>
                 ) : (
                   <div className="w-full flex gap-3 items-center">

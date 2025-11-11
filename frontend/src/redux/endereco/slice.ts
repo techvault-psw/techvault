@@ -6,7 +6,7 @@ import type { RootState } from "../root-reducer.ts";
 import type { Cliente } from "../clientes/slice.ts";
 
 export type Endereco = {
-    id: number
+    id: string
     cliente: Cliente
     name: string
     cep: string
@@ -21,8 +21,8 @@ export type Endereco = {
 export type NewEndereco = Optional<Endereco, 'id'>
 
 export type EnderecoServer = {
-  id: number,
-  clienteId: number,
+  id: string,
+  clienteId: string,
   name: string,
   cep: string,
   street: string,

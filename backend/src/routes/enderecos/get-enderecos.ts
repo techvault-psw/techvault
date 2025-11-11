@@ -17,7 +17,9 @@ router.get('/enderecos', {
 }, async(req, res) => {
   const dbEnderecos = await enderecos.find({}).populate("clienteId") as PopulatedEnderecoSchema[]
 
-  const formattedEnderecos = dbEnderecos.map(PopulatedEnderecoFormatter)
+  const formattedEnderecos = dbEnderecos
+    .filter(e => e.clienteId)
+    .map(PopulatedEnderecoFormatter)
 
   return res.status(200).send(formattedEnderecos)
 })

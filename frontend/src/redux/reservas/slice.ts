@@ -1,14 +1,14 @@
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
-import { type Cliente } from "@/consts/clientes"
 import type { Optional } from "@/types/optional";
 import type { Pacote } from "../pacotes/slice";
 import type { Endereco } from "@/redux/endereco/slice";
 import type { InitialState, RootState } from "../root-reducer";
 
 import {addReservaServer, cancelReservaServer, coletarReservaServer, entregarReservaServer, fetchReservas, updateReservaServer} from "./fetch";
+import type { Cliente } from "../clientes/slice";
 
 export type Reserva = {
-  id: number
+  id: string
   pacote: Pacote
   valor: number
   status: "Confirmada" | "Cancelada" | "Concluída"
@@ -25,7 +25,7 @@ export type Reserva = {
 export type NewReserva = Optional<Reserva, "id" | "codigoEntrega" | "codigoColeta" | "valor">
 
 export type ReservaServer = {
-  id: number
+  id: string
   valor: number
   status: "Confirmada" | "Cancelada" | "Concluída"
   dataInicio: string
@@ -34,9 +34,9 @@ export type ReservaServer = {
   dataColeta?: string
   codigoEntrega: string
   codigoColeta: string
-  clienteId: number
-  pacoteId: number
-  enderecoId: number
+  clienteId: string
+  pacoteId: string
+  enderecoId: string
 }
 
 export type NewReservaServer = Optional<ReservaServer, "id" | "codigoEntrega" | "codigoColeta" | "valor">
