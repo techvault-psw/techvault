@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { loginRoute } from "./auth/login";
 import { getCliente } from "./cliente/get-cliente";
 import { getClientes } from "./cliente/get-clientes";
 import { createCliente } from "./cliente/create-cliente";
@@ -30,6 +31,8 @@ import { deleteFeedback } from "./feedbacks/delete-feedback";
 import { getReserva } from "./reservas/get-reserva";
 
 const router = Router()
+
+router.use(loginRoute)
 
 router.use(getClientes)
 router.use(getCliente)

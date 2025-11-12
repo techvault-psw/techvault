@@ -1,3 +1,4 @@
+import bcrypt from "bcrypt";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { clienteZodSchema } from "../../consts/zod-schemas";
@@ -42,12 +43,15 @@ router.post('/clientes', {
     })
   }
 
+  const salt = await bcrypt.genSalt(10);
+  const passwordHash = await bcrypt.hash(password, salt);
+
   const cliente = await clientes.insertOne({
     name,
     email,
     phone,
     registrationDate: new Date(),
-    password,
+    password: passwordHash,
     role,
   })
 
