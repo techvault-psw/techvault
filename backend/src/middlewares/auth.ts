@@ -1,7 +1,7 @@
 import { NextFunction, Request, Response, RequestHandler } from 'express';
 import passport from '../passport';
 import type { Role } from '../consts/types';
-import type { ClienteSchema } from '../models/cliente';
+import type { ReqUser } from '../types/express';
 
 export const authValidator = passport.authenticate('jwt', { session: false }) as RequestHandler;
 
@@ -14,7 +14,7 @@ export const roleValidator = (...roles: Role[]) => {
       });
     }
 
-    const user = req.user as ClienteSchema
+    const user = req.user as ReqUser
 
     if (roles.length && !roles.includes(user.role)) {
       return res.status(403).json({

@@ -1,11 +1,14 @@
 import type { Request } from 'express';
-import type { ClienteSchema } from '../models/cliente';
+import type { Role } from '../consts/types';
+
+type ReqUser = {
+  id: string,
+  role: Role,
+}
 
 declare global {
   namespace Express {
-    interface User extends ClienteSchema {}
-    interface Request {
-      user: ClienteSchema;
-    }
+    interface User extends ReqUser {}
+    interface Request { user: ReqUser }
   }
 }

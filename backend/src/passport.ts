@@ -7,7 +7,7 @@ const jwtSecret = process.env.JWT_SECRET || 'jwt-secret-key'
 
 export const getToken = (cliente: ClienteSchema) => {
   return jwt.sign(
-    { id: cliente._id, role: cliente.role },
+    { id: cliente._id.toString(), role: cliente.role },
     jwtSecret,
     { expiresIn: '7d' }
   )
