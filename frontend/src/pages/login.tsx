@@ -21,11 +21,12 @@ import { Separator } from "@/components/ui/separator";
 import useCargo from "@/hooks/useCargo";
 import { useDispatch, useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
-import { loginCliente, selectAllClientes } from "@/redux/clientes/slice";
-import { useEffect } from "react";
-import { fetchClientes } from "@/redux/clientes/fetch";
+import { selectAllClientes, type Role } from "@/redux/clientes/slice";
+import { useEffect, useState } from "react";
+import { fetchClientes, loginServer } from "@/redux/clientes/fetch";
 import type { AppDispatch } from "@/redux/store";
 import { HighlightBox } from "@/components/highlight-box";
+import { jwtDecode } from "jwt-decode";
 
 const formSchema = z.object({
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
@@ -36,6 +37,7 @@ export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
   const redirectTo = searchParams.get("redirectTo");
+  const [error, setError] = useState(false);
 
   const form2 = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,26 +57,41 @@ export default function LoginPage() {
   }, [statusC, dispatch])
   const clientes = useSelector(selectAllClientes)
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    
-    const cliente = clientes.find(cliente => cliente.email === values.email && cliente.password === values.password);
-    if(cliente){
-      dispatch(loginCliente(values)); 
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { email, password } = values
+
+    try {
+      const result = await dispatch(loginServer({ email, password })).unwrap()
+
+      setError(false)
+      const { id } = jwtDecode<{ id: string; role: Role }>(result.token)
+      const cliente = clientes.find(c => c.id === id)
+
+      if (!cliente) return
+
       if (redirectTo) {
         navigate(redirectTo, { replace: true })
       } else if (cliente.role === "Gerente" || cliente.role === "Suporte") {
         navigate("/dashboard", { replace: true })
       } else {
-        navigate("/", { replace: true });
+        navigate("/", { replace: true })
       }
-    }
-    else{
-      form2.setError("email",{
-        type: "custom", message: "E-mail ou Senha inválidos"
-      });
-      form2.setError("password",{
-        type: "custom", message: "E-mail ou Senha inválidos"
-      });
+    } catch (error: any) {
+      if (error?.status === 401) {
+        setError(false)
+        
+        form2.setError("email", {
+          type: "custom",
+          message: "E-mail ou Senha inválidos"
+        })
+
+        form2.setError("password", {
+          type: "custom",
+          message: "E-mail ou Senha inválidos"
+        })
+      } else {
+        setError(true)
+      }
     }
   }
 
@@ -84,7 +101,7 @@ export default function LoginPage() {
 
       <Separator/>
 
-      {statusC === 'failed' && (
+      {(statusC === 'failed' || error) && (
         <HighlightBox variant="destructive">
           Estamos enfrentando um problema, tente novamente mais tarde.
         </HighlightBox>

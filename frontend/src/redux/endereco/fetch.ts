@@ -13,12 +13,7 @@ export const addEnderecoServer = createAsyncThunk<Endereco, NewEndereco>('endere
   async (newEndereco) => {
     const { cliente, id, ...enderecoInfo } = newEndereco
 
-    const endereco: NewEnderecoServer = {
-      ...enderecoInfo,
-      clienteId: cliente.id
-    }
-
-    return await httpPost('/enderecos', endereco)
+    return await httpPost('/enderecos', enderecoInfo)
   }
 )
 

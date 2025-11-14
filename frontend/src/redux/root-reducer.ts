@@ -10,7 +10,7 @@ import { pacotesReducer } from "./pacotes/slice";
 const clientePersistConfig = {
   key: 'clienteReducer',
   storage,
-  whitelist: ['clienteAtual']
+  whitelist: ['token']
 };
 
 const rootReducer = combineReducers({

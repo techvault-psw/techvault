@@ -61,7 +61,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   });
 
   const dispatch = useDispatch<AppDispatch>()
-  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
@@ -83,7 +83,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const location = useLocation()
 
   const handleOpenChange = (isOpen: boolean) => {
-    if (!clienteAtual) {
+    if (!token) {
       navigate(`/login?redirectTo=${location.pathname}`)
       return
     }

@@ -54,7 +54,7 @@ export default function PerfilPage() {
 
     const dispatch = useDispatch<AppDispatch>();
     const { status: statusE, error: errorE } = useSelector((rootReducer: RootState) => rootReducer.enderecosReducer) 
-    const { status: statusC, error: errorC, clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { status: statusC, error: errorC, clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
         if (['not_loaded', 'saved', 'deleted'].includes(statusC)) {
@@ -101,10 +101,18 @@ export default function PerfilPage() {
     const location = useLocation()
     
     useEffect(() => {
-        if (!clienteAtual) {
+        if (!token) {
             navigate(`/login?redirectTo=${location.pathname}`)
         }
-    }, [])
+    }, [token])
+
+    useEffect(() => {
+        if (clienteAtual) {
+            form.setValue("name", clienteAtual.name)
+            form.setValue("email", clienteAtual.email)
+            form.setValue("phone", clienteAtual.phone)
+        }
+    }, [clienteAtual])
   
    useEffect(() => {
         if (['not_loaded', 'saved', 'deleted'].includes(statusE)) {

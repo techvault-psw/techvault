@@ -4,6 +4,7 @@ import { createEntityAdapter, createSlice } from "@reduxjs/toolkit"
 import type { Pacote } from "../pacotes/slice"
 import type { InitialState, RootState } from "../root-reducer"
 import { addFeedbackServer, deleteFeedbackServer, fetchFeedbacks, updateFeedbackServer } from "./fetch"
+import { loginServer } from "../clientes/fetch"
 
 export type Feedback = {
   id: string
@@ -50,6 +51,7 @@ const feedbacksSlice = createSlice({
       .addCase(deleteFeedbackServer.pending,   (state, action) => { state.status = 'deleting' })
       .addCase(deleteFeedbackServer.fulfilled, (state, action) => { state.status = 'deleted'; feedbacksAdapter.removeOne(state, action.payload) })
       .addCase(deleteFeedbackServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao excluir feedback!' })
+      .addCase(loginServer.fulfilled,          (state, action) => { if (state.status === 'failed') { state.status = 'not_loaded'; state.error = null; } })
   }
 })
 

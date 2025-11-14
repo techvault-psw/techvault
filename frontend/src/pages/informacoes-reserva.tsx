@@ -47,11 +47,11 @@ export default function InformacoesReservasPage() {
     }
   }
 
-  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
 
   useEffect(() => {
-    if (!clienteAtual) {
+    if (!token) {
       const fullPath = location.pathname + location.search + location.hash;
       navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
     }

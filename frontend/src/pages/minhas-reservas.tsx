@@ -25,7 +25,7 @@ import { GoBackButton } from "@/components/go-back-button";
 
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
-    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const { status: statusR, error: errorR } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
     const reservas = useSelector(selectAllReservas)
     const [filtros, setFiltros] = useState<any>({});
@@ -35,7 +35,7 @@ export default function MinhasReservasPage() {
 
     const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
-        if (!clienteAtual) {
+        if (!token) {
             navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])

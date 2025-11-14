@@ -2,6 +2,7 @@ import { type Optional } from "@/types/optional";
 import { createEntityAdapter, createSlice } from "@reduxjs/toolkit";
 import type { InitialState, RootState } from "../root-reducer";
 import { addPacoteServer, deletePacoteServer, fetchPacotes, updatePacoteServer } from "./fetch";
+import { loginServer } from "../clientes/fetch";
 
 export type Pacote = {
   id: string
@@ -44,6 +45,7 @@ const pacotesSlice = createSlice({
       .addCase(deletePacoteServer.pending,   (state, action) => { state.status = 'deleting' })
       .addCase(deletePacoteServer.fulfilled, (state, action) => { state.status = 'deleted'; pacoteAdapter.removeOne(state, action.payload) })
       .addCase(deletePacoteServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao excluir pacote!' })
+      .addCase(loginServer.fulfilled,        (state, action) => { if (state.status === 'failed') { state.status = 'not_loaded'; state.error = null; } })
   }
 })
 
