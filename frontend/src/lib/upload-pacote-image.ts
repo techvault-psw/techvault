@@ -1,5 +1,11 @@
 import { API_URL } from "./api-url";
 
+let getState: (() => import("@/redux/root-reducer").RootState) | null = null;
+
+export function configureUploadAuth(storeGetState: () => import("@/redux/root-reducer").RootState) {
+  getState = storeGetState;
+}
+
 export async function uploadPacoteImage(imageUrl: string): Promise<{ url: string | null }> {
   const response = await fetch(imageUrl);
   const blob = await response.blob();
@@ -12,10 +18,17 @@ export async function uploadPacoteImage(imageUrl: string): Promise<{ url: string
   const formData = new FormData();  
   formData.append('file', file);
 
+  const token = getState?.().clienteReducer.token;
+  const headers: HeadersInit = {};
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   try {
     const uploadResponse = await fetch(`${API_URL}/pacotes/upload-image`, {
       method: 'POST',
       body: formData,
+      headers
     });
 
     if (!uploadResponse.ok) {

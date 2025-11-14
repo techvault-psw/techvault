@@ -93,7 +93,7 @@ export default function ConfirmarReservaPage() {
 
   const { id } = useParams<{ id: string }>();
 
-  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
   const location = useLocation()
@@ -123,7 +123,7 @@ export default function ConfirmarReservaPage() {
   }
 
   useEffect(() => {
-    if (!clienteAtual) {
+    if (!token) {
       const fullPath = location.pathname + location.search + location.hash;
       navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
     }

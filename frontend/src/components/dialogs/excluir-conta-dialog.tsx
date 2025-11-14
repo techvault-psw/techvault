@@ -12,6 +12,7 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HighlightBox } from "../highlight-box";
+import bcryptjs from 'bcryptjs'
 
 interface ExcluirContaDialogProps {
   children: ReactNode
@@ -34,10 +35,11 @@ export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirConta
     }
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if(!clienteAtual) return
 
-    if(clienteAtual.password == values.password) {
+    const passwordMatch = await bcryptjs.compare(values.password, clienteAtual.password)
+    if (passwordMatch) {
       handleDeleteClick()
     } else {
       form.setError("password", { 

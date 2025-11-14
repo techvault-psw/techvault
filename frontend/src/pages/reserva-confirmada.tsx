@@ -23,10 +23,10 @@ export default function ReservaConfirmadaPage() {
 
     const navigate = useNavigate()
     const location = useLocation()
-    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
     useEffect(() => {
-        if (!clienteAtual) {
+        if (!token) {
             const fullPath = location.pathname + location.search + location.hash;
             navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
         }
