@@ -40,7 +40,7 @@ router.get('/reservas/:id', {
   }
 
 
-  if(user.role === 'Cliente' && user.id !== reserva.clienteId.toString()) {
+  if(user.role === 'Cliente' && user.id !== reserva.clienteId._id.toString()) {
     return res.status(403).send({
       success: false,
       message: 'Acesso não autorizado.'
