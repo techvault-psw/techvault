@@ -2,6 +2,7 @@ import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { objectIdSchema } from "../../consts/zod-schemas";
 import { reservas } from "../../models/reserva";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -22,7 +23,7 @@ router.delete('/reservas/:id', {
       }),
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { id } = req.params
 
   const reserva = await reservas.findById(id)
