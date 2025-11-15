@@ -43,14 +43,14 @@ router.get('/enderecos/:id', {
     })
   }
 
-  if(user.role === 'Cliente' && user.id !== endereco.clienteId.toString()) {
+  const formattedEndereco = PopulatedEnderecoFormatter(endereco)
+
+  if(user.role === 'Cliente' && user.id !== formattedEndereco.clienteId) {
     return res.status(403).send({
       success: false,
       message: 'Acesso não autorizado'
     })
   }
-
-  const formattedEndereco = PopulatedEnderecoFormatter(endereco)
 
   return res.status(200).send(formattedEndereco)
 })
