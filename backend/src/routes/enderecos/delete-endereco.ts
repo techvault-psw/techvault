@@ -35,13 +35,6 @@ router.delete('/enderecos/:id', {
   const { id } = req.params
   const user = req.user!
 
-  if(!user) {
-    return res.status(401).send({
-      success: false,
-      message: 'Acesso não autorizado'
-    })
-  }
-
   const endereco = await enderecos.findById(id)
 
   if(!endereco) {

@@ -31,13 +31,6 @@ router.post('/enderecos', {
 }, authValidator, async (req, res) => {
   const user = req.user!
 
-  if(!user) {
-    return res.status(401).send({
-      success: false,
-      message: 'Acesso não autorizado'
-    })
-  }
-
   const clienteId = user.id;
   const cliente = await clientes.findById(clienteId)
 

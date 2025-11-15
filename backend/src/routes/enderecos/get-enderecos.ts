@@ -20,14 +20,6 @@ router.get('/enderecos', {
     },
   }
 }, authValidator, async(req, res) => {
-  const user = req.user!
-  if(!user) {
-    return res.status(401).send({
-      success: false,
-      message: 'Acesso não autorizado'
-    })
-  }
-
   const dbEnderecos = await enderecos.find({}).populate("clienteId") as PopulatedEnderecoSchema[]
 
   const formattedEnderecos = dbEnderecos

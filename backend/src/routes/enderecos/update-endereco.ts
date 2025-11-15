@@ -39,13 +39,6 @@ router.put('/enderecos/:id', {
   const newEndereco = req.body
   const user = req.user!
 
-  if(!user) {
-    return res.status(401).send({
-      success: false,
-      message: 'Acesso não autorizado'
-    })
-  }
-
   const endereco = await enderecos.findById(id)
 
   if(!endereco) {
