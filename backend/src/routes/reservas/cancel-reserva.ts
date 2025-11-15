@@ -3,6 +3,7 @@ import z from "zod";
 import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
 import { reservas } from "../../models/reserva";
 import { ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -19,10 +20,16 @@ router.patch('/reservas/:id/cancelar-reserva', {
         success: z.boolean(),
         message: z.string(),
       }),
+      403: z.object({
+        success: z.boolean(),
+        message: z.string(),
+      }),
+      
     },
   },
-}, async (req, res) => {
+}, authValidator, async (req, res) => {
   const { id } = req.params
+  const user = req.user!
 
   const reserva = await reservas.findById(id)
 
@@ -41,6 +48,13 @@ router.patch('/reservas/:id/cancelar-reserva', {
     return res.status(400).send({
       success: false,
       message: 'Essa reserva não pode ser cancelada.'
+    })
+  }
+  
+  if(user.role !== 'Gerente' && user.id !== reserva.clienteId.toString()) {
+    return res.status(403).send({
+      success: false,
+      message: 'Acesso não autorizado.'
     })
   }
 
