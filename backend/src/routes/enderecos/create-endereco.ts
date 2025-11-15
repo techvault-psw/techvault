@@ -32,14 +32,6 @@ router.post('/enderecos', {
   const user = req.user!
 
   const clienteId = user.id;
-  const cliente = await clientes.findById(clienteId)
-
-  if(!cliente) {
-    return res.status(400).send({
-      success: false,
-      message: 'Cliente não encontrado'
-    })
-  }
 
   const endereco = await enderecos.create({
     clienteId,
