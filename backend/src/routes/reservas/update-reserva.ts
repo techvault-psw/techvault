@@ -3,6 +3,7 @@ import z from "zod";
 import { reservas } from "../../models/reserva";
 import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
 import { ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -28,7 +29,7 @@ router.put('/reservas/:id', {
       }),
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { id } = req.params
   const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status } = req.body
   
