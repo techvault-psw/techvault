@@ -30,15 +30,6 @@ router.post('/feedbacks', {
   const { pacoteId, rating, comentario } = req.body
   const user = req.user!
 
-  const cliente = await clientes.findById(user.id)
-
-  if (!cliente) {
-    return res.status(400).send({
-      success: false,
-      message: 'Cliente não encontrado'
-    })
-  }
-
   const pacote = await pacotes.findById(pacoteId)
 
   if (!pacote) {
