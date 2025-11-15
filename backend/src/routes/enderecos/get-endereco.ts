@@ -39,7 +39,7 @@ router.get('/enderecos/:id', {
   if(!endereco || !endereco.clienteId) {
     return res.status(400).send({
       success: false,
-      message: 'Endereco não encontrado'
+      message: 'Endereço não encontrado'
     })
   }
 
