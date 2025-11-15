@@ -9,7 +9,11 @@
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
     "server": "node server.js",
-    "json-server": "json-server --watch backend-mock.json"
+    "json-server": "json-server --watch backend-mock.json",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.2.7",
@@ -46,6 +50,7 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@playwright/test": "^1.56.1",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
