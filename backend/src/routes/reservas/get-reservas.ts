@@ -4,6 +4,7 @@ import type { ReservaExtended } from "../../consts/types";
 import { reservaExtendedZodSchema } from "../../consts/zod-schemas";
 import { PopulatedReservaSchema, reservas } from "../../models/reserva";
 import { PopulatedReservaFormatter, ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -15,7 +16,7 @@ router.get('/reservas', {
       200: z.array(reservaExtendedZodSchema)
     },
   },
-}, async (req, res) => {
+}, authValidator, async (req, res) => {
   const dbReservas = await reservas.find({}).populate("clienteId pacoteId enderecoId") as PopulatedReservaSchema[]
   const formattedReservas = dbReservas
     .filter(r => r.clienteId && r.pacoteId && r.enderecoId)

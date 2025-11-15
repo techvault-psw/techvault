@@ -9,6 +9,7 @@ import { pacotes } from "../../models/pacote";
 import { enderecos } from "../../models/endereco";
 import { reservas } from "../../models/reserva";
 import { ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -18,6 +19,7 @@ router.post('/reservas', {
     tags: ['Reservas'],
     body: reservaZodSchema.omit({
       id: true,
+      clienteId: true,
       valor: true,
       status: true,
       dataEntrega: true,
@@ -33,10 +35,11 @@ router.post('/reservas', {
       })
     },
   },
-}, async (req, res) => {
-  const { clienteId, pacoteId, enderecoId, dataInicio, dataTermino } = req.body
+}, authValidator, async (req, res) => {
+  const {pacoteId, enderecoId, dataInicio, dataTermino } = req.body
+  const user = req.user!
 
-  const cliente = await clientes.findById(clienteId)
+  const cliente = await clientes.findById(user.id)
 
   if (!cliente) {
     return res.status(400).send({
@@ -94,7 +97,7 @@ router.post('/reservas', {
   const valor = pacote.value * horasReserva
 
   const reserva = await reservas.insertOne({
-    clienteId,
+    clienteId: user.id,
     pacoteId,
     enderecoId,
     valor,

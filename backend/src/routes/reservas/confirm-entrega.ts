@@ -3,6 +3,7 @@ import z from "zod";
 import { reservas } from "../../models/reserva";
 import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
 import { ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -24,7 +25,7 @@ router.patch('/reservas/:id/confirmar-entrega', {
       }),
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente', 'Suporte'), async (req, res) => {
   const { id } = req.params
   const { codigoEntrega } = req.body
 
