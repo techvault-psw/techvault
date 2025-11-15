@@ -3,6 +3,7 @@ import z from "zod";
 import { objectIdSchema, pacoteZodSchema } from "../../consts/zod-schemas";
 import { pacotes } from "../../models/pacote";
 import { PacoteFormatter } from "../../formatters/pacote-formatter";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -24,7 +25,7 @@ router.put('/pacotes/:id', {
       }),
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { id } = req.params
   const { name, image, description, components, value, quantity } = req.body
 
