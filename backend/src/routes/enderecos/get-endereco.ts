@@ -3,12 +3,13 @@ import z from 'zod'
 import { enderecos, PopulatedEnderecoSchema } from "../../models/endereco"
 import { enderecoExtendedZodSchema, objectIdSchema } from "../../consts/zod-schemas";
 import { PopulatedEnderecoFormatter } from "../../formatters/endereco-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
 router.get('/enderecos/:id', {
   schema: {
-    summary: 'Get Address',
+    summary: 'Get Endereço',
     tags: ['Endereços'],
     params: z.object({
       id: objectIdSchema
@@ -19,10 +20,19 @@ router.get('/enderecos/:id', {
         success: z.boolean(),
         message: z.string(),
       }),
+      401: z.object({
+        success: z.boolean(),
+        message: z.string(),
+      }),
+      403: z.object({
+        success: z.boolean(),
+        message: z.string(),
+      })
     }
   }
-}, async(req, res) => {
+}, authValidator, async(req, res) => {
   const { id } = req.params
+  const user = req.user!
 
   const endereco = await enderecos.findById(id).populate("clienteId") as PopulatedEnderecoSchema
 
@@ -30,6 +40,13 @@ router.get('/enderecos/:id', {
     return res.status(400).send({
       success: false,
       message: 'Endereco não encontrado'
+    })
+  }
+
+  if(user.role === 'Cliente' && user.id !== endereco.clienteId.toString()) {
+    return res.status(403).send({
+      success: false,
+      message: 'Acesso não autorizado'
     })
   }
 

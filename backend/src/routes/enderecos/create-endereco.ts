@@ -4,25 +4,34 @@ import { enderecoZodSchema } from "../../consts/zod-schemas";
 import { clientes } from "../../models/cliente";
 import { enderecos } from "../../models/endereco";
 import { EnderecoFormatter } from "../../formatters/endereco-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
 router.post('/enderecos', {
   schema: {
-    summary: 'Create Address',
+    summary: 'Create Endereço',
     tags: ['Endereços'],
-    body: enderecoZodSchema.omit({ id: true }),
+    body: enderecoZodSchema.omit({ 
+      id: true,
+      clienteId: true
+    }),
     response: {
       201: enderecoZodSchema,
       400: z.object({
         success: z.boolean(),
         message: z.string()
+      }),
+      401: z.object({
+        success: z.boolean(),
+        message: z.string()
       })
     },
   },
-}, async (req, res) => {
-  const { clienteId, ...rest } = req.body
+}, authValidator, async (req, res) => {
+  const user = req.user!
 
+  const clienteId = user.id;
   const cliente = await clientes.findById(clienteId)
 
   if(!cliente) {
@@ -34,7 +43,7 @@ router.post('/enderecos', {
 
   const endereco = await enderecos.create({
     clienteId,
-    ...rest
+    ...req.body
   })
 
   const formattedEndereco = EnderecoFormatter(endereco)

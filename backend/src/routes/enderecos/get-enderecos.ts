@@ -3,18 +3,23 @@ import { enderecoExtendedZodSchema } from "../../consts/zod-schemas";
 import z from "zod"
 import { enderecos, PopulatedEnderecoSchema } from "../../models/endereco";
 import { PopulatedEnderecoFormatter } from "../../formatters/endereco-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
 router.get('/enderecos', {
   schema: {
-    summary: 'Get Addresses',
+    summary: 'Get Endereços',
     tags: ['Endereços'],
     response: {
-      200: z.array(enderecoExtendedZodSchema)
+      200: z.array(enderecoExtendedZodSchema),
+      401: z.object({
+        success: z.boolean(),
+        message: z.string()
+      })
     },
   }
-}, async(req, res) => {
+}, authValidator, async(req, res) => {
   const dbEnderecos = await enderecos.find({}).populate("clienteId") as PopulatedEnderecoSchema[]
 
   const formattedEnderecos = dbEnderecos
