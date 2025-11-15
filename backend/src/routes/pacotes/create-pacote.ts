@@ -4,6 +4,7 @@ import z from "zod";
 import { pacoteZodSchema } from "../../consts/zod-schemas";
 import { pacotes } from "../../models/pacote";
 import { PacoteFormatter } from "../../formatters/pacote-formatter";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -20,7 +21,7 @@ router.post('/pacotes', {
       })
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { name, image, description, components, value, quantity } = req.body
 
   const pacoteExiste = await pacotes.findOne({name})

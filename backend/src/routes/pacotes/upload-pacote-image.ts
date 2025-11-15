@@ -3,6 +3,7 @@ import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { upload } from "../../utils/muler";
 import { uploadImage } from "../../utils/upload-image";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -30,7 +31,7 @@ router.post('/pacotes/upload-image', {
       })
     },
   },
-}, upload.single('file'), async (req, res) => {
+}, upload.single('file'), authValidator, roleValidator('Gerente'), async (req, res) => {
   const image = req.file
 
   if (!image) {
