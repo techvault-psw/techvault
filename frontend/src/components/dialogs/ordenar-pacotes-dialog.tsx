@@ -1,3 +1,11 @@
+/**
+ * @fileoverview Diálogo de ordenação para pacotes
+ * 
+ * Permite ordenar pacotes por nome ou valor, em ordem crescente ou decrescente.
+ * 
+ * @module components/dialogs/OrdenarPacotesDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -14,16 +22,51 @@ import {
 import { Separator } from "../ui/separator";
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
+/**
+ * Schema de validação para o formulário de ordenação
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} campo - Campo de ordenação: "name" (nome) ou "value" (valor)
+ * @property {string} ordem - Ordem de classificação: "asc" (crescente) ou "desc" (decrescente)
+ */
 const formSchema = z.object({
   campo: z.enum(["name", "value"]),
   ordem: z.enum(["asc", "desc"]),
 });
 
+/**
+ * Props do diálogo de ordenação de pacotes
+ * 
+ * @interface OrdenarPacotesDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ * @property {Function} onApplySort - Callback com a ordenação aplicada
+ */
 interface OrdenarPacotesDialogProps {
   children: ReactNode
   onApplySort: (sort: z.infer<typeof formSchema>) => void
 }
 
+/**
+ * Diálogo de ordenação para pacotes
+ * 
+ * Oferece opções para:
+ * - Campo de ordenação: Nome ou Valor (hora)
+ * - Ordem: Crescente ou Decrescente
+ * - Padrão: Nome em ordem crescente
+ * 
+ * @component
+ * @param {OrdenarPacotesDialogProps} props - Props do diálogo
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @param {Function} props.onApplySort - Função chamada com a ordenação selecionada
+ * @returns {JSX.Element} Diálogo com opções de ordenação
+ * 
+ * @example
+ * // Uso do diálogo
+ * <OrdenarPacotesDialog onApplySort={setOrdenacao}>
+ *   <Button>Ordenar Por</Button>
+ * </OrdenarPacotesDialog>
+ */
 export const OrdenarPacotesDialog = ({ children, onApplySort }: OrdenarPacotesDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
