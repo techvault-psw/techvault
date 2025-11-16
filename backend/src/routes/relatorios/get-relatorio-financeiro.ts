@@ -2,6 +2,8 @@ import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from 'zod'
 import { reservas } from "../../models/reserva";
 import { authValidator, roleValidator } from "../../middlewares/auth";
+import { reservaExtendedZodSchema } from "../../consts/zod-schemas";
+import { PopulatedReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter();
 
@@ -44,6 +46,8 @@ router.get('/relatorios/financeiro', {
     }
 }, authValidator, roleValidator('Gerente'), async(req, res) => {
     const { dataInicio, dataTermino } = req.query
+    const dataInicioDate = new Date(dataInicio);
+    const dataTerminoDate = new Date(dataTermino);
     
     if(dataInicio > dataTermino) {
         return res.status(400).send({
@@ -52,15 +56,12 @@ router.get('/relatorios/financeiro', {
         })
     }
 
-    const startDate = new Date(dataInicio);
-    const endDate = new Date(dataTermino);
-
     const result = await reservas.aggregate([
         {
             $match: {
-                dataInicio: { $gte: startDate },
-                dataTermino: { $lte: endDate },
-                status: 'Confirmada'
+                dataInicio: { $gte: dataInicioDate },
+                dataTermino: { $lte: dataTerminoDate },
+                status: 'Concluída'
             }
         },
         {
