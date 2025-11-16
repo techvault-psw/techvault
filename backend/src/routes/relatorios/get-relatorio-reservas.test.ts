@@ -27,7 +27,7 @@ describe('[GET] /relatorios/reservas', () => {
         token = response.body.token
     })
 
-    it('deve retornar 200, um array de reservas e as quantidades de reservas confirmadas e canceladas', async () => {
+    it('deve retornar 200, um array de reservas e as quantidades de reservas Concluidas e canceladas', async () => {
         const [cliente1, cliente2] = await Promise.all([
             clienteFactory(),
             clienteFactory()
@@ -54,7 +54,7 @@ describe('[GET] /relatorios/reservas', () => {
                 pacoteId: pacote1.id,
                 enderecoId: endereco1.id,
                 dataInicio: dataInicio,
-                status: 'Confirmada'
+                status: 'Concluída'
             }),
             reservaFactory({
                 clienteId: cliente2.id,
@@ -73,14 +73,14 @@ describe('[GET] /relatorios/reservas', () => {
             reservas: expect.arrayContaining([
                 expect.objectContaining({
                     id: reserva1.id.toString(),
-                    status: 'Confirmada'
+                    status: 'Concluída'
                 }),
                 expect.objectContaining({
                     id: reserva2.id.toString(),
                     status: 'Cancelada'
                 })
             ]),
-            qtdReservasConfirmadas: 1,
+            qtdReservasConcluidas: 1,
             qtdReservasCanceladas: 1
         }))
     })
