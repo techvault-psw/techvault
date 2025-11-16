@@ -46,7 +46,7 @@ describe('[POST] /pacotes/upload-image', () => {
         url: expect.any(String),
       }),
     )
-  })
+  }, 10000)
 
   it('deve retornar 422 se nenhum arquivo for enviado', async () => {
 

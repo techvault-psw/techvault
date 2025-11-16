@@ -13,9 +13,9 @@ describe('[GET] /pacote/:id', () => {
 
     expect(response.status).toBe(200)
     expect(response.body).toEqual(expect.objectContaining({
-      pacote: expect.objectContaining({
-        id: pacote.id.toString(),
-      }),
+      id: pacote.id.toString(),
+      quantity: pacote.quantity,
+      value: pacote.value,
     }))
   })
 
