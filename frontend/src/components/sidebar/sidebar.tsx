@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Componente Sidebar de navegação
+ * 
+ * Componente responsável por exibir um menu lateral deslizante (modal) com opções
+ * de navegação personalizadas de acordo com o tipo de usuário (cliente, suporte, gerente).
+ * Inclui informações do usuário autenticado e integração com sistema de logout.
+ * 
+ * @module components/sidebar/Sidebar
+ */
+
 import { X } from "lucide-react";
 import { BoxIcon } from "../icons/box-icon";
 import { CalendarIcon } from "../icons/calendar-icon";
@@ -19,10 +29,25 @@ import { useDispatch, useSelector } from "react-redux";
 import { logoutCliente } from "@/redux/clientes/slice";
 import type { RootState } from "@/redux/root-reducer";
 
+/**
+ * Props do componente Sidebar
+ * 
+ * @interface SidebarProps
+ * @property {Function} closeSidebar - Função para fechar a sidebar
+ */
 interface SidebarProps {
     closeSidebar: () => void;
 }
 
+/**
+ * Abre a sidebar com animação deslizante
+ * 
+ * Aplica classes de transição CSS para criar uma animação suave de deslizamento
+ * da sidebar da direita para a esquerda, com fade-in do overlay de fundo.
+ * 
+ * @function
+ * @returns {void}
+ */
 export const openSidebar = () => {
   const sidebar = document.getElementById('sidebar');
   const content = sidebar?.querySelector('.content');
@@ -41,6 +66,15 @@ export const openSidebar = () => {
   }, 1);
 };
 
+/**
+ * Fecha a sidebar com animação deslizante
+ * 
+ * Reverte a animação de abertura, deslizando a sidebar para fora da visualização
+ * e aplicando fade-out no overlay de fundo. Oculta o elemento após a animação.
+ * 
+ * @function
+ * @returns {void}
+ */
 export const closeSidebar = () => {
   const sidebar = document.getElementById('sidebar');
   const content = sidebar?.querySelector('.content');
@@ -55,6 +89,25 @@ export const closeSidebar = () => {
   }, 300);
 };
 
+/**
+ * Componente Sidebar - Menu lateral de navegação
+ * 
+ * Renderiza um menu lateral deslizante com:
+ * - Informações do usuário autenticado (nome e e-mail)
+ * - Opção de logout
+ * - Navegação geral (Perfil, Home, Pacotes, Minhas Reservas, Feedbacks)
+ * - Seção administrativa para usuários suporte/gerente (Dashboard, Gerenciar Reservas)
+ * - Menu gerencial específico para gerentes (Pacotes, Clientes)
+ * 
+ * @component
+ * @param {SidebarProps} props - Props do componente
+ * @param {Function} props.closeSidebar - Função para fechar a sidebar
+ * @returns {JSX.Element} Elemento da sidebar com overlay
+ * 
+ * @example
+ * // Uso em layout ou página principal
+ * <Sidebar closeSidebar={handleCloseSidebar} />
+ */
 export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
     const { isGerente, isSuporte } = useCargo()
     const navigate = useNavigate()
@@ -62,6 +115,14 @@ export const Sidebar: React.FC<SidebarProps> = ({ closeSidebar }) => {
 
     const {clienteAtual} = useSelector((state: RootState) => state.clienteReducer);
     const dispatch = useDispatch();
+    
+    /**
+     * Manipula a ação de logout do usuário
+     * 
+     * Redireciona para a página de login e limpa o estado do cliente na Redux.
+     * 
+     * @returns {void}
+     */
     const handleLogoutClick = () => {
         navigate("/login");
         dispatch(logoutCliente());
