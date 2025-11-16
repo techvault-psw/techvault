@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog para visualizar e editar dados de endereço
+ * 
+ * Componente modal que permite ao usuário visualizar e editar informações de um endereço cadastrado.
+ * Inclui integração com API ViaCEP para preenchimento automático de dados a partir do CEP,
+ * validação de CEP único por cliente e funcionalidade de exclusão de endereço.
+ * 
+ * @module components/dialogs/DadosEnderecoDialog
+ */
+
 import { useEffect, useState, type ReactNode } from "react";
 import { Dialog } from "../ui/dialog";
 import z from "zod";
@@ -21,11 +31,32 @@ import { estados } from "@/consts/estados";
 import { selectAllEnderecos, type Endereco } from "@/redux/endereco/slice";
 import { Pen } from "lucide-react";
 
+/**
+ * Props do componente DadosEnderecoDialog
+ * 
+ * @interface DadosEnderecoDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do dialog (trigger)
+ * @property {Endereco} endereco - Objeto do endereço a ser visualizado/editado
+ */
 interface DadosEnderecoDialogProps {
     children: ReactNode
     endereco: Endereco
 }
 
+/**
+ * Schema de validação para o formulário de dados do endereço
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} name - Nome/descrição do endereço (obrigatório)
+ * @property {string} cep - CEP no formato XXXXX-XXX (obrigatório)
+ * @property {string} street - Nome da rua/logradouro (obrigatório)
+ * @property {string} number - Número do imóvel, até 6 dígitos opcionalmente seguido de letra
+ * @property {string} description - Complemento do endereço (opcional)
+ * @property {string} neighborhood - Bairro (obrigatório)
+ * @property {string} city - Cidade (obrigatória)
+ * @property {string} state - UF do estado (obrigatório, lista de estados válidos)
+ */
 const formSchema = z
     .object({
         name: z.string().min(1, { message: "O nome é obrigatório" }),
@@ -41,6 +72,30 @@ const formSchema = z
         state: z.enum(estados, { message: "Selecione um estado válido" })
     })
 
+/**
+ * Componente de dialog para editar dados de endereço
+ * 
+ * Permite visualizar e editar informações de um endereço cadastrado, com:
+ * - Preenchimento automático de dados via CEP (API ViaCEP)
+ * - Validação de unicidade de nome por cliente
+ * - Modo de visualização e edição alternáveis
+ * - Botões de editar e excluir (apenas em página de perfil ou para gerentes)
+ * - Integração com Redux para persistência de dados
+ * 
+ * @component
+ * @param {DadosEnderecoDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger do dialog
+ * @param {Endereco} props.endereco - Endereço a ser visualizado/editado
+ * @returns {JSX.Element} Dialog com formulário de endereço
+ * 
+ * @example
+ * <DadosEnderecoDialog endereco={endereco}>
+ *   <Card.Container>
+ *     <Card.Title>{endereco.name}</Card.Title>
+ *     <Card.Description>{stringifyAddress(endereco)}</Card.Description>
+ *   </Card.Container>
+ * </DadosEnderecoDialog>
+ */
 export const DadosEnderecoDialog = ({ children, endereco }: DadosEnderecoDialogProps) => {
     const [isOpen, setIsOpen] = useState(false);
     const [disabled, setDisabled] = useState(true)
