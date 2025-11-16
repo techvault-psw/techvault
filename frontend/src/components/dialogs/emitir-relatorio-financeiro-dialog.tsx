@@ -18,7 +18,8 @@ import { Dialog } from "../ui/dialog";
 import { FormItem } from "../ui/form";
 import { Label } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { RelatorioFinanceiroDialog } from "./relatorio-financeiro-dialog";
+import { RelatorioFinanceiroDialog, type RelatorioFinanceiroData } from "./relatorio-financeiro-dialog";
+import { httpGet } from "@/lib/fetch-utils";
 
 /**
  * Schema de validação para o formulário de período do relatório financeiro
@@ -68,6 +69,12 @@ export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactN
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [successDialogOpen, setSuccessDialogOpen] = useState(false)
+  const [relatorioData, setRelatorioData] = useState<RelatorioFinanceiroData>({
+    totalRecebido: 0,
+    quantidadeReservasConcluidas: 0,
+    valorMedioReservas: 0,
+    faturamentoDiario: []
+  })
 
   const {
     handleSubmit,
@@ -83,8 +90,24 @@ export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactN
   const dataInicial = watch("dataInicial");
   const dataFinal = watch("dataFinal");
 
-  const onSubmit = (data: RelatorioFormData) => {
-    setSuccessDialogOpen(true);
+  const onSubmit = async (data: RelatorioFormData) => {
+    try {
+      const res = await httpGet<RelatorioFinanceiroData>(`/relatorios/financeiro?dataInicio=${data.dataInicial}&dataTermino=${data.dataFinal}`)      
+
+      const faturamentoDiarioFormatted = res.faturamentoDiario.map(dia => ({
+        data: new Date(dia.data),
+        quantidadeReservas: dia.quantidadeReservas,
+        faturamentoDia: dia.faturamentoDia
+      }))
+
+      setRelatorioData({
+        ...res,
+        faturamentoDiario: faturamentoDiarioFormatted
+      })
+      setSuccessDialogOpen(true);
+    } catch(error) {
+      console.log(error)
+    }
   };
 
   const handleDataInicialChange = (date: Date | undefined) => {
@@ -173,6 +196,7 @@ export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactN
         setOpen={setSuccessDialogOpen}
         startDate={dataInicial}
         endDate={dataFinal}
+        relatorioData={relatorioData}
       />
     </>
   );

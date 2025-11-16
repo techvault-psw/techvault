@@ -12,9 +12,20 @@ import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { format } from "date-fns";
-import { useSelector } from "react-redux";
-import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
+
+interface FaturamentoDiario {
+  data: Date,
+  quantidadeReservas: number,
+  faturamentoDia: number
+}
+
+export interface RelatorioFinanceiroData {
+  totalRecebido: number,
+  quantidadeReservasConcluidas: number,
+  valorMedioReservas: number,
+  faturamentoDiario: FaturamentoDiario[]
+}
 
 /**
  * Props do componente RelatorioFinanceiroDialog
@@ -31,6 +42,7 @@ interface RelatorioFinanceiroDialogProps extends DialogProps {
   setOpen: (open: boolean) => void;
   startDate: Date;
   endDate: Date;
+  relatorioData: RelatorioFinanceiroData;
 }
 
 /**
@@ -43,10 +55,10 @@ interface RelatorioFinanceiroDialogProps extends DialogProps {
  *   - Quantidade de reservas concluídas
  *   - Ticket médio por reserva em formato de moeda
  */
-const getResumo = (reservas: Reserva[]) => {
-  const reservasConcluidas = reservas.filter((reserva) => reserva.status === 'Concluída')
-  const faturamentoTotal = reservasConcluidas.reduce((acc, reserva) => acc + reserva.valor, 0)
-  const ticketMedio = reservasConcluidas.length > 0 ? faturamentoTotal / reservasConcluidas.length : 0
+const getResumo = (relatorioData: RelatorioFinanceiroData) => {
+  const quantidadeReservasConcluidas = relatorioData.quantidadeReservasConcluidas
+  const faturamentoTotal = relatorioData.totalRecebido
+  const ticketMedio = relatorioData.valorMedioReservas
 
   return [
     {
@@ -55,48 +67,13 @@ const getResumo = (reservas: Reserva[]) => {
     },
     {
       name: "Reservas concluídas",
-      count: reservasConcluidas.length.toString(),
+      count: quantidadeReservasConcluidas,
     },
     {
       name: "Ticket médio por reserva",
       count: formatCurrency(ticketMedio),
     },
   ]
-}
-
-/**
- * Agrupa e ordena reservas por dia, calculando totais diários
- * 
- * @function
- * @param {Reserva[]} reservas - Array de reservas concluídas
- * @returns {Array<{data: string, qtdReservas: number, valor: number}>} Array ordenado 
- *   cronologicamente com quantidade de reservas e valor total por dia
- */
-const getDistribuicaoDiaria = (reservas: Reserva[]) => {
-  const agrupadoPorDia = reservas.reduce((acc, reserva) => {
-    const dataInicio = format(new Date(reserva.dataInicio), "dd/MM/yyyy")
-    
-    if (!acc[dataInicio]) {
-      acc[dataInicio] = {
-        data: dataInicio,
-        qtdReservas: 0,
-        valor: 0,
-      }
-    }
-    
-    acc[dataInicio].qtdReservas += 1
-    acc[dataInicio].valor += reserva.valor
-    
-    return acc
-  }, {} as Record<string, { data: string; qtdReservas: number; valor: number }>)
-
-  return Object.values(agrupadoPorDia).sort((a, b) => {
-    const [diaA, mesA, anoA] = a.data.split('/').map(Number)
-    const [diaB, mesB, anoB] = b.data.split('/').map(Number)
-    const dateA = new Date(anoA, mesA - 1, diaA)
-    const dateB = new Date(anoB, mesB - 1, diaB)
-    return dateA.getTime() - dateB.getTime()
-  })
 }
 
 /**
@@ -123,21 +100,13 @@ const getDistribuicaoDiaria = (reservas: Reserva[]) => {
  *   endDate={new Date('2024-01-31')}
  * />
  */
-export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, ...props }: RelatorioFinanceiroDialogProps) => {
+export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, relatorioData, ...props }: RelatorioFinanceiroDialogProps) => {
   if (!startDate || !endDate) return null
   
   const formattedStartDate = format(startDate, "dd/MM/yyyy")
   const formattedEndDate = format(endDate, "dd/MM/yyyy")
-
-  const reservas = useSelector(selectAllReservas)
-  const reservasDoPeriodo = reservas.filter((reserva) => {
-    const dataReserva = new Date(reserva.dataInicio)
-    return dataReserva >= startDate && dataReserva <= endDate
-  })
-  const reservasConcluidas = reservasDoPeriodo.filter((reserva) => reserva.status === 'Concluída')
   
-  const resumo = getResumo(reservasConcluidas)
-  const distribuicaoDiaria = getDistribuicaoDiaria(reservasConcluidas)
+  const resumo = getResumo(relatorioData)
 
   return (
     <Dialog.Container open={open} onOpenChange={setOpen} {...props}>
@@ -163,7 +132,7 @@ export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, .
           })}
         </section>
 
-        {distribuicaoDiaria.length > 0 && (
+        {relatorioData.faturamentoDiario.length > 0 && (
           <section className="flex flex-col gap-2 overflow-y-hidden">
             <h3 className="font-semibold text-xl text-white mb-1.5">Distribuição por Dia</h3>
 
@@ -183,16 +152,16 @@ export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, .
                   </tr>
                 </thead>
                 <tbody>
-                  {distribuicaoDiaria.map((dia) => (
-                    <tr key={dia.data}>
+                  {relatorioData.faturamentoDiario.map((dia) => (
+                    <tr key={dia.data.toLocaleDateString()}>
                       <td className="pt-1">
-                        {dia.data}
+                        {dia.data.toLocaleDateString()}
                       </td>
                       <td className="pt-1 text-center">
-                        {dia.qtdReservas}
+                        {dia.quantidadeReservas}
                       </td>
                       <td className="pt-1 text-right">
-                        {formatCurrency(dia.valor)}
+                        {formatCurrency(dia.faturamentoDia)}
                       </td>
                     </tr>
                   ))}
