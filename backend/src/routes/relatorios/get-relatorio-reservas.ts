@@ -3,7 +3,7 @@ import z, { boolean } from 'zod'
 import { reservaExtendedZodSchema } from "../../consts/zod-schemas";
 import { reservas } from "../../models/reserva";
 import { PopulatedReservaFormatter } from "../../formatters/reserva-formatter";
-import { authValidator } from "../../middlewares/auth";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter();
 
@@ -13,13 +13,17 @@ router.get('/relatorios/reservas', {
         tags: ['Relatórios'],
         querystring: z.object({
             dataInicio: z.string(),
-            dataFim: z.string()
+            dataTermino: z.string()
         }),
         response: {
             200: z.object({
                 reservas: z.array(reservaExtendedZodSchema),
                 qtdReservasConfirmadas: z.number(),
                 qtdReservasCanceladas: z.number()
+            }),
+            400: z.object({
+                success: z.boolean(),
+                message: z.string()
             }),
             401: z.object({
                 success: z.boolean(),
@@ -31,22 +35,21 @@ router.get('/relatorios/reservas', {
             })
         }
     }
-}, authValidator, async(req, res) => {
-    const user = req.user!
-    
-    if(user.role !== 'Gerente') {
-        return res.status(403).send({
+}, authValidator, roleValidator('Gerente'), async(req, res) => {
+    const { dataInicio, dataTermino } = req.query
+
+    if(dataInicio > dataTermino) {
+        return res.status(400).send({
             success: false,
-            message: 'Acesso não autorizado'
+            message: 'Data de início não pode ser maior que a data de término'
         })
     }
 
-    const { dataInicio, dataFim } = req.query
     const result = await reservas.aggregate([
         {
             $match: {
                 dataInicio: { $gte: new Date(dataInicio) },
-                dataTermino: { $lte: new Date(dataFim) }
+                dataTermino: { $lte: new Date(dataTermino) }
             }
         },
         {

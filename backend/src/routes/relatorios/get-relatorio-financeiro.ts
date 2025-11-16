@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from 'zod'
 import { reservas } from "../../models/reserva";
-import { authValidator } from "../../middlewares/auth";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter();
 
@@ -16,17 +16,21 @@ router.get('/relatorios/financeiro', {
         summary: 'Get Relatório Financeiro',
         tags: ['Relatórios'],
         querystring: z.object({
-            dataInicial: z.string(),
-            dataFinal: z.string()
+            dataInicio: z.string(),
+            dataTermino: z.string()
         }),
         response: {
             200: z.object({
                 totalRecebido: z.number(),
                 quantidadeReservasConfirmadas: z.number(),
                 valorMedioReservas: z.number(),
-                dataInicial: z.string(),
-                dataFinal: z.string(),
+                dataInicio: z.string(),
+                dataTermino: z.string(),
                 faturamentoDiario: z.array(faturamentoDiarioSchema)
+            }),
+            400: z.object({
+                success: z.boolean(),
+                message: z.string()
             }),
             401: z.object({
                 success: z.boolean(),
@@ -38,20 +42,18 @@ router.get('/relatorios/financeiro', {
             })
         }
     }
-}, authValidator, async(req, res) => {
-    const user = req.user!
-
-    if(user.role !== 'Gerente') {
-        return res.status(403).send({
+}, authValidator, roleValidator('Gerente'), async(req, res) => {
+    const { dataInicio, dataTermino } = req.query
+    
+    if(dataInicio > dataTermino) {
+        return res.status(400).send({
             success: false,
-            message: 'Acesso não autorizado'
+            message: 'Data de início não pode ser maior que a data de término'
         })
     }
 
-    const { dataInicial, dataFinal } = req.query as { dataInicial: string; dataFinal: string }
-    
-    const startDate = new Date(dataInicial);
-    const endDate = new Date(dataFinal);
+    const startDate = new Date(dataInicio);
+    const endDate = new Date(dataTermino);
 
     const result = await reservas.aggregate([
         {
@@ -110,8 +112,8 @@ router.get('/relatorios/financeiro', {
         totalRecebido: totalStats.totalRecebido,
         quantidadeReservasConfirmadas: totalStats.quantidadeReservas,
         valorMedioReservas: Math.round(totalStats.valorMedio * 100) / 100,
-        dataInicial,
-        dataFinal,
+        dataInicio,
+        dataTermino,
         faturamentoDiario
     });
 });
