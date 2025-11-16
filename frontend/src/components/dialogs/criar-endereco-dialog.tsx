@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog para criação de novo endereço
+ * 
+ * Componente modal que permite ao usuário cadastrar um novo endereço.
+ * Inclui integração com API ViaCEP para preenchimento automático de dados a partir do CEP
+ * e validação de duplicação de nomes de endereço para o mesmo cliente.
+ * 
+ * @module components/dialogs/CriarEnderecoDialog
+ */
+
 import { Dialog } from '@/components/ui/dialog';
 import { Separator } from '@/components/ui/separator';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -17,10 +27,30 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { estados } from '@/consts/estados';
 import { selectAllEnderecos } from '@/redux/endereco/slice';
 
+/**
+ * Props do componente CriarEnderecoDialog
+ * 
+ * @interface DadosClienteDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do dialog (trigger)
+ */
 interface DadosClienteDialogProps {
     children: ReactNode
 }
 
+/**
+ * Schema de validação para o formulário de criação de endereço
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} name - Nome/descrição do endereço (obrigatório)
+ * @property {string} cep - CEP no formato XXXXX-XXX (obrigatório)
+ * @property {string} street - Nome da rua/logradouro (obrigatório, auto-preenchido via CEP)
+ * @property {string} number - Número do imóvel, até 6 dígitos opcionalmente seguido de letra
+ * @property {string} description - Complemento do endereço (opcional)
+ * @property {string} neighborhood - Bairro (obrigatório, auto-preenchido via CEP)
+ * @property {string} city - Cidade (obrigatória, auto-preenchida via CEP)
+ * @property {string} state - UF do estado (obrigatório, auto-preenchida via CEP)
+ */
 const formSchema = z
     .object({
         name: z.string().min(1, { message: "O nome é obrigatório" }),
@@ -36,6 +66,27 @@ const formSchema = z
         state: z.enum(estados, { message: "Selecione um estado válido" })
     })
 
+/**
+ * Componente de dialog para criar novo endereço
+ * 
+ * Permite ao usuário cadastrar um novo endereço com:
+ * - Preenchimento automático de dados via CEP (API ViaCEP)
+ * - Validação de unicidade de nome para o cliente autenticado
+ * - Formulário intuitivo com máscara de CEP
+ * - Integração com Redux para persistência de dados
+ * 
+ * @component
+ * @param {DadosClienteDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger do dialog
+ * @returns {JSX.Element} Dialog com formulário de criação de endereço
+ * 
+ * @example
+ * <CriarEnderecoDialog>
+ *   <Button variant="secondary">
+ *     <PlusIcon /> Criar endereço
+ *   </Button>
+ * </CriarEnderecoDialog>
+ */
 export const CriarEnderecoDialog = ({ children }: DadosClienteDialogProps) => {
     const [isOpen, setOpen] = useState(false);
     const [disabled, setDisabled] = useState(true);
