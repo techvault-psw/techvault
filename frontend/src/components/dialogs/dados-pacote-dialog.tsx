@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Diálogo para visualizar e editar dados de um pacote
+ * 
+ * Este diálogo exibe as informações detalhadas de um pacote existente.
+ * Gerentes podem editar todos os dados (nome, descrição, componentes, valor, quantidade, imagem)
+ * e deletar o pacote. Outros usuários visualizam em modo somente leitura.
+ * 
+ * @module components/dialogs/DadosPacoteDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useRef, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -27,6 +37,18 @@ import { updatePacoteServer, deletePacoteServer } from '@/redux/pacotes/fetch';
 import type { AppDispatch } from '@/redux/store';
 import { uploadPacoteImage } from '@/lib/upload-pacote-image';
 
+/**
+ * Schema de validação para o formulário de edição de pacote
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} name - Nome do pacote (obrigatório)
+ * @property {string} description - Descrição do pacote (mínimo 10 caracteres)
+ * @property {string} components - Componentes do PC, um por linha (obrigatório)
+ * @property {string} value - Valor por hora em formato moeda (obrigatório e > 0)
+ * @property {number} quantity - Quantidade disponível de pacotes (inteiro não negativo)
+ * @property {File} image - Arquivo de imagem do pacote (opcional na edição)
+ */
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
   description: z.string()
@@ -55,11 +77,41 @@ const formSchema = z.object({
   image: z.instanceof(File, { message: "A imagem é obrigatória" }).optional()
 });
 
+/**
+ * Props do diálogo de dados do pacote
+ * 
+ * @interface DadosPacoteDialogProps
+ * @property {Pacote} pacote - Objeto do pacote a visualizar/editar
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ */
 interface DadosPacoteDialogProps {
   pacote: Pacote;
   children: ReactNode;
 }
 
+/**
+ * Diálogo para visualizar e editar informações do pacote
+ * 
+ * Funcionalidades:
+ * - Modo visualização: todos os campos desabilitados
+ * - Modo edição (apenas gerentes): permite editar todos os campos
+ * - Upload de nova imagem ou mantém a atual
+ * - Botão para excluir pacote (apenas gerentes)
+ * - Validação completa do formulário
+ * - Feedback visual durante o envio
+ * 
+ * @component
+ * @param {DadosPacoteDialogProps} props - Props do diálogo
+ * @param {Pacote} props.pacote - Dados do pacote
+ * @param {ReactNode} props.children - Elemento que abre o diálogo
+ * @returns {JSX.Element} Diálogo com informações do pacote
+ * 
+ * @example
+ * // Uso do diálogo
+ * <DadosPacoteDialog pacote={pacote}>
+ *   <Card>Clique para ver detalhes</Card>
+ * </DadosPacoteDialog>
+ */
 export const DadosPacoteDialog = ({ pacote, children }: DadosPacoteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isEditting, setIsEditting] = useState(false);
