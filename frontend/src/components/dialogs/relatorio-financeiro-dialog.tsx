@@ -2,8 +2,9 @@
  * @fileoverview Dialog de exibição de relatório financeiro
  * 
  * Componente modal que apresenta um relatório detalhado de faturamento
- * dentro de um período específico, incluindo resumo consolidado e
- * distribuição diária de receitas.
+ * dentro de um período específico, incluindo resumo consolidado com métricas
+ * gerais (faturamento total, quantidade de reservas concluídas, ticket médio)
+ * e tabela com distribuição diária de receitas em formato de moeda.
  * 
  * @module components/dialogs/RelatorioFinanceiroDialog
  */
@@ -14,12 +15,29 @@ import { Separator } from "../ui/separator";
 import { format } from "date-fns";
 import { formatCurrency } from "@/lib/format-currency";
 
+/**
+ * Representa um dia de faturamento com dados agregados
+ * 
+ * @interface FaturamentoDiario
+ * @property {Date} data - Data do faturamento em formato ISO
+ * @property {number} quantidadeReservas - Quantidade de reservas concluídas neste dia
+ * @property {number} faturamentoDia - Valor total faturado neste dia em reais
+ */
 interface FaturamentoDiario {
   data: Date,
   quantidadeReservas: number,
   faturamentoDia: number
 }
 
+/**
+ * Dados consolidados do relatório financeiro para um período específico
+ * 
+ * @interface RelatorioFinanceiroData
+ * @property {number} totalRecebido - Valor total recebido no período (apenas reservas concluídas)
+ * @property {number} quantidadeReservasConcluidas - Total de reservas com status concluída
+ * @property {number} valorMedioReservas - Valor médio de cada reserva concluída (arredondado a 2 casas decimais)
+ * @property {FaturamentoDiario[]} faturamentoDiario - Distribuição diária de faturamento ordenada cronologicamente
+ */
 export interface RelatorioFinanceiroData {
   totalRecebido: number,
   quantidadeReservasConcluidas: number,
@@ -32,10 +50,11 @@ export interface RelatorioFinanceiroData {
  * 
  * @interface RelatorioFinanceiroDialogProps
  * @extends {DialogProps}
- * @property {boolean} open - Estado de abertura do dialog
- * @property {Function} setOpen - Função para alterar o estado de abertura
+ * @property {boolean} open - Controla abertura/fechamento do dialog
+ * @property {Function} setOpen - Função para alterar o estado de abertura do dialog
  * @property {Date} startDate - Data inicial do período do relatório
  * @property {Date} endDate - Data final do período do relatório
+ * @property {RelatorioFinanceiroData} relatorioData - Dados consolidados do relatório financeiro
  */
 interface RelatorioFinanceiroDialogProps extends DialogProps {
   open: boolean;
@@ -46,14 +65,25 @@ interface RelatorioFinanceiroDialogProps extends DialogProps {
 }
 
 /**
- * Calcula o resumo financeiro consolidado de um conjunto de reservas
+ * Calcula o resumo financeiro consolidado para exibição no relatório
+ * 
+ * Transforma os dados do relatório em um array de métricas formatadas
+ * para apresentação visual (valores em moeda formatada, quantidade como número).
  * 
  * @function
- * @param {Reserva[]} reservas - Array de reservas concluídas a serem analisadas
- * @returns {Array<{name: string, count: string}>} Array com métricas:
- *   - Faturamento total em formato de moeda
- *   - Quantidade de reservas concluídas
- *   - Ticket médio por reserva em formato de moeda
+ * @param {RelatorioFinanceiroData} relatorioData - Dados do relatório financeiro
+ * @returns {Array<{name: string, count: string | number}>} Array com 3 métricas ordenadas:
+ *   - Faturamento total em formato de moeda brasileira
+ *   - Quantidade de reservas concluídas (número inteiro)
+ *   - Ticket médio por reserva em formato de moeda brasileira
+ * 
+ * @example
+ * const resumo = getResumo(relatorioData)
+ * // Retorna: [
+ * //   { name: "Faturamento total", count: "R$ 10.500,00" },
+ * //   { name: "Reservas concluídas", count: 15 },
+ * //   { name: "Ticket médio por reserva", count: "R$ 700,00" }
+ * // ]
  */
 const getResumo = (relatorioData: RelatorioFinanceiroData) => {
   const quantidadeReservasConcluidas = relatorioData.quantidadeReservasConcluidas
@@ -79,18 +109,21 @@ const getResumo = (relatorioData: RelatorioFinanceiroData) => {
 /**
  * Componente de dialog para exibição do relatório financeiro
  * 
- * Apresenta um resumo consolidado de faturamento (total, quantidade de reservas, ticket médio)
- * e tabela com distribuição diária de receitas. Apenas reservas concluídas são consideradas
- * no cálculo dos valores.
+ * Componente modal que apresenta um resumo consolidado de faturamento com 3 métricas
+ * (faturamento total, quantidade de reservas concluídas, ticket médio) e uma tabela
+ * com distribuição diária de receitas. Todas as datas são formatadas no padrão brasileiro.
+ * 
+ * Apenas reservas com status 'Concluída' são consideradas nos cálculos. O dialog não
+ * é renderizado se as datas não forem fornecidas.
  * 
  * @component
  * @param {RelatorioFinanceiroDialogProps} props - Props do componente
  * @param {boolean} props.open - Controla abertura/fechamento do dialog
- * @param {Function} props.setOpen - Função para alterar estado de abertura
- * @param {Date} props.startDate - Data inicial do período
- * @param {Date} props.endDate - Data final do período
- * @param {DialogProps} props - Outras props do dialog (passadas adiante)
- * @returns {JSX.Element|null} Dialog com relatório ou null se datas não definidas
+ * @param {Function} props.setOpen - Função para alterar o estado de abertura
+ * @param {Date} props.startDate - Data inicial do período a ser reportado
+ * @param {Date} props.endDate - Data final do período a ser reportado
+ * @param {RelatorioFinanceiroData} props.relatorioData - Dados consolidados do relatório
+ * @returns {JSX.Element|null} Dialog com o relatório formatado ou null se datas inválidas
  * 
  * @example
  * <RelatorioFinanceiroDialog
@@ -98,6 +131,12 @@ const getResumo = (relatorioData: RelatorioFinanceiroData) => {
  *   setOpen={setIsOpen}
  *   startDate={new Date('2024-01-01')}
  *   endDate={new Date('2024-01-31')}
+ *   relatorioData={{
+ *     totalRecebido: 10500,
+ *     quantidadeReservasConcluidas: 15,
+ *     valorMedioReservas: 700,
+ *     faturamentoDiario: [...]
+ *   }}
  * />
  */
 export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, relatorioData, ...props }: RelatorioFinanceiroDialogProps) => {
