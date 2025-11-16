@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Dialog para emissão de relatório de reservas com seleção de período
+ * 
+ * Componente modal que permite ao gerente selecionar um período de datas
+ * para gerar um relatório detalhado de todas as reservas realizadas naquele intervalo.
+ * 
+ * @module components/dialogs/EmitirRelatorioReservasDialog
+ */
+
 import { ChevronDownIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -11,6 +20,15 @@ import { Label } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RelatorioReservasDialog } from "./relatorio-reservas-dialog";
 
+/**
+ * Schema de validação para o formulário de período do relatório de reservas
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {Date} dataInicial - Data inicial do período (obrigatória)
+ * @property {Date} dataFinal - Data final do período (obrigatória)
+ * @validation Data inicial não pode ser maior que data final
+ */
 const relatorioSchema = z
   .object({
     dataInicial: z.date({ message: "Por favor, preencha ambas as datas" }),
@@ -21,8 +39,29 @@ const relatorioSchema = z
     path: ["dataInicial"],
   });
 
+/**
+ * Tipo de dados do formulário de período para relatório de reservas
+ * Inferido do schema de validação relatorioSchema usando Zod
+ */
 type RelatorioFormData = z.infer<typeof relatorioSchema>;
 
+/**
+ * Componente de dialog para emitir relatório de reservas
+ * 
+ * Permite ao usuário selecionar um período (data inicial e final) através de date pickers
+ * para gerar um relatório de reservas. Valida que a data inicial não ultrapassa a data final
+ * e abre um dialog secundário com os dados do relatório gerado.
+ * 
+ * @component
+ * @param {Object} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger do dialog
+ * @returns {JSX.Element} Dialog com seleção de período
+ * 
+ * @example
+ * <EmitirRelatorioReservasDialog>
+ *   <Button>Gerar Relatório</Button>
+ * </EmitirRelatorioReservasDialog>
+ */
 export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [open1, setOpen1] = useState(false)
