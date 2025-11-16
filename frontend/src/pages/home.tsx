@@ -1,6 +1,33 @@
+/**
+ * @fileoverview Página inicial do sistema
+ * 
+ * Esta página é a landing page pública do sistema, apresentando o propósito
+ * do negócio e oferecendo acesso direto aos pacotes disponíveis.
+ * 
+ * @module pages/HomePage
+ */
+
 import Header from "@/components/header/header";
 import { Link } from "react-router";
 
+/**
+ * Componente da página inicial (Home)
+ * 
+ * Página de apresentação do sistema que:
+ * - Exibe header com navegação
+ * - Apresenta slogan e proposta de valor do negócio
+ * - Oferece call-to-action para buscar pacotes
+ * - Utiliza imagem de background em fullscreen
+ * 
+ * Esta é uma página pública, acessível sem autenticação.
+ * 
+ * @component
+ * @returns {JSX.Element} Página inicial
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/" element={<HomePage />} />
+ */
 export default function HomePage() {
   return (
     <>
