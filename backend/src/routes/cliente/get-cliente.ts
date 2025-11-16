@@ -1,8 +1,9 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import z from "zod";
+import z, { success } from "zod";
 import { clienteZodSchema, objectIdSchema } from "../../consts/zod-schemas";
 import { clientes } from "../../models/cliente";
 import { ClienteFormatter } from "../../formatters/cliente-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -19,10 +20,15 @@ router.get('/clientes/:id', {
         success: z.boolean(),
         message: z.string(),
       }),
+      403: z.object({
+        success: z.boolean(),
+        message: z.string(),
+      })
     },
   },
-}, async (req, res) => {
+},authValidator , async (req, res) => {
   const { id } = req.params
+  const user = req.user!
 
   const cliente = await clientes.findById(id)
 
@@ -30,6 +36,13 @@ router.get('/clientes/:id', {
     return res.status(400).send({
       success: false,
       message: 'Cliente não encontrado'
+    })
+  }
+
+  if(user.id !== id && user.role === 'Cliente' ){
+    return res.status(403).json({
+      success: false,
+      message: 'Acesso não autorizado'
     })
   }
 
