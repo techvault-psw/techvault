@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Página de perfil do usuário
+ * 
+ * Esta página permite ao usuário visualizar e editar suas informações pessoais,
+ * gerenciar seus endereços cadastrados e realizar ações de conta (logout e exclusão).
+ * 
+ * @module pages/PerfilPage
+ */
+
 import * as z from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
@@ -39,6 +48,15 @@ import type { AppDispatch } from '@/redux/store';
 import { GoBackButton } from '@/components/go-back-button';
 import useCargo from '@/hooks/useCargo';
 
+/**
+ * Schema de validação para o formulário de perfil
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} name - Nome do usuário (obrigatório)
+ * @property {string} email - E-mail do usuário (obrigatório e deve ser válido)
+ * @property {string} phone - Telefone no formato (XX) XXXXX-XXXX
+ */
 const formSchema = z
     .object({
         name: z.string().min(1, { message: "O nome é obrigatório" }),
@@ -48,6 +66,24 @@ const formSchema = z
         phone: z.string().min(1, "O telefone é obrigatório").regex(/^\(\d{2}\) \d{5}-\d{4}$/, "Formato inválido. Use: (XX) XXXXX-XXXX")
     })
 
+/**
+ * Componente da página de perfil do usuário
+ * 
+ * Permite ao usuário:
+ * - Visualizar e editar informações pessoais (nome, e-mail, telefone)
+ * - Gerenciar endereços cadastrados (visualizar, criar, editar, excluir)
+ * - Fazer logout da conta
+ * - Excluir a conta (não disponível para gerentes)
+ * 
+ * Requer autenticação - redireciona para /login se o usuário não estiver autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de perfil do usuário
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/perfil" element={<PerfilPage />} />
+ */
 export default function PerfilPage() {
     const [formDisabled, setFormDisabled] = useState(true);
     const {isGerente} = useCargo()
@@ -71,6 +107,17 @@ export default function PerfilPage() {
         }
     })
 
+    /**
+     * Manipula o envio do formulário de edição de perfil
+     * 
+     * Atualiza as informações do cliente no servidor e desabilita o modo de edição.
+     * 
+     * @param {Object} values - Valores do formulário validados pelo Zod
+     * @param {string} values.name - Nome do usuário
+     * @param {string} values.email - E-mail do usuário
+     * @param {string} values.phone - Telefone do usuário
+     * @returns {void}
+     */
     const onSubmit = (values: z.infer<typeof formSchema>) => {
         if (!clienteAtual) return
 
@@ -81,15 +128,36 @@ export default function PerfilPage() {
         toggleEditProfileInfo()
     }
 
+    /**
+     * Alterna entre modo de visualização e edição do formulário
+     * 
+     * @returns {void}
+     */
     const toggleEditProfileInfo = () => {
         setFormDisabled(!formDisabled)
     }
+
+    /**
+     * Manipula a ação de exclusão de conta
+     * 
+     * Remove o cliente do sistema e redireciona para a página de cadastro.
+     * 
+     * @returns {void}
+     */
     const handleDeleteClick = () => {
         navigate("/cadastro");
         if(clienteAtual){
             dispatch(deleteClienteServer(clienteAtual));
         }
     }
+
+    /**
+     * Manipula a ação de logout
+     * 
+     * Desloga o cliente e redireciona para a página de login.
+     * 
+     * @returns {void}
+     */
     const handleLogoutClick = () => {
         navigate("/login");
         dispatch(logoutCliente());
