@@ -2,7 +2,9 @@
  * @fileoverview Dialog para emissão de relatório de reservas com seleção de período
  * 
  * Componente modal que permite ao gerente selecionar um período de datas
- * para gerar um relatório detalhado de todas as reservas realizadas naquele intervalo.
+ * (data inicial e final) através de date pickers para gerar um relatório
+ * detalhado de todas as reservas realizadas naquele intervalo, incluindo
+ * estatísticas e listagem completa.
  * 
  * @module components/dialogs/EmitirRelatorioReservasDialog
  */
@@ -24,6 +26,9 @@ import { type RelatorioReservasData } from "./relatorio-reservas-dialog";
 
 /**
  * Schema de validação para o formulário de período do relatório de reservas
+ * 
+ * Valida que ambas as datas foram preenchidas e que a data inicial
+ * não é maior que a data final.
  * 
  * @constant
  * @type {z.ZodObject}
@@ -50,18 +55,26 @@ type RelatorioFormData = z.infer<typeof relatorioSchema>;
 /**
  * Componente de dialog para emitir relatório de reservas
  * 
- * Permite ao usuário selecionar um período (data inicial e final) através de date pickers
- * para gerar um relatório de reservas. Valida que a data inicial não ultrapassa a data final
- * e abre um dialog secundário com os dados do relatório gerado.
+ * Dialog que permite ao usuário selecionar um período (data inicial e final)
+ * através de dois date pickers para gerar um relatório de reservas. Valida
+ * que a data inicial não ultrapassa a data final antes de fazer a requisição
+ * ao servidor. Abre um dialog secundário (RelatorioReservasDialog) com os
+ * dados do relatório gerado se a requisição for bem-sucedida.
+ * 
+ * Estados gerenciados:
+ * - isOpen: abertura/fechamento do dialog de seleção de período
+ * - open1, open2: abertura/fechamento dos date pickers
+ * - successDialogOpen: abertura/fechamento do dialog de exibição do relatório
+ * - relatorioData: dados consolidados do relatório
  * 
  * @component
  * @param {Object} props - Props do componente
- * @param {ReactNode} props.children - Elemento trigger do dialog
- * @returns {JSX.Element} Dialog com seleção de período
+ * @param {ReactNode} props.children - Elemento trigger do dialog (ex: Button)
+ * @returns {JSX.Element} Dialog com seleção de período e dialog secundário de exibição
  * 
  * @example
  * <EmitirRelatorioReservasDialog>
- *   <Button>Gerar Relatório</Button>
+ *   <Button>Gerar Relatório de Reservas</Button>
  * </EmitirRelatorioReservasDialog>
  */
 export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNode }) => {
@@ -89,6 +102,17 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
   const dataInicial = watch("dataInicial");
   const dataFinal = watch("dataFinal");
 
+  /**
+   * Manipula o envio do formulário de período
+   * 
+   * Requisita o relatório de reservas à API com as datas selecionadas,
+   * formata os dados retornados e abre o dialog de exibição. Em caso
+   * de erro, apenas registra no console.
+   * 
+   * @async
+   * @param {RelatorioFormData} data - Dados do formulário com datas
+   * @returns {Promise<void>}
+   */
   const onSubmit = async (data: RelatorioFormData) => {
     try {
       const res = await httpGet<RelatorioReservasData>(`/relatorios/reservas?dataInicio=${data.dataInicial}&dataTermino=${data.dataFinal}`)      
@@ -100,16 +124,40 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
     }
   };
 
+  /**
+   * Manipula a seleção da data inicial através do date picker
+   * 
+   * @function
+   * @param {Date | undefined} date - Data selecionada ou undefined
+   * @returns {void}
+   */
   const handleDataInicialChange = (date: Date | undefined) => {
     setValue("dataInicial", date as Date, { shouldValidate: true });
   };
 
+  /**
+   * Manipula a seleção da data final através do date picker
+   * 
+   * @function
+   * @param {Date | undefined} date - Data selecionada ou undefined
+   * @returns {void}
+   */
   const handleDataFinalChange = (date: Date | undefined) => {
     setValue("dataFinal", date as Date, { shouldValidate: true });
   };
 
   const errorMessage = errors.dataInicial?.message || errors.dataFinal?.message
 
+  /**
+   * Manipula abertura/fechamento do dialog
+   * 
+   * Reseta o formulário quando o dialog é fechado para limpar os dados
+   * e mensagens de erro da tentativa anterior.
+   * 
+   * @function
+   * @param {boolean} open - Estado desejado do dialog
+   * @returns {void}
+   */
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
 
