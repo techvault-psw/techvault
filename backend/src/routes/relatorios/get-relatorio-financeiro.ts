@@ -1,0 +1,119 @@
+import { CreateTypedRouter } from "express-zod-openapi-typed";
+import z from 'zod'
+import { reservas } from "../../models/reserva";
+import { authValidator } from "../../middlewares/auth";
+
+const router = CreateTypedRouter();
+
+const faturamentoDiarioSchema = z.object({
+    data: z.string(),
+    quantidadeReservas: z.number(),
+    faturamentoDia: z.number(),
+});
+
+router.get('/relatorios/financeiro', {
+    schema: {
+        summary: 'Get Relatório Financeiro',
+        tags: ['Relatórios'],
+        querystring: z.object({
+            dataInicial: z.string(),
+            dataFinal: z.string()
+        }),
+        response: {
+            200: z.object({
+                totalRecebido: z.number(),
+                quantidadeReservasConfirmadas: z.number(),
+                valorMedioReservas: z.number(),
+                dataInicial: z.string(),
+                dataFinal: z.string(),
+                faturamentoDiario: z.array(faturamentoDiarioSchema)
+            }),
+            401: z.object({
+                success: z.boolean(),
+                message: z.string()
+            }),
+            403: z.object({
+                success: z.boolean(),
+                message: z.string()
+            })
+        }
+    }
+}, authValidator, async(req, res) => {
+    const user = req.user!
+
+    if(user.role !== 'Gerente') {
+        return res.status(403).send({
+            success: false,
+            message: 'Acesso não autorizado'
+        })
+    }
+
+    const { dataInicial, dataFinal } = req.query as { dataInicial: string; dataFinal: string }
+    
+    const startDate = new Date(dataInicial);
+    const endDate = new Date(dataFinal);
+
+    const result = await reservas.aggregate([
+        {
+            $match: {
+                dataInicio: { $gte: startDate },
+                dataTermino: { $lte: endDate },
+                status: 'Confirmada'
+            }
+        },
+        {
+            $facet: {
+                totalStats: [
+                    {
+                        $group: {
+                            _id: null,
+                            totalRecebido: { $sum: '$valor' },
+                            quantidadeReservas: { $sum: 1 },
+                            valorMedio: { $avg: '$valor' }
+                        }
+                    }
+                ],
+                faturamentoDiario: [
+                    {
+                        $group: {
+                            _id: {
+                                $dateToString: {
+                                    format: '%Y-%m-%d',
+                                    date: '$dataInicio'
+                                }
+                            },
+                            quantidadeReservas: { $sum: 1 },
+                            faturamentoDia: { $sum: '$valor' }
+                        }
+                    },
+                    {
+                        $sort: { _id: 1 }
+                    }
+                ]
+            }
+        }
+    ]);
+
+    const totalStats = result[0].totalStats[0] || {
+        totalRecebido: 0,
+        quantidadeReservas: 0,
+        valorMedio: 0
+    };
+
+    const faturamentoDiario = result[0].faturamentoDiario.map((dia: any) => ({
+        data: dia._id,
+        quantidadeReservas: dia.quantidadeReservas,
+        faturamentoDia: dia.faturamentoDia
+    }));
+
+    return res.status(200).send({
+        totalRecebido: totalStats.totalRecebido,
+        quantidadeReservasConfirmadas: totalStats.quantidadeReservas,
+        valorMedioReservas: Math.round(totalStats.valorMedio * 100) / 100,
+        dataInicial,
+        dataFinal,
+        faturamentoDiario
+    });
+});
+
+export const getRelatorioFinanceiro = router;
