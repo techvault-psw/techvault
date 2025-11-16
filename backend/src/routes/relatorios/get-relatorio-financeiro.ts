@@ -22,7 +22,7 @@ router.get('/relatorios/financeiro', {
         response: {
             200: z.object({
                 totalRecebido: z.number(),
-                quantidadeReservasConfirmadas: z.number(),
+                quantidadeReservasConcluidas: z.number(),
                 valorMedioReservas: z.number(),
                 dataInicio: z.string(),
                 dataTermino: z.string(),
@@ -110,7 +110,7 @@ router.get('/relatorios/financeiro', {
 
     return res.status(200).send({
         totalRecebido: totalStats.totalRecebido,
-        quantidadeReservasConfirmadas: totalStats.quantidadeReservas,
+        quantidadeReservasConcluidas: totalStats.quantidadeReservas,
         valorMedioReservas: Math.round(totalStats.valorMedio * 100) / 100,
         dataInicio,
         dataTermino,
