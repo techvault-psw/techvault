@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Dialog de ordenação para lista de clientes
+ * 
+ * Componente de diálogo modal que permite definir critérios de ordenação
+ * para a lista de clientes (campo e direção).
+ * 
+ * @module components/dialogs/OrdenarClientesDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -14,16 +23,59 @@ import {
 import { Separator } from "../ui/separator";
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
+/**
+ * Schema de validação para ordenação de clientes
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} campo - Campo para ordenação (name, email, phone, registrationDate, role)
+ * @property {string} ordem - Direção da ordenação (asc ou desc)
+ */
 const formSchema = z.object({
   campo: z.enum(["name", "email", "phone", "registrationDate", "role"]),
   ordem: z.enum(["asc", "desc"]),
 });
 
+/**
+ * Props do componente OrdenarClientesDialog
+ * 
+ * @interface OrdenarClientesDialogProps
+ * @property {ReactNode} children - Elemento que abrirá o dialog quando clicado
+ * @property {Function} onApplySort - Callback executado ao aplicar ordenação
+ */
 interface OrdenarClientesDialogProps {
   children: ReactNode
   onApplySort: (sort: z.infer<typeof formSchema>) => void
 }
 
+/**
+ * Componente de diálogo de ordenação de clientes
+ * 
+ * Permite ordenar a lista de clientes por:
+ * - Nome
+ * - E-mail
+ * - Telefone
+ * - Data de Cadastro
+ * - Cargo
+ * 
+ * Com opções de ordem:
+ * - Crescente
+ * - Decrescente
+ * 
+ * @component
+ * @param {OrdenarClientesDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger que abre o diálogo
+ * @param {Function} props.onApplySort - Callback com critérios de ordenação selecionados
+ * @returns {JSX.Element} Diálogo de ordenação de clientes
+ * 
+ * @example
+ * <OrdenarClientesDialog onApplySort={setOrdenacao}>
+ *   <Button variant="secondary">
+ *     <SlidersIcon />
+ *     Ordenar por
+ *   </Button>
+ * </OrdenarClientesDialog>
+ */
 export const OrdenarClientesDialog = ({ children, onApplySort }: OrdenarClientesDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 

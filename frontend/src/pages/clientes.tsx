@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de gerenciamento de clientes
+ * 
+ * Esta página permite que gerentes visualizem, pesquisem, filtrem, ordenem
+ * e acessem detalhes de todos os clientes cadastrados no sistema.
+ * Oferece visualização em cards (mobile/tablet) e tabela (desktop).
+ * 
+ * @module pages/ClientesPage
+ */
+
 import { DadosClienteDialog } from '@/components/dialogs/dados-cliente-dialog';
 import { FiltrosClientesDialog } from '@/components/dialogs/filtros-clientes-dialog';
 import { OrdenarClientesDialog } from '@/components/dialogs/ordenar-clientes-dialog';
@@ -23,7 +33,26 @@ import { selectAllClientes } from '@/redux/clientes/slice';
 import { GoBackButton } from '@/components/go-back-button';
 import { format } from 'date-fns';
 
-
+/**
+ * Componente da página de gerenciamento de clientes
+ * 
+ * Permite ao gerente:
+ * - Visualizar lista completa de clientes cadastrados
+ * - Pesquisar clientes por nome, e-mail ou telefone
+ * - Filtrar clientes por cargo e data de cadastro
+ * - Ordenar clientes por diferentes campos
+ * - Acessar detalhes completos de cada cliente
+ * - Visualizar em formato de cards (mobile/tablet) ou tabela (desktop)
+ * 
+ * Requer cargo de Gerente - redireciona para /login se não autorizado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de gerenciamento de clientes
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/clientes" element={<ClientesPage />} />
+ */
 export default function ClientesPage() {
   const [searchTerm, setSearchTerm] = useState('');
   const [clienteToOpen, setClienteToOpen] = useState<string | null>(null);

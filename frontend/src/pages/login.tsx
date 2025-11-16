@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de login do sistema
+ * 
+ * Esta página permite que usuários façam login no sistema usando e-mail e senha.
+ * Após autenticação bem-sucedida, redireciona o usuário para a página apropriada
+ * de acordo com seu cargo (Dashboard para Gerente/Suporte ou Home para Cliente).
+ * 
+ * @module pages/LoginPage
+ */
+
 import { Link, useNavigate, useSearchParams } from "react-router";
 
 import * as z from "zod";
@@ -28,11 +38,44 @@ import type { AppDispatch } from "@/redux/store";
 import { HighlightBox } from "@/components/highlight-box";
 import { jwtDecode } from "jwt-decode";
 
+/**
+ * Schema de validação para o formulário de login
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} email - E-mail do usuário (obrigatório e deve ser válido)
+ * @property {string} password - Senha do usuário (obrigatório)
+ */
 const formSchema = z.object({
   email: z.string().min(1, "O e-mail é obrigatório").email("Digite um e-mail válido"),
   password: z.string().min(1, "A senha é obrigatória")
 })
 
+/**
+ * Componente da página de login
+ * 
+ * Permite ao usuário:
+ * - Fazer login com e-mail e senha
+ * - Ser redirecionado para URL específica após login (via parâmetro redirectTo)
+ * - Acessar a página de cadastro
+ * - Ver mensagens de erro em caso de credenciais inválidas ou problemas no servidor
+ * 
+ * O redirecionamento após login depende do cargo do usuário:
+ * - Gerente/Suporte: redireciona para /dashboard
+ * - Cliente: redireciona para /
+ * - Se houver redirectTo na URL, tem prioridade sobre o redirecionamento padrão
+ * 
+ * @component
+ * @returns {JSX.Element} Página de login
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/login" element={<LoginPage />} />
+ * 
+ * @example
+ * // Com redirecionamento após login
+ * <Link to="/login?redirectTo=/perfil">Login</Link>
+ */
 export default function LoginPage() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -57,6 +100,17 @@ export default function LoginPage() {
   }, [statusC, dispatch])
   const clientes = useSelector(selectAllClientes)
 
+  /**
+   * Manipula o envio do formulário de login
+   * 
+   * Autentica o usuário no servidor, decodifica o token JWT recebido,
+   * e redireciona para a página apropriada de acordo com o cargo.
+   * 
+   * @param {Object} values - Valores do formulário validados pelo Zod
+   * @param {string} values.email - E-mail do usuário
+   * @param {string} values.password - Senha do usuário
+   * @returns {Promise<void>}
+   */
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const { email, password } = values
 
