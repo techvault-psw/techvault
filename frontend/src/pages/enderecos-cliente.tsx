@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de listagem de endereços de um cliente específico
+ * 
+ * Página administrativo-gerencial que exibe todos os endereços cadastrados para um cliente.
+ * Acessível apenas por gerentes e suporte. Oferece visualização em grid (mobile) e tabela (desktop),
+ * com funcionalidade para editar/excluir cada endereço através de um dialog.
+ * 
+ * @module pages/EnderecosClientePage
+ */
+
 import { PageContainer } from "@/components/page-container";
 import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Card } from "@/components/ui/card"; 
@@ -20,6 +30,24 @@ import type { AppDispatch } from "@/redux/store";
 import { fetchEnderecos } from "@/redux/endereco/fetch";
 import { GoBackButton } from "@/components/go-back-button";
 
+/**
+ * Página de endereços do cliente
+ * 
+ * Exibe uma lista de todos os endereços cadastrados para um cliente específico.
+ * Recursos:
+ * - Verificação de permissão (apenas gerentes e suporte)
+ * - Visualização em grid para mobile e tabela para desktop
+ * - Integração com Redux para gerenciamento de estado
+ * - Botão voltar dinâmico baseado no caminho de origem
+ * - Edição e exclusão de endereços via dialog
+ * 
+ * @component
+ * @returns {JSX.Element} Página com lista de endereços do cliente ou null se cliente não encontrado
+ * 
+ * @example
+ * // Rota: /clientes/:id/enderecos
+ * <EnderecosClientePage />
+ */
 export default function EnderecosClientePage() {
   const { id } = useParams<{ id: string }>();
 
