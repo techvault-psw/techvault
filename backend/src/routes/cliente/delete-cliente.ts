@@ -2,6 +2,7 @@ import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { objectIdSchema } from "../../consts/zod-schemas";
 import { clientes } from "../../models/cliente";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -20,10 +21,15 @@ router.delete('/clientes/:id', {
         success: z.boolean(),
         message: z.string(),
       }),
+      403: z.object({
+              success: z.boolean(),
+              message: z.string(),
+      })
     },
   },
-}, async (req, res) => {
+},authValidator , async (req, res) => {
   const { id } = req.params
+  const user = req.user!
 
   const cliente = await clientes.findById(id)
 
@@ -31,6 +37,13 @@ router.delete('/clientes/:id', {
     return res.status(400).send({
       success: false,
       message: 'Cliente não encontrado'
+    })
+  }
+
+  if(user.id !== id && user.role !== 'Gerente' ){
+    return res.status(403).json({
+      success: false,
+      message: 'Acesso não autorizado'
     })
   }
 
