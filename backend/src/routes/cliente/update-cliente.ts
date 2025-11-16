@@ -44,7 +44,7 @@ router.put('/clientes/:id', {
     })
   }
 
-  if(user.id !== id && user.role === 'Gerente' ){
+  if(user.id !== id && user.role !== 'Gerente' ){
     return res.status(403).json({
       success: false,
       message: 'Acesso não autorizado'

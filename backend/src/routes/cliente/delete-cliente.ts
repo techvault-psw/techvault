@@ -2,6 +2,7 @@ import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { objectIdSchema } from "../../consts/zod-schemas";
 import { clientes } from "../../models/cliente";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -26,7 +27,7 @@ router.delete('/clientes/:id', {
       })
     },
   },
-}, async (req, res) => {
+},authValidator , async (req, res) => {
   const { id } = req.params
   const user = req.user!
 
@@ -39,7 +40,7 @@ router.delete('/clientes/:id', {
     })
   }
 
-  if(user.id !== id && user.role === 'Gerente' ){
+  if(user.id !== id && user.role !== 'Gerente' ){
     return res.status(403).json({
       success: false,
       message: 'Acesso não autorizado'
