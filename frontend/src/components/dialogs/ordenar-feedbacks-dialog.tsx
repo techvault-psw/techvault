@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Diálogo de ordenação para feedbacks
+ * 
+ * Permite ordenar feedbacks por avaliação, nome do cliente ou nome do pacote,
+ * em ordem crescente ou decrescente.
+ * 
+ * @module components/dialogs/OrdenarFeedbacksDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -14,16 +23,51 @@ import {
 import { Separator } from "../ui/separator";
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
+/**
+ * Schema de validação para o formulário de ordenação
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} campo - Campo de ordenação: "rating" (avaliação), "cliente" (nome do cliente) ou "pacote" (nome do pacote)
+ * @property {string} ordem - Ordem de classificação: "asc" (crescente) ou "desc" (decrescente)
+ */
 const formSchema = z.object({
   campo: z.enum(["rating", "cliente", "pacote"]),
   ordem: z.enum(["asc", "desc"]),
 });
 
+/**
+ * Props do diálogo de ordenação de feedbacks
+ * 
+ * @interface OrdenarFeedbacksDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ * @property {Function} onApplySort - Callback com a ordenação aplicada
+ */
 interface OrdenarFeedbacksDialogProps {
   children: ReactNode
   onApplySort: (sort: z.infer<typeof formSchema>) => void
 }
 
+/**
+ * Diálogo de ordenação para feedbacks
+ * 
+ * Oferece opções para:
+ * - Campo de ordenação: Avaliação, Cliente ou Pacote
+ * - Ordem: Crescente ou Decrescente
+ * - Padrão: Avaliação em ordem decrescente (feedback com maiores notas primeiro)
+ * 
+ * @component
+ * @param {OrdenarFeedbacksDialogProps} props - Props do diálogo
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @param {Function} props.onApplySort - Função chamada com a ordenação selecionada
+ * @returns {JSX.Element} Diálogo com opções de ordenação
+ * 
+ * @example
+ * // Uso do diálogo
+ * <OrdenarFeedbacksDialog onApplySort={setOrdenacao}>
+ *   <Button>Ordenar por</Button>
+ * </OrdenarFeedbacksDialog>
+ */
 export const OrdenarFeedbacksDialog = ({ children, onApplySort }: OrdenarFeedbacksDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
