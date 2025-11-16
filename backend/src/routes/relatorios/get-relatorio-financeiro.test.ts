@@ -27,7 +27,7 @@ describe('[GET] /relatorios/financeiro', () => {
         token = response.body.token
     })
 
-    it('deve retornar 200, o total recebido no período, a quantidade de reservas confirmadas, seu valor médio e o faturamento diário', async () => {
+    it('deve retornar 200, o total recebido no período, a quantidade de reservas Concluidas, seu valor médio e o faturamento diário', async () => {
         const [cliente1, cliente2] = await Promise.all([
             clienteFactory(),
             clienteFactory()
@@ -54,7 +54,7 @@ describe('[GET] /relatorios/financeiro', () => {
                 pacoteId: pacote1.id,
                 enderecoId: endereco1.id,
                 dataInicio: dataInicio,
-                status: 'Confirmada',
+                status: 'Concluída',
                 valor: 500
             }),
             reservaFactory({
@@ -73,7 +73,7 @@ describe('[GET] /relatorios/financeiro', () => {
         expect(response.status).toBe(200)
         expect(response.body).toEqual(expect.objectContaining({
             totalRecebido: 500,
-            quantidadeReservasConfirmadas: 1,
+            quantidadeReservasConcluidas: 1,
             valorMedioReservas: 500,
             faturamentoDiario: expect.arrayContaining([
                 expect.objectContaining({
