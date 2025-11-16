@@ -19,6 +19,8 @@ import { FormItem } from "../ui/form";
 import { Label } from "../ui/input";
 import { Separator } from "../ui/separator";
 import { RelatorioReservasDialog } from "./relatorio-reservas-dialog";
+import { httpGet } from "@/lib/fetch-utils";
+import { type RelatorioReservasData } from "./relatorio-reservas-dialog";
 
 /**
  * Schema de validação para o formulário de período do relatório de reservas
@@ -67,6 +69,11 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [successDialogOpen, setSuccessDialogOpen] = useState(false)
+  const [relatorioData, setRelatorioData] = useState<RelatorioReservasData>({
+    reservas: [],
+    qtdReservasConcluidas: 0,
+    qtdReservasCanceladas: 0
+  })
 
   const {
     handleSubmit,
@@ -82,8 +89,15 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
   const dataInicial = watch("dataInicial");
   const dataFinal = watch("dataFinal");
 
-  const onSubmit = (data: RelatorioFormData) => {
-    setSuccessDialogOpen(true);
+  const onSubmit = async (data: RelatorioFormData) => {
+    try {
+      const res = await httpGet<RelatorioReservasData>(`/relatorios/reservas?dataInicio=${data.dataInicial}&dataTermino=${data.dataFinal}`)      
+
+      setRelatorioData(res)
+      setSuccessDialogOpen(true);
+    } catch(error) {
+      console.log(error)
+    }
   };
 
   const handleDataInicialChange = (date: Date | undefined) => {
@@ -172,6 +186,7 @@ export const EmitirRelatorioReservasDialog = ({ children }: { children: ReactNod
         setOpen={setSuccessDialogOpen}
         startDate={dataInicial}
         endDate={dataFinal}
+        relatorioData={relatorioData}
       />
     </>
   );
