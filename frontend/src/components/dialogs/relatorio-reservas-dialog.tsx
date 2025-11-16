@@ -3,7 +3,8 @@
  * 
  * Componente modal que apresenta um relatório detalhado de todas as reservas
  * realizadas dentro de um período específico, incluindo resumo estatístico
- * e listagem detalhada de cada reserva.
+ * (quantidade confirmadas, canceladas, total) e listagem detalhada de cada
+ * reserva com informações de pacote, cliente, datas e valores.
  * 
  * @module components/dialogs/RelatorioReservasDialog
  */
@@ -16,6 +17,14 @@ import { Badge } from "../ui/badge";
 import { type Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
 
+/**
+ * Dados consolidados do relatório de reservas para um período específico
+ * 
+ * @interface RelatorioReservasData
+ * @property {Reserva[]} reservas - Array com todas as reservas do período (confirmadas e canceladas)
+ * @property {number} qtdReservasConcluidas - Total de reservas com status 'Confirmada'
+ * @property {number} qtdReservasCanceladas - Total de reservas com status 'Cancelada'
+ */
 export interface RelatorioReservasData {
   reservas: Reserva[]
   qtdReservasConcluidas: number
@@ -27,10 +36,11 @@ export interface RelatorioReservasData {
  * 
  * @interface RelatorioReservasDialogProps
  * @extends {DialogProps}
- * @property {boolean} open - Estado de abertura do dialog
- * @property {Function} setOpen - Função para alterar o estado de abertura
+ * @property {boolean} open - Controla abertura/fechamento do dialog
+ * @property {Function} setOpen - Função para alterar o estado de abertura do dialog
  * @property {Date} startDate - Data inicial do período do relatório
  * @property {Date} endDate - Data final do período do relatório
+ * @property {RelatorioReservasData} relatorioData - Dados consolidados das reservas do período
  */
 interface RelatorioReservasDialogProps extends DialogProps {
   open: boolean;
@@ -43,12 +53,23 @@ interface RelatorioReservasDialogProps extends DialogProps {
 /**
  * Calcula o resumo estatístico de um conjunto de reservas
  * 
+ * Computa percentuais de reservas confirmadas e canceladas em relação ao total.
+ * Se não houver reservas (divisão por zero), retorna percentual zero.
+ * 
  * @function
- * @param {Reserva[]} reservas - Array de reservas a serem analisadas
- * @returns {Array<{name: string, count: string}>} Array com estatísticas:
+ * @param {RelatorioReservasData} relatorioData - Dados do relatório de reservas
+ * @returns {Array<{name: string, count: string}>} Array com 3 estatísticas ordenadas:
  *   - Quantidade de reservas confirmadas com percentual
  *   - Quantidade de reservas canceladas com percentual
  *   - Quantidade total de reservas
+ * 
+ * @example
+ * const resumo = getResumo(relatorioData)
+ * // Retorna: [
+ * //   { name: "Reservas concluídas", count: "8 (53%)" },
+ * //   { name: "Reservas canceladas", count: "7 (47%)" },
+ * //   { name: "Reservas totais", count: "15" }
+ * // ]
  */
 const getResumo: (relatorioData: RelatorioReservasData) => {
   name: string
@@ -77,23 +98,25 @@ const getResumo: (relatorioData: RelatorioReservasData) => {
 /**
  * Componente de dialog para exibição do relatório de reservas
  * 
- * Apresenta um resumo estatístico das reservas no período (confirmadas, canceladas, total)
- * e lista detalhada de cada reserva com informações como:
+ * Componente modal que apresenta um resumo estatístico das reservas no período
+ * (confirmadas com percentual, canceladas com percentual, e total) seguido por
+ * uma lista detalhada de cada reserva. Cada item da lista exibe:
  * - Nome do pacote
- * - Cliente responsável
- * - Data e horário de início e término
- * - Status e valor da reserva
+ * - Nome do cliente
+ * - Data e horário de início e término formatados
+ * - Status (com badge colorida: roxa para Concluída, vermelha para Cancelada)
+ * - Valor formatado em reais
  * 
- * Os dados são filtrados por período e apenas reservas finalizadas ou canceladas são listadas.
+ * O dialog não é renderizado se as datas não forem fornecidas.
  * 
  * @component
  * @param {RelatorioReservasDialogProps} props - Props do componente
  * @param {boolean} props.open - Controla abertura/fechamento do dialog
- * @param {Function} props.setOpen - Função para alterar estado de abertura
+ * @param {Function} props.setOpen - Função para alterar o estado de abertura
  * @param {Date} props.startDate - Data inicial do período
  * @param {Date} props.endDate - Data final do período
- * @param {DialogProps} props - Outras props do dialog (passadas adiante)
- * @returns {JSX.Element|null} Dialog com relatório ou null se datas não definidas
+ * @param {RelatorioReservasData} props.relatorioData - Dados consolidados das reservas
+ * @returns {JSX.Element|null} Dialog com o relatório formatado ou null se datas inválidas
  * 
  * @example
  * <RelatorioReservasDialog
@@ -101,6 +124,11 @@ const getResumo: (relatorioData: RelatorioReservasData) => {
  *   setOpen={setIsOpen}
  *   startDate={new Date('2024-01-01')}
  *   endDate={new Date('2024-01-31')}
+ *   relatorioData={{
+ *     reservas: [...],
+ *     qtdReservasConcluidas: 8,
+ *     qtdReservasCanceladas: 7
+ *   }}
  * />
  */
 export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, relatorioData, ...props }: RelatorioReservasDialogProps) => {
