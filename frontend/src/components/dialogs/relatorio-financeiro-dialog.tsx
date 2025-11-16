@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog de exibição de relatório financeiro
+ * 
+ * Componente modal que apresenta um relatório detalhado de faturamento
+ * dentro de um período específico, incluindo resumo consolidado e
+ * distribuição diária de receitas.
+ * 
+ * @module components/dialogs/RelatorioFinanceiroDialog
+ */
+
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
@@ -6,6 +16,16 @@ import { useSelector } from "react-redux";
 import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
 
+/**
+ * Props do componente RelatorioFinanceiroDialog
+ * 
+ * @interface RelatorioFinanceiroDialogProps
+ * @extends {DialogProps}
+ * @property {boolean} open - Estado de abertura do dialog
+ * @property {Function} setOpen - Função para alterar o estado de abertura
+ * @property {Date} startDate - Data inicial do período do relatório
+ * @property {Date} endDate - Data final do período do relatório
+ */
 interface RelatorioFinanceiroDialogProps extends DialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
@@ -13,6 +33,16 @@ interface RelatorioFinanceiroDialogProps extends DialogProps {
   endDate: Date;
 }
 
+/**
+ * Calcula o resumo financeiro consolidado de um conjunto de reservas
+ * 
+ * @function
+ * @param {Reserva[]} reservas - Array de reservas concluídas a serem analisadas
+ * @returns {Array<{name: string, count: string}>} Array com métricas:
+ *   - Faturamento total em formato de moeda
+ *   - Quantidade de reservas concluídas
+ *   - Ticket médio por reserva em formato de moeda
+ */
 const getResumo = (reservas: Reserva[]) => {
   const reservasConcluidas = reservas.filter((reserva) => reserva.status === 'Concluída')
   const faturamentoTotal = reservasConcluidas.reduce((acc, reserva) => acc + reserva.valor, 0)
@@ -34,6 +64,14 @@ const getResumo = (reservas: Reserva[]) => {
   ]
 }
 
+/**
+ * Agrupa e ordena reservas por dia, calculando totais diários
+ * 
+ * @function
+ * @param {Reserva[]} reservas - Array de reservas concluídas
+ * @returns {Array<{data: string, qtdReservas: number, valor: number}>} Array ordenado 
+ *   cronologicamente com quantidade de reservas e valor total por dia
+ */
 const getDistribuicaoDiaria = (reservas: Reserva[]) => {
   const agrupadoPorDia = reservas.reduce((acc, reserva) => {
     const dataInicio = format(new Date(reserva.dataInicio), "dd/MM/yyyy")
@@ -61,6 +99,30 @@ const getDistribuicaoDiaria = (reservas: Reserva[]) => {
   })
 }
 
+/**
+ * Componente de dialog para exibição do relatório financeiro
+ * 
+ * Apresenta um resumo consolidado de faturamento (total, quantidade de reservas, ticket médio)
+ * e tabela com distribuição diária de receitas. Apenas reservas concluídas são consideradas
+ * no cálculo dos valores.
+ * 
+ * @component
+ * @param {RelatorioFinanceiroDialogProps} props - Props do componente
+ * @param {boolean} props.open - Controla abertura/fechamento do dialog
+ * @param {Function} props.setOpen - Função para alterar estado de abertura
+ * @param {Date} props.startDate - Data inicial do período
+ * @param {Date} props.endDate - Data final do período
+ * @param {DialogProps} props - Outras props do dialog (passadas adiante)
+ * @returns {JSX.Element|null} Dialog com relatório ou null se datas não definidas
+ * 
+ * @example
+ * <RelatorioFinanceiroDialog
+ *   open={isOpen}
+ *   setOpen={setIsOpen}
+ *   startDate={new Date('2024-01-01')}
+ *   endDate={new Date('2024-01-31')}
+ * />
+ */
 export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, ...props }: RelatorioFinanceiroDialogProps) => {
   if (!startDate || !endDate) return null
   
