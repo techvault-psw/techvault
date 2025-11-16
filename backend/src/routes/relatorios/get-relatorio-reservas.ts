@@ -18,7 +18,7 @@ router.get('/relatorios/reservas', {
         response: {
             200: z.object({
                 reservas: z.array(reservaExtendedZodSchema),
-                qtdReservasConfirmadas: z.number(),
+                qtdReservasConcluidas: z.number(),
                 qtdReservasCanceladas: z.number()
             }),
             400: z.object({
@@ -37,8 +37,10 @@ router.get('/relatorios/reservas', {
     }
 }, authValidator, roleValidator('Gerente'), async(req, res) => {
     const { dataInicio, dataTermino } = req.query
+    const dataInicioDate = new Date(dataInicio)
+    const dataTerminoDate = new Date(dataTermino)
 
-    if(dataInicio > dataTermino) {
+    if(dataInicioDate > dataTerminoDate) {
         return res.status(400).send({
             success: false,
             message: 'Data de início não pode ser maior que a data de término'
@@ -48,8 +50,8 @@ router.get('/relatorios/reservas', {
     const result = await reservas.aggregate([
         {
             $match: {
-                dataInicio: { $gte: new Date(dataInicio) },
-                dataTermino: { $lte: new Date(dataTermino) }
+                dataInicio: { $gte: dataInicioDate },
+                dataTermino: { $lte: dataTerminoDate }
             }
         },
         {
@@ -60,10 +62,11 @@ router.get('/relatorios/reservas', {
                     { $lookup: { from: 'pacotes', localField: 'pacoteId', foreignField: '_id', as: 'pacoteId' } },
                     { $unwind: '$pacoteId' },
                     { $lookup: { from: 'enderecos', localField: 'enderecoId', foreignField: '_id', as: 'enderecoId' } },
-                    { $unwind: '$enderecoId' }
+                    { $unwind: '$enderecoId' },
+                    { $match: { status: { $in: ['Concluída', 'Cancelada'] } } }
                 ],
-                qtdConfirmadas: [
-                    { $match: { status: 'Confirmada' } },
+                qtdConcluidas: [
+                    { $match: { status: 'Concluída' } },
                     { $count: 'count' }
                 ],
                 qtdCanceladas: [
@@ -75,12 +78,12 @@ router.get('/relatorios/reservas', {
     ])
 
     const formattedReservas = result[0].reservas.map(PopulatedReservaFormatter)
-    const qtdReservasConfirmadas = result[0].qtdConfirmadas[0]?.count || 0
+    const qtdReservasConcluidas = result[0].qtdConcluidas[0]?.count || 0
     const qtdReservasCanceladas = result[0].qtdCanceladas[0]?.count || 0
 
     return res.status(200).send({
         reservas: formattedReservas,
-        qtdReservasConfirmadas,
+        qtdReservasConcluidas,
         qtdReservasCanceladas
     })
 })
