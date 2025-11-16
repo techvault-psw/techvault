@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Página de feedbacks sobre pacotes
+ * 
+ * Esta página exibe feedbacks/avaliações deixadas por clientes sobre os pacotes.
+ * Permite que clientes visualizem feedbacks de outros usuários, deixem novos feedbacks
+ * e gerenciem seus próprios (editar/excluir). Gerentes podem editar/excluir qualquer feedback.
+ * Inclui funcionalidades de filtragem por avaliação e ordenação por critérios variados.
+ * 
+ * @module pages/FeedbacksPage
+ */
+
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { FiltrosFeedbacksDialog } from "@/components/dialogs/filtros-feedbacks-dialog";
@@ -26,6 +37,30 @@ import { Link } from "react-router";
 import { fetchReservas } from "@/redux/reservas/fetch";
 import { GoBackButton } from "@/components/go-back-button";
 
+/**
+ * Componente da página de feedbacks
+ * 
+ * Exibe uma lista de feedbacks em cards responsivos (grid em dispositivos maiores).
+ * Cada card mostra:
+ * - Nome do cliente
+ * - Classificação por estrelas
+ * - Comentário do feedback (limitado a 4 linhas)
+ * - Botões editar/excluir (se for dono ou gerente)
+ * - Link para página de informações do pacote
+ * 
+ * Recursos:
+ * - Filtragem por range de avaliação (1-5 estrelas)
+ * - Ordenação por: avaliação, nome do cliente ou nome do pacote
+ * - Botão flutuante para deixar novo feedback
+ * - Acesso condicional a editar/excluir baseado no tipo de usuário
+ * 
+ * @component
+ * @returns {JSX.Element} Página com lista de feedbacks
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/feedbacks" element={<FeedbacksPage />} />
+ */
 export default function FeedbacksPage() {
     const { isGerente } = useCargo()
 
