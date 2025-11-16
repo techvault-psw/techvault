@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Diálogo de confirmação para exclusão de pacote
+ * 
+ * Exibe um aviso de confirmação antes de excluir permanentemente um pacote.
+ * Informa ao usuário que a ação é irreversível e que todas as reservas serão canceladas.
+ * 
+ * @module components/dialogs/ExcluirPacoteDialog
+ */
+
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { TrashIcon } from "../icons/trash-icon";
@@ -6,12 +15,43 @@ import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import type { Pacote } from "@/redux/pacotes/slice";
 
+/**
+ * Props do diálogo de exclusão de pacote
+ * 
+ * @interface ExcluirPacoteDialogProps
+ * @property {Pacote} pacote - Objeto do pacote a ser excluído
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ * @property {Function} handleDeleteClick - Callback executado ao confirmar exclusão
+ */
 interface ExcluirPacoteDialogProps {
   pacote: Pacote
   children: ReactNode
   handleDeleteClick: () => void
 }
 
+/**
+ * Diálogo de confirmação para exclusão de pacote
+ * 
+ * Exibe mensagens de aviso informando:
+ * - O nome do pacote que será excluído
+ * - Que a ação é irreversível
+ * - Que todas as reservas serão canceladas
+ * 
+ * Oferece botões para cancelar ou confirmar exclusão.
+ * 
+ * @component
+ * @param {ExcluirPacoteDialogProps} props - Props do diálogo
+ * @param {Pacote} props.pacote - Dados do pacote a excluir
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @param {Function} props.handleDeleteClick - Função chamada ao confirmar exclusão
+ * @returns {JSX.Element} Diálogo de confirmação de exclusão
+ * 
+ * @example
+ * // Uso do diálogo
+ * <ExcluirPacoteDialog pacote={pacote} handleDeleteClick={handleDelete}>
+ *   <Button variant="destructive">Excluir</Button>
+ * </ExcluirPacoteDialog>
+ */
 export const ExcluirPacoteDialog = ({ pacote, children, handleDeleteClick }: ExcluirPacoteDialogProps) => {
   return (
     <Dialog.Container>

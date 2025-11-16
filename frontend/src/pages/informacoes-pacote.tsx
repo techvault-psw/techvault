@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de informações detalhadas de um pacote
+ * 
+ * Esta página exibe as informações completas de um pacote específico, incluindo
+ * descrição, componentes do PC, valor e opção para solicitar reserva.
+ * O pacote é identificado pelo parâmetro de rota ID e é buscado no estado Redux.
+ * 
+ * @module pages/InformacoesPacotePage
+ */
+
 import { GoBackButton } from "@/components/go-back-button";
 import { HighlightBox } from "@/components/highlight-box";
 import { PacoteImage } from "@/components/pacote-image";
@@ -14,6 +24,29 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router";
 
+/**
+ * Componente da página de informações do pacote
+ * 
+ * Exibe:
+ * - Imagem do pacote
+ * - Nome do pacote
+ * - Descrição completa (múltiplos parágrafos)
+ * - Lista de componentes do PC
+ * - Valor por hora
+ * - Nota sobre no-break incluído
+ * - Botão para solicitar reserva
+ * 
+ * Comportamento:
+ * - Se usuário não autenticado: redireciona para login com redirecionamento para a reserva
+ * - Se usuário autenticado: permite ir diretamente para confirmação de reserva
+ * 
+ * @component
+ * @returns {JSX.Element} Página com informações detalhadas do pacote ou mensagem de carregamento
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/informacoes-pacote/:id" element={<InformacoesPacotePage />} />
+ */
 export default function InformacoesPacotePage() {
   const { id } = useParams<{ id: string }>();
 

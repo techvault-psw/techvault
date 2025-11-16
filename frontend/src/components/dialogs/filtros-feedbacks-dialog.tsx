@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Diálogo de filtros para feedbacks
+ * 
+ * Permite filtrar feedbacks por faixa de avaliação (1-5 estrelas).
+ * Oferece opção de limpar todos os filtros aplicados.
+ * 
+ * @module components/dialogs/FiltrosFeedbacksDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -15,16 +24,52 @@ import {
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 
+/**
+ * Schema de validação para o formulário de filtros
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} ratingMin - Avaliação mínima (1-5, opcional)
+ * @property {string} ratingMax - Avaliação máxima (1-5, opcional)
+ */
 const formSchema = z.object({
   ratingMin: z.string().optional(),
   ratingMax: z.string().optional(),
 });
 
+/**
+ * Props do diálogo de filtros de feedbacks
+ * 
+ * @interface FiltrosFeedbacksDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ * @property {Function} onApplyFilters - Callback com os filtros aplicados
+ */
 interface FiltrosFeedbacksDialogProps {
   children: ReactNode
   onApplyFilters: (filters: z.infer<typeof formSchema>) => void
 }
 
+/**
+ * Diálogo de filtros para feedbacks
+ * 
+ * Oferece campos para:
+ * - Avaliação mínima (1-5 estrelas)
+ * - Avaliação máxima (1-5 estrelas)
+ * - Botão para limpar todos os filtros
+ * - Botão para aplicar os filtros
+ * 
+ * @component
+ * @param {FiltrosFeedbacksDialogProps} props - Props do diálogo
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @param {Function} props.onApplyFilters - Função chamada com os filtros selecionados
+ * @returns {JSX.Element} Diálogo com campos de filtro
+ * 
+ * @example
+ * // Uso do diálogo
+ * <FiltrosFeedbacksDialog onApplyFilters={setFiltros}>
+ *   <Button>Filtros</Button>
+ * </FiltrosFeedbacksDialog>
+ */
 export const FiltrosFeedbacksDialog = ({ children, onApplyFilters }: FiltrosFeedbacksDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 

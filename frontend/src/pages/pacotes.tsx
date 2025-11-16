@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de gerenciamento de pacotes
+ * 
+ * Esta página permite que gerentes visualizem, criem, editem e excluem pacotes de hospedagem.
+ * Inclui funcionalidades de busca, filtragem por valor e ordenação por diferentes critérios.
+ * A página exibe pacotes em um layout responsivo com cards (mobile/tablet) e tabela (desktop).
+ * 
+ * @module pages/PacotesPage
+ */
+
 import { CriarPacoteDialog } from "@/components/dialogs/criar-pacote-dialog";
 import { DadosPacoteDialog } from "@/components/dialogs/dados-pacote-dialog";
 import { FiltrosPacotesDialog } from "@/components/dialogs/filtros-pacotes-dialog";
@@ -28,6 +38,25 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
 
+/**
+ * Componente da página de gerenciamento de pacotes
+ * 
+ * Recursos:
+ * - Visualização de todos os pacotes em layout responsivo
+ * - Criação de novos pacotes (apenas gerentes)
+ * - Edição e exclusão de pacotes (apenas gerentes)
+ * - Busca por nome, descrição ou valor
+ * - Filtragem por faixa de valor e quantidade
+ * - Ordenação por nome, valor ou quantidade (ascendente/descendente)
+ * - Requer autenticação de gerente - redireciona para login se não autorizado
+ * 
+ * @component
+ * @returns {JSX.Element} Página com lista de pacotes
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/pacotes" element={<Pacotes />} />
+ */
 export default function Pacotes() {
   const { isGerente } = useCargo()
 
