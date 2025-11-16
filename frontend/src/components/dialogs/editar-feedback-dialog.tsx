@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Diálogo para editar feedback existente
+ * 
+ * Permite que o dono do feedback ou um gerente editem um feedback existente.
+ * Clientes podem editar apenas seus próprios feedbacks, enquanto gerentes podem
+ * editar qualquer feedback. O campo de pacote é bloqueado para clientes.
+ * 
+ * @module components/dialogs/EditarFeedbackDialog
+ */
+
 import { useState, type ReactNode } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -32,6 +42,15 @@ import { updateFeedbackServer } from "@/redux/feedbacks/fetch";
 import { type AppDispatch } from "@/redux/store";
 import { selectAllPacotes, selectPacoteById } from "@/redux/pacotes/slice";
 
+/**
+ * Schema de validação para o formulário de edição de feedback
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} pacoteIndex - ID do pacote (obrigatório)
+ * @property {number} rating - Avaliação de 1 a 5 estrelas (obrigatório)
+ * @property {string} comment - Comentário do feedback (mínimo 10 caracteres)
+ */
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
   rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
@@ -43,11 +62,40 @@ const formSchema = z.object({
     )
 });
 
+/**
+ * Props do diálogo de editar feedback
+ * 
+ * @interface EditarFeedbackDialogProps
+ * @property {Feedback} feedback - Objeto do feedback a editar
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ */
 interface EditarFeedbackDialogProps {
   feedback: Feedback
   children: ReactNode
 }
 
+/**
+ * Diálogo para editar feedback existente
+ * 
+ * Funcionalidades:
+ * - Edição de pacote (apenas gerentes podem mudar)
+ * - Reclassificação por estrelas (1-5)
+ * - Edição de comentário (mínimo 10 caracteres)
+ * - Carregamento de dados atuais do feedback
+ * - Controle de acesso baseado em cargo
+ * 
+ * @component
+ * @param {EditarFeedbackDialogProps} props - Props do diálogo
+ * @param {Feedback} props.feedback - Dados do feedback a editar
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @returns {JSX.Element} Diálogo com formulário de edição de feedback
+ * 
+ * @example
+ * // Uso do diálogo
+ * <EditarFeedbackDialog feedback={feedback}>
+ *   <Button size="icon">Editar</Button>
+ * </EditarFeedbackDialog>
+ */
 export const EditarFeedbackDialog = ({ feedback, children }: EditarFeedbackDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const { isGerente } = useCargo()
