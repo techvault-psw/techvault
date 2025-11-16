@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página Dashboard - Painel administrativo
+ * 
+ * Esta página serve como hub central de acesso para gerentes e suporte,
+ * oferecendo atalhos para páginas públicas, ferramentas de gerenciamento
+ * e geração de relatórios, organizados por categoria e permissão de cargo.
+ * 
+ * @module pages/DashboardPage
+ */
+
 import { EmitirRelatorioFinanceiroDialog } from "@/components/dialogs/emitir-relatorio-financeiro-dialog";
 import { EmitirRelatorioReservasDialog } from "@/components/dialogs/emitir-relatorio-reservas-dialog";
 import { PageContainer } from "@/components/page-container";
@@ -14,6 +24,16 @@ import { Link } from "react-router";
 
 import { useNavigate } from 'react-router'
 
+/**
+ * Tipo para definição de cards do dashboard
+ * 
+ * @typedef {Object} DashboardCard
+ * @property {string} title - Título do card
+ * @property {string} description - Descrição da funcionalidade
+ * @property {string} [url] - URL de destino (para links)
+ * @property {ComponentType} [dialog] - Componente de dialog (para modais)
+ * @property {'gerente' | 'suporte'} [role] - Cargo mínimo requerido
+ */
 type DashboardCard = {
   title: string
   description: string
@@ -22,6 +42,12 @@ type DashboardCard = {
   role?: 'gerente' | 'suporte'
 }
 
+/**
+ * Configuração de cards do dashboard organizados por seção
+ * 
+ * @constant
+ * @type {Record<string, DashboardCard[]>}
+ */
 const dashboardCards: Record<string, DashboardCard[]> = {
   "Páginas Públicas": [
     {
@@ -77,6 +103,27 @@ const dashboardCards: Record<string, DashboardCard[]> = {
   ],
 }
 
+/**
+ * Componente da página Dashboard
+ * 
+ * Painel administrativo que oferece:
+ * - Acesso rápido a páginas públicas (Home, Pacotes, Feedbacks)
+ * - Ferramentas de gerenciamento (Reservas, Pacotes, Clientes)
+ * - Emissão de relatórios (Reservas e Financeiro - apenas Gerente)
+ * 
+ * Cards são exibidos conforme permissões:
+ * - Suporte: vê todas as páginas públicas e gerenciamento de reservas
+ * - Gerente: acesso total incluindo gerenciamento de pacotes/clientes e relatórios
+ * 
+ * Requer cargo de Gerente ou Suporte - redireciona para /login se não autorizado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página dashboard
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/dashboard" element={<DashboardPage />} />
+ */
 export default function DashboardPage() {
   const { isGerente, isSuporte } = useCargo()
   const navigate = useNavigate()
