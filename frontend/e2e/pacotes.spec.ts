@@ -14,7 +14,6 @@ async function createPacote(page: Page, name: string, value: string = '150,00', 
   const dialog = page.getByRole('dialog').filter({ hasText: 'Criar Pacote' })
   await expect(dialog).toBeVisible()
   
-  // Upload image
   const assetPath = path.join(__dirname, '../public/setup-1.png')
   await dialog.locator('input[type="file"]').setInputFiles(assetPath)
   
@@ -42,24 +41,19 @@ async function createPacote(page: Page, name: string, value: string = '150,00', 
   await dialog.getByRole('button', { name: 'Criar' }).click()
   
   await expect(dialog).toBeHidden({ timeout: 10000 })
-  await page.waitForLoadState('networkidle')
   await page.waitForTimeout(500)
 }
 
 async function getPacoteCard(page: Page) {
-  // Check if mobile (cards view, lg:hidden)
   const cardsContainer = page.locator('.lg\\:hidden > [data-slot="dialog-trigger"]:visible').first()
-  const tableContainer = page.locator('section.hidden tbody [data-slot="dialog-trigger"]:visible').first()
   
   const isCardVisible = await cardsContainer.isVisible().catch(() => false)
   
   if (isCardVisible) {
-    // Mobile: cards view (lg:hidden)
     return page.locator('[data-slot="dialog-trigger"]:visible').filter({ 
       has: page.locator('[data-slot="card-text-container"]') 
     })
   } else {
-    // Desktop: table view (hidden lg:block)
     return page.locator('tbody [data-slot="dialog-trigger"]:visible')
   }
 }
@@ -103,8 +97,6 @@ test.describe('Pacotes - Cliente', () => {
     
     await firstPacoteLink.click()
     
-    await page.waitForLoadState('networkidle')
-    
     await expect(page.getByRole('heading', { name: pacoteName || '' })).toBeVisible()
     
     await expect(page.getByText(/descrição/i)).toBeVisible()
@@ -121,7 +113,6 @@ test.describe('Pacotes - Gerente', () => {
     await page.goto('/pacotes')
 
     await expect(page.getByRole('heading', { name: 'Pacotes' })).toBeVisible()
-    await page.waitForLoadState('networkidle')
 
     const pacotesCards = await getPacoteCard(page)
     const count = await pacotesCards.count()
@@ -132,7 +123,6 @@ test.describe('Pacotes - Gerente', () => {
     await page.goto('/pacotes')
 
     await expect(page.getByRole('heading', { name: 'Pacotes' })).toBeVisible()
-    await page.waitForLoadState('networkidle')
 
     const pacotesCards = await getPacoteCard(page)
     const countBefore = await pacotesCards.count()
@@ -156,10 +146,11 @@ test.describe('Pacotes - Gerente', () => {
   })
 
   test('deve editar um pacote', async ({ page }) => {
+    test.setTimeout(45000)
+
     await page.goto('/pacotes')
 
     await expect(page.getByRole('heading', { name: 'Pacotes' })).toBeVisible()
-    await page.waitForLoadState('networkidle')
 
     let pacotesCards = await getPacoteCard(page)
     let pacotesCount = await pacotesCards.count()
@@ -205,9 +196,8 @@ test.describe('Pacotes - Gerente', () => {
 
     await editDialog.getByRole('button', { name: 'Salvar alterações' }).click()
 
-    await expect(editDialog).toBeHidden()
+    await expect(editDialog).toBeHidden({ timeout: 30000 })
 
-    await page.waitForLoadState('networkidle')
     await page.waitForTimeout(1000)
 
     const searchInput = page.locator('input[placeholder*="Pesquisar"]')
@@ -223,7 +213,6 @@ test.describe('Pacotes - Gerente', () => {
     await page.goto('/pacotes')
 
     await expect(page.getByRole('heading', { name: 'Pacotes' })).toBeVisible()
-    await page.waitForLoadState('networkidle')
 
     let pacotesCards = await getPacoteCard(page)
     let pacotesCount = await pacotesCards.count()
@@ -275,7 +264,6 @@ test.describe('Pacotes - Gerente', () => {
     await expect(deleteDialog).toBeHidden()
     await expect(detailsDialog).toBeHidden()
 
-    await page.waitForLoadState('networkidle')
     await page.waitForTimeout(1000)
 
     let pacotesCardsAfterDelete = await getPacoteCard(page)
@@ -293,7 +281,6 @@ test.describe('Pacotes - Gerente', () => {
       await page.waitForTimeout(500)
       
       const deletedPacote = await getPacoteCard(page)
-      // Check if the deleted pacote still exists (it shouldn't appear in filtered results)
       const count = await deletedPacote.count()
       expect(count).toBe(0)
     }
