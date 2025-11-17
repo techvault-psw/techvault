@@ -2,8 +2,9 @@
  * @fileoverview Dialog de exibição de relatório financeiro
  * 
  * Componente modal que apresenta um relatório detalhado de faturamento
- * dentro de um período específico, incluindo resumo consolidado e
- * distribuição diária de receitas.
+ * dentro de um período específico, incluindo resumo consolidado com métricas
+ * gerais (faturamento total, quantidade de reservas concluídas, ticket médio)
+ * e tabela com distribuição diária de receitas em formato de moeda.
  * 
  * @module components/dialogs/RelatorioFinanceiroDialog
  */
@@ -12,41 +13,82 @@ import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { format } from "date-fns";
-import { useSelector } from "react-redux";
-import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
+
+/**
+ * Representa um dia de faturamento com dados agregados
+ * 
+ * @interface FaturamentoDiario
+ * @property {Date} data - Data do faturamento em formato ISO
+ * @property {number} quantidadeReservas - Quantidade de reservas concluídas neste dia
+ * @property {number} faturamentoDia - Valor total faturado neste dia em reais
+ */
+interface FaturamentoDiario {
+  data: Date,
+  quantidadeReservas: number,
+  faturamentoDia: number
+}
+
+/**
+ * Dados consolidados do relatório financeiro para um período específico
+ * 
+ * @interface RelatorioFinanceiroData
+ * @property {number} totalRecebido - Valor total recebido no período (apenas reservas concluídas)
+ * @property {number} quantidadeReservasConcluidas - Total de reservas com status concluída
+ * @property {number} valorMedioReservas - Valor médio de cada reserva concluída (arredondado a 2 casas decimais)
+ * @property {FaturamentoDiario[]} faturamentoDiario - Distribuição diária de faturamento ordenada cronologicamente
+ */
+export interface RelatorioFinanceiroData {
+  totalRecebido: number,
+  quantidadeReservasConcluidas: number,
+  valorMedioReservas: number,
+  faturamentoDiario: FaturamentoDiario[]
+}
 
 /**
  * Props do componente RelatorioFinanceiroDialog
  * 
  * @interface RelatorioFinanceiroDialogProps
  * @extends {DialogProps}
- * @property {boolean} open - Estado de abertura do dialog
- * @property {Function} setOpen - Função para alterar o estado de abertura
+ * @property {boolean} open - Controla abertura/fechamento do dialog
+ * @property {Function} setOpen - Função para alterar o estado de abertura do dialog
  * @property {Date} startDate - Data inicial do período do relatório
  * @property {Date} endDate - Data final do período do relatório
+ * @property {RelatorioFinanceiroData} relatorioData - Dados consolidados do relatório financeiro
  */
 interface RelatorioFinanceiroDialogProps extends DialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   startDate: Date;
   endDate: Date;
+  relatorioData: RelatorioFinanceiroData;
 }
 
 /**
- * Calcula o resumo financeiro consolidado de um conjunto de reservas
+ * Calcula o resumo financeiro consolidado para exibição no relatório
+ * 
+ * Transforma os dados do relatório em um array de métricas formatadas
+ * para apresentação visual (valores em moeda formatada, quantidade como número).
  * 
  * @function
- * @param {Reserva[]} reservas - Array de reservas concluídas a serem analisadas
- * @returns {Array<{name: string, count: string}>} Array com métricas:
- *   - Faturamento total em formato de moeda
- *   - Quantidade de reservas concluídas
- *   - Ticket médio por reserva em formato de moeda
+ * @param {RelatorioFinanceiroData} relatorioData - Dados do relatório financeiro
+ * @returns {Array<{name: string, count: string | number}>} Array com 3 métricas ordenadas:
+ *   - Faturamento total em formato de moeda brasileira
+ *   - Quantidade de reservas concluídas (número inteiro)
+ *   - Ticket médio por reserva em formato de moeda brasileira
+ * 
+ * @example
+ * const resumo = getResumo(relatorioData)
+ * // Retorna: [
+ * //   { name: "Faturamento total", count: "R$ 10.500,00" },
+ * //   { name: "Reservas concluídas", count: 15 },
+ * //   { name: "Ticket médio por reserva", count: "R$ 700,00" }
+ * // ]
  */
-const getResumo = (reservas: Reserva[]) => {
-  const reservasConcluidas = reservas.filter((reserva) => reserva.status === 'Concluída')
-  const faturamentoTotal = reservasConcluidas.reduce((acc, reserva) => acc + reserva.valor, 0)
-  const ticketMedio = reservasConcluidas.length > 0 ? faturamentoTotal / reservasConcluidas.length : 0
+const getResumo = (relatorioData: RelatorioFinanceiroData) => {
+  const quantidadeReservasConcluidas = relatorioData.quantidadeReservasConcluidas
+  const faturamentoTotal = relatorioData.totalRecebido
+  const ticketMedio = relatorioData.valorMedioReservas
 
   return [
     {
@@ -55,7 +97,7 @@ const getResumo = (reservas: Reserva[]) => {
     },
     {
       name: "Reservas concluídas",
-      count: reservasConcluidas.length.toString(),
+      count: quantidadeReservasConcluidas,
     },
     {
       name: "Ticket médio por reserva",
@@ -65,55 +107,23 @@ const getResumo = (reservas: Reserva[]) => {
 }
 
 /**
- * Agrupa e ordena reservas por dia, calculando totais diários
- * 
- * @function
- * @param {Reserva[]} reservas - Array de reservas concluídas
- * @returns {Array<{data: string, qtdReservas: number, valor: number}>} Array ordenado 
- *   cronologicamente com quantidade de reservas e valor total por dia
- */
-const getDistribuicaoDiaria = (reservas: Reserva[]) => {
-  const agrupadoPorDia = reservas.reduce((acc, reserva) => {
-    const dataInicio = format(new Date(reserva.dataInicio), "dd/MM/yyyy")
-    
-    if (!acc[dataInicio]) {
-      acc[dataInicio] = {
-        data: dataInicio,
-        qtdReservas: 0,
-        valor: 0,
-      }
-    }
-    
-    acc[dataInicio].qtdReservas += 1
-    acc[dataInicio].valor += reserva.valor
-    
-    return acc
-  }, {} as Record<string, { data: string; qtdReservas: number; valor: number }>)
-
-  return Object.values(agrupadoPorDia).sort((a, b) => {
-    const [diaA, mesA, anoA] = a.data.split('/').map(Number)
-    const [diaB, mesB, anoB] = b.data.split('/').map(Number)
-    const dateA = new Date(anoA, mesA - 1, diaA)
-    const dateB = new Date(anoB, mesB - 1, diaB)
-    return dateA.getTime() - dateB.getTime()
-  })
-}
-
-/**
  * Componente de dialog para exibição do relatório financeiro
  * 
- * Apresenta um resumo consolidado de faturamento (total, quantidade de reservas, ticket médio)
- * e tabela com distribuição diária de receitas. Apenas reservas concluídas são consideradas
- * no cálculo dos valores.
+ * Componente modal que apresenta um resumo consolidado de faturamento com 3 métricas
+ * (faturamento total, quantidade de reservas concluídas, ticket médio) e uma tabela
+ * com distribuição diária de receitas. Todas as datas são formatadas no padrão brasileiro.
+ * 
+ * Apenas reservas com status 'Concluída' são consideradas nos cálculos. O dialog não
+ * é renderizado se as datas não forem fornecidas.
  * 
  * @component
  * @param {RelatorioFinanceiroDialogProps} props - Props do componente
  * @param {boolean} props.open - Controla abertura/fechamento do dialog
- * @param {Function} props.setOpen - Função para alterar estado de abertura
- * @param {Date} props.startDate - Data inicial do período
- * @param {Date} props.endDate - Data final do período
- * @param {DialogProps} props - Outras props do dialog (passadas adiante)
- * @returns {JSX.Element|null} Dialog com relatório ou null se datas não definidas
+ * @param {Function} props.setOpen - Função para alterar o estado de abertura
+ * @param {Date} props.startDate - Data inicial do período a ser reportado
+ * @param {Date} props.endDate - Data final do período a ser reportado
+ * @param {RelatorioFinanceiroData} props.relatorioData - Dados consolidados do relatório
+ * @returns {JSX.Element|null} Dialog com o relatório formatado ou null se datas inválidas
  * 
  * @example
  * <RelatorioFinanceiroDialog
@@ -121,23 +131,21 @@ const getDistribuicaoDiaria = (reservas: Reserva[]) => {
  *   setOpen={setIsOpen}
  *   startDate={new Date('2024-01-01')}
  *   endDate={new Date('2024-01-31')}
+ *   relatorioData={{
+ *     totalRecebido: 10500,
+ *     quantidadeReservasConcluidas: 15,
+ *     valorMedioReservas: 700,
+ *     faturamentoDiario: [...]
+ *   }}
  * />
  */
-export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, ...props }: RelatorioFinanceiroDialogProps) => {
+export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, relatorioData, ...props }: RelatorioFinanceiroDialogProps) => {
   if (!startDate || !endDate) return null
   
   const formattedStartDate = format(startDate, "dd/MM/yyyy")
   const formattedEndDate = format(endDate, "dd/MM/yyyy")
-
-  const reservas = useSelector(selectAllReservas)
-  const reservasDoPeriodo = reservas.filter((reserva) => {
-    const dataReserva = new Date(reserva.dataInicio)
-    return dataReserva >= startDate && dataReserva <= endDate
-  })
-  const reservasConcluidas = reservasDoPeriodo.filter((reserva) => reserva.status === 'Concluída')
   
-  const resumo = getResumo(reservasConcluidas)
-  const distribuicaoDiaria = getDistribuicaoDiaria(reservasConcluidas)
+  const resumo = getResumo(relatorioData)
 
   return (
     <Dialog.Container open={open} onOpenChange={setOpen} {...props}>
@@ -163,7 +171,7 @@ export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, .
           })}
         </section>
 
-        {distribuicaoDiaria.length > 0 && (
+        {relatorioData.faturamentoDiario.length > 0 && (
           <section className="flex flex-col gap-2 overflow-y-hidden">
             <h3 className="font-semibold text-xl text-white mb-1.5">Distribuição por Dia</h3>
 
@@ -183,16 +191,16 @@ export const RelatorioFinanceiroDialog = ({ open, setOpen, startDate, endDate, .
                   </tr>
                 </thead>
                 <tbody>
-                  {distribuicaoDiaria.map((dia) => (
-                    <tr key={dia.data}>
+                  {relatorioData.faturamentoDiario.map((dia) => (
+                    <tr key={dia.data.toLocaleDateString()}>
                       <td className="pt-1">
-                        {dia.data}
+                        {dia.data.toLocaleDateString()}
                       </td>
                       <td className="pt-1 text-center">
-                        {dia.qtdReservas}
+                        {dia.quantidadeReservas}
                       </td>
                       <td className="pt-1 text-right">
-                        {formatCurrency(dia.valor)}
+                        {formatCurrency(dia.faturamentoDia)}
                       </td>
                     </tr>
                   ))}

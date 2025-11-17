@@ -29,6 +29,8 @@ import { createFeedback } from "./feedbacks/create-feedback";
 import { updateFeedback } from "./feedbacks/update-feedback";
 import { deleteFeedback } from "./feedbacks/delete-feedback";
 import { getReserva } from "./reservas/get-reserva";
+import { getRelatorioReservas } from "./relatorios/get-relatorio-reservas";
+import { getRelatorioFinanceiro } from "./relatorios/get-relatorio-financeiro";
 
 const router = Router()
 
@@ -67,5 +69,8 @@ router.use(getFeedbacks)
 router.use(createFeedback)
 router.use(updateFeedback)
 router.use(deleteFeedback)
+
+router.use(getRelatorioReservas)
+router.use(getRelatorioFinanceiro)
 
 export default router
