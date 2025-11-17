@@ -161,10 +161,10 @@ export default function ConfirmarReservaPage() {
       <Separator />
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4 overflow-y-hidden">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4 scrollbar">
           <h3 className="font-semibold text-white text-lg lg:text-xl leading-none mb-2">Informações da reserva</h3>
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3 scrollbar">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
             <FormField
               control={form.control}
               name="dataHoraInicial"
