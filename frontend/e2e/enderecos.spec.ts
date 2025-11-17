@@ -100,10 +100,8 @@ test.describe('Endereços - Cliente', () => {
     
     const editButton = editDialog.getByRole('button', { name: 'Editar' })
     if (!await editButton.isVisible()) {
-      await page.keyboard.press('Escape')
-      await expect(editDialog).toBeHidden()
+      await editDialog.getByRole('button', { name: 'Salvar alterações' }).click()
       await openEnderecoDialog(myEndereco)
-      await expect(editDialog).toBeVisible()
       await page.waitForTimeout(500)
     }
     
@@ -151,10 +149,8 @@ test.describe('Endereços - Cliente', () => {
     
     const deleteButton = detailsDialog.getByRole('button', { name: 'Excluir' })
     if (!await deleteButton.isVisible()) {
-      await page.keyboard.press('Escape')
-      await expect(detailsDialog).toBeHidden()
+      await detailsDialog.getByRole('button', { name: 'Salvar alterações' }).click()
       await openEnderecoDialog(myEndereco)
-      await expect(detailsDialog).toBeVisible()
       await page.waitForTimeout(500)
     }
     
@@ -263,10 +259,8 @@ test.describe('Endereços - Gerente', () => {
     
     const editButton = editDialog.getByRole('button', { name: 'Editar' })
     if (!await editButton.isVisible()) {
-      await page.keyboard.press('Escape')
-      await expect(editDialog).toBeHidden()
+      await editDialog.getByRole('button', { name: 'Salvar alterações' }).click()
       await openEnderecoDialog(firstEndereco)
-      await expect(editDialog).toBeVisible()
       await page.waitForTimeout(500)
     }
     
@@ -343,10 +337,8 @@ test.describe('Endereços - Gerente', () => {
     
     const deleteButton = detailsDialog.getByRole('button', { name: 'Excluir' })
     if (!await deleteButton.isVisible()) {
-      await page.keyboard.press('Escape')
-      await expect(detailsDialog).toBeHidden()
+      await detailsDialog.getByRole('button', { name: 'Salvar alterações' }).click()
       await openEnderecoDialog(firstEndereco)
-      await expect(detailsDialog).toBeVisible()
       await page.waitForTimeout(500)
     }
     

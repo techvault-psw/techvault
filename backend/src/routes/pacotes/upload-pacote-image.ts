@@ -32,14 +32,7 @@ router.post('/pacotes/upload-image', {
     },
   },
 }, upload.single('file'), authValidator, roleValidator('Gerente'), async (req, res) => {
-  const image = req.file
-
-  if (!image) {
-    return res.status(400).send({
-      success: false,
-      message: 'Nenhum arquivo recebido',
-    });
-  }
+  const image = req.file!
 
   const { buffer, mimetype } = image
 
