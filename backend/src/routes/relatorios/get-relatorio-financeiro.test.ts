@@ -84,6 +84,22 @@ describe('[GET] /relatorios/financeiro', () => {
             ])
         }))
     })
+    
+    it('deve retornar 200 com valores padrão quando não há reservas concluídas no período', async () => {
+        const dataInicio = '2030-01-01'
+        const dataTermino = '2030-12-31'
+
+        const response = await request(app)
+            .get(`/relatorios/financeiro?dataInicio=${dataInicio}&dataTermino=${dataTermino}`)
+            .auth(token, { type: 'bearer' })
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(expect.objectContaining({
+            totalRecebido: 0,
+            quantidadeReservasConcluidas: 0,
+            valorMedioReservas: 0,
+            faturamentoDiario: []
+        }))
+    })
 
     it('deve retornar 400 quando a data de início for maior que a data de término', async () => {
         const dataInicio = '2025-11-11'
@@ -98,4 +114,5 @@ describe('[GET] /relatorios/financeiro', () => {
             message: 'Data de início não pode ser maior que a data de término'
         })
     })
+
 })

@@ -84,6 +84,21 @@ describe('[GET] /relatorios/reservas', () => {
             qtdReservasCanceladas: 1
         }))
     })
+    
+    it('deve retornar 200 com valores padrão quando não há reservas concluídas ou canceladas no período', async () => {
+        const dataInicio = '2030-01-01'
+        const dataTermino = '2030-12-31'
+
+        const response = await request(app)
+            .get(`/relatorios/reservas?dataInicio=${dataInicio}&dataTermino=${dataTermino}`)
+            .auth(token, { type: 'bearer' })
+        expect(response.status).toBe(200)
+        expect(response.body).toEqual(expect.objectContaining({
+            reservas: [],
+            qtdReservasConcluidas: 0,
+            qtdReservasCanceladas: 0
+        }))
+    })
 
     it('deve retornar 400 se a data de ínicio for maior que a data de término', async () => {
         const dataInicio = '2025-11-11'
@@ -98,4 +113,5 @@ describe('[GET] /relatorios/reservas', () => {
             message: 'Data de início não pode ser maior que a data de término'
         })
     })
+
 })
