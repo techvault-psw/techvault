@@ -60,12 +60,6 @@ router.post('/reservas', {
   const inicio = new Date(dataInicio)
   const termino = new Date(dataTermino)
 
-  if (isNaN(inicio.getTime()) || isNaN(termino.getTime())) {
-    return res.status(400).send({
-      success: false,
-      message: 'Datas inválidas',
-    })
-  }
 
   if (inicio >= termino) {
     return res.status(400).send({
