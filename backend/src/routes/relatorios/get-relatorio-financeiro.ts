@@ -2,8 +2,6 @@ import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from 'zod'
 import { reservas } from "../../models/reserva";
 import { authValidator, roleValidator } from "../../middlewares/auth";
-import { reservaExtendedZodSchema } from "../../consts/zod-schemas";
-import { PopulatedReservaFormatter } from "../../formatters/reserva-formatter";
 
 const router = CreateTypedRouter();
 
@@ -17,7 +15,7 @@ router.get('/relatorios/financeiro', {
     schema: {
         summary: 'Get Relatório Financeiro',
         tags: ['Relatórios'],
-        querystring: z.object({
+        query: z.object({
             dataInicio: z.string(),
             dataTermino: z.string()
         }),
