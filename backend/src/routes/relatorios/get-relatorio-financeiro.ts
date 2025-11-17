@@ -47,7 +47,7 @@ router.get('/relatorios/financeiro', {
     const dataInicioDate = new Date(dataInicio);
     const dataTerminoDate = new Date(dataTermino);
     
-    if(dataInicio > dataTermino) {
+    if(dataInicioDate > dataTerminoDate) {
         return res.status(400).send({
             success: false,
             message: 'Data de início não pode ser maior que a data de término'
