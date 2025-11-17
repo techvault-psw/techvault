@@ -67,6 +67,12 @@ describe('[POST] /reserva', () => {
         dataTermino: '2025-11-18T00:00:00.000Z',
         
       })
+
+    expect(response.status).toBe(400)
+    expect(response.body).toEqual({
+      success: false,
+      message: 'Pacote não encontrado'
+    })
   })
   it('deve retornar 400 quando o endereço de uma reserva não é encontrado', async () => {
     const pacote = await pacoteFactory()

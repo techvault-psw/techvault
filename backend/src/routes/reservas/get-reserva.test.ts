@@ -127,12 +127,6 @@ describe('[GET] /reserva', () => {
       password: '123456',
       role: 'Cliente'
     })
-    const responseOutroCliente = await request(app)
-      .post('/login')
-      .send({
-        email: 'outrocliente@email.com',
-        password: '123456'
-      })
     const endereco = await enderecoFactory({
       clienteId: outroCliente.id
     })
