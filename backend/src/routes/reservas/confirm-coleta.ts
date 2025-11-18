@@ -1,7 +1,7 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
 import { reservas } from "../../models/reserva";
-import { objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, objectIdSchema, reservaZodSchema } from "../../consts/zod-schemas";
 import { ReservaFormatter } from "../../formatters/reserva-formatter";
 import { authValidator, roleValidator } from "../../middlewares/auth";
 
@@ -19,10 +19,7 @@ router.patch('/reservas/:id/confirmar-coleta', {
     }),
     response: {
       200: reservaZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema
     },
   },
 }, authValidator, roleValidator('Gerente', 'Suporte'), async (req, res) => {
