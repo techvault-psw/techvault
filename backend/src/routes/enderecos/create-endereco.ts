@@ -1,7 +1,6 @@
 import z from "zod"
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import { enderecoZodSchema } from "../../consts/zod-schemas";
-import { clientes } from "../../models/cliente";
+import { enderecoZodSchema, errorMessageSchema } from "../../consts/zod-schemas";
 import { enderecos } from "../../models/endereco";
 import { EnderecoFormatter } from "../../formatters/endereco-formatter";
 import { authValidator } from "../../middlewares/auth";
@@ -18,14 +17,8 @@ router.post('/enderecos', {
     }),
     response: {
       201: enderecoZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string()
-      }),
-      401: z.object({
-        success: z.boolean(),
-        message: z.string()
-      })
+      400: errorMessageSchema,
+      401: errorMessageSchema
     },
   },
 }, authValidator, async (req, res) => {
