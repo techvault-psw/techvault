@@ -8,7 +8,7 @@
  */
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Button } from "../ui/button";
@@ -78,6 +78,7 @@ export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReser
   const [isOpen, setIsOpen] = useState(false)
   const [openDateInicio, setOpenDateInicio] = useState(false)
   const [openDateTermino, setOpenDateTermino] = useState(false)
+  const [filtersApplied, setFiltersApplied] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -95,14 +96,22 @@ export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReser
       dataTermino: values.dataTermino?.toISOString(),
     }
     onApplyFilters(filters)
+    setFiltersApplied(true)
     setIsOpen(false)
   }
 
   function handleClearFilters() {
     form.reset()
     onApplyFilters({})
+    setFiltersApplied(false)
     setIsOpen(false)
   }
+
+  useEffect(() => {
+    if(!filtersApplied && isOpen) {
+      form.reset()
+    }
+  }, [filtersApplied, isOpen, form])
 
   return (
     <Dialog.Container open={isOpen} onOpenChange={setIsOpen}>
