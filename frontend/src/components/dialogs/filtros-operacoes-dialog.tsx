@@ -1,10 +1,10 @@
 /**
- * @fileoverview Dialog de filtros de reservas
+ * @fileoverview Dialog de filtros de operações (entregas e coletas)
  * 
- * Componente de dialog para aplicação de filtros em listagens de reservas,
- * permitindo filtragem por status e intervalo de datas.
+ * Componente de dialog para aplicação de filtros em operações de reservas,
+ * permitindo filtragem por tipo de operação e intervalo de datas.
  * 
- * @module components/dialogs/FiltrosReservasDialog
+ * @module components/dialogs/FiltrosOperacoesDialog
  */
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -31,59 +31,59 @@ import { ChevronDownIcon } from "lucide-react";
  * 
  * @constant
  * @type {z.ZodObject}
- * @property {string} [status] - Status da reserva (Todas, Confirmada, Cancelada, Concluída)
+ * @property {string} [tipo] - Tipo de operação (Todas, Entrega, Coleta)
  * @property {Date} [dataInicio] - Data de início mínima
  * @property {Date} [dataTermino] - Data de término máxima
  */
 const formSchema = z.object({
-  status: z.string().optional(),
+  tipo: z.string().optional(),
   dataInicio: z.date().optional(),
   dataTermino: z.date().optional(),
 });
 
 /**
- * Props do componente FiltrosReservasDialog
+ * Props do componente FiltrosOperacoesDialog
  * 
- * @interface FiltrosReservasDialogProps
+ * @interface FiltrosOperacoesDialogProps
  * @property {ReactNode} children - Elemento trigger que abre o dialog
  * @property {Function} onApplyFilters - Callback executado ao aplicar filtros
  */
-interface FiltrosReservasDialogProps {
+interface FiltrosOperacoesDialogProps {
   children: ReactNode
   onApplyFilters: (filters: any) => void
 }
 
 /**
- * Componente Dialog de filtros de reservas
+ * Componente Dialog de filtros de operações
  * 
- * Exibe formulário para filtragem de reservas:
- * - Filtro por status (Todas, Confirmada, Cancelada, Concluída)
+ * Exibe formulário para filtragem de operações:
+ * - Filtro por tipo (Todas, Entrega, Coleta)
  * - Filtro por data de início (a partir de)
  * - Filtro por data de término (até)
  * - Botão para limpar todos os filtros
  * - Botão para aplicar filtros
  * 
  * @component
- * @param {FiltrosReservasDialogProps} props - Props do componente
+ * @param {FiltrosOperacoesDialogProps} props - Props do componente
  * @param {ReactNode} props.children - Trigger
  * @param {Function} props.onApplyFilters - Callback com filtros aplicados
  * @returns {JSX.Element} Dialog de filtros
  * 
  * @example
- * <FiltrosReservasDialog onApplyFilters={setFiltros}>
+ * <FiltrosOperacoesDialog onApplyFilters={setFiltros}>
  *   <Button>Filtros</Button>
- * </FiltrosReservasDialog>
+ * </FiltrosOperacoesDialog>
  */
-export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReservasDialogProps) => {
+export const FiltrosOperacoesDialog = ({ children, onApplyFilters }: FiltrosOperacoesDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [filtersApplied, setFiltersApplied] = useState(false)
   const [openDateInicio, setOpenDateInicio] = useState(false)
   const [openDateTermino, setOpenDateTermino] = useState(false)
-  const [filtersApplied, setFiltersApplied] = useState(false)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      status: "Todas",
+      tipo: "Todas",
       dataInicio: undefined,
       dataTermino: undefined,
     },
@@ -91,7 +91,7 @@ export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReser
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const filters = {
-      status: values.status,
+      tipo: values.tipo,
       dataInicio: values.dataInicio?.toISOString(),
       dataTermino: values.dataTermino?.toISOString(),
     }
@@ -118,7 +118,7 @@ export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReser
       <Dialog.Trigger asChild>{children}</Dialog.Trigger>
 
       <Dialog.Content>
-        <Dialog.Title>Filtros de Reservas</Dialog.Title>
+        <Dialog.Title>Filtros de Operações</Dialog.Title>
 
         <Separator />
 
@@ -126,20 +126,19 @@ export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReser
           <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col gap-4">
             <FormField
               control={form.control}
-              name="status"
+              name="tipo"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>Tipo de Operação</FormLabel>
                   <FormControl>
                     <Select value={field.value} onValueChange={field.onChange}>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione o status" />
+                        <SelectValue placeholder="Selecione o tipo" />
                       </SelectTrigger>
                       <SelectContent>
                         <SelectItem value="Todas">Todas</SelectItem>
-                        <SelectItem value="Confirmada">Confirmada</SelectItem>
-                        <SelectItem value="Cancelada">Cancelada</SelectItem>
-                        <SelectItem value="Concluída">Concluída</SelectItem>
+                        <SelectItem value="Entrega">Entrega</SelectItem>
+                        <SelectItem value="Coleta">Coleta</SelectItem>
                       </SelectContent>
                     </Select>
                   </FormControl>
