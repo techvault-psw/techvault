@@ -1,5 +1,5 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import { enderecoExtendedZodSchema } from "../../consts/zod-schemas";
+import { enderecoExtendedZodSchema, errorMessageSchema } from "../../consts/zod-schemas";
 import z from "zod"
 import { enderecos, PopulatedEnderecoSchema } from "../../models/endereco";
 import { PopulatedEnderecoFormatter } from "../../formatters/endereco-formatter";
@@ -13,10 +13,7 @@ router.get('/enderecos', {
     tags: ['Endereços'],
     response: {
       200: z.array(enderecoExtendedZodSchema),
-      401: z.object({
-        success: z.boolean(),
-        message: z.string()
-      })
+      401: errorMessageSchema
     },
   }
 }, authValidator, async(req, res) => {

@@ -3,6 +3,7 @@ import { CreateTypedRouter } from 'express-zod-openapi-typed';
 import z from 'zod';
 import { clientes } from '../../models/cliente';
 import { getToken } from "../../passport";
+import { errorMessageSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter();
 
@@ -18,10 +19,7 @@ router.post('/login', {
       200: z.object({
         token: z.string(),
       }),
-      401: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      401: errorMessageSchema
     },
   },
 }, async (req, res) => {

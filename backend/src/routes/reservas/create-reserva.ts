@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { reservaZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, reservaZodSchema } from "../../consts/zod-schemas";
 import { da } from "zod/v4/locales";
 import { gerarCodigo } from "../../utils/gerar-codigo";
 import { clientes } from "../../models/cliente";
@@ -29,10 +29,7 @@ router.post('/reservas', {
     }),
     response: {
       201: reservaZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      400: errorMessageSchema
     },
   },
 }, authValidator, async (req, res) => {

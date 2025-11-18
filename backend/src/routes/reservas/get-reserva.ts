@@ -1,6 +1,6 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { objectIdSchema, reservaExtendedZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, objectIdSchema, reservaExtendedZodSchema } from "../../consts/zod-schemas";
 import { PopulatedReservaSchema, reservas } from "../../models/reserva";
 import { PopulatedReservaFormatter, ReservaFormatter } from "../../formatters/reserva-formatter";
 import { authValidator } from "../../middlewares/auth";
@@ -16,14 +16,8 @@ router.get('/reservas/:id', {
     }),
     response: {
       200: reservaExtendedZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
-      403: z.object({
-              success: z.boolean(),
-              message: z.string(),
-      }),
+      400: errorMessageSchema,
+      403: errorMessageSchema
     },
   },
 }, authValidator, async (req, res) => {

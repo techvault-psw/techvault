@@ -1,6 +1,6 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { objectIdSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, objectIdSchema } from "../../consts/zod-schemas";
 import { pacotes } from "../../models/pacote";
 import { authValidator, roleValidator } from "../../middlewares/auth";
 
@@ -17,10 +17,7 @@ router.delete('/pacotes/:id', {
       200: z.object({
         pacoteId: objectIdSchema,
       }),
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema
     },
   },
 }, authValidator, roleValidator('Gerente'), async (req, res) => {

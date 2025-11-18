@@ -1,6 +1,6 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from 'zod'
-import { reservaExtendedZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, reservaExtendedZodSchema } from "../../consts/zod-schemas";
 import { reservas } from "../../models/reserva";
 import { PopulatedReservaFormatter } from "../../formatters/reserva-formatter";
 import { authValidator, roleValidator } from "../../middlewares/auth";
@@ -21,18 +21,9 @@ router.get('/relatorios/reservas', {
                 qtdReservasConcluidas: z.number(),
                 qtdReservasCanceladas: z.number()
             }),
-            400: z.object({
-                success: z.boolean(),
-                message: z.string()
-            }),
-            401: z.object({
-                success: z.boolean(),
-                message: z.string()
-            }),
-            403: z.object({
-                success: z.boolean(),
-                message: z.string()
-            })
+            400: errorMessageSchema,
+            401: errorMessageSchema,
+            403: errorMessageSchema
         }
     }
 }, authValidator, roleValidator('Gerente'), async(req, res) => {

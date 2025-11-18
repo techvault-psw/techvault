@@ -1,7 +1,6 @@
 import bcrypt from "bcrypt";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import z from "zod";
-import { clienteZodSchema } from "../../consts/zod-schemas";
+import { clienteZodSchema, errorMessageSchema } from "../../consts/zod-schemas";
 import { clientes } from "../../models/cliente";
 import { ClienteFormatter } from "../../formatters/cliente-formatter";
 
@@ -17,10 +16,7 @@ router.post('/clientes', {
     }),
     response: {
       201: clienteZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      400: errorMessageSchema
     },
   },
 }, async (req, res) => {
