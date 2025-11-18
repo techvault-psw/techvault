@@ -1,6 +1,6 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { objectIdSchema, pacoteZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, objectIdSchema, pacoteZodSchema } from "../../consts/zod-schemas";
 import { pacotes } from "../../models/pacote";
 import { PacoteFormatter } from "../../formatters/pacote-formatter";
 import { authValidator, roleValidator } from "../../middlewares/auth";
@@ -19,10 +19,7 @@ router.put('/pacotes/:id', {
     }),
     response: {
       200: pacoteZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema
     },
   },
 }, authValidator, roleValidator('Gerente'), async (req, res) => {

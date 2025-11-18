@@ -4,6 +4,7 @@ import z from "zod";
 import { upload } from "../../utils/muler";
 import { uploadImage } from "../../utils/upload-image";
 import { authValidator, roleValidator } from "../../middlewares/auth";
+import { errorMessageSchema } from "../../consts/zod-schemas";
 
 const router = CreateTypedRouter()
 
@@ -21,14 +22,8 @@ router.post('/pacotes/upload-image', {
       200: z.object({
         url: z.string(),
       }),
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
-      500: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      400: errorMessageSchema,
+      500: errorMessageSchema
     },
   },
 }, upload.single('file'), authValidator, roleValidator('Gerente'), async (req, res) => {
