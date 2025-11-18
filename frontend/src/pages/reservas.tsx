@@ -157,7 +157,9 @@ export default function ReservasPage() {
 
   const reservasPorData = agruparReservasPorData(reservasFiltradas)
   
-  const reservaParaAbrir = reservaToOpen ? useSelector((state: RootState) => selectReservaById(state, reservaToOpen)) : null
+  const reservaParaAbrir = useSelector((state: RootState) => 
+    reservaToOpen ? selectReservaById(state, reservaToOpen) : null
+  )
 
   return (
     <PageContainer.List> 
