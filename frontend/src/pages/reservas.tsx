@@ -10,17 +10,18 @@
 
 import { PageContainer } from "@/components/page-container";
 import { PageTitle, PageTitleContainer } from "@/components/page-title";
-import { Card } from "@/components/ui/card"; 
+import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { FilterIcon } from "@/components/icons/filter-icon";
+import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { format, isToday, isTomorrow } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog";
 import { OperacaoConfirmadaDialog } from "@/components/dialogs/operacao-confirmada-dialog";
-import { FiltrosReservasDialog } from "@/components/dialogs/filtros-reservas-dialog";
-import { OrdenarReservasDialog } from "@/components/dialogs/ordenar-reservas-dialog";
+import { FiltrosOperacoesDialog } from "@/components/dialogs/filtros-operacoes-dialog";
+import { OrdenarOperacoesDialog } from "@/components/dialogs/ordenar-operacoes-dialog";
 import useCargo from "@/hooks/useCargo";
 import { useNavigate, useLocation } from "react-router";
 import { useEffect, useState, useMemo } from "react";
@@ -69,22 +70,30 @@ export interface ReservaComTipo {
 export default function ReservasPage() {
   const { isGerente, isSuporte } = useCargo();
   const dispatch = useDispatch<AppDispatch>();
-  const { status: statusR, error: errorR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
+  const { status: statusR, error: errorR } = useSelector(
+    (rootReducer: RootState) => rootReducer.reservasReducer
+  );
 
   useEffect(() => {
-    if (['not_loaded', 'deleted'].includes(statusR)) {
-      dispatch(fetchReservas())
+    if (["not_loaded", "deleted"].includes(statusR)) {
+      dispatch(fetchReservas());
     }
-  }, [statusR, dispatch])
-  
-  const reservas = useSelector(selectAllReservas)
+  }, [statusR, dispatch]);
+
+  const reservas = useSelector(selectAllReservas);
   const navigate = useNavigate();
   const location = useLocation();
   const [reservaToOpen, setReservaToOpen] = useState<string | null>(null);
   const [clienteToOpen, setClienteToOpen] = useState<string | null>(null);
-  const [operacaoSucesso, setOperacaoSucesso] = useState<{ reserva: Reserva; tipo: "Entrega" | "Coleta" } | null>(null);
+  const [operacaoSucesso, setOperacaoSucesso] = useState<{
+    reserva: Reserva;
+    tipo: "Entrega" | "Coleta";
+  } | null>(null);
   const [filtros, setFiltros] = useState<any>({});
-  const [ordenacao, setOrdenacao] = useState<any>({ campo: "dataInicio", ordem: "asc" });
+  const [ordenacao, setOrdenacao] = useState<any>({
+    campo: "hora",
+    ordem: "asc",
+  });
 
   useEffect(() => {
     if (!isGerente() && !isSuporte()) {
@@ -93,7 +102,10 @@ export default function ReservasPage() {
   }, []);
 
   useEffect(() => {
-    const state = location.state as { fromClientDialog?: string; fromReservaId?: string } | null;
+    const state = location.state as {
+      fromClientDialog?: string;
+      fromReservaId?: string;
+    } | null;
     if (state?.fromReservaId !== undefined) {
       setReservaToOpen(state.fromReservaId);
     }
@@ -117,45 +129,60 @@ export default function ReservasPage() {
       resultado = resultado.filter(r => new Date(r.dataTermino) <= new Date(filtros.dataTermino));
     }
 
-    resultado.sort((a, b) => {
-      let valorA: any, valorB: any;
-
-      switch (ordenacao.campo) {
-        case "dataInicio":
-          valorA = new Date(a.dataInicio).getTime();
-          valorB = new Date(b.dataInicio).getTime();
-          break;
-        case "dataTermino":
-          valorA = new Date(a.dataTermino).getTime();
-          valorB = new Date(b.dataTermino).getTime();
-          break;
-        case "valor":
-          valorA = a.valor;
-          valorB = b.valor;
-          break;
-        case "status":
-          valorA = a.status;
-          valorB = b.status;
-          break;
-        case "pacote":
-          valorA = a.pacote?.name || "";
-          valorB = b.pacote?.name || "";
-          break;
-        default:
-          return 0;
-      }
-
-      if (ordenacao.ordem === "asc") {
-        return valorA > valorB ? 1 : -1;
-      } else {
-        return valorA < valorB ? 1 : -1;
-      }
-    });
-
     return resultado;
-  }, [reservas, filtros, ordenacao]);
+  }, [reservas, filtros]);
 
-  const reservasPorData = agruparReservasPorData(reservasFiltradas)
+  const reservasPorData = useMemo(() => {
+    const agrupadas = agruparReservasPorData(reservasFiltradas);
+
+    return agrupadas
+      .map((grupo) => {
+        let operacoesFiltradas = grupo.reservas;
+
+        if (filtros.tipo && filtros.tipo !== "Todas") {
+          operacoesFiltradas = operacoesFiltradas.filter(
+            (op) => op.tipo === filtros.tipo
+          );
+        }
+
+        const operacoesOrdenadas = [...operacoesFiltradas].sort((a, b) => {
+          let valorA: any, valorB: any;
+
+          switch (ordenacao.campo) {
+            case "hora":
+              valorA = a.hora.getTime();
+              valorB = b.hora.getTime();
+              break;
+            case "tipo":
+              valorA = a.tipo === "Entrega" ? 0 : 1;
+              valorB = b.tipo === "Entrega" ? 0 : 1;
+              break;
+            case "endereco":
+              valorA = stringifyAddress(a.reserva.endereco);
+              valorB = stringifyAddress(b.reserva.endereco);
+              break;
+            case "pacote":
+              valorA = a.reserva.pacote?.name || "";
+              valorB = b.reserva.pacote?.name || "";
+              break;
+            default:
+              return 0;
+          }
+
+          if (ordenacao.ordem === "asc") {
+            return valorA > valorB ? 1 : -1;
+          } else {
+            return valorA < valorB ? 1 : -1;
+          }
+        });
+
+        return {
+          ...grupo,
+          reservas: operacoesOrdenadas,
+        };
+      })
+      .filter((grupo) => grupo.reservas.length > 0);
+  }, [reservasFiltradas, filtros, ordenacao]);
   
   const reservaParaAbrir = reservaToOpen ? useSelector((state: RootState) => selectReservaById(state, reservaToOpen)) : null
 
@@ -166,13 +193,20 @@ export default function ReservasPage() {
         <PageTitle>Reservas</PageTitle>
       </PageTitleContainer>
 
-      <div className="w-40 md:w-52 py-1 gap-4 items-center justify-center">
-        <FiltrosReservasDialog onApplyFilters={setFiltros}>
+      <div className="flex items-center gap-4 flex-shrink-0">
+        <FiltrosOperacoesDialog onApplyFilters={setFiltros}>
           <Button className="w-40 md:w-52" variant="secondary" size="sm">
             <FilterIcon className="size-4.5" />
             Filtros
           </Button>
-        </FiltrosReservasDialog>
+        </FiltrosOperacoesDialog>
+
+        <OrdenarOperacoesDialog onApplySort={setOrdenacao}>
+          <Button className="w-40 md:w-52" variant="secondary" size="sm">
+            <SlidersIcon className="size-4.5" />
+            Ordenar por
+          </Button>
+        </OrdenarOperacoesDialog>
       </div>
 
       {['loading', 'saving', 'deleting'].includes(statusR) ? (
@@ -226,7 +260,7 @@ export default function ReservasPage() {
                                 {pacote.name}
                               </Card.Title>
 
-                              <Badge variant={tipo === "Entrega" ? "blue" : "purple"}>
+                              <Badge className="py-0.5" variant={tipo === "Entrega" ? "blue" : "purple"}>
                                 {tipo}
                               </Badge>
                             </div>
