@@ -29,7 +29,7 @@
 </div>
 
 <div align="center">
-    <img height="550rm" src="./.github/assets/page.png">
+    <img width="100%" src="./.github/assets/page.png">
 </div>
 
 ## 📋 Sumário
