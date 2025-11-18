@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog de confirmação de operação de entrega/coleta
+ * 
+ * Componente de dialog para validação e confirmação de operações de entrega
+ * ou coleta de reservas mediante verificação de código. Utilizado por usuários
+ * suporte/gerente para registrar entregas e coletas de pacotes.
+ * 
+ * @module components/dialogs/ConfirmarOperacaoDialog
+ */
+
 import { useState, type ReactNode } from "react";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
@@ -11,7 +21,16 @@ import { type Reserva } from "@/redux/reservas/slice";
 import { coletarReservaServer, entregarReservaServer } from "@/redux/reservas/fetch";
 import { useDispatch } from "react-redux";
 import { type AppDispatch } from "@/redux/store";
-    
+
+/**
+ * Props do componente ConfirmarOperacaoDialog
+ * 
+ * @interface ConfirmarOperacaoDialogProps
+ * @property {ReactNode} children - Elemento trigger que abre o dialog
+ * @property {Reserva} reserva - Objeto da reserva a ser confirmada
+ * @property {"Entrega" | "Coleta"} tipo - Tipo de operação
+ * @property {Function} [onSuccess] - Callback executado após confirmação bem-sucedida
+ */    
 interface ConfirmarOperacaoDialogProps {
     children: ReactNode,
     reserva: Reserva,
@@ -19,6 +38,13 @@ interface ConfirmarOperacaoDialogProps {
     onSuccess?: (reserva: Reserva, tipo: "Entrega" | "Coleta") => void
 }
 
+/**
+ * Schema de validação para o código de confirmação
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} code - Código de 7 caracteres (4 letras maiúsculas e 3 dígitos)
+ */
 const formSchema = z
     .object({
         code: z.string()
@@ -30,6 +56,33 @@ const formSchema = z
             )
 })
 
+/**
+ * Componente Dialog de confirmação de operação
+ * 
+ * Exibe um formulário para validação de código de entrega ou coleta:
+ * - Valida formato do código (7 caracteres: 4 letras + 3 dígitos)
+ * - Verifica se operação já foi realizada
+ * - Confirma que coleta só pode ocorrer após entrega
+ * - Compara código inserido com código armazenado na reserva
+ * - Atualiza status da reserva no servidor
+ * 
+ * @component
+ * @param {ConfirmarOperacaoDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Trigger para abrir dialog
+ * @param {Reserva} props.reserva - Reserva a ser confirmada
+ * @param {"Entrega" | "Coleta"} props.tipo - Tipo de operação
+ * @param {Function} [props.onSuccess] - Callback de sucesso
+ * @returns {JSX.Element} Dialog de confirmação
+ * 
+ * @example
+ * <ConfirmarOperacaoDialog 
+ *   reserva={reserva} 
+ *   tipo="Entrega"
+ *   onSuccess={(reserva, tipo) => console.log('Confirmado!')}
+ * >
+ *   <Button>Confirmar Entrega</Button>
+ * </ConfirmarOperacaoDialog>
+ */
 export const ConfirmarOperacaoDialog = ({ children, reserva, tipo, onSuccess }: ConfirmarOperacaoDialogProps) => {
     const [isOpen, setOpen] = useState(false)
     
