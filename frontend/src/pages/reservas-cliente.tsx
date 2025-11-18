@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de reservas de um cliente específico
+ * 
+ * Página administrativa que exibe todas as reservas de um cliente, permitindo
+ * visualização detalhada, filtragem e ordenação. Acessível apenas para usuários
+ * com perfil de gerente ou suporte.
+ * 
+ * @module pages/ReservasClientePage
+ */
+
 import { DetalhesReservaDialog } from "@/components/dialogs/detalhes-reserva-dialog"
 import { FiltrosReservasDialog } from "@/components/dialogs/filtros-reservas-dialog"
 import { OrdenarReservasDialog } from "@/components/dialogs/ordenar-reservas-dialog"
@@ -23,11 +33,30 @@ import { fetchReservas } from "@/redux/reservas/fetch"
 import { selectClienteById } from "@/redux/clientes/slice"
 import { GoBackButton } from "@/components/go-back-button"
 
+/**
+ * Props do componente ReservaSection
+ * 
+ * @interface ReservaSectionProps
+ * @property {string} titulo - Título da seção (ex: "Atuais", "Concluídas")
+ * @property {Reserva[]} reservas - Array de reservas para exibir na seção
+ */
 interface ReservaSectionProps {
   titulo: string
   reservas: Reserva[]
 }
 
+/**
+ * Componente de seção de reservas agrupadas
+ * 
+ * Renderiza uma seção com título e grid de reservas. Não renderiza nada
+ * se o array de reservas estiver vazio.
+ * 
+ * @component
+ * @param {ReservaSectionProps} props - Props do componente
+ * @param {string} props.titulo - Título da seção
+ * @param {Reserva[]} props.reservas - Array de reservas
+ * @returns {JSX.Element | null} Seção de reservas ou null se vazia
+ */
 const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   if (reservas.length === 0) return null;
 
@@ -70,6 +99,29 @@ const ReservaSection = ({ titulo, reservas }: ReservaSectionProps) => {
   );
 };
 
+/**
+ * Componente da página de reservas de um cliente
+ * 
+ * Exibe todas as reservas de um cliente específico, organizadas por status:
+ * - Atuais (Confirmadas)
+ * - Concluídas
+ * - Canceladas
+ * 
+ * Funcionalidades:
+ * - Filtros de status e data
+ * - Ordenação por diversos critérios
+ * - Visualização de detalhes da reserva em dialog
+ * - Navegação de volta preservando contexto
+ * 
+ * Requer permissões de gerente ou suporte - redireciona para /login caso contrário.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de reservas do cliente
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/reservas-cliente/:id" element={<ReservasClientePage />} />
+ */
 export default function ReservasClientePage() {
   const { id } = useParams<{ id: string }>();
 
