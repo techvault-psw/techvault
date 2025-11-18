@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Dialog de filtros de reservas
+ * 
+ * Componente de dialog para aplicação de filtros em listagens de reservas,
+ * permitindo filtragem por status e intervalo de datas.
+ * 
+ * @module components/dialogs/FiltrosReservasDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -17,17 +26,54 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { DatePicker } from "../ui/date-picker";
 import { ChevronDownIcon } from "lucide-react";
 
+/**
+ * Schema de validação para os filtros
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} [status] - Status da reserva (Todas, Confirmada, Cancelada, Concluída)
+ * @property {Date} [dataInicio] - Data de início mínima
+ * @property {Date} [dataTermino] - Data de término máxima
+ */
 const formSchema = z.object({
   status: z.string().optional(),
   dataInicio: z.date().optional(),
   dataTermino: z.date().optional(),
 });
 
+/**
+ * Props do componente FiltrosReservasDialog
+ * 
+ * @interface FiltrosReservasDialogProps
+ * @property {ReactNode} children - Elemento trigger que abre o dialog
+ * @property {Function} onApplyFilters - Callback executado ao aplicar filtros
+ */
 interface FiltrosReservasDialogProps {
   children: ReactNode
   onApplyFilters: (filters: any) => void
 }
 
+/**
+ * Componente Dialog de filtros de reservas
+ * 
+ * Exibe formulário para filtragem de reservas:
+ * - Filtro por status (Todas, Confirmada, Cancelada, Concluída)
+ * - Filtro por data de início (a partir de)
+ * - Filtro por data de término (até)
+ * - Botão para limpar todos os filtros
+ * - Botão para aplicar filtros
+ * 
+ * @component
+ * @param {FiltrosReservasDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Trigger
+ * @param {Function} props.onApplyFilters - Callback com filtros aplicados
+ * @returns {JSX.Element} Dialog de filtros
+ * 
+ * @example
+ * <FiltrosReservasDialog onApplyFilters={setFiltros}>
+ *   <Button>Filtros</Button>
+ * </FiltrosReservasDialog>
+ */
 export const FiltrosReservasDialog = ({ children, onApplyFilters }: FiltrosReservasDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [openDateInicio, setOpenDateInicio] = useState(false)

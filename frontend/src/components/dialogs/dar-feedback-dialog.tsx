@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Diálogo para deixar novo feedback sobre um pacote
+ * 
+ * Permite que clientes autenticados deixem um feedback (avaliação de 1-5 estrelas
+ * e comentário) sobre pacotes que já foram reservados e a reserva foi concluída.
+ * Requer redirecionamento para login se usuário não estiver autenticado.
+ * 
+ * @module components/dialogs/DarFeedbackDialog
+ */
+
 import { useState, type ReactNode } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
@@ -31,6 +41,15 @@ import type { AppDispatch } from "@/redux/store";
 import { selectAllPacotes } from "@/redux/pacotes/slice";
 import { selectAllReservas } from "@/redux/reservas/slice";
 
+/**
+ * Schema de validação para o formulário de novo feedback
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} pacoteIndex - ID do pacote (obrigatório)
+ * @property {number} rating - Avaliação de 1 a 5 estrelas (obrigatório)
+ * @property {string} comment - Comentário do feedback (mínimo 10 caracteres)
+ */
 const formSchema = z.object({
   pacoteIndex: z.string().min(1, "Selecione um pacote"),
   rating: z.number().min(1, "Dê uma avaliação de pelo menos 1 estrela").max(5, "Máximo de 5 estrelas"),
@@ -42,10 +61,37 @@ const formSchema = z.object({
     )
 });
 
+/**
+ * Props do diálogo de dar feedback
+ * 
+ * @interface DarFeedbackDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ */
 interface DarFeedbackDialogProps {
   children: ReactNode
 }
 
+/**
+ * Diálogo para deixar novo feedback sobre pacote
+ * 
+ * Funcionalidades:
+ * - Seletor de pacotes com reservas concluídas do usuário
+ * - Classificação por estrelas (1-5)
+ * - Campo de comentário com mínimo de 10 caracteres
+ * - Requer autenticação - redireciona para login se necessário
+ * - Validação completa do formulário
+ * 
+ * @component
+ * @param {DarFeedbackDialogProps} props - Props do diálogo
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @returns {JSX.Element} Diálogo com formulário de novo feedback
+ * 
+ * @example
+ * // Uso do diálogo
+ * <DarFeedbackDialog>
+ *   <Card>Dar Feedback</Card>
+ * </DarFeedbackDialog>
+ */
 export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -61,7 +107,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   });
 
   const dispatch = useDispatch<AppDispatch>()
-  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     setIsOpen(false)
@@ -83,7 +129,7 @@ export const DarFeedbackDialog = ({ children }: DarFeedbackDialogProps) => {
   const location = useLocation()
 
   const handleOpenChange = (isOpen: boolean) => {
-    if (!clienteAtual) {
+    if (!token) {
       navigate(`/login?redirectTo=${location.pathname}`)
       return
     }

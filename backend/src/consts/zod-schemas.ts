@@ -4,6 +4,11 @@ export const objectIdSchema = z.string().regex(/^[0-9a-fA-F]{24}$/, {
   message: "ID inválido. Deve ser um ObjectId do MongoDB"
 })
 
+export const errorMessageSchema = z.object({
+  success: z.boolean(),
+  message: z.string()
+})
+
 export const roleZodSchema = z.enum(["Cliente", "Gerente", "Suporte"])
 
 export const clienteZodSchema = z.object({

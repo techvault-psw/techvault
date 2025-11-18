@@ -1,14 +1,15 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod"
-import { enderecoZodSchema, objectIdSchema } from "../../consts/zod-schemas";
+import { enderecoZodSchema, errorMessageSchema, objectIdSchema } from "../../consts/zod-schemas";
 import { enderecos } from "../../models/endereco";
 import { EnderecoFormatter } from "../../formatters/endereco-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
 router.put('/enderecos/:id', {
   schema: {
-    summary: 'Update Address',
+    summary: 'Update Endereço',
     tags: ['Endereços'],
     params: z.object({
       id: objectIdSchema,
@@ -19,15 +20,15 @@ router.put('/enderecos/:id', {
     }),
     response: {
       200: enderecoZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema,
+      401: errorMessageSchema,
+      403: errorMessageSchema
     },
   },
-}, async (req, res) => {
+}, authValidator, async (req, res) => {
   const { id } = req.params
   const newEndereco = req.body
+  const user = req.user!
 
   const endereco = await enderecos.findById(id)
 
@@ -35,6 +36,13 @@ router.put('/enderecos/:id', {
     return res.status(400).send({
       success: false,
       message: 'Endereço não encontrado'
+    })
+  }
+
+  if(user.id !== endereco.clienteId.toString() && user.role !== 'Gerente') {
+    return res.status(403).send({
+      success: false,
+      message: 'Acesso não autorizado'
     })
   }
 

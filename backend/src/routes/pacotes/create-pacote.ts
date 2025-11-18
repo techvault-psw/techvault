@@ -1,9 +1,10 @@
 import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { pacoteZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, pacoteZodSchema } from "../../consts/zod-schemas";
 import { pacotes } from "../../models/pacote";
 import { PacoteFormatter } from "../../formatters/pacote-formatter";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -14,13 +15,10 @@ router.post('/pacotes', {
     body: pacoteZodSchema.omit({ id: true }),
     response: {
       201: pacoteZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      400: errorMessageSchema
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { name, image, description, components, value, quantity } = req.body
 
   const pacoteExiste = await pacotes.findOne({name})

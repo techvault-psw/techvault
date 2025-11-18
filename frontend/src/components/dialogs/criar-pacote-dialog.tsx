@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Diálogo para criação de novos pacotes
+ * 
+ * Este diálogo permite que gerentes criem novos pacotes de hospedagem com imagem,
+ * nome, descrição, componentes, valor e quantidade. Inclui preview de imagem,
+ * validação de formulário e upload de imagem para servidor.
+ * 
+ * @module components/dialogs/CriarPacoteDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, useRef, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -24,6 +34,18 @@ import { addPacoteServer } from '@/redux/pacotes/fetch';
 import type { AppDispatch } from '@/redux/store';
 import { uploadPacoteImage } from '@/lib/upload-pacote-image';
 
+/**
+ * Schema de validação para o formulário de criação de pacote
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} name - Nome do pacote (obrigatório)
+ * @property {string} description - Descrição do pacote (mínimo 10 caracteres)
+ * @property {string} components - Componentes do PC, um por linha (obrigatório)
+ * @property {string} value - Valor por hora em formato moeda (obrigatório e > 0)
+ * @property {number} quantity - Quantidade disponível de pacotes (inteiro não negativo)
+ * @property {File} image - Arquivo de imagem do pacote (obrigatório)
+ */
 const formSchema = z.object({
   name: z.string().min(1, "O nome é obrigatório"),
   description: z.string()
@@ -52,10 +74,38 @@ const formSchema = z.object({
   image: z.instanceof(File, { message: "A imagem é obrigatória" })
 });
 
+/**
+ * Props do diálogo de criar pacote
+ * 
+ * @interface CriarPacoteDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ */
 interface CriarPacoteDialogProps {
   children: ReactNode
 }
 
+/**
+ * Diálogo para criação de novos pacotes
+ * 
+ * Permite gerentes criar novos pacotes com:
+ * - Upload de imagem com preview
+ * - Preço por hora com máscara de moeda
+ * - Quantidade disponível (apenas números inteiros)
+ * - Nome, descrição e lista de componentes
+ * - Validação completa do formulário
+ * - Feedback visual durante o envio
+ * 
+ * @component
+ * @param {CriarPacoteDialogProps} props - Props do diálogo
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @returns {JSX.Element} Diálogo com formulário de criação de pacote
+ * 
+ * @example
+ * // Uso do diálogo
+ * <CriarPacoteDialog>
+ *   <Button>Criar novo pacote</Button>
+ * </CriarPacoteDialog>
+ */
 export const CriarPacoteDialog = ({ children }: CriarPacoteDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false);

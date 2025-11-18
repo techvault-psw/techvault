@@ -1,7 +1,8 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { objectIdSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, objectIdSchema } from "../../consts/zod-schemas";
 import { reservas } from "../../models/reserva";
+import { authValidator, roleValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -16,13 +17,10 @@ router.delete('/reservas/:id', {
       200: z.object({
         reservaId: objectIdSchema,
       }),
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema
     },
   },
-}, async (req, res) => {
+}, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { id } = req.params
 
   const reserva = await reservas.findById(id)

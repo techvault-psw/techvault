@@ -1,11 +1,12 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { feedbackZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, feedbackZodSchema } from "../../consts/zod-schemas";
 import { clientes } from "../../models/cliente";
 import { pacotes } from "../../models/pacote";
 import { reservas } from "../../models/reserva";
 import { feedbacks } from "../../models/feedback";
 import { FeedbackFormatter } from "../../formatters/feedback-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -13,26 +14,18 @@ router.post('/feedbacks', {
   schema: {
     summary: 'Create Feedback',
     tags: ['Feedbacks'],
-    body: feedbackZodSchema.omit({ id: true }),
+    body: feedbackZodSchema.omit({
+      id: true,
+      clienteId: true,
+    }),
     response: {
       201: feedbackZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      400: errorMessageSchema
     },
   },
-}, async (req, res) => {
-  const { clienteId, pacoteId, rating, comentario } = req.body
-
-  const cliente = await clientes.findById(clienteId)
-
-  if (!cliente) {
-    return res.status(400).send({
-      success: false,
-      message: 'Cliente não encontrado'
-    })
-  }
+}, authValidator, async (req, res) => {
+  const { pacoteId, rating, comentario } = req.body
+  const user = req.user!
 
   const pacote = await pacotes.findById(pacoteId)
 
@@ -44,7 +37,7 @@ router.post('/feedbacks', {
   }
 
   const reserva = await reservas.findOne({
-    clienteId,
+    clienteId: user.id,
     pacoteId,
     status: 'Concluída'
   })
@@ -57,7 +50,7 @@ router.post('/feedbacks', {
   }
 
   const feedback = await feedbacks.create({
-    clienteId,
+    clienteId: user.id,
     pacoteId,
     rating,
     comentario,

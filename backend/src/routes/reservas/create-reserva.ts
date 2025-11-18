@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { reservaZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, reservaZodSchema } from "../../consts/zod-schemas";
 import { da } from "zod/v4/locales";
 import { gerarCodigo } from "../../utils/gerar-codigo";
 import { clientes } from "../../models/cliente";
@@ -9,6 +9,7 @@ import { pacotes } from "../../models/pacote";
 import { enderecos } from "../../models/endereco";
 import { reservas } from "../../models/reserva";
 import { ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -18,6 +19,7 @@ router.post('/reservas', {
     tags: ['Reservas'],
     body: reservaZodSchema.omit({
       id: true,
+      clienteId: true,
       valor: true,
       status: true,
       dataEntrega: true,
@@ -27,23 +29,12 @@ router.post('/reservas', {
     }),
     response: {
       201: reservaZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      })
+      400: errorMessageSchema
     },
   },
-}, async (req, res) => {
-  const { clienteId, pacoteId, enderecoId, dataInicio, dataTermino } = req.body
-
-  const cliente = await clientes.findById(clienteId)
-
-  if (!cliente) {
-    return res.status(400).send({
-      success: false,
-      message: 'Cliente não encontrado'
-    })
-  }
+}, authValidator, async (req, res) => {
+  const {pacoteId, enderecoId, dataInicio, dataTermino } = req.body
+  const user = req.user!
 
   const pacote = await pacotes.findById(pacoteId)
 
@@ -66,12 +57,6 @@ router.post('/reservas', {
   const inicio = new Date(dataInicio)
   const termino = new Date(dataTermino)
 
-  if (isNaN(inicio.getTime()) || isNaN(termino.getTime())) {
-    return res.status(400).send({
-      success: false,
-      message: 'Datas inválidas',
-    })
-  }
 
   if (inicio >= termino) {
     return res.status(400).send({
@@ -94,7 +79,7 @@ router.post('/reservas', {
   const valor = pacote.value * horasReserva
 
   const reserva = await reservas.insertOne({
-    clienteId,
+    clienteId: user.id,
     pacoteId,
     enderecoId,
     valor,

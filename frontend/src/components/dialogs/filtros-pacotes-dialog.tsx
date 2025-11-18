@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Diálogo de filtros para pacotes
+ * 
+ * Permite filtrar pacotes por faixa de valor (mínimo e máximo).
+ * Oferece opção de limpar todos os filtros aplicados.
+ * 
+ * @module components/dialogs/FiltrosPacotesDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -15,16 +24,52 @@ import {
 import { Input } from "../ui/input";
 import { Separator } from "../ui/separator";
 
+/**
+ * Schema de validação para o formulário de filtros
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} valorMin - Valor mínimo (opcional)
+ * @property {string} valorMax - Valor máximo (opcional)
+ */
 const formSchema = z.object({
   valorMin: z.string().optional(),
   valorMax: z.string().optional(),
 });
 
+/**
+ * Props do diálogo de filtros de pacotes
+ * 
+ * @interface FiltrosPacotesDialogProps
+ * @property {ReactNode} children - Elemento que dispara a abertura do diálogo
+ * @property {Function} onApplyFilters - Callback com os filtros aplicados
+ */
 interface FiltrosPacotesDialogProps {
   children: ReactNode
   onApplyFilters: (filters: z.infer<typeof formSchema>) => void
 }
 
+/**
+ * Diálogo de filtros para pacotes
+ * 
+ * Oferece campos para:
+ * - Valor mínimo por hora
+ * - Valor máximo por hora
+ * - Botão para limpar todos os filtros
+ * - Botão para aplicar os filtros
+ * 
+ * @component
+ * @param {FiltrosPacotesDialogProps} props - Props do diálogo
+ * @param {ReactNode} props.children - Botão ou elemento que abre o diálogo
+ * @param {Function} props.onApplyFilters - Função chamada com os filtros selecionados
+ * @returns {JSX.Element} Diálogo com campos de filtro
+ * 
+ * @example
+ * // Uso do diálogo
+ * <FiltrosPacotesDialog onApplyFilters={setFiltros}>
+ *   <Button>Filtros</Button>
+ * </FiltrosPacotesDialog>
+ */
 export const FiltrosPacotesDialog = ({ children, onApplyFilters }: FiltrosPacotesDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 

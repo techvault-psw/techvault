@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog de visualização e edição de dados do cliente
+ * 
+ * Componente de diálogo modal que exibe informações detalhadas de um cliente
+ * e permite que gerentes visualizem, editem e gerenciem os dados do cliente,
+ * além de acessar suas reservas e endereços.
+ * 
+ * @module components/dialogs/DadosClienteDialog
+ */
+
 import {
   Form,
   FormControl,
@@ -29,7 +39,16 @@ import { SelectItem } from '../ui/select';
 import type { Cliente } from '@/redux/clientes/slice';
 import { format } from 'date-fns';
 
-
+/**
+ * Props do componente DadosClienteDialog
+ * 
+ * @interface DadosClienteDialogProps
+ * @property {Cliente} cliente - Objeto do cliente cujos dados serão exibidos
+ * @property {ReactNode} children - Elemento que abrirá o dialog quando clicado
+ * @property {boolean} [open] - Estado de abertura controlado externamente (opcional)
+ * @property {Function} [onOpenChange] - Callback para mudanças no estado de abertura
+ * @property {string} [fromReservaId] - ID da reserva de origem (para navegação contextual)
+ */
 interface DadosClienteDialogProps {
   cliente: Cliente;
   children: ReactNode;
@@ -38,8 +57,24 @@ interface DadosClienteDialogProps {
   fromReservaId?: string;
 }
 
+/**
+ * Schema de validação para cargos permitidos
+ * 
+ * @constant
+ * @type {z.ZodEnum}
+ */
 const roleSchema = z.enum(['Cliente', 'Suporte', 'Gerente'])
 
+/**
+ * Schema de validação para o formulário de dados do cliente
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} name - Nome do cliente (obrigatório)
+ * @property {string} email - E-mail do cliente (obrigatório e válido)
+ * @property {string} phone - Telefone no formato (XX) XXXXX-XXXX
+ * @property {Role} role - Cargo do cliente (Cliente, Suporte ou Gerente)
+ */
 const formSchema = z.object({
   name: z.string().min(1, "O cliente deve possuir um nome"),
   email: z.string().min(1, "O cliente deve possuir um e-mail").email("Digite um e-mail válido"),
@@ -49,6 +84,33 @@ const formSchema = z.object({
   role: roleSchema
 })
 
+/**
+ * Componente de diálogo de dados do cliente
+ * 
+ * Exibe e permite gerenciar informações de um cliente:
+ * - Visualização de nome, e-mail, telefone, cargo e data de cadastro
+ * - Edição de dados (apenas para gerentes)
+ * - Exclusão de cliente (exceto se for Gerente)
+ * - Navegação para reservas do cliente
+ * - Navegação para endereços do cliente
+ * - Proteção contra rebaixamento de cargo de Gerente
+ * 
+ * @component
+ * @param {DadosClienteDialogProps} props - Props do componente
+ * @param {Cliente} props.cliente - Cliente cujos dados serão exibidos
+ * @param {ReactNode} props.children - Elemento trigger que abre o diálogo
+ * @param {boolean} [props.open] - Controle externo de abertura
+ * @param {Function} [props.onOpenChange] - Callback de mudança de estado
+ * @param {string} [props.fromReservaId] - ID de reserva para contexto de navegação
+ * @returns {JSX.Element} Diálogo de dados do cliente
+ * 
+ * @example
+ * <DadosClienteDialog cliente={cliente}>
+ *   <Card.Container>
+ *     <Card.Title>{cliente.name}</Card.Title>
+ *   </Card.Container>
+ * </DadosClienteDialog>
+ */
 export const DadosClienteDialog = ({ cliente, children, open: controlledOpen, onOpenChange, fromReservaId }: DadosClienteDialogProps) => {
   const [internalOpen, setInternalOpen] = useState(false)
   const [isEditting, setIsEditting] = useState(false)

@@ -1,40 +1,34 @@
 import z from "zod"
 import { CreateTypedRouter } from "express-zod-openapi-typed";
-import { enderecoZodSchema } from "../../consts/zod-schemas";
-import { clientes } from "../../models/cliente";
+import { enderecoZodSchema, errorMessageSchema } from "../../consts/zod-schemas";
 import { enderecos } from "../../models/endereco";
 import { EnderecoFormatter } from "../../formatters/endereco-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
 router.post('/enderecos', {
   schema: {
-    summary: 'Create Address',
+    summary: 'Create Endereço',
     tags: ['Endereços'],
-    body: enderecoZodSchema.omit({ id: true }),
+    body: enderecoZodSchema.omit({ 
+      id: true,
+      clienteId: true
+    }),
     response: {
       201: enderecoZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string()
-      })
+      400: errorMessageSchema,
+      401: errorMessageSchema
     },
   },
-}, async (req, res) => {
-  const { clienteId, ...rest } = req.body
+}, authValidator, async (req, res) => {
+  const user = req.user!
 
-  const cliente = await clientes.findById(clienteId)
-
-  if(!cliente) {
-    return res.status(400).send({
-      success: false,
-      message: 'Cliente não encontrado'
-    })
-  }
+  const clienteId = user.id;
 
   const endereco = await enderecos.create({
     clienteId,
-    ...rest
+    ...req.body
   })
 
   const formattedEndereco = EnderecoFormatter(endereco)

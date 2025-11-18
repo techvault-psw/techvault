@@ -1,3 +1,14 @@
+/**
+ * @fileoverview Dialog para emissão de relatório financeiro com seleção de período
+ * 
+ * Componente modal que permite ao gerente selecionar um período de datas
+ * (data inicial e final) através de date pickers para gerar um relatório
+ * detalhado de faturamento e receitas naquele intervalo, incluindo métricas
+ * consolidadas e distribuição diária de receitas.
+ * 
+ * @module components/dialogs/EmitirRelatorioFinanceiroDialog
+ */
+
 import { ChevronDownIcon } from "lucide-react";
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -9,8 +20,21 @@ import { Dialog } from "../ui/dialog";
 import { FormItem } from "../ui/form";
 import { Label } from "../ui/input";
 import { Separator } from "../ui/separator";
-import { RelatorioFinanceiroDialog } from "./relatorio-financeiro-dialog";
+import { RelatorioFinanceiroDialog, type RelatorioFinanceiroData } from "./relatorio-financeiro-dialog";
+import { httpGet } from "@/lib/fetch-utils";
 
+/**
+ * Schema de validação para o formulário de período do relatório financeiro
+ * 
+ * Valida que ambas as datas foram preenchidas e que a data inicial
+ * não é maior que a data final.
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {Date} dataInicial - Data inicial do período (obrigatória)
+ * @property {Date} dataFinal - Data final do período (obrigatória)
+ * @validation Data inicial não pode ser maior que data final
+ */
 const relatorioSchema = z
   .object({
     dataInicial: z.date({ message: "Por favor, preencha ambas as datas" }),
@@ -21,13 +45,51 @@ const relatorioSchema = z
     path: ["dataInicial"],
   });
 
+/**
+ * Tipo de dados do formulário de período para relatório financeiro
+ * Inferido do schema de validação relatorioSchema usando Zod
+ */
 type RelatorioFormData = z.infer<typeof relatorioSchema>;
 
+/**
+ * Componente de dialog para emitir relatório financeiro
+ * 
+ * Dialog que permite ao usuário selecionar um período (data inicial e final)
+ * através de dois date pickers para gerar um relatório financeiro. Valida
+ * que a data inicial não ultrapassa a data final antes de fazer a requisição
+ * ao servidor. Abre um dialog secundário (RelatorioFinanceiroDialog) com os
+ * dados do relatório gerado se a requisição for bem-sucedida.
+ * 
+ * Estados gerenciados:
+ * - isOpen: abertura/fechamento do dialog de seleção de período
+ * - open1, open2: abertura/fechamento dos date pickers
+ * - successDialogOpen: abertura/fechamento do dialog de exibição do relatório
+ * - relatorioData: dados consolidados do relatório (com datas formatadas)
+ * 
+ * Realiza conversão de strings de datas para objetos Date para o array
+ * de faturamento diário para compatibilidade com o componente de exibição.
+ * 
+ * @component
+ * @param {Object} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger do dialog (ex: Button)
+ * @returns {JSX.Element} Dialog com seleção de período e dialog secundário de exibição
+ * 
+ * @example
+ * <EmitirRelatorioFinanceiroDialog>
+ *   <Button>Gerar Relatório Financeiro</Button>
+ * </EmitirRelatorioFinanceiroDialog>
+ */
 export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false)
   const [open1, setOpen1] = useState(false)
   const [open2, setOpen2] = useState(false)
   const [successDialogOpen, setSuccessDialogOpen] = useState(false)
+  const [relatorioData, setRelatorioData] = useState<RelatorioFinanceiroData>({
+    totalRecebido: 0,
+    quantidadeReservasConcluidas: 0,
+    valorMedioReservas: 0,
+    faturamentoDiario: []
+  })
 
   const {
     handleSubmit,
@@ -43,20 +105,71 @@ export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactN
   const dataInicial = watch("dataInicial");
   const dataFinal = watch("dataFinal");
 
-  const onSubmit = (data: RelatorioFormData) => {
-    setSuccessDialogOpen(true);
+  /**
+   * Manipula o envio do formulário de período
+   * 
+   * Requisita o relatório financeiro à API com as datas selecionadas,
+   * formata as datas retornadas (strings ISO) em objetos Date, e abre
+   * o dialog de exibição. Em caso de erro, apenas registra no console.
+   * 
+   * @async
+   * @param {RelatorioFormData} data - Dados do formulário com datas
+   * @returns {Promise<void>}
+   */
+  const onSubmit = async (data: RelatorioFormData) => {
+    try {
+      const res = await httpGet<RelatorioFinanceiroData>(`/relatorios/financeiro?dataInicio=${data.dataInicial}&dataTermino=${data.dataFinal}`)      
+
+      const faturamentoDiarioFormatted = res.faturamentoDiario.map(dia => ({
+        data: new Date(dia.data),
+        quantidadeReservas: dia.quantidadeReservas,
+        faturamentoDia: dia.faturamentoDia
+      }))
+
+      setRelatorioData({
+        ...res,
+        faturamentoDiario: faturamentoDiarioFormatted
+      })
+      setSuccessDialogOpen(true);
+    } catch(error) {
+      console.log(error)
+    }
   };
 
+  /**
+   * Manipula a seleção da data inicial através do date picker
+   * 
+   * @function
+   * @param {Date | undefined} date - Data selecionada ou undefined
+   * @returns {void}
+   */
   const handleDataInicialChange = (date: Date | undefined) => {
     setValue("dataInicial", date as Date, { shouldValidate: true });
   };
 
+  /**
+   * Manipula a seleção da data final através do date picker
+   * 
+   * @function
+   * @param {Date | undefined} date - Data selecionada ou undefined
+   * @returns {void}
+   */
   const handleDataFinalChange = (date: Date | undefined) => {
     setValue("dataFinal", date as Date, { shouldValidate: true });
   };
 
   const errorMessage = errors.dataInicial?.message || errors.dataFinal?.message
-  
+
+  /**
+   * Manipula abertura/fechamento do dialog
+   * 
+   * Reseta o formulário quando o dialog é fechado para limpar os dados
+   * e mensagens de erro da tentativa anterior.
+   * 
+   * @function
+   * @param {boolean} open - Estado desejado do dialog
+   * @returns {void}
+   */
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open)
 
@@ -133,6 +246,7 @@ export const EmitirRelatorioFinanceiroDialog = ({ children }: { children: ReactN
         setOpen={setSuccessDialogOpen}
         startDate={dataInicial}
         endDate={dataFinal}
+        relatorioData={relatorioData}
       />
     </>
   );

@@ -6,6 +6,7 @@ import type { InitialState, RootState } from "../root-reducer";
 
 import {addReservaServer, cancelReservaServer, coletarReservaServer, entregarReservaServer, fetchReservas, updateReservaServer} from "./fetch";
 import type { Cliente } from "../clientes/slice";
+import { loginServer } from "../clientes/fetch";
 
 export type Reserva = {
   id: string
@@ -72,7 +73,7 @@ const reservasSlice = createSlice({
           .addCase(cancelReservaServer.pending,     (state, action) => { state.status = 'deleting' })
           .addCase(cancelReservaServer.fulfilled,   (state, action) => { state.status = 'deleted'; reservasAdapter.upsertOne(state, action.payload) })
           .addCase(cancelReservaServer.rejected,    (state, action) => { state.status = 'failed';  state.error = 'Falha ao cancelar reserva!' })
-    
+          .addCase(loginServer.fulfilled,           (state, action) => { if (state.status === 'failed') { state.status = 'not_loaded'; state.error = null; } })
   }
 })
 

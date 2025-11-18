@@ -4,26 +4,20 @@ import cors from 'cors'
 import swaggerUi from 'swagger-ui-express';
 import { generateOpenAPISpec, RequestValidationError, ResponseValidationError, setDefaultResponses, setGlobalErrorHandler } from 'express-zod-openapi-typed';
 import { z } from 'zod'
-import mongoose from 'mongoose';
 import './models/cliente';
 import './models/endereco';
 import './models/feedback';
 import './models/pacote';
 import './models/reserva';
-
-mongoose
-  .connect(process.env.DB_URL || "mongodb://localhost:27017/techvault")
-  .then(() => {
-    console.log("🎲 Conectado ao banco!")
-  }, (err) => {
-    console.error(err)
-  })
+import passport from './passport';
 
 const app = express()
 
 app.use(express.json())
 
 app.use(cors())
+
+app.use(passport.initialize())
 
 app.use(router)
 
@@ -50,7 +44,17 @@ const swaggerSpec = generateOpenAPISpec({
     title: 'TechVault API',
     version: '1.0.0',
   },
-  servers: [{ url: BASE_URL }]
+  servers: [{ url: BASE_URL }],
+  components: {
+    securitySchemes: {
+      bearerAuth: {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+      }
+    }
+  },
+  security: [{ bearerAuth: [] }]
 });
 
 app.use('/docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec, {

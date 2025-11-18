@@ -52,15 +52,6 @@ export const coletarReservaServer = createAsyncThunk<Reserva, { reserva: Reserva
 
 export const cancelReservaServer = createAsyncThunk<Reserva, Reserva>('reservas/cancelReservaServer ',
   async (reserva) => {
-    const { cliente, pacote, endereco, ...reservaInfo } = reserva
-    const updatedReserva: ReservaServer = {
-      clienteId: reserva.cliente.id,
-      pacoteId: reserva.pacote.id,
-      enderecoId: reserva.endereco.id,
-      ...reservaInfo,
-      status: "Cancelada"
-    }
-
-    return await httpPut(`/reservas/${reserva.id}`, updatedReserva)
+    return await httpPatch(`/reservas/${reserva.id}/cancelar-reserva`, undefined)
   }
 )

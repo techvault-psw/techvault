@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Página de confirmação de reserva
+ * 
+ * Página onde o cliente preenche informações para criar uma nova reserva,
+ * selecionando datas, endereço de entrega e método de pagamento.
+ * 
+ * @module pages/ConfirmarReservaPage
+ */
+
 import { useLocation, useNavigate, useParams } from "react-router";
 import { useDispatch } from 'react-redux';
 import { selectAllReservas, type NewReserva } from '@/redux/reservas/slice';
@@ -36,12 +45,28 @@ import { selectAllEnderecos } from "@/redux/endereco/slice";
 import { fetchEnderecos } from "@/redux/endereco/fetch";
 import { GoBackButton } from "@/components/go-back-button";
 
+/**
+ * Métodos de pagamento disponíveis
+ * 
+ * @constant
+ * @type {string[]}
+ */
 const metodosPagamento = [
   "Cartão de Crédito",
   "Cartão de Débito",
   "Pix"
 ]
 
+/**
+ * Schema de validação para o formulário de reserva
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {Date} dataHoraInicial - Data/hora de início (deve ser futura e mínimo 12h no futuro)
+ * @property {Date} dataHoraFinal - Data/hora de término (após início, duração mín. 15min)
+ * @property {string} endereco - ID do endereço de entrega
+ * @property {string} metodoPagamento - Método de pagamento selecionado
+ */
 const formSchema = z
   .object({
     dataHoraInicial: z.date({ message: "Por favor, preencha a data inicial" }),
@@ -71,6 +96,26 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
+/**
+ * Componente da página de confirmação de reserva
+ * 
+ * Permite ao cliente criar uma nova reserva preenchendo:
+ * - Data e hora de início (mínimo 12h no futuro, intervalos de 15min)
+ * - Data e hora de término (mínimo 12h no futuro, intervalos de 15min)
+ * - Endereço de entrega (com opção de criar novo endereço)
+ * - Método de pagamento (Cartão de Crédito, Débito ou PIX)
+ * - Exibe valor por hora do pacote
+ * - Redireciona para página de pagamento após confirmação
+ * 
+ * Requer autenticação - redireciona para /login se o usuário não estiver autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de confirmação de reserva
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/confirmar-reserva/:id" element={<ConfirmarReservaPage />} />
+ */
 export default function ConfirmarReservaPage() {
   const pacotes = useSelector(selectAllPacotes);
   const enderecos = useSelector(selectAllEnderecos)
@@ -93,7 +138,7 @@ export default function ConfirmarReservaPage() {
 
   const { id } = useParams<{ id: string }>();
 
-  const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+  const { clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
   const enderecosCliente = enderecos.filter((endereco) => endereco.cliente.id === clienteAtual?.id)
 
   const location = useLocation()
@@ -123,7 +168,7 @@ export default function ConfirmarReservaPage() {
   }
 
   useEffect(() => {
-    if (!clienteAtual) {
+    if (!token) {
       const fullPath = location.pathname + location.search + location.hash;
       navigate(`/login?redirectTo=${encodeURIComponent(fullPath)}`)
     }
@@ -161,10 +206,10 @@ export default function ConfirmarReservaPage() {
       <Separator />
 
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4 overflow-y-hidden">
+        <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-1 flex-col gap-4 scrollbar">
           <h3 className="font-semibold text-white text-lg lg:text-xl leading-none mb-2">Informações da reserva</h3>
 
-          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3 scrollbar">
+          <div className="grid md:grid-cols-2 xl:grid-cols-4 gap-3">
             <FormField
               control={form.control}
               name="dataHoraInicial"

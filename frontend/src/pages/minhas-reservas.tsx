@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Página de minhas reservas
+ * 
+ * Página onde o cliente visualiza todas as suas reservas, com opções de
+ * filtragem, ordenação e acesso para fazer novas reservas.
+ * 
+ * @module pages/MinhasReservasPage
+ */
+
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
 import { FiltrosReservasDialog } from "@/components/dialogs/filtros-reservas-dialog";
@@ -23,9 +32,29 @@ import { fetchReservas } from "@/redux/reservas/fetch";
 import type { AppDispatch } from "@/redux/store";
 import { GoBackButton } from "@/components/go-back-button";
 
+/**
+ * Componente da página de minhas reservas
+ * 
+ * Lista todas as reservas do cliente autenticado com:
+ * - Filtros por status e datas
+ * - Ordenação por múltiplos critérios (data, valor, status, pacote)
+ * - Card com resumo de cada reserva (imagem, nome, valor, status, datas)
+ * - Link para criar nova reserva
+ * - Click no card para ver detalhes completos
+ * - Badges coloridos por status (Confirmada=verde, Concluída=roxo, Cancelada=vermelho)
+ * 
+ * Requer autenticação - redireciona para /login se o usuário não estiver autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de minhas reservas
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/minhas-reservas" element={<MinhasReservasPage />} />
+ */
 export default function MinhasReservasPage() {
     const navigate = useNavigate()
-    const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
+    const { clienteAtual, token } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
     const { status: statusR, error: errorR } = useSelector((rootReducer : RootState) => rootReducer.reservasReducer)
     const reservas = useSelector(selectAllReservas)
     const [filtros, setFiltros] = useState<any>({});
@@ -35,7 +64,7 @@ export default function MinhasReservasPage() {
 
     const dispatch = useDispatch<AppDispatch>()
     useEffect(() => {
-        if (!clienteAtual) {
+        if (!token) {
             navigate(`/login?redirectTo=${location.pathname}`)
         }
     }, [])

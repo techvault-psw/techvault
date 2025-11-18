@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog de confirmação de exclusão de conta
+ * 
+ * Componente de diálogo modal que solicita confirmação e senha do usuário
+ * antes de realizar a exclusão permanente da conta. Exibe aviso sobre
+ * as consequências irreversíveis da ação.
+ * 
+ * @module components/dialogs/ExcluirContaDialog
+ */
+
 import { ArrowLeftIcon } from "lucide-react";
 import { type ReactNode } from "react";
 import { TrashIcon } from "../icons/trash-icon";
@@ -12,18 +22,56 @@ import { useSelector } from "react-redux";
 import type { RootState } from "@/redux/root-reducer";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { HighlightBox } from "../highlight-box";
+import bcryptjs from 'bcryptjs'
 
+/**
+ * Props do componente ExcluirContaDialog
+ * 
+ * @interface ExcluirContaDialogProps
+ * @property {ReactNode} children - Elemento que abrirá o dialog quando clicado
+ * @property {Function} handleDeleteClick - Função executada quando a exclusão é confirmada
+ */
 interface ExcluirContaDialogProps {
   children: ReactNode
   handleDeleteClick: () => void
 }
 
+/**
+ * Schema de validação para confirmação de senha
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} password - Senha do usuário para confirmação (obrigatório)
+ */
 const formSchema = z
   .object({
     password: z.string()
       .min(1, "A senha é obrigatória")
 })
 
+/**
+ * Componente de diálogo de exclusão de conta
+ * 
+ * Exibe um modal de confirmação que:
+ * - Alerta sobre consequências irreversíveis (perda de dados, endereços, reservas, feedbacks)
+ * - Solicita senha para confirmação
+ * - Valida a senha antes de prosseguir com a exclusão
+ * - Executa handleDeleteClick se a senha estiver correta
+ * 
+ * @component
+ * @param {ExcluirContaDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger que abre o diálogo
+ * @param {Function} props.handleDeleteClick - Callback executado ao confirmar exclusão
+ * @returns {JSX.Element} Diálogo de exclusão de conta
+ * 
+ * @example
+ * <ExcluirContaDialog handleDeleteClick={handleAccountDeletion}>
+ *   <Button variant="destructive">
+ *     <TrashIcon />
+ *     Excluir conta
+ *   </Button>
+ * </ExcluirContaDialog>
+ */
 export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirContaDialogProps) => {
   const { clienteAtual } = useSelector((rootReducer: RootState) => rootReducer.clienteReducer)
 
@@ -34,10 +82,21 @@ export const ExcluirContaDialog = ({ children, handleDeleteClick }: ExcluirConta
     }
   })
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  /**
+   * Manipula o envio do formulário de confirmação
+   * 
+   * Valida a senha fornecida comparando com a senha do cliente atual usando bcrypt.
+   * Se a senha estiver correta, executa handleDeleteClick. Caso contrário, exibe erro.
+   * 
+   * @param {Object} values - Valores do formulário
+   * @param {string} values.password - Senha fornecida para confirmação
+   * @returns {Promise<void>}
+   */
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if(!clienteAtual) return
 
-    if(clienteAtual.password == values.password) {
+    const passwordMatch = await bcryptjs.compare(values.password, clienteAtual.password)
+    if (passwordMatch) {
       handleDeleteClick()
     } else {
       form.setError("password", { 

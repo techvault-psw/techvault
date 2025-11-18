@@ -9,7 +9,13 @@
     "preview": "vite preview",
     "deploy": "gh-pages -d dist",
     "server": "node server.js",
-    "json-server": "json-server --watch backend-mock.json"
+    "json-server": "json-server --watch backend-mock.json",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui",
+    "test:e2e:headed": "playwright test --headed",
+    "test:e2e:report": "playwright show-report",
+    "docs": "jsdoc -c jsdoc.json",
+    "docs:server": "npm run docs && npx http-server docs/jsdoc -o"
   },
   "dependencies": {
     "@fontsource/poppins": "^5.2.7",
@@ -24,10 +30,12 @@
     "@radix-ui/react-slot": "^1.2.3",
     "@reduxjs/toolkit": "^2.9.0",
     "@tailwindcss/vite": "^4.1.13",
+    "bcryptjs": "^3.0.3",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "date-fns": "^4.1.0",
     "json-server": "^1.0.0-beta.3",
+    "jwt-decode": "^4.0.0",
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",
     "react-day-picker": "^9.11.0",
@@ -44,11 +52,19 @@
     "zod": "^4.1.11"
   },
   "devDependencies": {
+    "@babel/core": "^7.28.5",
+    "@babel/preset-env": "^7.28.5",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/preset-typescript": "^7.28.5",
+    "@playwright/test": "^1.56.1",
     "@types/node": "^24.5.2",
     "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@vitejs/plugin-react": "^5.0.2",
+    "docdash": "^2.0.2",
     "globals": "^16.4.0",
+    "jsdoc": "^4.0.5",
+    "jsdoc-babel": "^0.5.0",
     "tw-animate-css": "^1.3.8",
     "typescript": "~5.8.3",
     "vite": "^7.1.6"

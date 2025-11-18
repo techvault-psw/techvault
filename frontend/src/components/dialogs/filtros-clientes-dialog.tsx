@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Dialog de filtros para lista de clientes
+ * 
+ * Componente de diálogo modal que permite aplicar filtros avançados
+ * na lista de clientes por cargo e período de cadastro.
+ * 
+ * @module components/dialogs/FiltrosClientesDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -17,17 +26,57 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { DatePicker } from "../ui/date-picker";
 import { ChevronDownIcon } from "lucide-react";
 
+/**
+ * Schema de validação para filtros de clientes
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} [role] - Cargo do cliente (opcional)
+ * @property {Date} [dataRegistroInicio] - Data inicial do período de cadastro (opcional)
+ * @property {Date} [dataRegistroFim] - Data final do período de cadastro (opcional)
+ */
 const formSchema = z.object({
   role: z.string().optional(),
   dataRegistroInicio: z.date().optional(),
   dataRegistroFim: z.date().optional(),
 });
 
+/**
+ * Props do componente FiltrosClientesDialog
+ * 
+ * @interface FiltrosClientesDialogProps
+ * @property {ReactNode} children - Elemento que abrirá o dialog quando clicado
+ * @property {Function} onApplyFilters - Callback executado ao aplicar filtros
+ */
 interface FiltrosClientesDialogProps {
   children: ReactNode
   onApplyFilters: (filters: any) => void
 }
 
+/**
+ * Componente de diálogo de filtros de clientes
+ * 
+ * Permite filtrar a lista de clientes por:
+ * - Cargo (Todos, Cliente, Gerente, Suporte)
+ * - Data de cadastro inicial
+ * - Data de cadastro final
+ * 
+ * Oferece opção para limpar todos os filtros aplicados.
+ * 
+ * @component
+ * @param {FiltrosClientesDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Elemento trigger que abre o diálogo
+ * @param {Function} props.onApplyFilters - Callback com filtros selecionados
+ * @returns {JSX.Element} Diálogo de filtros de clientes
+ * 
+ * @example
+ * <FiltrosClientesDialog onApplyFilters={setFiltros}>
+ *   <Button variant="secondary">
+ *     <FilterIcon />
+ *     Filtros
+ *   </Button>
+ * </FiltrosClientesDialog>
+ */
 export const FiltrosClientesDialog = ({ children, onApplyFilters }: FiltrosClientesDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
   const [openDateInicio, setOpenDateInicio] = useState(false)

@@ -23,5 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 
-# Json-server
-backend-mock.json
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+/.auth/
+
+# Docs
+docs

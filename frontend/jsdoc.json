@@ -1,0 +1,38 @@
+{
+  "tags": {
+    "allowUnknownTags": true,
+    "dictionaries": ["jsdoc", "closure"]
+  },
+  "source": {
+    "include": ["src"],
+    "includePattern": ".+\\.(jsx?|tsx?)$",
+    "excludePattern": "(node_modules/|docs|dist|build)"
+  },
+  "plugins": [
+    "node_modules/jsdoc-babel"
+  ],
+  "babel": {
+    "extensions": ["js", "jsx", "ts", "tsx"],
+    "ignore": ["**/*.(test|spec).ts"],
+    "babelrc": false,
+    "presets": [
+      "@babel/preset-env",
+      "@babel/preset-typescript",
+      ["@babel/preset-react", { "runtime": "automatic" }]
+    ]
+  },
+  "templates": {
+    "cleverLinks": false,
+    "monospaceLinks": false,
+    "default": {
+      "outputSourceFiles": true
+    }
+  },
+  "opts": {
+    "destination": "./docs/jsdoc",
+    "recurse": true,
+    "encoding": "utf8",
+    "private": false,
+    "template": "node_modules/docdash"
+  }
+}

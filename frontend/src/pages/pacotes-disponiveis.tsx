@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de pacotes disponíveis para reserva
+ * 
+ * Esta página apresenta apenas os pacotes com quantidade disponível (quantidade > 0)
+ * para que clientes possam visualizar e fazer reservas. Inclui funcionalidades
+ * de filtragem por valor e ordenação por diferentes critérios.
+ * 
+ * @module pages/PacotesDisponiveisPage
+ */
+
 import { GoBackButton } from "@/components/go-back-button";
 import { FilterIcon } from "@/components/icons/filter-icon";
 import { SlidersIcon } from "@/components/icons/sliders-icon";
@@ -16,6 +26,29 @@ import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+/**
+ * Componente da página de pacotes disponíveis
+ * 
+ * Exibe pacotes com quantidade > 0 em um grid responsivo de cards.
+ * Cada card inclui:
+ * - Imagem do pacote
+ * - Nome do pacote
+ * - Descrição (limitada a 4 linhas)
+ * - Valor por hora
+ * - Link para página de informações detalhadas
+ * 
+ * Recursos:
+ * - Filtragem por faixa de valor
+ * - Ordenação por nome, valor ou quantidade
+ * - Grid responsivo (1 coluna em mobile, até 4 colunas em XL)
+ * 
+ * @component
+ * @returns {JSX.Element} Página com grid de pacotes disponíveis
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/pacotes-disponiveis" element={<PacotesDisponiveisPage />} />
+ */
 export default function PacotesDisponiveisPage() {
   const pacotes = useSelector(selectAllPacotes);
   const [filtros, setFiltros] = useState<any>({});

@@ -1,52 +1,92 @@
+/**
+ * @fileoverview Dialog de exibição de relatório de reservas
+ * 
+ * Componente modal que apresenta um relatório detalhado de todas as reservas
+ * realizadas dentro de um período específico, incluindo resumo estatístico
+ * (quantidade confirmadas, canceladas, total) e listagem detalhada de cada
+ * reserva com informações de pacote, cliente, datas e valores.
+ * 
+ * @module components/dialogs/RelatorioReservasDialog
+ */
+
 import type { DialogProps } from "@radix-ui/react-dialog";
 import { Dialog } from "../ui/dialog";
 import { Separator } from "../ui/separator";
 import { format } from "date-fns";
 import { Badge } from "../ui/badge";
-import { useSelector } from "react-redux";
-import { selectAllReservas, type Reserva } from "@/redux/reservas/slice";
+import { type Reserva } from "@/redux/reservas/slice";
 import { formatCurrency } from "@/lib/format-currency";
 
+/**
+ * Dados consolidados do relatório de reservas para um período específico
+ * 
+ * @interface RelatorioReservasData
+ * @property {Reserva[]} reservas - Array com todas as reservas do período (confirmadas e canceladas)
+ * @property {number} qtdReservasConcluidas - Total de reservas com status 'Confirmada'
+ * @property {number} qtdReservasCanceladas - Total de reservas com status 'Cancelada'
+ */
+export interface RelatorioReservasData {
+  reservas: Reserva[]
+  qtdReservasConcluidas: number
+  qtdReservasCanceladas: number
+}
+
+/**
+ * Props do componente RelatorioReservasDialog
+ * 
+ * @interface RelatorioReservasDialogProps
+ * @extends {DialogProps}
+ * @property {boolean} open - Controla abertura/fechamento do dialog
+ * @property {Function} setOpen - Função para alterar o estado de abertura do dialog
+ * @property {Date} startDate - Data inicial do período do relatório
+ * @property {Date} endDate - Data final do período do relatório
+ * @property {RelatorioReservasData} relatorioData - Dados consolidados das reservas do período
+ */
 interface RelatorioReservasDialogProps extends DialogProps {
   open: boolean;
   setOpen: (open: boolean) => void;
   startDate: Date;
   endDate: Date;
+  relatorioData: RelatorioReservasData
 }
 
-const resumo = [
-  {
-    name: "Reservas confirmadas",
-    count: "103 (76%)",
-  },
-  {
-    name: "Reservas canceladas",
-    count: "25 (24%)",
-  },
-  {
-    name: "Reservas totais",
-    count: "128",
-  },
-]
-
-const getResumo: (reservas: Reserva[]) => {
+/**
+ * Calcula o resumo estatístico de um conjunto de reservas
+ * 
+ * Computa percentuais de reservas confirmadas e canceladas em relação ao total.
+ * Se não houver reservas (divisão por zero), retorna percentual zero.
+ * 
+ * @function
+ * @param {RelatorioReservasData} relatorioData - Dados do relatório de reservas
+ * @returns {Array<{name: string, count: string}>} Array com 3 estatísticas ordenadas:
+ *   - Quantidade de reservas confirmadas com percentual
+ *   - Quantidade de reservas canceladas com percentual
+ *   - Quantidade total de reservas
+ * 
+ * @example
+ * const resumo = getResumo(relatorioData)
+ * // Retorna: [
+ * //   { name: "Reservas concluídas", count: "8 (53%)" },
+ * //   { name: "Reservas canceladas", count: "7 (47%)" },
+ * //   { name: "Reservas totais", count: "15" }
+ * // ]
+ */
+const getResumo: (relatorioData: RelatorioReservasData) => {
   name: string
   count: string
-}[] = (reservas) => {
-  const qtdReservas = reservas.length
-  const reservasConfirmadas = reservas.filter((reserva) => reserva.status === 'Confirmada')
-  const reservasConfirmadasPercent = Math.floor((reservasConfirmadas.length / qtdReservas) * 100)
-  const reservasCanceladas = reservas.filter((reserva) => reserva.status === 'Cancelada')
-  const reservasCanceladasPercent = Math.floor((reservasCanceladas.length / qtdReservas) * 100)
+}[] = (data) => {
+  const qtdReservas = data.reservas.length
+  const reservasConcluidasPercent = Math.floor((data.qtdReservasConcluidas / qtdReservas) * 100)
+  const reservasCanceladasPercent = Math.floor((data.qtdReservasCanceladas / qtdReservas) * 100)
 
   return [
     {
-      name: "Reservas confirmadas",
-      count: `${reservasConfirmadas.length} (${isNaN(reservasConfirmadasPercent) ? 0 : reservasConfirmadasPercent}%)`,
+      name: "Reservas concluídas",
+      count: `${data.qtdReservasConcluidas} (${isNaN(reservasConcluidasPercent) ? 0 : reservasConcluidasPercent}%)`,
     },
     {
       name: "Reservas canceladas",
-      count: `${reservasCanceladas.length} (${isNaN(reservasCanceladasPercent) ? 0 : reservasCanceladasPercent}%)`,
+      count: `${data.qtdReservasCanceladas} (${isNaN(reservasCanceladasPercent) ? 0 : reservasCanceladasPercent}%)`,
     },
     {
       name: "Reservas totais",
@@ -55,19 +95,49 @@ const getResumo: (reservas: Reserva[]) => {
   ]
 }
 
-export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...props }: RelatorioReservasDialogProps) => {
+/**
+ * Componente de dialog para exibição do relatório de reservas
+ * 
+ * Componente modal que apresenta um resumo estatístico das reservas no período
+ * (confirmadas com percentual, canceladas com percentual, e total) seguido por
+ * uma lista detalhada de cada reserva. Cada item da lista exibe:
+ * - Nome do pacote
+ * - Nome do cliente
+ * - Data e horário de início e término formatados
+ * - Status (com badge colorida: roxa para Concluída, vermelha para Cancelada)
+ * - Valor formatado em reais
+ * 
+ * O dialog não é renderizado se as datas não forem fornecidas.
+ * 
+ * @component
+ * @param {RelatorioReservasDialogProps} props - Props do componente
+ * @param {boolean} props.open - Controla abertura/fechamento do dialog
+ * @param {Function} props.setOpen - Função para alterar o estado de abertura
+ * @param {Date} props.startDate - Data inicial do período
+ * @param {Date} props.endDate - Data final do período
+ * @param {RelatorioReservasData} props.relatorioData - Dados consolidados das reservas
+ * @returns {JSX.Element|null} Dialog com o relatório formatado ou null se datas inválidas
+ * 
+ * @example
+ * <RelatorioReservasDialog
+ *   open={isOpen}
+ *   setOpen={setIsOpen}
+ *   startDate={new Date('2024-01-01')}
+ *   endDate={new Date('2024-01-31')}
+ *   relatorioData={{
+ *     reservas: [...],
+ *     qtdReservasConcluidas: 8,
+ *     qtdReservasCanceladas: 7
+ *   }}
+ * />
+ */
+export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, relatorioData, ...props }: RelatorioReservasDialogProps) => {
   if (!startDate || !endDate) return null
 
   const formattedStartDate = format(startDate, "dd/MM/yyyy")
   const formattedEndDate = format(endDate, "dd/MM/yyyy")
 
-  const reservas = useSelector(selectAllReservas)
-  const reservasDoPeriodo = reservas.filter((reserva) => {
-    const dataReserva = new Date(reserva.dataInicio)
-    return dataReserva >= startDate && dataReserva <= endDate
-  })
-  const reservasFinalizadas = reservasDoPeriodo.filter((reserva) => reserva.status === 'Concluída' || reserva.status === 'Cancelada')
-  const resumo = getResumo(reservasFinalizadas)
+  const resumo = getResumo(relatorioData)
 
   return (
     <Dialog.Container open={open} onOpenChange={setOpen} {...props}>
@@ -93,12 +163,12 @@ export const RelatorioReservasDialog = ({ open, setOpen, startDate, endDate, ...
           })}
         </section>
 
-        {reservasFinalizadas.length !== 0 && (
+        {relatorioData.reservas.length !== 0 && (
           <section className="flex flex-col gap-2 overflow-y-hidden">
             <h3 className="font-semibold text-xl text-white mb-1.5">Detalhes</h3>
 
             <div className="flex flex-col gap-2 scrollbar">
-              {reservasFinalizadas.map((reserva) => {
+              {relatorioData.reservas.map((reserva) => {
                 const formattedReservaStartDate = format(new Date(reserva.dataInicio), "dd/MM/yyyy HH:mm")
                 const formattedReservaEndDate = format(new Date(reserva.dataTermino), "dd/MM/yyyy HH:mm")
 

@@ -1,6 +1,6 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { feedbackExtendedZodSchema, objectIdSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, feedbackExtendedZodSchema, objectIdSchema } from "../../consts/zod-schemas";
 import { feedbacks, type PopulatedFeedbackSchema } from "../../models/feedback";
 import { PopulatedFeedbackFormatter } from "../../formatters/feedback-formatter";
 
@@ -15,10 +15,7 @@ router.get('/feedbacks/:id', {
     }),
     response: {
       200: feedbackExtendedZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema
     },
   },
 }, async (req, res) => {

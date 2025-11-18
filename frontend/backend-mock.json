@@ -1,28 +1,215 @@
 {
   "clientes": [
-    { "id": 0, "name": "Cliente", "email": "cliente@email.com", "phone": "(12) 34567-8901", "registrationDate": "27/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 1, "name": "Administrador", "email": "admin@email.com", "phone": "(00) 00000-0000", "registrationDate": "01/01/2025", "password": "123456", "role": "Gerente" },
-    { "id": 2, "name": "Equipe de Suporte", "email": "suporte@email.com", "phone": "(33) 33333-3333", "registrationDate": "03/03/2025", "password": "123456", "role": "Suporte" },
-    { "id": 3, "name": "João Silva", "email": "joao.silva@example.com", "phone": "(11) 98765-4321", "registrationDate": "01/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 4, "name": "Maria Fernandes", "email": "maria.fernandes@example.com", "phone": "(21) 91234-5678", "registrationDate": "01/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 5, "name": "Diogo Mendonça", "email": "diogo.mendonca@example.com", "phone": "(31) 98888-7777", "registrationDate": "02/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 6, "name": "Roberto Johnson", "email": "roberto.johnson@example.com", "phone": "(41) 97777-6666", "registrationDate": "03/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 7, "name": "Ana Souza", "email": "ana.souza@example.com", "phone": "(51) 96666-5555", "registrationDate": "03/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 8, "name": "Carlos Pereira", "email": "carlos.pereira@example.com", "phone": "(61) 95555-4444", "registrationDate": "04/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 9, "name": "Fernanda Lima", "email": "fernanda.lima@example.com", "phone": "(71) 94444-3333", "registrationDate": "05/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 10, "name": "Ricardo Alves", "email": "ricardo.alves@example.com", "phone": "(81) 93333-2222", "registrationDate": "05/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 11, "name": "Patrícia Gomes", "email": "patricia.gomes@example.com", "phone": "(91) 92222-1111", "registrationDate": "06/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 12, "name": "Marcos Andrade", "email": "marcos.andrade@example.com", "phone": "(11) 91111-0000", "registrationDate": "07/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 13, "name": "Juliana Costa", "email": "juliana.costa@example.com", "phone": "(21) 99876-5432", "registrationDate": "08/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 14, "name": "Eduardo Rocha", "email": "eduardo.rocha@example.com", "phone": "(31) 98765-1234", "registrationDate": "09/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 15, "name": "Beatriz Martins", "email": "beatriz.martins@example.com", "phone": "(41) 97654-3210", "registrationDate": "10/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 16, "name": "Lucas Cardoso", "email": "lucas.cardoso@example.com", "phone": "(51) 96543-2109", "registrationDate": "11/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 17, "name": "Camila Ribeiro", "email": "camila.ribeiro@example.com", "phone": "(61) 95432-1098", "registrationDate": "12/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 18, "name": "Felipe Nunes", "email": "felipe.nunes@example.com", "phone": "(71) 94321-0987", "registrationDate": "13/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 19, "name": "Aline Dias", "email": "aline.dias@example.com", "phone": "(81) 93210-9876", "registrationDate": "14/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 20, "name": "Rafael Teixeira", "email": "rafael.teixeira@example.com", "phone": "(91) 92109-8765", "registrationDate": "15/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 21, "name": "Sofia Barbosa", "email": "sofia.barbosa@example.com", "phone": "(11) 91098-7654", "registrationDate": "16/09/2025", "password": "123456", "role": "Cliente" },
-    { "id": 22, "name": "Bruno Monteiro", "email": "bruno.monteiro@example.com", "phone": "(21) 90987-6543", "registrationDate": "17/09/2025", "password": "123456", "role": "Cliente" }
+    {
+      "id": 0,
+      "name": "Cliente",
+      "email": "cliente@email.com",
+      "phone": "(12) 34567-8901",
+      "registrationDate": "27/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 1,
+      "name": "Administrador",
+      "email": "admin@email.com",
+      "phone": "(00) 00000-0000",
+      "registrationDate": "01/01/2025",
+      "password": "123456",
+      "role": "Gerente",
+      "updatedAt": "2025-11-03T18:17:43.318Z"
+    },
+    {
+      "id": 2,
+      "name": "Equipe de Suporte",
+      "email": "suporte@email.com",
+      "phone": "(33) 33333-3333",
+      "registrationDate": "03/03/2025",
+      "password": "123456",
+      "role": "Suporte"
+    },
+    {
+      "id": 3,
+      "name": "João Silva",
+      "email": "joao.silva@example.com",
+      "phone": "(11) 98765-4321",
+      "registrationDate": "01/09/2025",
+      "password": "123456",
+      "role": "Cliente",
+      "updatedAt": "2025-11-03T17:50:18.306Z"
+    },
+    {
+      "id": 4,
+      "name": "Maria Fernandes",
+      "email": "maria.fernandes@example.com",
+      "phone": "(21) 91234-5678",
+      "registrationDate": "01/09/2025",
+      "password": "123456",
+      "role": "Suporte",
+      "updatedAt": "2025-11-03T17:50:47.716Z"
+    },
+    {
+      "id": 5,
+      "name": "Diogo Mendonça",
+      "email": "diogo.mendonca@example.com",
+      "phone": "(31) 98888-7777",
+      "registrationDate": "02/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 6,
+      "name": "Roberto Johnson",
+      "email": "roberto.johnson@example.com",
+      "phone": "(41) 97777-6666",
+      "registrationDate": "03/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 7,
+      "name": "Ana Souza",
+      "email": "ana.souza@example.com",
+      "phone": "(51) 96666-5555",
+      "registrationDate": "03/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 8,
+      "name": "Carlos Pereira",
+      "email": "carlos.pereira@example.com",
+      "phone": "(61) 95555-4444",
+      "registrationDate": "04/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 9,
+      "name": "Fernanda Lima",
+      "email": "fernanda.lima@example.com",
+      "phone": "(71) 94444-3333",
+      "registrationDate": "05/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 10,
+      "name": "Ricardo Alves",
+      "email": "ricardo.alves@example.com",
+      "phone": "(81) 93333-2222",
+      "registrationDate": "05/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 11,
+      "name": "Patrícia Gomes",
+      "email": "patricia.gomes@example.com",
+      "phone": "(91) 92222-1111",
+      "registrationDate": "06/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 12,
+      "name": "Marcos Andrade",
+      "email": "marcos.andrade@example.com",
+      "phone": "(11) 91111-0000",
+      "registrationDate": "07/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 13,
+      "name": "Juliana Costa",
+      "email": "juliana.costa@example.com",
+      "phone": "(21) 99876-5432",
+      "registrationDate": "08/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 14,
+      "name": "Eduardo Rocha",
+      "email": "eduardo.rocha@example.com",
+      "phone": "(31) 98765-1234",
+      "registrationDate": "09/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 15,
+      "name": "Beatriz Martins",
+      "email": "beatriz.martins@example.com",
+      "phone": "(41) 97654-3210",
+      "registrationDate": "10/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 16,
+      "name": "Lucas Cardoso",
+      "email": "lucas.cardoso@example.com",
+      "phone": "(51) 96543-2109",
+      "registrationDate": "11/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 17,
+      "name": "Camila Ribeiro",
+      "email": "camila.ribeiro@example.com",
+      "phone": "(61) 95432-1098",
+      "registrationDate": "12/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 18,
+      "name": "Felipe Nunes",
+      "email": "felipe.nunes@example.com",
+      "phone": "(71) 94321-0987",
+      "registrationDate": "13/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 19,
+      "name": "Aline Dias",
+      "email": "aline.dias@example.com",
+      "phone": "(81) 93210-9876",
+      "registrationDate": "14/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 20,
+      "name": "Rafael Teixeira",
+      "email": "rafael.teixeira@example.com",
+      "phone": "(91) 92109-8765",
+      "registrationDate": "15/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 21,
+      "name": "Sofia Barbosa",
+      "email": "sofia.barbosa@example.com",
+      "phone": "(11) 91098-7654",
+      "registrationDate": "16/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    },
+    {
+      "id": 22,
+      "name": "Bruno Monteiro",
+      "email": "bruno.monteiro@example.com",
+      "phone": "(21) 90987-6543",
+      "registrationDate": "17/09/2025",
+      "password": "123456",
+      "role": "Cliente"
+    }
   ],
   "enderecos": [
     {
@@ -46,7 +233,7 @@
       "neighborhood": "Centro",
       "city": "Rio de Janeiro",
       "state": "RJ"
-    },  
+    },
     {
       "id": 2,
       "clienteId": 0,
@@ -316,7 +503,7 @@
       "value": 150,
       "quantity": 4
     },
-        {
+    {
       "id": 3,
       "name": "Setup Streaming Pro",
       "image": "setup-4.png",
@@ -340,7 +527,7 @@
     {
       "id": 0,
       "pacoteId": 0,
-      "valor": 500.00,
+      "valor": 500,
       "status": "Confirmada",
       "dataInicio": "2025-10-08T10:00:00",
       "dataTermino": "2025-10-09T10:00:00",
@@ -352,7 +539,7 @@
     {
       "id": 1,
       "pacoteId": 1,
-      "valor": 300.00,
+      "valor": 300,
       "status": "Cancelada",
       "dataInicio": "2025-10-10T12:00:00",
       "dataTermino": "2025-10-12T12:00:00",
@@ -364,7 +551,7 @@
     {
       "id": 2,
       "pacoteId": 2,
-      "valor": 700.00,
+      "valor": 700,
       "status": "Concluída",
       "dataInicio": "2025-09-20T08:00:00",
       "dataTermino": "2025-09-25T08:00:00",
@@ -378,7 +565,7 @@
     {
       "id": 3,
       "pacoteId": 8,
-      "valor": 600.00,
+      "valor": 600,
       "status": "Confirmada",
       "dataInicio": "2025-10-07T10:00:00",
       "dataTermino": "2025-10-12T10:00:00",
@@ -395,32 +582,28 @@
       "clienteId": 3,
       "pacoteId": 0,
       "rating": 4,
-      "comentario":
-        "O setup gamer é excelente, máquinas muito rápidas e silenciosas. Só achei que os fones poderiam ter uma qualidade um pouco melhor."
+      "comentario": "O setup gamer é excelente, máquinas muito rápidas e silenciosas. Só achei que os fones poderiam ter uma qualidade um pouco melhor."
     },
     {
       "id": 1,
       "clienteId": 4,
       "pacoteId": 1,
       "rating": 3,
-      "comentario":
-        "O notebook é realmente potente e a cadeira é confortável, mas o monitor auxiliar poderia ter mais ajustes de altura. No geral, bom custo-benefício."
+      "comentario": "O notebook é realmente potente e a cadeira é confortável, mas o monitor auxiliar poderia ter mais ajustes de altura. No geral, bom custo-benefício."
     },
     {
       "id": 2,
       "clienteId": 5,
       "pacoteId": 2,
       "rating": 5,
-      "comentario":
-        "Perfeito para o nosso time! Todos ficaram satisfeitos com o desempenho e a ergonomia. O espaço de trabalho colaborativo ficou incrível."
+      "comentario": "Perfeito para o nosso time! Todos ficaram satisfeitos com o desempenho e a ergonomia. O espaço de trabalho colaborativo ficou incrível."
     },
     {
       "id": 3,
       "clienteId": 6,
       "pacoteId": 0,
       "rating": 4,
-      "comentario":
-        "Uso o setup profissional diariamente no home office e tem atendido muito bem. A iluminação para videoconferência foi um diferencial."
+      "comentario": "Uso o setup profissional diariamente no home office e tem atendido muito bem. A iluminação para videoconferência foi um diferencial."
     }
   ]
 }

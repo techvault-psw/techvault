@@ -1,8 +1,15 @@
 import { API_URL } from "./api-url";
+import type { RootState } from "@/redux/root-reducer";
 
 interface FetchConfig extends Omit<RequestInit, 'body' | 'method'> {
   body?: unknown;
   method?: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
+}
+
+let getState: (() => RootState) | null = null;
+
+export function configureAuthFetch(storeGetState: () => RootState) {
+  getState = storeGetState;
 }
 
 async function fetchWrapper<T = unknown>(
@@ -10,6 +17,11 @@ async function fetchWrapper<T = unknown>(
   { body, ...customConfig }: FetchConfig = {}
 ): Promise<T> {
   const headers: HeadersInit = { 'Content-Type': 'application/json' }
+
+  const token = getState?.().clienteReducer.token;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
 
   const config: RequestInit = {
     method: body ? 'POST' : 'GET',

@@ -4,6 +4,7 @@ import { fetchEnderecos, addEnderecoServer, updateEnderecoServer, deleteEndereco
 import type { InitialState } from "../root-reducer.ts";
 import type { RootState } from "../root-reducer.ts";
 import type { Cliente } from "../clientes/slice.ts";
+import { loginServer } from "../clientes/fetch";
 
 export type Endereco = {
     id: string
@@ -60,6 +61,7 @@ const enderecosSlice = createSlice({
         .addCase(deleteEnderecoServer.pending,   (state, action) => { state.status = 'deleting' })
         .addCase(deleteEnderecoServer.fulfilled, (state, action) => { state.status = 'deleted'; enderecosAdapter.removeOne(state, action.payload) })
         .addCase(deleteEnderecoServer.rejected,  (state, action) => { state.status = 'failed';  state.error = 'Falha ao excluir endereços!' })
+        .addCase(loginServer.fulfilled,          (state, action) => { if (state.status === 'failed') { state.status = 'not_loaded'; state.error = null; } })
     }
 })
 

@@ -1,4 +1,5 @@
 import { Router } from "express";
+import { loginRoute } from "./auth/login";
 import { getCliente } from "./cliente/get-cliente";
 import { getClientes } from "./cliente/get-clientes";
 import { createCliente } from "./cliente/create-cliente";
@@ -28,8 +29,12 @@ import { createFeedback } from "./feedbacks/create-feedback";
 import { updateFeedback } from "./feedbacks/update-feedback";
 import { deleteFeedback } from "./feedbacks/delete-feedback";
 import { getReserva } from "./reservas/get-reserva";
+import { getRelatorioReservas } from "./relatorios/get-relatorio-reservas";
+import { getRelatorioFinanceiro } from "./relatorios/get-relatorio-financeiro";
 
 const router = Router()
+
+router.use(loginRoute)
 
 router.use(getClientes)
 router.use(getCliente)
@@ -64,5 +69,8 @@ router.use(getFeedbacks)
 router.use(createFeedback)
 router.use(updateFeedback)
 router.use(deleteFeedback)
+
+router.use(getRelatorioReservas)
+router.use(getRelatorioFinanceiro)
 
 export default router

@@ -1,4 +1,5 @@
 import 'dotenv/config'
+import bcrypt from "bcrypt";
 import mongoose from 'mongoose';
 import { clientes, enderecos, pacotes, reservas, feedbacks } from '../consts/db-mock';
 
@@ -19,10 +20,16 @@ async function seed() {
     await ReservaModel.collection.drop().catch(() => {});
     await FeedbackModel.collection.drop().catch(() => {});
 
-    const clienteDocs = clientes.map(({ id, ...cliente }) => ({
-      _id: id,
-      ...cliente,
-    }));
+    const clienteDocs = await Promise.all(clientes.map(async ({ id, password, ...cliente }) => {
+      const salt = await bcrypt.genSalt(10);
+      const passwordHash = await bcrypt.hash(password, salt);
+
+      return {
+        _id: id,
+        password: passwordHash,
+        ...cliente,
+      }
+    }))
     await ClienteModel.insertMany(clienteDocs);
     console.log('👥 Clientes inseridos');
 

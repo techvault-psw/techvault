@@ -1,8 +1,9 @@
 import { CreateTypedRouter } from "express-zod-openapi-typed";
 import z from "zod";
-import { objectIdSchema, reservaExtendedZodSchema } from "../../consts/zod-schemas";
+import { errorMessageSchema, objectIdSchema, reservaExtendedZodSchema } from "../../consts/zod-schemas";
 import { PopulatedReservaSchema, reservas } from "../../models/reserva";
 import { PopulatedReservaFormatter, ReservaFormatter } from "../../formatters/reserva-formatter";
+import { authValidator } from "../../middlewares/auth";
 
 const router = CreateTypedRouter()
 
@@ -15,14 +16,13 @@ router.get('/reservas/:id', {
     }),
     response: {
       200: reservaExtendedZodSchema,
-      400: z.object({
-        success: z.boolean(),
-        message: z.string(),
-      }),
+      400: errorMessageSchema,
+      403: errorMessageSchema
     },
   },
-}, async (req, res) => {
+}, authValidator, async (req, res) => {
   const { id } = req.params
+  const user = req.user!
 
   const reserva = await reservas.findById(id).populate("clienteId pacoteId enderecoId") as PopulatedReservaSchema
 
@@ -30,6 +30,14 @@ router.get('/reservas/:id', {
     return res.status(400).send({
       success: false,
       message: 'Reserva não encontrada'
+    })
+  }
+
+
+  if(user.role === 'Cliente' && user.id !== reserva.clienteId._id.toString()) {
+    return res.status(403).send({
+      success: false,
+      message: 'Acesso não autorizado.'
     })
   }
 
