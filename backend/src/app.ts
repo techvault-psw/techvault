@@ -10,12 +10,18 @@ import './models/feedback';
 import './models/pacote';
 import './models/reserva';
 import passport from './passport';
+import { connectDatabase } from './connect';
 
 const app = express()
 
 app.use(express.json())
 
 app.use(cors())
+
+app.use(async (req, res, next) => {
+  await connectDatabase()
+  next()
+})
 
 app.use(passport.initialize())
 
