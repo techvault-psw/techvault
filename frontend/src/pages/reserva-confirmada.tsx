@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Página de confirmação de reserva
+ * 
+ * Página exibida após a conclusão do pagamento de uma reserva, apresentando
+ * informações de confirmação, código de entrega e detalhes da reserva realizada.
+ * 
+ * @module pages/ReservaConfirmadaPage
+ */
+
 import { HighlightBox } from "@/components/highlight-box";
 import { PageContainer } from "@/components/page-container";
 import { PageTitle, PageTitleContainer } from "@/components/page-title";
@@ -13,6 +22,25 @@ import { useEffect } from "react";
 import { selectReservaById } from "@/redux/reservas/slice";
 import { GoBackButton } from "@/components/go-back-button";
 
+/**
+ * Componente da página de reserva confirmada
+ * 
+ * Exibe informações de confirmação após pagamento bem-sucedido:
+ * - Mensagem de pagamento aprovado
+ * - Código de entrega para apresentar ao técnico
+ * - Datas e horários de início e término
+ * - Endereço de entrega
+ * - Opções para visualizar NF-e e ver minhas reservas
+ * 
+ * Requer autenticação - redireciona para /login se o usuário não estiver autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de confirmação de reserva
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/reserva-confirmada/:id" element={<ReservaConfirmadaPage />} />
+ */
 export default function ReservaConfirmadaPage() {
     const { id } = useParams<{ id: string }>();
 

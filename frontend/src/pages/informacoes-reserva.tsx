@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Página de informações da reserva
+ * 
+ * Página que exibe informações detalhadas de uma reserva específica do cliente,
+ * incluindo códigos de entrega/coleta e opção de cancelamento.
+ * 
+ * @module pages/InformacoesReservasPage
+ */
+
 import { CancelarReservaDialog } from "@/components/dialogs/cancelar-reserva-dialog"
 import { GoBackButton } from "@/components/go-back-button"
 import { HighlightBox } from "@/components/highlight-box"
@@ -22,6 +31,27 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate, useParams } from "react-router"
 
+/**
+ * Componente da página de informações da reserva
+ * 
+ * Exibe detalhes completos de uma reserva do cliente:
+ * - Imagem e nome do pacote
+ * - Valor total pago
+ * - Endereço de entrega
+ * - Datas e horas de início e término
+ * - Códigos de entrega e coleta (destacados)
+ * - Datas/horas de entrega e coleta efetivas
+ * - Botão de cancelamento (apenas para reservas confirmadas)
+ * 
+ * Requer autenticação - redireciona para /login se o usuário não estiver autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de informações da reserva
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/informacoes-reserva/:id" element={<InformacoesReservasPage />} />
+ */
 export default function InformacoesReservasPage() {
   const reservas = useSelector(selectAllReservas)
   const { id } = useParams<{ id: string }>();

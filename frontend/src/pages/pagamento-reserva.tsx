@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Página de pagamento de reserva
+ * 
+ * Página que exibe as informações de pagamento de uma reserva recém-criada,
+ * mostrando resumo de valores e opção de pagamento via PIX.
+ * 
+ * @module pages/PagamentoReservaPage
+ */
+
 import { GoBackButton } from "@/components/go-back-button"
 import { PacoteImage } from "@/components/pacote-image"
 import { PageContainer } from "@/components/page-container"
@@ -13,6 +22,27 @@ import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import { Link, useLocation, useNavigate, useParams } from "react-router"
 
+/**
+ * Componente da página de pagamento de reserva
+ * 
+ * Exibe tela de finalização de pagamento após criar reserva:
+ * - Imagem e nome do pacote reservado
+ * - Valor do pacote
+ * - Taxa de transporte fixa (R$ 40,00)
+ * - Valor total a pagar
+ * - QR Code para pagamento PIX
+ * - Botão para copiar código PIX (redireciona para página de confirmação)
+ * - Layout responsivo (mobile e desktop)
+ * 
+ * Requer autenticação - redireciona para /login se o usuário não estiver autenticado.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de pagamento
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/pagamento/:id" element={<PagamentoReservaPage />} />
+ */
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
 

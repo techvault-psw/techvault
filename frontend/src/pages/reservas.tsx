@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Página de gerenciamento de reservas
+ * 
+ * Página administrativa para visualização e gestão de todas as reservas confirmadas
+ * do sistema, organizadas por data com agrupamento de entregas e coletas. Acessível
+ * apenas para usuários com perfil de gerente ou suporte.
+ * 
+ * @module pages/ReservasPage
+ */
+
 import { PageContainer } from "@/components/page-container";
 import { PageTitle, PageTitleContainer } from "@/components/page-title";
 import { Card } from "@/components/ui/card"; 
@@ -23,12 +33,39 @@ import { type AppDispatch } from "@/redux/store";
 import { fetchReservas } from "@/redux/reservas/fetch";
 import { GoBackButton } from "@/components/go-back-button";
 
+/**
+ * Interface para reserva com tipo de operação
+ * 
+ * @interface ReservaComTipo
+ * @property {Reserva} reserva - Objeto da reserva
+ * @property {'Entrega' | 'Coleta'} tipo - Tipo de operação
+ * @property {Date} hora - Data e hora da operação
+ */
 export interface ReservaComTipo {
   reserva: Reserva;
   tipo: 'Entrega' | 'Coleta';
   hora: Date;
 }
 
+/**
+ * Componente da página de gerenciamento de reservas
+ * 
+ * Exibe agenda de reservas confirmadas organizadas por data:
+ * - Agrupamento por data (Hoje, Amanhã, ou data formatada)
+ * - Separação entre entregas e coletas
+ * - Filtros de status e período
+ * - Confirmação de entregas/coletas via código
+ * - Feedback de operações concluídas
+ * 
+ * Requer permissões de gerente ou suporte - redireciona para /login caso contrário.
+ * 
+ * @component
+ * @returns {JSX.Element} Página de gerenciamento de reservas
+ * 
+ * @example
+ * // Uso no roteamento
+ * <Route path="/reservas" element={<ReservasPage />} />
+ */
 export default function ReservasPage() {
   const { isGerente, isSuporte } = useCargo();
   const dispatch = useDispatch<AppDispatch>();

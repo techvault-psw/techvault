@@ -1,3 +1,12 @@
+/**
+ * @fileoverview Dialog de ordenação de reservas
+ * 
+ * Componente de dialog para configuração de ordenação em listagens de reservas,
+ * permitindo ordenar por diferentes campos e direções.
+ * 
+ * @module components/dialogs/OrdenarReservasDialog
+ */
+
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState, type ReactNode } from "react";
 import { useForm } from "react-hook-form";
@@ -14,16 +23,50 @@ import {
 import { Separator } from "../ui/separator";
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group';
 
+/**
+ * Schema de validação para configuração de ordenação
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {string} campo - Campo para ordenar (dataInicio, dataTermino, valor, status, pacote)
+ * @property {string} ordem - Direção da ordenação (asc ou desc)
+ */
 const formSchema = z.object({
   campo: z.enum(["dataInicio", "dataTermino", "valor", "status", "pacote"]),
   ordem: z.enum(["asc", "desc"]),
 });
 
+/**
+ * Props do componente OrdenarReservasDialog
+ * 
+ * @interface OrdenarReservasDialogProps
+ * @property {ReactNode} children - Elemento trigger que abre o dialog
+ * @property {Function} onApplySort - Callback executado ao aplicar ordenação
+ */
 interface OrdenarReservasDialogProps {
   children: ReactNode
   onApplySort: (sort: z.infer<typeof formSchema>) => void
 }
 
+/**
+ * Componente Dialog de ordenação de reservas
+ * 
+ * Exibe formulário para configuração de ordenação:
+ * - Seleção de campo (Data de Início, Data de Término, Valor, Status, Pacote)
+ * - Seleção de ordem (Crescente ou Decrescente)
+ * - Botão para aplicar ordenação
+ * 
+ * @component
+ * @param {OrdenarReservasDialogProps} props - Props do componente
+ * @param {ReactNode} props.children - Trigger
+ * @param {Function} props.onApplySort - Callback com configuração de ordenação
+ * @returns {JSX.Element} Dialog de ordenação
+ * 
+ * @example
+ * <OrdenarReservasDialog onApplySort={setOrdenacao}>
+ *   <Button>Ordenar por</Button>
+ * </OrdenarReservasDialog>
+ */
 export const OrdenarReservasDialog = ({ children, onApplySort }: OrdenarReservasDialogProps) => {
   const [isOpen, setIsOpen] = useState(false)
 

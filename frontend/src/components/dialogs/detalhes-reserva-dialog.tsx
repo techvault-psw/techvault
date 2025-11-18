@@ -1,3 +1,13 @@
+/**
+ * @fileoverview Dialog de detalhes da reserva
+ * 
+ * Componente complexo de dialog que exibe e permite edição de informações
+ * detalhadas de uma reserva, incluindo confirmação de entregas/coletas para
+ * usuários administrativos.
+ * 
+ * @module components/dialogs/DetalhesReservaDialog
+ */
+
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Separator } from "@/components/ui/separator";
@@ -24,6 +34,18 @@ import { cancelReservaServer, updateReservaServer } from "@/redux/reservas/fetch
 import { useLocation } from "react-router";
 import { type AppDispatch } from "@/redux/store";
 
+/**
+ * Props do componente DetalhesReservaDialog
+ * 
+ * @interface DetalhesReservaDialogProps
+ * @property {Reserva} reserva - Reserva a ser exibida/editada
+ * @property {'Entrega' | 'Coleta'} [tipo] - Tipo de operação (contexto da página de reservas)
+ * @property {ReactNode} children - Elemento trigger que abre o dialog
+ * @property {boolean} [open] - Controle externo de abertura do dialog
+ * @property {Function} [onOpenChange] - Callback de mudança de estado de abertura
+ * @property {boolean} [openClientDialog] - Se deve abrir dialog de cliente automaticamente
+ * @property {Function} [onOperacaoSucesso] - Callback após confirmação de operação
+ */
 interface DetalhesReservaDialogProps {
   reserva: Reserva
   tipo?: 'Entrega' | 'Coleta'
@@ -34,6 +56,18 @@ interface DetalhesReservaDialogProps {
   onOperacaoSucesso?: (reserva: Reserva, tipo: "Entrega" | "Coleta") => void
 }
 
+/**
+ * Schema de validação para o formulário de edição de reserva
+ * 
+ * @constant
+ * @type {z.ZodObject}
+ * @property {Date} dataHoraInicial - Data/hora de início da reserva
+ * @property {Date} dataHoraFinal - Data/hora de término da reserva
+ * @property {Date} [dataEntrega] - Data/hora da entrega (opcional)
+ * @property {Date} [dataColeta] - Data/hora da coleta (opcional)
+ * @property {string} codigoEntrega - Código de entrega (7 caracteres)
+ * @property {string} codigoColeta - Código de coleta (7 caracteres)
+ */
 const formSchema = z
     .object({
         dataHoraInicial: z.date({message: "Por favor, preencha a data inicial"}),
@@ -54,6 +88,33 @@ const formSchema = z
 
 type FormData = z.infer<typeof formSchema>;
 
+/**
+ * Componente Dialog de detalhes da reserva
+ * 
+ * Dialog multifuncional que exibe informações completas de uma reserva:
+ * - Visualização de todos os dados da reserva
+ * - Edição de datas e códigos (apenas gerente)
+ * - Links para dialogs de pacote, endereço e cliente
+ * - Botão de confirmação de entrega/coleta (para suporte/gerente)
+ * - Botão de cancelamento de reserva (apenas gerente)
+ * - Modo de edição/visualização alternado
+ * 
+ * @component
+ * @param {DetalhesReservaDialogProps} props - Props do componente
+ * @param {Reserva} props.reserva - Reserva a exibir
+ * @param {'Entrega' | 'Coleta'} [props.tipo] - Tipo de operação
+ * @param {ReactNode} props.children - Trigger
+ * @param {boolean} [props.open] - Controle de abertura
+ * @param {Function} [props.onOpenChange] - Callback de mudança
+ * @param {boolean} [props.openClientDialog] - Auto-abrir dialog cliente
+ * @param {Function} [props.onOperacaoSucesso] - Callback de sucesso
+ * @returns {JSX.Element} Dialog de detalhes
+ * 
+ * @example
+ * <DetalhesReservaDialog reserva={reserva} tipo="Entrega">
+ *   <Card>Ver detalhes</Card>
+ * </DetalhesReservaDialog>
+ */
 export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlledOpen, onOpenChange, openClientDialog, onOperacaoSucesso }: DetalhesReservaDialogProps) => {
   const [isEditting, setIsEditting] = useState(false)
   const [internalOpen, setInternalOpen] = useState(false)
