@@ -9,6 +9,7 @@ describe('[POST] /pacotes/upload-image', () => {
   let gerente: ClienteSchema
   let token = ''
   let mockImagePath = ''
+  let uploadImageSpy: jest.SpiedFunction<typeof UploadImageUtil.uploadImage>
 
   beforeAll(() => {
     mockImagePath = path.resolve(
@@ -32,6 +33,12 @@ describe('[POST] /pacotes/upload-image', () => {
     token = response.body.token
 
     jest.restoreAllMocks()
+
+    uploadImageSpy = jest
+      .spyOn(UploadImageUtil, 'uploadImage')
+      .mockResolvedValue({
+        url: 'https://example.com/test.png',
+      })
   })
 
   it('deve retornar 200 e a URL da imagem em um upload bem-sucedido', async () => {
@@ -62,9 +69,7 @@ describe('[POST] /pacotes/upload-image', () => {
   })
 
   it('deve retornar 500 se o uploadImage falhar', async () => {
-    const uploadImageSpy = jest
-      .spyOn(UploadImageUtil, 'uploadImage')
-      .mockRejectedValue(new Error('Erro simulado no upload'))
+    uploadImageSpy.mockRejectedValueOnce(new Error('Erro simulado no upload'))
 
     const response = await request(app)
       .post('/pacotes/upload-image')
