@@ -10,7 +10,7 @@ beforeAll(async () => {
     await mongoose.disconnect()
   }
 
-  const globalConfigPath = path.join(__dirname, '..', '..', 'jest-mongodb-config.json')
+  const globalConfigPath = path.join(__dirname, 'jest-mongodb-config.json')
   if (!existsSync(globalConfigPath)) {
     throw new Error('MongoMemoryServer global config not found. Did globalSetup run?')
   }
