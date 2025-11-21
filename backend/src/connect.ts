@@ -11,6 +11,9 @@ export const connectDatabase = async () => {
     console.log("🎲 Conectado ao banco!");
   } catch (err) {
     console.error("❌ Erro ao conectar ao Mongo:", err);
+    if (process.env.NODE_ENV === 'test') {
+      throw err;
+    }
     process.exit(1);
   }
 }
