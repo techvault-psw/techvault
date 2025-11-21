@@ -89,3 +89,38 @@ export async function httpPatch<T = unknown>(
 ): Promise<T> {
   return fetchWrapper<T>(endpoint, { body, ...customConfig, method: 'PATCH' })
 }
+
+export async function httpGetBlob(
+  endpoint: string,
+  customConfig: Omit<FetchConfig, 'body' | 'method'> = {}
+): Promise<Blob> {
+  const headers: HeadersInit = {};
+
+  const token = getState?.().clienteReducer.token;
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const config: RequestInit = {
+    method: 'GET',
+    ...customConfig,
+    headers: {
+      ...headers,
+      ...customConfig.headers,
+    },
+  };
+
+  try {
+    const url = API_URL + (endpoint.startsWith('/') ? endpoint : `/${endpoint}`)
+    const response = await fetch(url, config)
+    
+    if (response.ok) {
+      return await response.blob();
+    }
+    console.log(await response.json())
+    throw new Error("Ocorreu um erro inesperado, aguarde e tente novamente.")
+  } catch (err) {
+    const error = err as Error;
+    return Promise.reject(error.message ? error.message : "Ocorreu um erro inesperado, aguarde e tente novamente.")
+  }
+}

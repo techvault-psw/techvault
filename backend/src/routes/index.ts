@@ -29,6 +29,7 @@ import { createFeedback } from "./feedbacks/create-feedback";
 import { updateFeedback } from "./feedbacks/update-feedback";
 import { deleteFeedback } from "./feedbacks/delete-feedback";
 import { getReserva } from "./reservas/get-reserva";
+import { getNotaFiscal } from "./reservas/get-nota-fiscal";
 import { getRelatorioReservas } from "./relatorios/get-relatorio-reservas";
 import { getRelatorioFinanceiro } from "./relatorios/get-relatorio-financeiro";
 
@@ -63,6 +64,7 @@ router.use(deleteReserva)
 router.use(confirmColeta)
 router.use(confirmEntrega)
 router.use(cancelReserva)
+router.use(getNotaFiscal)
 
 router.use(getFeedback)
 router.use(getFeedbacks)
