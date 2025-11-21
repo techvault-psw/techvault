@@ -1,11 +1,11 @@
-const { MongoMemoryServer } = require('mongodb-memory-server');
-const fs = require('fs');
-const path = require('path');
+import { MongoMemoryServer } from 'mongodb-memory-server';
+import fs from 'fs';
+import path from 'path';
 
 const globalConfigPath = path.join(__dirname, 'jest-mongodb-config.json');
 
-module.exports = async () => {
-  const instanceOptions = {};
+export default async () => {
+  const instanceOptions: any = {};
   const storageEngine = process.env.MONGOMS_STORAGE_ENGINE;
 
   if (storageEngine) {
@@ -24,6 +24,5 @@ module.exports = async () => {
 
   fs.writeFileSync(globalConfigPath, JSON.stringify(config));
 
-  globalThis.__MONGOMS__ = mongoServer;
+  (globalThis as any).__MONGOMS__ = mongoServer;
 };
-
