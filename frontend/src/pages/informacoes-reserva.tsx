@@ -18,6 +18,7 @@ import { Button } from "@/components/ui/button"
 import { FormItem } from "@/components/ui/form"
 import { Input, Label } from "@/components/ui/input"
 import { Separator } from "@/components/ui/separator"
+import { httpGetBlob } from "@/lib/fetch-utils"
 import { formatCurrency } from "@/lib/format-currency"
 import { cn } from "@/lib/utils"
 import { cancelReservaServer, fetchReservas } from "@/redux/reservas/fetch"
@@ -74,6 +75,19 @@ export default function InformacoesReservasPage() {
     navigate("/minhas-reservas")
     if (reserva) {
       dispatch(cancelReservaServer(reserva))
+    }
+  }
+  
+  const handleVisualizarNFe = async () => {
+    try {
+      const blob = await httpGetBlob(`/reservas/${id}/nota-fiscal`)
+      const url = window.URL.createObjectURL(blob)
+      window.open(url, '_blank');
+      
+      setTimeout(() => window.URL.revokeObjectURL(url), 1000)
+    } catch (error) {
+      console.error("Erro ao baixar NF-e:", error)
+      alert("Erro ao gerar Nota Fiscal. Tente novamente.")
     }
   }
 
@@ -233,15 +247,26 @@ export default function InformacoesReservasPage() {
           </div>
 
           <div className="grid gap-3 mt-auto md:grid-cols-2 xl:grid-cols-4">
-            {reserva.status === "Confirmada" && (
+            <Button
+              variant="outline"
+              className={cn("hidden xl:flex", reserva.status === "Confirmada" ? "xl:col-start-3" : "xl:col-start-4")}
+              onClick={handleVisualizarNFe}
+            >
+              Visualizar NF-e
+            </Button>
 
+            {reserva.status === "Confirmada" && (
               <CancelarReservaDialog reserva={reserva} handleCancelClick={cancelarReserva}>
-                <Button variant="destructive" className="md:col-start-2 xl:col-start-4">
+                <Button variant="destructive" className="xl:col-start-4">
                   <X className="size-5 text-red" />
                   <span className="text-red text-lg font-medium leading-none">Cancelar</span>
                 </Button>
               </CancelarReservaDialog>
-            ) }
+            )}
+
+            <Button variant="outline" className="flex md:col-start-2 xl:hidden" onClick={handleVisualizarNFe}>
+              Visualizar NF-e
+            </Button>
           </div>
         </>
       )}
