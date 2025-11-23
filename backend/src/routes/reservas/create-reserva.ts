@@ -33,7 +33,7 @@ router.post('/reservas', {
     },
   },
 }, authValidator, async (req, res) => {
-  const {pacoteId, enderecoId, dataInicio, dataTermino } = req.body
+  const {pacoteId, enderecoId, dataInicio, dataTermino, metodoPagamento} = req.body
   const user = req.user!
 
   const pacote = await pacotes.findById(pacoteId)
@@ -83,6 +83,7 @@ router.post('/reservas', {
     pacoteId,
     enderecoId,
     valor,
+    metodoPagamento,
     dataInicio,
     dataTermino,  
     dataEntrega: null,

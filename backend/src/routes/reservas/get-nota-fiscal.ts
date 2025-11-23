@@ -56,7 +56,7 @@ router.get('/reservas/:id/nota-fiscal', {
 
   // --- Cabeçalho ---
   // Fundo cinza no topo
-  doc.rect(0, 0, 595, 120).fill(headerBg)
+  doc.rect(0, 0, 595, 135).fill(headerBg)
 
   // Logo / Nome da Empresa
   doc.fontSize(26).fillColor(primaryColor).font('Helvetica-Bold')
@@ -69,6 +69,7 @@ router.get('/reservas/:id/nota-fiscal', {
   doc.fontSize(12).font('Helvetica')
      .text(`Nº ${reserva._id.toString().substring(0, 8).toUpperCase()}`, 350, 75, { width: 195, align: 'right' })
      .text(`Emissão: ${new Date().toLocaleDateString('pt-BR')}`, 350, 90, { width: 195, align: 'right' })
+     .text(`Método de Pagamento: ${reserva.metodoPagamento}`, 350, 105, { width: 195, align: 'right' })
 
   let y = 160
 
