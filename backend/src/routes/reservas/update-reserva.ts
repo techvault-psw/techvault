@@ -28,7 +28,7 @@ router.put('/reservas/:id', {
   },
 }, authValidator, roleValidator('Gerente'), async (req, res) => {
   const { id } = req.params
-  const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status } = req.body
+  const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status, metodoPagamento} = req.body
   
   const reserva = await reservas.findById(id)
 
@@ -48,6 +48,7 @@ router.put('/reservas/:id', {
     codigoColeta,
     codigoEntrega,
     status,
+    metodoPagamento
   }, { new: true })
 
   const formattedReserva = ReservaFormatter(updatedReserva!)
