@@ -20,7 +20,7 @@ import type { RootState } from "@/redux/root-reducer"
 import type { AppDispatch } from "@/redux/store"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useLocation, useNavigate, useParams } from "react-router"
+import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router"
 
 /**
  * Componente da página de pagamento de reserva
@@ -45,6 +45,8 @@ import { Link, useLocation, useNavigate, useParams } from "react-router"
  */
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
+    const [searchParams] = useSearchParams();
+    const metodoPagamento = searchParams.get('metodo')
 
     const dispatch = useDispatch<AppDispatch>()
     const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
@@ -58,6 +60,7 @@ export default function PagamentoReservaPage() {
     const reserva = useSelector((state: RootState) => selectReservaById(state, id ?? ''))
 
     const pacote = reserva?.pacote
+    const isPagamentoPix = metodoPagamento === 'Pix'
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -84,16 +87,16 @@ export default function PagamentoReservaPage() {
                 <GoBackButton />
                 <PageTitle> Finalizar Pagamento </PageTitle>
             </PageTitleContainer>
-            
+
 
             <Separator/>
 
             <section className="flex-1 flex flex-col justify-between gap-5 overflow-y-hidden lg:hidden">
-                <div className="flex flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
-                    <div className="flex md:flex-col items-center gap-3">
+                <div className="flex flex-1 flex-col gap-5 md:overflow-y-auto custom-scrollbar-ver">
+                    <div className={isPagamentoPix ? "flex md:flex-col items-center gap-3" : "flex flex-col items-center gap-3"}>
                         <PacoteImage
                             pacote={pacote}
-                            className="h-22 md:h-44 rounded-lg"
+                            className={isPagamentoPix ? "h-22 md:h-44 rounded-lg" : "h-44 rounded-lg"}
                         />
 
                         <span className="text-white text-lg md:text-xl font-semibold">{pacote.name}</span>
@@ -103,6 +106,10 @@ export default function PagamentoReservaPage() {
 
                     <div className="flex flex-col gap-1">
                         <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium text-sm">Método de pagamento escolhido:</span>
+                            <span className="text-sm text-right">{metodoPagamento}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
                             <span>{formatCurrency(valorReserva)}</span>
                         </div>
@@ -120,19 +127,26 @@ export default function PagamentoReservaPage() {
                         </div>
                     </div>
 
-                    <div className="mt-auto space-y-4">
-                        <h3 className="text-lg font-semibold text-white text-center">
-                        Pague com <span className="text-blue">PIX</span>!
-                        </h3>
+                    {isPagamentoPix ? (
+                        <div className="mt-auto space-y-4">
+                            <h3 className="text-lg font-semibold text-white text-center">
+                                Pague com <span className="text-blue">PIX</span>!
+                            </h3>
 
-                        <img src="/qrcode.png" alt="qrcode" className="size-75 md:size-50 mx-auto"/>
-                    </div>
+                            <img src="/qrcode.png" alt="qrcode" className="size-75 md:size-50 mx-auto"/>
+
+                            <Button size="lg" className="flex-none font-bold">
+                                <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
+                            </Button>
+                        </div>
+                    ) : (
+                        <div className="mt-auto">
+                            <Button size="lg" asChild className="font-semibold">
+                                <Link to={`/reserva-confirmada/${reserva.id}`}>Finalizar Pagamento</Link>
+                            </Button>
+                        </div>
+                    )}
                 </div>
-                
-                {/* TODO: Usar props para definir método de pagamento nessa página */}
-                <Button asChild size="lg" className="flex-none font-bold">
-                    <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
-                </Button>
             </section>
 
             <section className="flex-1 gap-5 overflow-y-hidden hidden lg:flex lg:gap-5">
@@ -140,7 +154,7 @@ export default function PagamentoReservaPage() {
                     <div className="flex md:flex-col items-center gap-3">
                         <PacoteImage
                             pacote={pacote}
-                            className="w-8/10"
+                            className="w-6/10"
                         />
 
                         <span className="text-white text-2xl font-semibold">{pacote.name}</span>
@@ -150,6 +164,10 @@ export default function PagamentoReservaPage() {
 
                     <div className="flex flex-col gap-1.5">
                         <div className="flex items-center justify-between text-white text-lg">
+                            <span className="font-medium">Método de pagamento escolhido:</span>
+                            <span>{metodoPagamento}</span>
+                        </div>
+                        <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
                             <span>{formatCurrency(valorReserva)}</span>
                         </div>
@@ -166,22 +184,34 @@ export default function PagamentoReservaPage() {
                             <span className="font-semibold">{formatCurrency(valorTotal)}</span>
                         </div>
                     </div>
+
+                    {!isPagamentoPix &&
+                        <div className="flex w-100 m-auto">
+                            <Button size="lg" asChild className="font-semibold">
+                                <Link to={`/reserva-confirmada/${reserva.id}`}>Finalizar Pagamento</Link>
+                            </Button>
+                        </div>
+                    }
                 </div>
 
-                <Separator orientation="vertical"/>
 
-                <div className="flex flex-col gap-8 justify-center">
-                    <h3 className="text-3xl font-semibold text-white text-center">
-                        Pague com <span className="text-blue">PIX</span>!
-                    </h3>
+                {isPagamentoPix &&
+                    <>
+                    <Separator orientation="vertical"/>
 
-                    <img src="/qrcode.png" alt="qrcode" className="size-76 mx-auto"/>
+                        <div className="flex flex-col gap-8 justify-center">
+                            <h3 className="text-3xl font-semibold text-white text-center">
+                                Pague com <span className="text-blue">PIX</span>!
+                            </h3>
 
-                    {/* TODO: Usar props para definir método de pagamento nessa página */}
-                    <Button asChild size="lg" className="flex-none font-bold">
-                        <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
-                    </Button>
-                </div>
+                        <img src="/qrcode.png" alt="qrcode" className="size-76 mx-auto"/>
+
+                            <Button size="lg" className="flex-none font-bold">
+                                <Link to={`/reserva-confirmada/${reserva.id}`}>Copiar Código Pix</Link>
+                            </Button>
+                        </div>
+                    </>
+                }
             </section>
 
         </PageContainer.Card>
