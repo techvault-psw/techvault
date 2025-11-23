@@ -104,9 +104,9 @@ export default function PagamentoReservaPage() {
                     <Separator/>
 
                     <div className="flex flex-col gap-1">
-                        <div className="flex items-center justify-between text-white text-lg">
-                            <span className="font-medium text-sm">Método de pagamento escolhido:</span>
-                            <span className="text-sm text-right">{metodoPagamento}</span>
+                        <div className="flex items-center justify-between text-white text-sm md:text-lg">
+                            <span className="font-medium">Método de pagamento:</span>
+                            <span className="text-right">{metodoPagamento}</span>
                         </div>
                         <div className="flex items-center justify-between text-white text-lg">
                             <span className="font-medium">Valor do Pacote:</span>
