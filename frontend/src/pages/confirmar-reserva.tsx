@@ -46,16 +46,15 @@ import { fetchEnderecos } from "@/redux/endereco/fetch";
 import { GoBackButton } from "@/components/go-back-button";
 
 /**
- * Métodos de pagamento disponíveis
+ * Esquema para os métodos de pagamento disponíveis
  * 
  * @constant
- * @type {string[]}
+ * @type {z.ZodEnum}
  */
-const metodosPagamento = [
-  "Cartão de Crédito",
-  "Cartão de Débito",
-  "Pix"
-]
+const metodosPagamentoSchema = z.enum(
+  ["Cartão de Crédito", "Cartão de Débito", "Pix"],
+  { message: "Por favor, selecione um método de pagamento" }
+)
 
 /**
  * Schema de validação para o formulário de reserva
@@ -73,13 +72,7 @@ const formSchema = z
     dataHoraFinal: z.date({ message: "Por favor, preencha a data final" }),
     endereco: z.string()
       .min(1, { message: "Por favor, selecione um endereço" }),
-    metodoPagamento: z.string()
-      .min(1, { message: "Por favor, selecione um método" })
-      .refine(
-        (metodo) => metodosPagamento.includes(metodo),
-        { message: "Método inválido" }
-      ),
-
+    metodoPagamento: metodosPagamentoSchema
   })
   .refine((data) => data.dataHoraInicial > new Date(), {
     message: "A data inicial não pode ser no passado",
@@ -126,8 +119,7 @@ export default function ConfirmarReservaPage() {
     defaultValues: {
       dataHoraInicial: undefined,
       dataHoraFinal: undefined,
-      endereco: "",
-      metodoPagamento: ""
+      endereco: ""
     },
     mode: "onChange"
   });
@@ -154,6 +146,7 @@ export default function ConfirmarReservaPage() {
       pacote,
       status: "Confirmada" as const,
       dataInicio: data.dataHoraInicial.toISOString(),
+      metodoPagamento: data.metodoPagamento,
       dataTermino: data.dataHoraFinal.toISOString(),
       endereco,
       cliente: clienteAtual,
@@ -163,7 +156,7 @@ export default function ConfirmarReservaPage() {
 
     if (addReservaServer.fulfilled.match(result)) {
       console.log(result.payload)
-      navigate(`/pagamento/${result.payload.id}`);
+      navigate(`/pagamento/${result.payload.id}?metodo=${result.payload.metodoPagamento}`);
     }
   }
 
@@ -306,7 +299,7 @@ export default function ConfirmarReservaPage() {
                         <SelectValue placeholder="Selecione um método" />
                       </SelectTrigger>
                       <SelectContent>
-                        {metodosPagamento.map((metodo) => (
+                        {metodosPagamentoSchema.options.map((metodo) => (
                           <SelectItem key={metodo} value={metodo}>
                             {metodo}
                           </SelectItem>
