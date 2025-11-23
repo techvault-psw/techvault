@@ -23,6 +23,11 @@ const reservaSchema = new Schema({
     type: Number,
     required: true,
   },
+  metodoPagamento: {
+    type: String,
+    enum: ["Cartão de Crédito", "Cartão de Débito", "Pix"],
+    required: true,
+  },
   status: {
     type: String,
     enum: ["Confirmada", "Cancelada", "Concluída"],
@@ -32,15 +37,15 @@ const reservaSchema = new Schema({
     type: Date,
     required: true,
   },
-    dataTermino: {
+  dataTermino: {
     type: Date,
     required: true,
   },
-    dataEntrega: {
+  dataEntrega: {
     type: Date,
     required: false,
   },
-    dataColeta: {
+  dataColeta: {
     type: Date,
     required: false,
   },
