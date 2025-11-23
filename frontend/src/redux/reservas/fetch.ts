@@ -10,12 +10,13 @@ export const fetchReservas = createAsyncThunk<Reserva[]>(`reservas/fetchReservas
 
 export const addReservaServer = createAsyncThunk<Reserva, NewReserva>(`reservas/addReservaServer`,
   async (newReserva) => {
-    const { cliente, pacote, endereco, dataInicio, dataTermino } = newReserva
+    const { cliente, pacote, endereco, dataInicio, dataTermino, metodoPagamento } = newReserva
 
     return await httpPost('/reservas', {
       clienteId: cliente.id,
       pacoteId: pacote.id,
       enderecoId: endereco.id,
+      metodoPagamento,
       dataInicio,
       dataTermino,
     })
@@ -24,7 +25,7 @@ export const addReservaServer = createAsyncThunk<Reserva, NewReserva>(`reservas/
 
 export const updateReservaServer = createAsyncThunk<Reserva, Reserva>('reservas/updateReservaServer ',
   async (reserva) => {
-    const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status } = reserva
+    const { dataEntrega, dataColeta, dataInicio, dataTermino, codigoColeta, codigoEntrega, status, metodoPagamento } = reserva
 
     return await httpPut(`/reservas/${reserva.id}`, {
       dataEntrega,
@@ -34,6 +35,7 @@ export const updateReservaServer = createAsyncThunk<Reserva, Reserva>('reservas/
       codigoColeta,
       codigoEntrega,
       status,
+      metodoPagamento
     })
   }
 )
