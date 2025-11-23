@@ -112,7 +112,7 @@ export default function ReservaConfirmadaPage() {
                 </div>
                 <div className="space-y-2 [&:has(:disabled)]:opacity-75">
                     <Label htmlFor="endereco">Endereço de Entrega</Label>
-                    <Input id="endereco" type="text" value="Faculdade" disabled/>
+                    <Input id="endereco" type="text" value={reserva.endereco.name} disabled/>
                 </div>
             </div>
 
