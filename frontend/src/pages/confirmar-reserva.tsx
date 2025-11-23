@@ -156,7 +156,7 @@ export default function ConfirmarReservaPage() {
 
     if (addReservaServer.fulfilled.match(result)) {
       console.log(result.payload)
-      navigate(`/pagamento/${result.payload.id}?metodo=${result.payload.metodoPagamento}`);
+      navigate(`/pagamento/${result.payload.id}`);
     }
   }
 

@@ -20,7 +20,7 @@ import type { RootState } from "@/redux/root-reducer"
 import type { AppDispatch } from "@/redux/store"
 import { useEffect } from "react"
 import { useDispatch, useSelector } from "react-redux"
-import { Link, useLocation, useNavigate, useParams, useSearchParams } from "react-router"
+import { Link, useLocation, useNavigate, useParams } from "react-router"
 
 /**
  * Componente da página de pagamento de reserva
@@ -45,8 +45,6 @@ import { Link, useLocation, useNavigate, useParams, useSearchParams } from "reac
  */
 export default function PagamentoReservaPage() {
     const { id } = useParams<{ id: string }>();
-    const [searchParams] = useSearchParams();
-    const metodoPagamento = searchParams.get('metodo')
 
     const dispatch = useDispatch<AppDispatch>()
     const { status: statusR } = useSelector((rootReducer: RootState) => rootReducer.reservasReducer)
@@ -60,6 +58,7 @@ export default function PagamentoReservaPage() {
     const reserva = useSelector((state: RootState) => selectReservaById(state, id ?? ''))
 
     const pacote = reserva?.pacote
+    const metodoPagamento = reserva?.metodoPagamento
     const isPagamentoPix = metodoPagamento === 'Pix'
 
     const navigate = useNavigate()
