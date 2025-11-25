@@ -12,6 +12,7 @@ export type Reserva = {
   id: string
   pacote: Pacote
   valor: number
+  metodoPagamento: 'Pix' | 'Cartão de Crédito' | 'Cartão de Débito'
   status: "Confirmada" | "Cancelada" | "Concluída"
   dataInicio: string
   dataTermino: string
@@ -28,6 +29,7 @@ export type NewReserva = Optional<Reserva, "id" | "codigoEntrega" | "codigoColet
 export type ReservaServer = {
   id: string
   valor: number
+  metodoPagamento: 'Pix' | 'Cartão de Crédito' | 'Cartão de Débito'
   status: "Confirmada" | "Cancelada" | "Concluída"
   dataInicio: string
   dataTermino: string

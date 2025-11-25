@@ -353,7 +353,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote com 2 PCs de última geração com monitores duplos, cadeiras ergonômicas e periféricos gamer de alta performance. Ideal para jogatinas com amigos."
     ],
-        components: [
+    components: [
       "Ryzen 5 5600",
       "RTX 3060 12GB",
       "16 GB RAM DDR4",
@@ -370,7 +370,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote ideal para profissionais que precisam de desempenho e conforto no dia a dia. Conta com notebook de alto desempenho, monitor auxiliar para multitarefas, cadeira ergonômica e iluminação adequada para videoconferências."
     ],
-        components: [
+    components: [
       "Notebook i7 12ª geração",
       "Monitor 27\" Full HD",
       "Cadeira ergonômica com ajuste lombar",
@@ -388,7 +388,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote completo para equipes colaborarem juntas em um ambiente de trabalho moderno e produtivo. Inclui múltiplas estações de trabalho, ergonomia, periféricos e suporte para reuniões em grupo."
     ],
-        components: [
+    components: [
       "4 Notebooks i5 12ª geração",
       "4 Monitores 27\" Full HD",
       "4 Cadeiras ergonômicas",
@@ -405,7 +405,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Para gamers exigentes que buscam desempenho máximo em jogos de última geração, com gráficos ultra e fluidez impressionante."
     ],
-        components: [
+    components: [
       "Intel i9 13900K",
       "RTX 4090 24GB",
       "64 GB RAM DDR5",
@@ -424,7 +424,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote compacto para quem busca um setup simples e funcional para o dia a dia. Ideal para estudos, navegação e uso doméstico."
     ],
-        components: [
+    components: [
       "Notebook i5 10ª geração",
       "Monitor 24\" Full HD",
       "Cadeira simples acolchoada",
@@ -440,7 +440,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pensado para designers e criativos que trabalham com softwares gráficos exigentes. Conta com tela de alta resolução e acessórios de precisão."
     ],
-        components: [
+    components: [
       "MacBook Pro M1",
       "Monitor 32\" 4K IPS",
       "Mesa digitalizadora Wacom Intuos",
@@ -457,7 +457,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Ambiente completo para escritórios, trazendo conforto, conectividade e elegância. Ideal para equipes pequenas que buscam produtividade."
     ],
-        components: [
+    components: [
       "3 Notebooks i5 12ª geração",
       "3 Monitores 24\" Full HD",
       "3 Cadeiras ergonômicas com apoio de braço",
@@ -474,7 +474,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote pensado para quem trabalha de casa e precisa de um espaço ergonômico e organizado para longas jornadas de trabalho remoto."
     ],
-        components: [
+    components: [
       "Notebook i7 11ª geração",
       "Monitor 27\" QHD",
       "Cadeira ergonômica com apoio de pés",
@@ -492,7 +492,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote completo para entretenimento familiar, estudos e reuniões online. Perfeito para quem busca praticidade em casa."
     ],
-        components: [
+    components: [
       "PC i5 12ª geração",
       "Monitor 27\" Full HD",
       "Caixas de som estéreo",
@@ -510,7 +510,7 @@ export const pacotes: Pacote[] = [
     description: [
       "Pacote perfeito para criadores de conteúdo que buscam qualidade em transmissões ao vivo e gravações. Inclui PC potente, câmera, microfone e iluminação profissional."
     ],
-        components: [
+    components: [
       "Ryzen 7 5800X",
       "RTX 3070 8GB",
       "32 GB RAM DDR4",
@@ -531,6 +531,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e608",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e614",
     valor: 500.0,
+    metodoPagamento: "Pix",
     status: "Confirmada",
     dataInicio: "2025-10-08T10:00:00.000Z",
     dataTermino: "2025-10-09T10:00:00.000Z",
@@ -545,6 +546,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e609",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e615",
     valor: 300.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Cancelada",
     dataInicio: "2025-10-10T12:00:00.000Z",
     dataTermino: "2025-10-12T12:00:00.000Z",
@@ -559,6 +561,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60e",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e616",
     valor: 700.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Concluída",
     dataInicio: "2025-09-20T08:00:00.000Z",
     dataTermino: "2025-09-25T08:00:00.000Z",
@@ -573,6 +576,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60a",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61b",
     valor: 600.0,
+    metodoPagamento: "Pix",
     status: "Confirmada",
     dataInicio: "2025-10-07T10:00:00.000Z",
     dataTermino: "2025-10-12T10:00:00.000Z",
@@ -587,6 +591,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60c",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e617",
     valor: 600.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Concluída",
     dataInicio: "2025-09-15T09:00:00.000Z",
     dataTermino: "2025-09-18T09:00:00.000Z",
@@ -601,6 +606,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e610",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e618",
     valor: 80.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Confirmada",
     dataInicio: "2025-10-15T14:00:00.000Z",
     dataTermino: "2025-10-20T14:00:00.000Z",
@@ -615,6 +621,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e611",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e619",
     valor: 350.0,
+    metodoPagamento: "Pix",
     status: "Cancelada",
     dataInicio: "2025-10-05T11:00:00.000Z",
     dataTermino: "2025-10-10T11:00:00.000Z",
@@ -629,6 +636,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e612",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61a",
     valor: 280.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Concluída",
     dataInicio: "2025-09-10T08:00:00.000Z",
     dataTermino: "2025-09-15T08:00:00.000Z",
@@ -643,6 +651,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e613",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61c",
     valor: 150.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Confirmada",
     dataInicio: "2025-10-20T13:00:00.000Z",
     dataTermino: "2025-10-25T13:00:00.000Z",
@@ -657,6 +666,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60d",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61d",
     valor: 300.0,
+    metodoPagamento: "Pix",
     status: "Concluída",
     dataInicio: "2025-09-05T10:00:00.000Z",
     dataTermino: "2025-09-08T10:00:00.000Z",
@@ -671,6 +681,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60f",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e614",
     valor: 500.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Cancelada",
     dataInicio: "2025-10-12T16:00:00.000Z",
     dataTermino: "2025-10-14T16:00:00.000Z",
@@ -685,6 +696,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e610",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e615",
     valor: 300.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Confirmada",
     dataInicio: "2025-10-25T09:00:00.000Z",
     dataTermino: "2025-10-28T09:00:00.000Z",
@@ -699,6 +711,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e611",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e616",
     valor: 700.0,
+    metodoPagamento: "Pix",
     status: "Concluída",
     dataInicio: "2025-09-28T07:00:00.000Z",
     dataTermino: "2025-10-02T07:00:00.000Z",
@@ -713,6 +726,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e612",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e617",
     valor: 600.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Confirmada",
     dataInicio: "2025-11-01T12:00:00.000Z",
     dataTermino: "2025-11-03T12:00:00.000Z",
@@ -727,6 +741,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60c",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e619",
     valor: 350.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Concluída",
     dataInicio: "2025-09-12T11:00:00.000Z",
     dataTermino: "2025-09-17T11:00:00.000Z",
@@ -741,6 +756,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60d",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61a",
     valor: 280.0,
+    metodoPagamento: "Pix",
     status: "Confirmada",
     dataInicio: "2025-10-30T08:00:00.000Z",
     dataTermino: "2025-11-04T08:00:00.000Z",
@@ -755,6 +771,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60e",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61b",
     valor: 600.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Concluída",
     dataInicio: "2025-09-22T14:00:00.000Z",
     dataTermino: "2025-09-27T14:00:00.000Z",
@@ -769,6 +786,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e60f",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61c",
     valor: 150.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Cancelada",
     dataInicio: "2025-10-22T10:00:00.000Z",
     dataTermino: "2025-10-24T10:00:00.000Z",
@@ -783,6 +801,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e610",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e61d",
     valor: 300.0,
+    metodoPagamento: "Pix",
     status: "Confirmada",
     dataInicio: "2025-11-05T13:00:00.000Z",
     dataTermino: "2025-11-08T13:00:00.000Z",
@@ -797,6 +816,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e611",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e614",
     valor: 500.0,
+    metodoPagamento: "Cartão de Crédito",
     status: "Concluída",
     dataInicio: "2025-09-30T09:00:00.000Z",
     dataTermino: "2025-10-02T09:00:00.000Z",
@@ -811,6 +831,7 @@ export const reservas: Reserva[] = [
     enderecoId: "67d1c3a8f4e5a1b2c3d4e612",
     pacoteId: "67d1c3a8f4e5a1b2c3d4e615",
     valor: 300.0,
+    metodoPagamento: "Cartão de Débito",
     status: "Confirmada",
     dataInicio: "2025-11-10T16:00:00.000Z",
     dataTermino: "2025-11-13T16:00:00.000Z",

@@ -48,6 +48,7 @@ export const pacoteZodSchema = z.object({
   quantity: z.number().int().min(0),
 })
 
+export const metodoPagamentoZodSchema = z.enum(["Cartão de Crédito", "Cartão de Débito", "Pix"])
 export const statusZodSchema = z.enum(["Confirmada", "Cancelada", "Concluída"])
 
 export const reservaZodSchema = z.object({
@@ -56,6 +57,7 @@ export const reservaZodSchema = z.object({
   pacoteId: objectIdSchema,
   enderecoId: objectIdSchema,
   valor: z.number(),
+  metodoPagamento: metodoPagamentoZodSchema,
   status: statusZodSchema,
   dataInicio: z.iso.datetime(),
   dataTermino: z.iso.datetime(),

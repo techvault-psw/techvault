@@ -175,6 +175,14 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
     dispatch(cancelReservaServer(reserva))
   }
 
+  const checkPerformOperation = () => {
+    if(tipo == 'Entrega' && !reserva.dataEntrega) return true;
+    if(tipo == 'Coleta' && (reserva.dataEntrega && !reserva.dataColeta)) return true;
+    return false;
+  }
+
+  const canPerformOperation = checkPerformOperation();
+
   const isClientePage = location.pathname.startsWith('/reservas-cliente')
 
   return (
@@ -381,8 +389,12 @@ export const DetalhesReservaDialog = ({ reserva, tipo, children, open: controlle
             <Dialog.Footer className="block space-y-3">
               {(isSuporte() || isGerente()) && tipo && (
                 <ConfirmarOperacaoDialog reserva={reserva} tipo={tipo} onSuccess={onOperacaoSucesso}>
-                  <Button className="w-full h-[2.625rem]">
-                    Confirmar {tipo}
+                  <Button className="w-full h-[2.625rem]" disabled={!canPerformOperation}>
+                    {canPerformOperation ? 
+                      `Confirmar ${tipo}` 
+                    :
+                      tipo == 'Coleta' && "Esta reserva ainda não foi entregue!"
+                    }
                   </Button>
                 </ConfirmarOperacaoDialog>
               )}

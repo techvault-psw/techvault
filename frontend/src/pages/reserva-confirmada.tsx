@@ -21,6 +21,7 @@ import type { RootState } from "@/redux/root-reducer";
 import { useEffect } from "react";
 import { selectReservaById } from "@/redux/reservas/slice";
 import { GoBackButton } from "@/components/go-back-button";
+import { httpGetBlob } from "@/lib/fetch-utils";
 
 /**
  * Componente da página de reserva confirmada
@@ -64,6 +65,19 @@ export default function ReservaConfirmadaPage() {
         return
     }
 
+    const handleVisualizarNFe = async () => {
+        try {
+            const blob = await httpGetBlob(`/reservas/${id}/nota-fiscal`);
+            const url = window.URL.createObjectURL(blob);
+            window.open(url, '_blank');
+            
+            setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+        } catch (error) {
+            console.error("Erro ao baixar NF-e:", error);
+            alert("Erro ao gerar Nota Fiscal. Tente novamente.");
+        }
+    };
+
     return (
         <>
         <PageContainer.Card>
@@ -98,12 +112,12 @@ export default function ReservaConfirmadaPage() {
                 </div>
                 <div className="space-y-2 [&:has(:disabled)]:opacity-75">
                     <Label htmlFor="endereco">Endereço de Entrega</Label>
-                    <Input id="endereco" type="text" value="Faculdade" disabled/>
+                    <Input id="endereco" type="text" value={reserva.endereco.name} disabled/>
                 </div>
             </div>
 
             <div className="flex flex-col md:flex-row gap-3">
-                <Button>
+                <Button onClick={handleVisualizarNFe}>
                     Visualizar NF-e
                 </Button>
                 <Button variant={"outline"} asChild>
